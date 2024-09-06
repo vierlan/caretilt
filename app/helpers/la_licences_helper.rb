@@ -1,0 +1,2 @@
+module LaLicencesHelper
+end

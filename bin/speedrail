@@ -11,12 +11,12 @@ end
 FileUtils.chdir APP_ROOT do
 
   unless ARGV.count == 1
-    abort "Please pass in a new name for your app, ie: bin/speedrail new_app_name"
+    abort "Please pass in a new name for your app, ie: bin/caretilt new_app_name"
   end
 
   new_app_name = ARGV[0]
 
-  puts "== Installing Speedrail =="
+  puts "== Installing Caretilt =="
   system! "gem install bundler --conservative"
   system("bundle check") || system!("bundle install")
 

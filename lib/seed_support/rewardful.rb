@@ -4,7 +4,7 @@ module SeedSupport
   class Rewardful
     class << self
       # Rewardful JS snippets (optional customer referral program)
-      # save $$ by registering with link: https://www.rewardful.com/?via=speedrail
+      # save $$ by registering with link: https://www.rewardful.com/?via=caretilt
       def run
         st = ScriptTag.find_by("code ILIKE ?", '%rewardful%') || ScriptTag.new
         st.update(name: 'Rewardful', enabled:, code:) unless st.persisted?

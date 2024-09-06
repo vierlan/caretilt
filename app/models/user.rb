@@ -1,9 +1,22 @@
 class User < ApplicationRecord
+  belongs_to :company, optional: true
+  belongs_to :local_authority, optional: true
+
   include Signupable
   include Onboardable
   include Billable
 
   scope :subscribed, -> { where.not(stripe_subscription_id: [nil, '']) }
+
+  enum role: {
+    undefined: 0,
+    caretilt_master_user: 1,
+    caretilt_user: 2,
+    care_provider_super_user: 3,
+    care_provider_user: 4,
+    la_super_user: 5,
+    la_user: 6
+  }
 
   # :nocov:
   def self.ransackable_attributes(*)

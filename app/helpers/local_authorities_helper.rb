@@ -1,0 +1,2 @@
+module LocalAuthoritiesHelper
+end

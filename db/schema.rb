@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_04_11_204440) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_06_220906) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -61,6 +61,34 @@ ActiveRecord::Schema[7.2].define(version: 2024_04_11_204440) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "care_homes", force: :cascade do |t|
+    t.string "name"
+    t.jsonb "address"
+    t.string "phone_number"
+    t.string "main_contact"
+    t.text "short_description"
+    t.text "long_description"
+    t.string "type_of_home"
+    t.string "types_of_client_group"
+    t.bigint "company_id", null: false
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_care_homes_on_company_id"
+  end
+
+  create_table "companies", force: :cascade do |t|
+    t.string "name"
+    t.string "type"
+    t.integer "companies_house_id"
+    t.string "registered_address"
+    t.string "phone_number"
+    t.string "billing_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
@@ -76,6 +104,12 @@ ActiveRecord::Schema[7.2].define(version: 2024_04_11_204440) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
+  create_table "local_authorities", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "mail_logs", force: :cascade do |t|
     t.bigint "user_id"
     t.string "mailer"
@@ -85,6 +119,20 @@ ActiveRecord::Schema[7.2].define(version: 2024_04_11_204440) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_mail_logs_on_user_id"
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.string "name"
+    t.integer "core_fee_level"
+    t.integer "core_hours_of_care"
+    t.boolean "additional_fees_associated"
+    t.jsonb "other_data"
+    t.string "single_double"
+    t.boolean "ensuite"
+    t.bigint "care_home_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["care_home_id"], name: "index_rooms_on_care_home_id"
   end
 
   create_table "script_tags", force: :cascade do |t|
@@ -107,10 +155,23 @@ ActiveRecord::Schema[7.2].define(version: 2024_04_11_204440) do
     t.string "stripe_customer_id"
     t.boolean "paying_customer", default: false
     t.string "stripe_subscription_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.integer "role", default: 0
+    t.float "latitude"
+    t.float "longitude"
+    t.bigint "company_id"
+    t.bigint "local_authority_id"
+    t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["local_authority_id"], name: "index_users_on_local_authority_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "care_homes", "companies"
+  add_foreign_key "rooms", "care_homes"
+  add_foreign_key "users", "companies"
+  add_foreign_key "users", "local_authorities"
 end
