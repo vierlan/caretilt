@@ -18,6 +18,4 @@ class CareHome < ApplicationRecord
   validates :type_of_home, presence: true, inclusion: { in: TYPEHOME, message: "%{value} is not a valid home type" }
   validates :types_of_client_group, presence: true, inclusion: { in: TYPECLIENT, message: "%{value} is not a valid client type" }
 
-
-
 end
