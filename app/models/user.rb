@@ -21,6 +21,10 @@ class User < ApplicationRecord
   }
  # Validation to ensure terms are accepted and role is selected
   validates :terms_of_service, acceptance: { accept: 'on', message: 'must be accepted' }
+  
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  
 
 
   # :nocov:
@@ -33,4 +37,29 @@ class User < ApplicationRecord
   end
   # :nocov:
 
+end
+
+create_table "users", force: :cascade do |t|
+  t.string "email", default: "", null: false
+  t.string "encrypted_password", default: "", null: false
+  t.string "reset_password_token"
+  t.datetime "reset_password_sent_at"
+  t.datetime "remember_created_at"
+  t.datetime "created_at", null: false
+  t.datetime "updated_at", null: false
+  t.boolean "admin", default: false
+  t.string "stripe_customer_id"
+  t.boolean "paying_customer", default: false
+  t.string "stripe_subscription_id"
+  t.string "first_name"
+  t.string "last_name"
+  t.integer "role", default: 0
+  t.float "latitude"
+  t.float "longitude"
+  t.bigint "company_id"
+  t.bigint "local_authority_id"
+  t.index ["company_id"], name: "index_users_on_company_id"
+  t.index ["email"], name: "index_users_on_email", unique: true
+  t.index ["local_authority_id"], name: "index_users_on_local_authority_id"
+  t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 end
