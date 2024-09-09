@@ -10,17 +10,22 @@ class User < ApplicationRecord
 
   scope :subscribed, -> { where.not(stripe_subscription_id: [nil, '']) }
 
-  enum role: {
-    undefined: 0,
-    caretilt_master_user: 1,
-    caretilt_user: 2,
-    care_provider_super_user: 3,
-    care_provider_user: 4,
-    la_super_user: 5,
-    la_user: 6
+  enum :role, {
+  undefined: 0,
+  caretilt_master_user: 1,
+  caretilt_user: 2,
+  care_provider_super_user: 3,
+  care_provider_user: 4,
+  la_super_user: 5,
+  la_user: 6
   }
+  
  # Validation to ensure terms are accepted and role is selected
   validates :terms_of_service, acceptance: { accept: 'on', message: 'must be accepted' }
+  
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+
 
 
   # :nocov:
