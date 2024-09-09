@@ -19,12 +19,12 @@ class User < ApplicationRecord
   la_super_user: 5,
   la_user: 6
   }
-  
+
  # Validation to ensure terms are accepted and role is selected
   validates :terms_of_service, acceptance: { accept: 'on', message: 'must be accepted' }
-  
-  validates :first_name, presence: true
-  validates :last_name, presence: true
+
+# validates :first_name, presence: true
+# validates :last_name, presence: true
 
 
 

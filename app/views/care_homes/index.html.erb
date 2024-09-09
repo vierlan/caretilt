@@ -1,11 +1,17 @@
-<turbo-frame id="main-content">
-  <div>
-    <%= turbo_frame_tag "new_home" do %>
-    <h1>View and edit your Care Home here</h1>
-    <%= link_to "New Home", new_company_care_home_path(@company), class: "btn btn-primary" %>
-  </div>
-  <% end %>
-  <div>
-    <%= render @care_homes %>
-  </div>
-</turbo-frame>
+
+ <turbo-frame id="main-content">
+    <div>
+      <%= turbo_frame_tag "new home" do %>
+      <h1>View and edit your Care Home here</h1>
+      <%= link_to "New Home",
+      new_company_care_home_path(@company),
+      data: { turbo_frame: "new_home" },
+       class: "btn btn-primary" %>
+    </div>
+    <% end %>
+    <div>
+      <%= turbo_frame_tag "new_home" do %>
+      <%= render @care_homes %>
+      <% end %>
+    </div>
+ </turbo-frame>

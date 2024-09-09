@@ -5,9 +5,9 @@ class BlogPost < ApplicationRecord
   scope :published, -> { where(draft: false) }
   scope :drafts, -> { where(draft: true) }
 
-  before_validation :generate_unique_slug
-  validates :slug, uniqueness: true
-  validates_presence_of :title, :slug, :body, :description
+# before_validation :generate_unique_slug
+# validates :slug, uniqueness: true
+# validates_presence_of :title, :slug, :body, :description
 
   def to_param
     slug
