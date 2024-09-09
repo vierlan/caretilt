@@ -1,4 +1,11 @@
-<div>
-  <h1 class="font-bold text-4xl">CareHomes#index</h1>
-  <p>Find me in app/views/care_homes/index.html.erb</p>
-</div>
+<turbo-frame id="main-content">
+  <div>
+    <%= turbo_frame_tag "new_home" do %>
+    <h1>View and edit your Care Home here</h1>
+    <%= link_to "New Home", new_company_care_home_path(@company), class: "btn btn-primary" %>
+  </div>
+  <% end %>
+  <div>
+    <%= render @care_homes %>
+  </div>
+</turbo-frame>
