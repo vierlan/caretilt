@@ -15,12 +15,14 @@ Rails.application.routes.draw do
     resources :la_licences
   end
 
+  get '/dashboard/:id/team', to: 'dashboard#team', as: 'dashboard_team'
+
   devise_for :users, path: '', path_names: { sign_in: 'login', sign_up: 'signup' }, controllers: { registrations: 'registrations' }
   get 'logout', to: 'pages#logout', as: 'logout'
   resources :after_signup, only: %i[show update]
 
   resources :subscribe, only: [:index]
-  resources :dashboard, only: [:index]
+  resources :dashboard, only: %i[index team]
   resources :account, only: %i[index update] do
     get :stop_impersonating, on: :collection
   end

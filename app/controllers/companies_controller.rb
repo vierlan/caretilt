@@ -28,11 +28,13 @@ class CompaniesController < ApplicationController
   end
 
   def edit
-    @company = Company.find(params[:id])
+    @user = current_user
+    @company = current_user.company
   end
 
   def update
-    @company = Company.find(params[:id])
+    @user = current_user
+    @company = @user.company || Company.find(params[:id])
 
     # Combine the address fields into the registered_address field
     @company.registered_address = [
