@@ -8,8 +8,8 @@ RSpec.describe Company, type: :model do
     company = Company.new(
       name: "Dev LLC",
       company_type: "type1",  # Changed from 'type' to 'company_type'
-      company_house_id: "12BC34BD",
-      phone_number: "07387170544",  # A valid phone number
+      companies_house_id: "12BC34BD",
+      phone_number: "123455",  # A valid phone number
       address: "wooo",
       user: current_user
     )

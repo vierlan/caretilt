@@ -1,4 +1,4 @@
-module ValidatableAttributes
+module SharedValidAttributes
     extend ActiveSupport::Concern
   
     included do
@@ -8,5 +8,6 @@ module ValidatableAttributes
   
       validates :address, presence: true
     end
+
   end
   
