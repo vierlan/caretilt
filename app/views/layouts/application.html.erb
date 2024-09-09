@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="fantasy">
   <head>
     <%= metamagic site: 'Caretilt', title: [:site, :title], separator: " | " %>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= favicon_link_tag 'favi.ico' %>
     <!-- tailwind components -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.1/dist/full.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
@@ -15,10 +16,14 @@
     <%= render "shared/script_tags" %>
   </head>
   <body>
+    <% if controller.controller_name == "dashboard" %>
+      <main class="container mt-14 ">
+    <% else %>
     <main class="container mx-auto mt-14 px-6">
+    <% end %>
       <%= render "shared/impersonator" %>
       <%= render "shared/flash" %>
-      <%= render "shared/header" %>
+      <%#= render "shared/header" %>
       <%= yield %>
     </main>
   </body>

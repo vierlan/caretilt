@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  attr_accessor :terms_of_service, :is_service_provider, :is_local_authority
+
   belongs_to :company, optional: true
   belongs_to :local_authority, optional: true
 
@@ -17,6 +19,9 @@ class User < ApplicationRecord
     la_super_user: 5,
     la_user: 6
   }
+ # Validation to ensure terms are accepted and role is selected
+  validates :terms_of_service, acceptance: { accept: 'on', message: 'must be accepted' }
+
 
   # :nocov:
   def self.ransackable_attributes(*)
@@ -27,4 +32,5 @@ class User < ApplicationRecord
     []
   end
   # :nocov:
+
 end
