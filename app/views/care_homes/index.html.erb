@@ -1,25 +1,16 @@
 <turbo-frame id="main-content">
   <div>
-    <h1 class="text-black">Care Homes Rendered here</h1>
-    <%= turbo_frame_tag "new home" do %>
+    <%= turbo_frame_tag "new_home" do %>
       <h1>View and edit your Care Home here</h1>
       <%= link_to "New Home",
       new_company_care_home_path(@company),
       data: { turbo_frame: "new_home" },
        class: "btn btn-primary" %>
-      <h1 class="text-black mt-3">Care Homes Rendered here</h1>
-      <div class="care-home">
-        <% @care_homes.each do | home| %>
-          <h1><%= home.name %></h1>
-          <p><%= home.address1 %></p>
-          <p><%= home.short_description %></p>
-        <% end %>
-      </div>
     <% end %>
-    <div>
-      <%= turbo_frame_tag "new_home" do %>
-        <%= render @care_homes %>
-      <% end %>
-    </div>
+  </div>
+  <div>
+    <%= turbo_frame_tag "new_home" do %>
+      <%= render @care_homes %>
+    <% end %>
   </div>
 </turbo-frame>

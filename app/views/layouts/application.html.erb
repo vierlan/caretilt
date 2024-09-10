@@ -16,17 +16,16 @@
     <%= render "shared/script_tags" %>
   </head>
   <body>
-    <%= render "shared/header" %>
     <% if controller.controller_name == "dashboard" %>
       <main class="container mt-14 ">
-    <% else %>
-    <main class="container mx-auto mt-14 px-6">
-    <% end %>
-      <%= render "shared/impersonator" %>
-      <%= render "shared/flash" %>
-      <%#= render "shared/header" %>
-      <%= yield %>
-    </main>
-    <%= render "shared/footer" %>
-  </body>
-</html>
+      <% else %>
+        <%= render "shared/header" %>
+        <main class="container mx-auto mt-14 px-6">
+        <% end %>
+        <%= render "shared/impersonator" %>
+        <%= render "shared/flash" %>
+        <%= yield %>
+      </main>
+      <%= render "shared/footer" if controller.controller_name != "dashboard" %>
+    </body>
+  </html>
