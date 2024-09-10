@@ -3,6 +3,7 @@ class CareHomesController < ApplicationController
     @user = current_user
     @company = @user.company
     @care_homes = @company.care_homes
+    
 
   end
 
@@ -43,7 +44,7 @@ class CareHomesController < ApplicationController
     @care_home.company = @company
 
     if @care_home.save
-      redirect_to dashboard_path, notice: 'Successfully created'
+      redirect_to dashboard_path(current_user), notice: 'Successfully created'
     else
       render :new, status: :unprocessable_entity
     end
@@ -82,7 +83,7 @@ class CareHomesController < ApplicationController
     @care_home = CareHome.find(params[:id])
 
     if @company.update(company_params) && @care_home.update(care_home_params)
-      redirect_to some_path, notice: 'Successfully updated'
+      redirect_to dashboard_path(current_user), notice: 'Successfully updated'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -94,6 +95,6 @@ class CareHomesController < ApplicationController
   private
 
   def care_home_params
-    params.require(:care_home).permit(:name, :phone_number, :website, :address, :email)
+    params.require(:care_home).permit(:name, :phone_number, :website, :address, :email, :address1, :address2, :city, :postcode, :type_of_home, :types_of_client_group, :short_description, photos: [])
   end
 end
