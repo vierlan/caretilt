@@ -1,0 +1,7 @@
+<div class="care-home">
+  <% @care_homes.each do | home| %>
+  <h1><%= home.name %></h1>
+  <p><%= home.address1 %></p>
+  <p><%= home.short_description %></p>
+  <% end %>
+</div>
