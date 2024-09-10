@@ -12,6 +12,29 @@ class CareHomesController < ApplicationController
   def new
     @company = Company.find(params[:company_id])
     @care_home = CareHome.new
+    @home_types = [
+      "Adult Homes",
+      "Assisted Living",
+      "Continuing Care Retirement Communities",
+      "Group Homes",
+      "Home Health Care",
+      "Hospice Homes",
+      "Independent Living",
+      "Memory Care Homes",
+      "Nursing Home",
+      "Residential Care Homes",
+      "Supported Living"
+    ]
+    @client_groups = [
+      "Learning Disabilities and/or Autism",
+      "Mental Health and/or Autism",
+      "Substance Misuse",
+      "Physical and/or Sensory Disabilities",
+      "Older People",
+      "Children and Young People",
+      "Children with SEN",
+      "Young People / Unaccompanied Minors"
+    ]
   end
 
   def create
@@ -28,7 +51,30 @@ class CareHomesController < ApplicationController
 
   def edit
     @company = Company.find(params[:company_id]) # or however you fetch the company
-    @care_home = CareHome.find(params[:id]) # o
+    @care_home = CareHome.find(params[:id])
+    @home_types = [
+      "Adult Homes",
+      "Assisted Living",
+      "Continuing Care Retirement Communities",
+      "Group Homes",
+      "Home Health Care",
+      "Hospice Homes",
+      "Independent Living",
+      "Memory Care Homes",
+      "Nursing Home",
+      "Residential Care Homes",
+      "Supported Living"
+    ]
+    @client_groups = [
+      "Learning Disabilities and/or Autism",
+      "Mental Health and/or Autism",
+      "Substance Misuse",
+      "Physical and/or Sensory Disabilities",
+      "Older People",
+      "Children and Young People",
+      "Children with SEN",
+      "Young People / Unaccompanied Minors"
+    ]
   end
 
   def update
