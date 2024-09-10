@@ -16,6 +16,82 @@
     <%= render "shared/script_tags" %>
   </head>
   <body>
+    <header class="">
+     <%# <header class="absolute inset-x-0 top-0 z-50"> Not making sense as to why it's needed %>
+      <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+        <div class="flex lg:flex-1">
+          <%= link_to root_path, class: "-m-1.5 p-1.5" do %>
+            <span class="sr-only">CareTilt</span>
+            <%= image_tag 'logo_symbol.png', class: 'h-20 w-auto', alt: 'caretilt_logo' %> 
+          <% end %>
+        </div>
+        <div class="flex lg:hidden">
+          <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 bg-secondary">
+            <span class="sr-only">Open main menu</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          </button>
+        </div>
+        <div class="hidden lg:flex lg:gap-x-12">
+          <%= link_to "Home", root_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
+          <%= link_to "Free Calculator", calculator_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
+          <%= link_to "Guides", guides_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
+          <%= link_to "Contact", contact_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
+        </div>
+        <% if !current_user %>
+        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+          <a href="/login" class="text-lg font-bold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
+          <a href="/signup" class="text-lg font-bold leading-6 text-gray-900 ml-6">Register<span aria-hidden="true">&rarr;</span></a>
+        </div>
+        <% else %>
+        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+          <a href="/dashboard" class="text-lg font-bold leading-6 text-gray-900">Dashboard <span aria-hidden="true">&rarr;</span></a>
+          <a href="/logout" class="text-lg font-bold leading-6 text-gray-900 ml-6">Log Out<span aria-hidden="true">&rarr;</span></a>
+        </div>
+        <% end %>
+      </nav>
+      <!-- Mobile menu, show/hide based on menu open state. -->
+      <div class="lg:hidden" role="dialog" aria-modal="true">
+        <!-- Background backdrop, show/hide based on slide-over state. -->
+        <div class="fixed inset-0 z-50"></div>
+        <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div class="flex items-center justify-between">
+            <a href="#" class="-m-1.5 p-1.5">
+              <span class="sr-only">Your Company</span>
+              <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">
+            </a>
+            <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+              <span class="sr-only">Close menu</span>
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div class="mt-6 flow-root">
+            <div class="-my-6 divide-y divide-gray-500/10">
+              <div class="space-y-2 py-6">
+                <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Product</a>
+                <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Features</a>
+                <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Marketplace</a>
+                <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Company</a>
+              </div>
+              <% if !current_user %>
+              <div class="py-6">
+                <a href="/login" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log In</a>
+                <a href="/signup" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Sign Up</a>
+              </div>
+              <% else %>
+              <div class="py-6">
+                <a href="/dashboard" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Dashboard</a>
+                <a href="/logout" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log Out</a>
+              </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>  
     <% if controller.controller_name == "dashboard" %>
       <main class="container mt-14 ">
     <% else %>
@@ -26,5 +102,52 @@
       <%#= render "shared/header" %>
       <%= yield %>
     </main>
+    <footer class="bg-white">
+      <div class="mx-auto max-w-7xl overflow-hidden px-6 py-15 sm:py-24 lg:px-8">
+        <nav class="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
+          <div class="pb-6">
+            <%= link_to "About", about_path, class: "text-sm leading-6 text-gray-600 hover:text-gray-900" %>
+          </div>
+          <div class="pb-6">
+            <%= link_to "Guides", guides_path, class: "text-sm leading-6 text-gray-600 hover:text-gray-900" %>
+          </div>
+          <div class="pb-6">
+            <%= link_to "Contact", contact_path, class: "text-sm leading-6 text-gray-600 hover:text-gray-900" %>
+          </div>
+          <div class="pb-6">
+            <%= link_to "FAQ", faq_path, class: "text-sm leading-6 text-gray-600 hover:text-gray-900" %>
+          </div>
+          <div class="pb-6">
+            <%= link_to "Cost Estimator", calculator_path, class: "text-sm leading-6 text-gray-600 hover:text-gray-900" %>
+          </div>
+          <div class="pb-6">
+            <a href="#" class="text-sm leading-6 text-gray-600 hover:text-gray-900">Partners</a>
+          </div>
+        </nav>
+        <dl class="mt-5 space-y-4 text-xs leading-7 text-gray-600 flex gap-x-5 justify-center content-center">
+            <div class="flex gap-x-4">
+              <div class="flex gap-x-2">
+                <dt class="content-center">
+                  <span class="sr-only">Address</span>
+                  <svg class="h-5 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
+                  </svg>
+                </dt>
+                <dd>54a Lots Road, London, SW10 0QD</dd>
+              </div>
+              <div class="flex gap-x-2">
+                <dt class="content-center">
+                  <span class="sr-only">Telephone</span>
+                  <svg class="h-5 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                  </svg>
+                </dt>
+                <dd><a class="hover:text-gray-900" href="tel:+1 (555) 234-5678">+1 (555) 234-5678</a></dd>
+              </div>
+            </div>
+          </dl>
+          <p class="mt-5 text-center text-xs leading-5 text-gray-500">&copy; 2024 CareTilt, Inc. All rights reserved.</p>
+      </div>
+    </footer>
   </body>
 </html>

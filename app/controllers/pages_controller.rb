@@ -12,4 +12,14 @@ class PagesController < ApplicationController
     @page_key = request.path[1..]
     render "pages/#{@page_key}"
   end
+
+  def contact
+  end
+
+  def calculator
+  end
+
+  def guides
+  end
+  
 end
