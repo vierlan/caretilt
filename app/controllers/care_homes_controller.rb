@@ -8,6 +8,7 @@ class CareHomesController < ApplicationController
   end
 
   def show
+    render "care_homes/show"
   end
 
   def new
