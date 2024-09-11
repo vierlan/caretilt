@@ -3,11 +3,11 @@ class CareHomesController < ApplicationController
     @user = current_user
     @company = @user.company
     @care_homes = @company.care_homes
-
-
   end
 
   def show
+    @care_home = CareHome.find(params[:id])
+    @rooms = @care_home.rooms
   end
 
   def new

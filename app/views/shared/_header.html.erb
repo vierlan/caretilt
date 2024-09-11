@@ -4,7 +4,7 @@
     <div class="flex lg:flex-1">
       <%= link_to root_path, class: "-m-1.5 p-1.5" do %>
         <span class="sr-only">CareTilt</span>
-        <%= image_tag 'logo_symbol.png', class: 'h-20 w-auto', alt: 'caretilt_logo' %> 
+        <%= image_tag 'logo_symbol.png', class: 'h-20 w-auto', alt: 'caretilt_logo' %>
       <% end %>
     </div>
     <div class="flex lg:hidden">
@@ -17,6 +17,9 @@
     </div>
     <div class="hidden lg:flex lg:gap-x-12">
       <%= link_to "Home", root_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
+      <%= link_to "Home2", home2_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
+      <%= link_to "Home3", home3_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
+      <%= link_to "Home4", home4_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
       <%= link_to "Free Calculator", calculator_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
       <%= link_to "Guides", guides_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
       <%= link_to "Contact", contact_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
@@ -73,4 +76,4 @@
       </div>
     </div>
   </div>
-</header>  
+</header>
