@@ -6,10 +6,14 @@ Rails.application.routes.draw do
   get '/dashboard/:id', to: 'dashboard#index', as: 'dashboard_index'
 
   resources :companies do
-    resources :care_homes do
-      resources :rooms
+    resources :care_homes, only: %i[index new create] do
     end
   end
+
+  resources :care_homes, only: %i[show edit update destroy] do
+    resources :rooms
+  end
+
 
   resources :local_authorities do
     resources :la_licences

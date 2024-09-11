@@ -1,64 +1,63 @@
 <div class="care-home">
   <% @care_homes.each do | home| %>
-
-  <div class="overflow-hidden rounded-lg bg-white shadow-lg grid grid-cols-2 grid-flow-col gap-4 mt-5">
-    <div class="px-4 py-5 sm:px-6 col-span-2 flex justify-between">
+    <div class="overflow-hidden rounded-lg bg-white shadow-lg grid grid-cols-2 grid-flow-col gap-4 mt-5">
+      <div class="px-4 py-5 sm:px-6 col-span-2 flex justify-between">
         <div class="ml-4 mt-4">
-            <h3 class="text-2xl text-blue-600 font-semibold leading-6 text-gray-900"><%= home.name %></h3>
-            <p class="mt-1 text-base text-gray-500"><%= home.address1 + ", " + home.address2 + ", " + home.city %></p>
+          <h3 class="text-2xl text-blue-600 font-semibold leading-6 text-gray-900"><%= home.name %></h3>
+          <p class="mt-1 text-base text-gray-500"><%= home.address1 + ", " + home.address2 + ", " + home.city %></p>
         </div>
         <%= image_tag "advina", size: "100x100" %>
-    </div>
-    <div class="bg-gray-50 px-4 py-5 sm:p-6 row-span-2 col-span-2 flex justify-between gap-4">
+      </div>
+      <div class="bg-gray-50 px-4 py-5 sm:p-6 row-span-2 col-span-2 flex justify-between gap-4 grow">
         <!-- Content goes here -->
         <%= image_tag "Cloisters.CareHome.External", size: "200x200" %>
         <div class="provider-info">
-            <div>
-                <h3 class="font-medium">Location Type: <span class="text-grey font-normal">Care Home</span></h3>
-            </div>
-            <div class="description mt-2 h-32 overflow-auto">
-                <p>
-                    <p><%= home.short_description %></p>
-                </p>
-                <%= link_to "More Info", test_path, class: "text-blue-600" %>
-            </div>
-            <div>
-
-            </div>
+          <div>
+            <h3 class="font-medium">Location Type: <span class="text-grey font-normal">Care Home</span></h3>
+          </div>
+          <div class="description mt-2 h-32 overflow-hidden">
+            <p>
+              <p><%= home.short_description %></p>
+            </p>
+            <%= link_to "More Info", test_path, class: "text-blue-600" %>
+          </div>
+          <div>
+          </div>
         </div>
-    </div>
-    <div class="px-4 py-5 sm:px-6 row-span-3 flex flex-col justify-between">
+      </div>
+      <div class="px-4 py-5 sm:px-6 row-span-3 flex flex-col justify-between">
         <div class="flex">
-            <span class="inline-flex items-center rounded-md bg-green-100 px-2 py-1 text-base font-medium text-green-700">Rating: Good</span>
-            <h1 class="text-blue-600 font-semibold p-1 ms-2">73 Reviews</h1>
+          <span class="inline-flex items-center rounded-md bg-green-100 px-2 py-1 text-base font-medium text-green-700">Rating: Good</span>
+          <h1 class="text-blue-600 font-semibold p-1 ms-2">73 Reviews</h1>
         </div>
         <div>
-            <h3 class="font-semibold">10 Rooms from £1,310 / week</h3>
+          <h3 class="font-semibold">10 Rooms from £1,310 / week</h3>
         </div>
         <div>
-            <h2>Services provided:</h2>
-            <ul class="list-disc list-inside mt-2">
-                <li><%= home.type_of_home %></li>
-                <li><%= home.types_of_client_group %></li>
-                <li>Dementia</li>
-                <li>Mental Health</li>
-                <li>Short Term/Respite</li>
-            </ul>
+          <h2>Services provided:</h2>
+          <ul class="list-disc list-inside mt-2">
+            <li><%= home.type_of_home %></li>
+            <li><%= home.types_of_client_group %></li>
+            <li>Dementia</li>
+            <li>Mental Health</li>
+            <li>Short Term/Respite</li>
+          </ul>
         </div>
         <div class="flex gap-2">
-            <button id="favourite-btn" class="flex items-center justify-center p-2 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 px-5">
-                <!-- Star Icon -->
-                <svg id="star-icon" class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                </svg>
-                <span class="ml-2">Save</span>
+          <button id="favourite-btn" class="flex items-center justify-center p-2 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 px-5">
+            <!-- Star Icon -->
+            <svg id="star-icon" class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+            <span class="ml-2">Save</span>
+          </button>
+          <%= link_to care_home_path(home), data: { turbo_frame: "main-content" } do %>
+            <button class="text-white font-bold py-2 px-4 rounded-full bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg">
+              More Details
             </button>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                More Details
-            </button>
+          <% end %>
         </div>
+      </div>
     </div>
-</div>
-
   <% end %>
 </div>

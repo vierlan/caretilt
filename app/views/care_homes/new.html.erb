@@ -1,6 +1,6 @@
  <turbo-frame id="new_home">
   <div>
-    <%= link_to sanitize("&larr; Back to homes"), company_care_homes_path(@company), class: "btn btn-primary mb-4 font-bold text-lg" %>
+    <%= link_to sanitize("&larr; Back to homes"), company_care_homes_path(@company), class: "btn mb-4 font-bold text-lg bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg" %>
   </div>
   <%= form_with(model: [@company, @care_home], local: true) do |f| %>
     <div class="space-y-12">
