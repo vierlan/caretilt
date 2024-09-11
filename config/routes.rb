@@ -1,11 +1,17 @@
 Rails.application.routes.draw do
+  get "team_members/new"
   ActiveAdmin.routes(self)
 
   root 'pages#home'
 
   get '/dashboard/:id', to: 'dashboard#index', as: 'dashboard_index'
+  get '/team_members/error', to: 'team_members#error', as: 'team_members_error'
 
   resources :companies do
+    member do
+      get 'add_team_member', to: 'team_members#new' # Updated to use 'new' action
+      post 'add_team_member', to: 'team_members#create'
+    end
     resources :care_homes, only: %i[index new create] do
     end
   end
@@ -20,13 +26,15 @@ Rails.application.routes.draw do
   end
 
   get '/dashboard/:id/team', to: 'dashboard#team', as: 'dashboard_team'
+  get '/dashboard/:id/new_team_member', to: 'dashboard#new_team_member', as: 'dashboard_new_team_member'
+  post 'add_team_member', to: 'team_members#create'
 
   devise_for :users, path: '', path_names: { sign_in: 'login', sign_up: 'signup' }, controllers: { registrations: 'registrations' }
   get 'logout', to: 'pages#logout', as: 'logout'
   resources :after_signup, only: %i[show update]
 
   resources :subscribe, only: [:index]
-  resources :dashboard, only: %i[index team]
+  resources :dashboard, only: %i[index team new_team_member]
   resources :account, only: %i[index update] do
     get :stop_impersonating, on: :collection
   end

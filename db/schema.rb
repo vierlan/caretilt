@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_10_213916) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_11_200551) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -136,7 +136,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_10_213916) do
     t.boolean "additional_fees_associated"
     t.jsonb "other_data"
     t.string "single_double"
-
     t.boolean "ensuite"
     t.bigint "care_home_id", null: false
     t.datetime "created_at", null: false
@@ -172,6 +171,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_10_213916) do
     t.float "longitude"
     t.bigint "company_id"
     t.bigint "local_authority_id"
+    t.boolean "verified", default: false
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["local_authority_id"], name: "index_users_on_local_authority_id"

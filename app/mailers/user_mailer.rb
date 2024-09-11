@@ -13,4 +13,11 @@ class UserMailer < ApplicationMailer
     @user = user
     mail(to: user.email, subject: 'can we help you get set up?')
   end
+
+  def welcome_email
+    @user = params[:user]
+    @password = params[:password]
+    mail(to: @user.email, subject: 'Welcome to CareTilt!')
+  end
+
 end
