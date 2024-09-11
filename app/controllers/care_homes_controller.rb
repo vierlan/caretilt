@@ -8,6 +8,7 @@ class CareHomesController < ApplicationController
   def show
     @care_home = CareHome.find(params[:id])
     @rooms = @care_home.rooms
+    render "care_homes/show"
   end
 
   def new
