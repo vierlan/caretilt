@@ -4,14 +4,9 @@
   <p>Find me in app/views/rooms/index.html.erb</p>
   <%= link_to sanitize("&larr; Back to homes"), care_home_path(@care_home), class: "btn mb-4 font-bold text-lg text-white bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg" %>
   <%  @all_rooms.each do |room| %>
+      <%= render "shared/card2", room: room %>
     <div class="flex justify-between items-center border-b border-gray-300 py-4">
       <div>
-        <h2 class="font-bold text-xl"><%= room.name %></h2>
-        <p class="text-gray-600">Core fee level: <%= room.core_fee_level %></p>
-        <p class="text-gray-600">Core hours of care: <%= room.core_hours_of_care %></p>
-        <p class="text-gray-600">Additional fees associated: <%= room.additional_fees_associated %></p>
-        <p class="text-gray-600">Single/Double Room: <%= room.single_double %></p>
-        <p class="text-gray-600">Ensuite: <%= room.ensuite %></p>
       </div>
       <div>
         <%= link_to 'Show', care_home_room_path(@care_home, room), class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>

@@ -1,16 +1,12 @@
 <turbo-frame id="main-content">
-  <div>
-    <h1 class="font-bold text-4xl">CareHomes#show</h1>
-    <p>Find me in app/views/care_homes/show.html.erb</p>
-  </div>
-  <div>
+  <div class="my-2">
     <%= link_to new_care_home_room_path(@care_home), data: { turbo_frame: "main-content" } do %>
       <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
         Add a room
       </button>
     <% end %>
   </div>
-</turbo-frame>
+
 <div class="relative border-b border-gray-200 pb-5 sm:pb-0">
   <div class="md:flex md:items-center md:justify-between">
     <div class="mt-4">
@@ -137,3 +133,4 @@
     </div>
   </div>
 </div>
+</turbo-frame>
