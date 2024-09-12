@@ -35,7 +35,7 @@ Rails.application.routes.draw do
 
   # static pages
   pages = %w[
-    privacy terms about contact home home2 home3 home4 guides calculator faq pricing search test
+    privacy terms about contact home home2 home3 home4 guides calculator faq pricing searchtest test
   ]
 
   pages.each do |page|
