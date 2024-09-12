@@ -1,0 +1,26 @@
+<h1>GOOGLE API KEY: <%= ENV['GOOGLE_API_KEY'] %> </h1>
+
+<div class="slider-carousel bg-white" data-controller="swiper">
+  <h1 class='text-black font-bold text-4xl'>Search places near you!</h1>
+  
+  <div data-controller="placesapi" data-placesapi-types="cafe,restaurant,library" class="flex flex-col items-center justify-center">
+    <input data-placesapi-target="place" type="text" placeholder="Search for a place" class="p-1 m-3">
+    <button data-placesapi-target="locationButton" class="p-2 bg-blue-500 text-white rounded">Get Current Location</button>
+
+    <!-- Slider for setting the search radius -->
+    <label for="radius">Search Radius: <span id="radius-value">1000</span> meters</label>
+    <input id="radius-slider" data-placesapi-target="radiusSlider" type="range" min="0" max="10000" value="1000" class="p-1 m-3">
+
+    <!-- Map Display -->
+    <div id="map" style="height: 400px; width: 100%;"></div>
+
+    <!-- Results Container -->
+    <div id="results-container" class="mt-4 w-full"></div>
+
+    <!-- Selected Address -->
+    <div id="selected-address" class="hidden mt-4">
+      <p><strong>Selected Address:</strong> <span id="address-details"></span></p>
+      <button id="confirm-address" class="hidden p-2 bg-green-500 text-white rounded">Confirm Address</button>
+    </div>
+  </div>
+</div>
