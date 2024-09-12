@@ -22,4 +22,6 @@ class PagesController < ApplicationController
   def guides
   end
   
+  def search
+  end
 end

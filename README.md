@@ -1,9 +1,8 @@
-# Speedrail
-a Rails 7 template, created to ship SaaS apps quickly.
+# Caretilt
+a Rails 7 template.
 
-learn to build 3 projects with Speedrail at [24 Hour MVP](https://founderhacker.com/24-hour-mvp), or check out the [premium documentation](https://gitpaywall.com/p/ryanckulp/speedrail-docs).
 
-**Speedrail features**
+**CareTilt features**
 * rich text blog CMS
 * embedded subscription payment portal via [Stripe Checkout](https://docs.stripe.com/payments/accept-a-payment?platform=web&ui=embedded-form)
 * built-in referral marketing via [Rewardful](https://www.rewardful.com/?via=speedrail)
@@ -29,34 +28,11 @@ learn to build 3 projects with Speedrail at [24 Hour MVP](https://founderhacker.
 * automated testing via GitHub actions + PR status check
 * Rubocop for code style enforcement and linting auto-fixes
 
-## Installation
-1. clone the repo
-2. `speedrail/bin/speedrail new_app_name`
-3. inspect, then save/close the generated credentials file
-4. `cd new_app_name`
-
-**For detailed, step by step tutorials to using Speedrail, get lifetime access to the [Speedrail Docs](https://gitpaywall.com/p/ryanckulp/speedrail-docs) for a one-time fee of $49.**
-
 ## Development
 ```sh
 bin/dev # uses foreman to boot server, frontend, and bg job queue
 ```
 
-To sync your project with the latest Speedrail improvements:
-
-```sh
-# one time only
-git remote add speedrail https://github.com/ryanckulp/speedrail.git
-
-# when you notice Speedrail updates on GitHub
-git pull
-git fetch speedrail
-git merge speedrail/master --allow-unrelated-histories
-git checkout -b speedrail_updates
-git add .
-git push speedrail_updates
-# use GitHub UI to handle conflicts
-```
 
 ## Testing
 ```sh
@@ -80,5 +56,3 @@ rubocop -a # automatically fixes "safe" issues, less aggressive than -A (upperca
 
 **Rubocop is an optional feature**, however it runs automatically during GitHub CI checks. if you don't want to enforce the Rubocop style guide, simply disable the `Rubocop Check` step inside `ci.yml`.
 
-## Contributing
-anyone is welcome to submit a PR with improvements of any kind.
