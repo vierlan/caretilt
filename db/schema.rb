@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_10_213916) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_12_095056) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -171,6 +171,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_10_213916) do
     t.float "longitude"
     t.bigint "company_id"
     t.bigint "local_authority_id"
+    t.boolean "verified", default: false
+    t.bigint "care_home_id"
+    t.index ["care_home_id"], name: "index_users_on_care_home_id"
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["local_authority_id"], name: "index_users_on_local_authority_id"
@@ -181,6 +184,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_10_213916) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "care_homes", "companies"
   add_foreign_key "rooms", "care_homes"
+  add_foreign_key "users", "care_homes"
   add_foreign_key "users", "companies"
   add_foreign_key "users", "local_authorities"
 end

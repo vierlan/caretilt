@@ -6,3 +6,5 @@ raise StandardError, "DO NOT RUN THIS IN PRODUCTION" if Rails.env.production?
 require 'seed_support/rewardful'
 
 SeedSupport::Rewardful.run
+
+

@@ -4,6 +4,7 @@ class CareHome < ApplicationRecord
   TYPECLIENT = ["type1", "type2", "type3"]
 
   belongs_to :company
+  has_many :users
   has_many :rooms, dependent: :destroy
   has_many_attached :photos
   has_many_attached :videos

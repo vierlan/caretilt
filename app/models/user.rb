@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   belongs_to :company, optional: true
   belongs_to :local_authority, optional: true
+  belongs_to :care_home, optional: true
 
   include Signupable
   include Onboardable
