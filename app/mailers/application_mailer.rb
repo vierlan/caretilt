@@ -1,6 +1,6 @@
 class ApplicationMailer < ActionMailer::Base
   layout 'mailer'
-  default from: '"Support Team" <lananhnguyen33@gmail.com>'
+  default from: '"Support Team" <caretilt@gmail.com>'
 
   after_action :create_mail_log
 
