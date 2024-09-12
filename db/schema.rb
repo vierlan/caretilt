@@ -136,7 +136,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_10_213916) do
     t.boolean "additional_fees_associated"
     t.jsonb "other_data"
     t.string "single_double"
-
     t.boolean "ensuite"
     t.bigint "care_home_id", null: false
     t.datetime "created_at", null: false

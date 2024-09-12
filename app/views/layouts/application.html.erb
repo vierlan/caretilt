@@ -12,6 +12,8 @@
     <!-- app styles -->
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <!-- GOOGLE PLACES API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=<%=ENV['GOOGLE_API_KEY']%>&libraries=places"></script>
     <%= javascript_importmap_tags %>
     <%= render "shared/script_tags" %>
   </head>
