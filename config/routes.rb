@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :companies do
     member do
       get 'add_team_member', to: 'team_members#new' # Updated to use 'new' action
+      get 'team', to: 'team_members#index'
       post 'add_team_member', to: 'team_members#create'
     end
     resources :care_homes, only: %i[index new create] do

@@ -3,8 +3,13 @@ class DashboardController < ApplicationController
 
   def index
     @user = current_user
+    if @user.company
     @company = @user.company
     @care_homes = @company.care_homes
+    elsif @user.local_authority
+      @local_authority = @user.local_authority
+      @care_homes = @local_authority.care_homes
+    end
   end
 
   def team

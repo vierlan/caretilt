@@ -4,28 +4,48 @@ class TeamMembersController < ApplicationController
     @user = User.new
   end
 
+  def index
+    @user = User.new
+    @members = current_user.company.users
+    @team_members = @members.where(verified: true)
+    @company = current_user.company
+    @team_super_user = @team_members.find_by(role: 'care_provider_super_user')
+    @team_users = @team_members.where(role: 'care_provider_user')
+    @care_homes = @company.care_homes
+    @unverified_users = @team_users.where(verified: false)
+    @unassigned_users = @members.where(care_home_id: nil)
+  end
+
   def create
     email = params[:email]
     password = Devise.friendly_token.first(8)
-    user = User.new(email: email, password: password, password_confirmation: password)
+    @member = User.new(email: email, password: password, password_confirmation: password)
     case current_user.role
     when 'care_provider_super_user'
-      user.role = 'care_provider_user'
-      user.company = current_user.company
+      @member.role = 'care_provider_user'
+      @member.company = current_user.company
     when 'la_super_user'
-      user.role = 'la_user'
-      user.local_authority = current_user.local_authority
+      @member.role = 'la_user'
+      @member.local_authority = current_user.local_authority
     when 'caretilt_master_user'
-      user.role = 'caretilt_user'
+      @member.role = 'caretilt_user'
     else
       render status: :forbidden
     end
 
-    if user.save
-      UserMailer.with(user: user, password: password).welcome_email.deliver_later
-      redirect_to team_members_new_path(current_user), notice: 'Team member added successfully.'
-    else
-      redirect_to team_members_error_path, notice: 'Failed to add team member.'
+    respond_to do |format|
+      if @member.save
+        UserMailer.with(member: @member, password: password).welcome_email.deliver_later
+        format.html { redirect_to team_members_new_path(current_user), notice: 'Team member added successfully. An email has been sent to the new user.' }
+        format.turbo_stream { render :create, locals: { member: @member, notice: 'Team member added successfully. An email has been sent to the new user.' } }
+        format.json { render :show, status: :created, location: @member }
+        # clear the input field
+        format.js { render js: "document.getElementById('email').value = ''; alert('Team member added successfully. An email has been sent to the new user.');" }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.turbo_stream { render :create, status: :unprocessable_entity, locals: { member: @member } }
+        format.json { render json: @member.errors, status: :unprocessable_entity }
+      end
     end
   end
 
