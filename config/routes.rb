@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
   root 'pages#home'
-
+  
   get '/dashboard/:id', to: 'dashboard#index', as: 'dashboard_index'
   get '/team_members/error', to: 'team_members#error', as: 'team_members_error'
 
