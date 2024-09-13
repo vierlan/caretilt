@@ -30,23 +30,19 @@
           </div>
           <div class="sm:col-span-6" >
             <div class="mt-2 flex items-center">
-
               <%= f.check_box :additional_fees_associated, id: "additional_fees_associated", value: @room.additional_fees_associated, class: "ml-8 h-8 w-8 my-2 focus:ring-primary-500 border-gray-300 rounded rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
-                          <label for="additional_fees_associated" class="ml-8 block text-sm font-medium leading-6 text-gray-900">Additional fees associated?</label>
-
+              <label for="additional_fees_associated" class="ml-8 block text-sm font-medium leading-6 text-gray-900">Additional fees associated?</label>
             </div>
           </div>
           <div class="sm:col-span-6">
             <div class="mt-2 flex items-center">
               <%= f.select :single_double, options_for_select(["Single Room", "Double Room"]), { include_blank: 'Select a room' }, { id: "single_double", class: "w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" } %>
               <label for="single_double" class="ml-8 block text-sm font-medium leading-6 text-gray-900">Single/Double Room</label>
-
             </div>
             <!-- in use above-->
             <div class="sm:col-span-6 mt-2 flex items-center">
-                <%= f.check_box :ensuite, id: "ensuite", value: @room.ensuite, class: "ml-8 h-8 w-8 my-2 focus:ring-primary-500 border-gray-300 rounded rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+              <%= f.check_box :ensuite, id: "ensuite", value: @room.ensuite, class: "ml-8 h-8 w-8 my-2 focus:ring-primary-500 border-gray-300 rounded rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
               <label for="ensuite" class="ml-8 block text-sm font-medium leading-6 text-gray-900">Ensuite?</label>
-
             </div>
             <div class="ml-8 mt-2">
               <label for="photos" class="ml-8 block text-sm font-medium leading-6 text-gray-900">Photo</label>
@@ -56,19 +52,16 @@
                 </svg>
                 <%#= f.file_field :photos, id: "photo", class: "hidden" %>
                 <%= f.file_field :photos, as: :file, input_html: { name: 'photos[]', multiple: true } %>
-
                 <button type="button" class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" onclick="document.getElementById('photo').click()">Change</button>
               </div>
             </div>
           </div>
           <div class="sm:col-span-6 mt-2 flex items-center">
-
-              <%= f.check_box :vacant, id: "vacant", value: @room.vacant, class: "ml-8 h-8 w-8 my-2 focus:ring-primary-500 border-gray-300 rounded rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
-                          <label for="vacant" class="ml-8 block text-sm font-medium leading-6 text-gray-900">List this room as Vacant</label>
-
-            </div>
+            <%= f.check_box :vacant, id: "vacant", value: @room.vacant, class: "ml-8 h-8 w-8 my-2 focus:ring-primary-500 border-gray-300 rounded rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
+            <label for="vacant" class="ml-8 block text-sm font-medium leading-6 text-gray-900">List this room as Vacant</label>
+          </div>
           <div class="mt-6 sm:col-span-6">
-            <%= f.submit "Save", class: "btn btn-primary w-full" %>
+            <%= f.submit "Save", class: "btn bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg w-full" %>
           </div>
         </div>
       </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_12_095056) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_13_224333) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -59,6 +59,19 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_12_095056) do
     t.boolean "draft", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "booking_enquiries", force: :cascade do |t|
+    t.string "contact_name"
+    t.string "contact_phone"
+    t.string "service_user_name"
+    t.text "message"
+    t.bigint "user_id", null: false
+    t.bigint "room_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_booking_enquiries_on_room_id"
+    t.index ["user_id"], name: "index_booking_enquiries_on_user_id"
   end
 
   create_table "care_homes", force: :cascade do |t|
@@ -182,6 +195,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_12_095056) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "booking_enquiries", "rooms"
+  add_foreign_key "booking_enquiries", "users"
   add_foreign_key "care_homes", "companies"
   add_foreign_key "rooms", "care_homes"
   add_foreign_key "users", "care_homes"

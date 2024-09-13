@@ -1,5 +1,6 @@
 class Room < ApplicationRecord
   belongs_to :care_home
+  has_many :booking_enquiries
 
   has_many_attached :photos
   has_one_attached :video

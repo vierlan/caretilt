@@ -4,6 +4,7 @@ class User < ApplicationRecord
   belongs_to :company, optional: true
   belongs_to :local_authority, optional: true
   belongs_to :care_home, optional: true
+  has_many :booking_enquiries
 
   include Signupable
   include Onboardable

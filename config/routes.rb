@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get "team_members/new"
   ActiveAdmin.routes(self)
 
   root 'pages#home'
@@ -19,9 +18,14 @@ Rails.application.routes.draw do
   end
 
   resources :care_homes, only: %i[show edit update destroy] do
-    resources :rooms
+    resources :rooms, only: %i[index new create]
   end
 
+  resources :rooms, only: %i[show edit update destroy] do
+    resources :booking_enquiries, only: %i[new create]
+  end
+
+  resources :booking_enquiries, only: %i[show index edit update destroy]
 
   resources :local_authorities do
     resources :la_licences
