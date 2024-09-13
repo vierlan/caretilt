@@ -19,7 +19,7 @@ class TeamMembersController < ApplicationController
   def create
     email = params[:email]
     password = Devise.friendly_token.first(8)
-    @member = User.new(email: email, password: password, password_confirmation: password)
+    @member = User.new(email: email, password: password)
     case current_user.role
     when 'care_provider_super_user'
       @member.role = 'care_provider_user'
@@ -35,7 +35,7 @@ class TeamMembersController < ApplicationController
 
     respond_to do |format|
       if @member.save
-        UserMailer.with(member: @member, password: password).welcome_email.deliver_later
+        NotifierMailer.new_account(member: @member).deliver_now
         format.html { redirect_to team_members_new_path(current_user), notice: 'Team member added successfully. An email has been sent to the new user.' }
         format.turbo_stream { render :create, locals: { member: @member, notice: 'Team member added successfully. An email has been sent to the new user.' } }
         format.json { render :show, status: :created, location: @member }
