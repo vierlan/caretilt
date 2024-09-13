@@ -1,6 +1,6 @@
 <!-- Turbo Frame containing the Places API and the form -->
 <turbo-frame id="new_home">
-  <h1>GOOGLE API KEY: <%= ENV['GOOGLE_API_KEY'] %> </h1>
+  <h1>GOOGLE API KEY: <% ENV['GOOGLE_API_KEY'] %> </h1>
 
   <div class="slider-carousel bg-white" data-controller="swiper">
     <h1 class='text-black font-bold text-4xl'>Search places near you!</h1>
@@ -18,10 +18,6 @@
       </div>
       <!-- Map Display -->
       <div id="map" style="height: 400px; width: 100%;"></div>
-
-
-      <!-- Results Container -->
-      <div id="results-container" class="mt-4 w-full"></div>
     </div>
   </div>
 
@@ -133,6 +129,13 @@
               <button type="button" class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" onclick="document.getElementById('photo').click()">Change</button>
             </div>
           </div>
+          
+           <!-- Photos Container -->
+          <div class="mt-4 col-span-6">
+            <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3" id="photos-container">
+            </ul>
+          </div>
+          
 
           <!-- Other fields as required by the form -->
           <div class="mt-6 sm:col-span-6">
