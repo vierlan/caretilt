@@ -1,84 +1,62 @@
 <header class="">
   <nav class="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8" aria-label="Global"
-  data-controller="navigation" data-navigation-class-value="underline">
+    data-controller="navigation togglevisibility" data-navigation-class-value="underline">
+    
     <div class="flex lg:flex-1">
       <%= link_to root_path, class: "-m-1.5 p-1.5" do %>
         <span class="sr-only">CareTilt</span>
         <%= image_tag 'logo_symbol.png', class: 'h-20 w-auto', alt: 'caretilt_logo' %>
       <% end %>
     </div>
+
+    <!-- Mobile Hamburger Menu Button (Always visible) -->
     <div class="flex lg:hidden">
-      <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 bg-secondary">
+      <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+        data-action="click->togglevisibility#toggle" aria-controls="mobile-menu" aria-expanded="false">
         <span class="sr-only">Open main menu</span>
         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>
       </button>
     </div>
-    <div class="hidden lg:flex lg:gap-x-12">
-      <!-- Links for both logged-in and logged-out users -->
-      <div class="group flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-900"
-        data-navigation-target="button" data-action="click->navigation#highlightButton">
-        <%= link_to "Home", root_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
-      </div>
 
-      <div class="group flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-900"
-        data-navigation-target="button" data-action="click->navigation#highlightButton">
-        <%= link_to "Home2", home2_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
-      </div>
-
-      <div class="group flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-900"
-        data-navigation-target="button" data-action="click->navigation#highlightButton">
-        <%= link_to "Guides", guides_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
-      </div>
-
+    <!-- Desktop Links -->
+    <div class="hidden lg:flex flex-start lg:gap-x-12">
+      <%= link_to "Home", root_path, class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
+      <%= link_to "About", about_path, class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
+      <%= link_to "Free Calculator", calculator_path, class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
+      <%= link_to "Guides", guides_path, class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
+      
       <% if !current_user %>
-        <!-- Display these links when the user is not logged in -->
-        <div class="group flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-900"
-          data-navigation-target="button" data-action="click->navigation#highlightButton">
-          <%= link_to "Pricing", pricing_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
-        </div>
-        
-        <div class="group flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-900"
-          data-navigation-target="button" data-action="click->navigation#highlightButton">
-          <%= link_to "Contact", contact_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
-        </div>
-
+        <%= link_to "Pricing", pricing_path, class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
+        <%= link_to "Contact", contact_path, class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
           <a href="/login" class="text-lg font-bold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
           <a href="/signup" class="text-lg font-bold leading-6 text-gray-900 ml-6">Register <span aria-hidden="true">&rarr;</span></a>
         </div>
       <% else %>
-        <!-- Display these links when the user is logged in -->
-        <div class="group flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-900"
-          data-navigation-target="button" data-action="click->navigation#highlightButton">
-          <%= link_to "Dashboard", dashboard_index_path(current_user), class: "text-sm font-semibold leading-6 text-gray-900" %>
-        </div>
-
-        <div class="group flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-900"
-          data-navigation-target="button" data-action="click->navigation#highlightButton">
-          <%= link_to "Logout", logout_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
-        </div>
+        <%= link_to "Dashboard", dashboard_index_path(current_user), class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
+        <%= link_to "Logout", logout_path, class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
       <% end %>
     </div>
-  </nav>
 
-  <!-- Mobile menu, show/hide based on menu open state. -->
-  <div class="lg:hidden" role="dialog" aria-modal="true">
-    <div class="fixed inset-0 z-50"></div>
-    <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden fixed inset-0 z-50 w-full bg-white px-6 py-6 sm:max-w-sm" data-toggle-target="content">
       <div class="flex items-center justify-between">
         <a href="#" class="-m-1.5 p-1.5">
           <span class="sr-only">Your Company</span>
           <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">
         </a>
-        <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+
+        <!-- Close Menu Button (X icon) -->
+        <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" data-action="click->togglevisibility#toggle">
           <span class="sr-only">Close menu</span>
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
+      
       <div class="mt-6 flow-root">
         <div class="-my-6 divide-y divide-gray-500/10">
           <div class="space-y-2 py-6">
@@ -87,6 +65,7 @@
             <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Marketplace</a>
             <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Company</a>
           </div>
+
           <% if !current_user %>
           <div class="py-6">
             <a href="/login" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log In</a>
@@ -101,5 +80,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </nav>
 </header>

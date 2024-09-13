@@ -48,11 +48,62 @@ export default class extends Controller {
     const confirmButton = document.getElementById('confirm-address');
     confirmButton.classList.remove('hidden');
 
-    // Optionally, attach an event to confirm and submit the selected address
+    // Attach the event listener for the confirmation button
     confirmButton.addEventListener('click', () => {
-      console.log("Address confirmed:", place);
-      // Here, you could send this data to the server or populate form fields with the selected place data
-      // For example, you might store the place_id or full address in hidden form fields
+      this.populateFormWithAddress(place);
     });
+  }
+
+  populateFormWithAddress(place) {
+    // Extract relevant address components
+    const addressComponents = place.address_components;
+
+
+    let name = '';
+    let street = '';
+    let street2 = '';
+    let city = '';
+    let postcode = '';
+    let phoneNumber = '';
+    let website = '';
+
+    // Loop through the address components to find the desired information
+    addressComponents.forEach(component => {
+      const types = component.types;
+      if (types.includes('street_number') || types.includes('route')) {
+        street += component.long_name + ' ';
+      } else if (types.includes('locality')) {
+        city = component.long_name;
+      } else if (types.includes('postal_code')) {
+        postcode = component.long_name
+      } else if (types.includes('postal_town')) {
+        street2 = component.long_name
+      } else if (types.includes('administrative_area_level_2')) {
+        city = component.short_name
+      }
+    });
+
+    if (place.name){
+      name = place.name
+    }
+    if (place.formatted_phone_number){
+      phoneNumber = place.formatted_phone_number
+    }
+    if (place.website){
+      website = place.website
+    }
+
+    // Populate the form fields with the extracted values
+    document.getElementById('address1').value = street.trim();
+    document.getElementById('address2').value = street2.trim();
+    document.getElementById('city').value = city;
+    document.getElementById('postcode').value = postcode;
+    document.getElementById('name').value = name;
+    document.getElementById('phone_number').value = phoneNumber.trim();
+    document.getElementById('website').value = website;
+
+    // Optionally, hide the confirm button after address is populated
+    const confirmButton = document.getElementById('confirm-address');
+    confirmButton.classList.add('hidden');
   }
 }

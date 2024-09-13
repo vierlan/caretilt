@@ -508,6 +508,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   letter_opener
+  mail
   mainstreet
   metamagic
   methodz
