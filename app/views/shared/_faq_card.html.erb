@@ -1,0 +1,26 @@
+<div class="pt-6">
+  <dt>
+    <!-- Expand/collapse question button -->
+    <button 
+      type="button" 
+      class="flex w-full items-start justify-between text-left text-gray-900" 
+      aria-controls="faq-<%= faq_id %>" 
+      aria-expanded="false"
+      data-action="click->togglevisibility#toggle">
+      <span class="text-base font-semibold leading-7"><%= question %></span>
+      <span class="ml-6 flex h-7 items-center">
+        <!-- Icon when question is collapsed -->
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-togglevisibility-target="iconClosed">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+        </svg>
+        <!-- Icon when question is expanded -->
+        <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-togglevisibility-target="iconOpen">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+        </svg>
+      </span>
+    </button>
+  </dt>
+  <dd class="mt-2 pr-12 hidden" id="faq-<%= faq_id %>" data-togglevisibility-target="content">
+    <p class="text-base leading-7 text-gray-600"><%= answer %></p>
+  </dd>
+</div>

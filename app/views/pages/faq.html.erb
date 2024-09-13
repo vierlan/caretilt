@@ -2,35 +2,10 @@
   <div class="mx-auto max-w-7xl px-6 py-10 lg:px-8">
     <div class="mx-auto max-w-4xl divide-y divide-gray-900/10">
       <h2 class="text-2xl font-bold leading-10 tracking-tight text-gray-900">Frequently asked questions</h2>
-      <% 4.times do |i| %>
-        <dl class="mt-10 space-y-6 divide-y divide-gray-900/10" data-controller="togglevisibility">
-          <div class="pt-6">
-            <dt>
-              <!-- Expand/collapse question button -->
-              <button 
-                type="button" 
-                class="flex w-full items-start justify-between text-left text-gray-900" 
-                aria-controls="faq-<%= i %>" 
-                aria-expanded="false"
-                data-action="click->togglevisibility#toggle">
-                <span class="text-base font-semibold leading-7">What's the best thing about Switzerland?</span>
-                <span class="ml-6 flex h-7 items-center">
-                  <!-- Icon when question is collapsed -->
-                  <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-togglevisibility-target="iconClosed">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
-                  </svg>
-                  <!-- Icon when question is expanded -->
-                  <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-togglevisibility-target="iconOpen">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
-                  </svg>
-                </span>
-              </button>
-            </dt>
-            <dd class="mt-2 pr-12 hidden" id="faq-<%= i %>" data-togglevisibility-target="content">
-              <p class="text-base leading-7 text-gray-600">I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.</p>
-            </dd>
-          </div>
-        <% end %>
+      <dl class="mt-10 space-y-6 divide-y divide-gray-900/10" data-controller="togglevisibility">
+        <%= render partial: 'shared/faq_card', locals: { faq_id: 0, question: "How does CareTilt work?", answer: "You can find out more on how Caretilt works here." } %>
+        <%= render partial: 'shared/faq_card', locals: { faq_id: 1, question: "How do we onboard?", answer: "After signing up and payment, CareTilt will onboard you as a provider. This will include gathering all of the relevant information on your organisation and your provision. This enables us to quickly assess which services can meet the needs of individuals as they come in." } %>
+        <%= render partial: 'shared/faq_card', locals: { faq_id: 2, question: "How long does onboarding typically take?", answer: "Onboard can take anything from 3 working days to 3 working weeks dependent on how quickly you submit the information and the number of services you want added onto the database. We recommend that providers start the onboarding with a few properties to reduce risk of missing out on potential referrals." } %>
       </dl>
     </div>
   </div>
