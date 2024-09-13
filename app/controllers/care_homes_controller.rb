@@ -52,8 +52,8 @@ class CareHomesController < ApplicationController
   end
 
   def edit
-    @company = Company.find(params[:company_id]) # or however you fetch the company
     @care_home = CareHome.find(params[:id])
+    @company = @care_home.company
     @home_types = [
       "Adult Homes",
       "Assisted Living",
@@ -80,10 +80,10 @@ class CareHomesController < ApplicationController
   end
 
   def update
-    @company = Company.find(params[:company_id])
     @care_home = CareHome.find(params[:id])
+    @company = @care_home.company
 
-    if @company.update(company_params) && @care_home.update(care_home_params)
+    if @care_home.update(care_home_params)
       redirect_to dashboard_index_path(current_user), notice: 'Successfully updated'
     else
       render :edit, status: :unprocessable_entity

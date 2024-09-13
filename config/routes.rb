@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
   root 'pages#home'
-  
+
   get '/dashboard/:id', to: 'dashboard#index', as: 'dashboard_index'
   get '/team_members/error', to: 'team_members#error', as: 'team_members_error'
 
@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       get 'add_team_member', to: 'team_members#new' # Updated to use 'new' action
       get 'team', to: 'team_members#index'
       post 'add_team_member', to: 'team_members#create'
+      get 'account', to: 'account#index'
     end
     resources :care_homes, only: %i[index new create] do
     end
@@ -36,7 +37,7 @@ Rails.application.routes.draw do
 
   resources :subscribe, only: [:index]
   resources :dashboard, only: %i[index team new_team_member]
-  resources :account, only: %i[index update] do
+  resources :account, only: %i[index] do
     get :stop_impersonating, on: :collection
   end
   resources :billing_portal, only: [:new, :create]

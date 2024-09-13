@@ -13,7 +13,7 @@ class TeamMembersController < ApplicationController
     @team_users = @team_members.where(role: 'care_provider_user')
     @care_homes = @company.care_homes
     @unverified_users = @team_users.where(verified: false)
-    @unassigned_users = @members.where(care_home_id: nil)
+    @unassigned_users = @team_users.where(care_home_id: nil)
   end
 
   def create

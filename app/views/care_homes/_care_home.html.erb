@@ -57,6 +57,16 @@
             </button>
           <% end %>
         </div>
+
+      </div>
+    </div>
+    <div class="flex justify-between items-center border-b border-gray-300 py-4">
+      <div>
+      </div>
+      <div>
+        <%= link_to 'Rooms', care_home_rooms_path(home), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
+        <%= link_to 'Edit', edit_care_home_path(home), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
+        <%= link_to 'Destroy', care_home_path(home), data: {turbo_method: :delete, turbo_confirm: "Are you sure?  This process is irreversible!"}, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
       </div>
     </div>
   <% end %>
