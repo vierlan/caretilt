@@ -5,6 +5,7 @@ class RoomsController < ApplicationController
     @vacant_rooms = @care_home.rooms.where(vacant: true)
     @home_rooms = @care_home.rooms
     @all_rooms = @care_home.rooms
+    @booking = BookingEnquiry.new
   end
 
   def show
@@ -32,15 +33,15 @@ class RoomsController < ApplicationController
   end
 
   def edit
-    @care_home = CareHome.find(params[:care_home_id])
-    @company = @care_home.company
     @room = Room.find(params[:id])
+    @care_home = @room.care_home
+    @company = @care_home.company
   end
 
   def update
-    @care_home = CareHome.find(params[:care_home_id])
-    @company = @care_home.company
     @room = Room.find(params[:id])
+    @care_home = @room.care_home
+    @company = @care_home.company
 
     if @room.update(room_params)
       redirect_to care_home_rooms_path(@care_home)
@@ -51,12 +52,10 @@ class RoomsController < ApplicationController
 
   def destroy
     @room = Room.find(params[:id])
-
     @care_home = @room.care_home
     @company = @care_home.company
     @room = Room.find(params[:id])
     @room.destroy
-
     redirect_to care_home_rooms_path(@care_home)
   end
 

@@ -1,19 +1,20 @@
  <turbo-frame id="main-content">
-<div>
-  <h1 class="font-bold text-4xl">Rooms#index</h1>
-  <p>Find me in app/views/rooms/index.html.erb</p>
-  <%= link_to sanitize("&larr; Back to homes"), care_home_path(@care_home), class: "btn mb-4 font-bold text-lg text-white bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg" %>
-  <%  @all_rooms.each do |room| %>
+  <div>
+    <h1 class="font-bold text-4xl">Rooms#index</h1>
+    <p>Find me in app/views/rooms/index.html.erb</p>
+    <%= link_to sanitize("&larr; Back to homes"), care_home_path(@care_home), class: "btn mb-4 font-bold text-lg text-white bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg" %>
+    <%  @all_rooms.each do |room| %>
       <%= render "shared/card2", room: room %>
-    <div class="flex justify-between items-center border-b border-gray-300 py-4">
-      <div>
+      <div class="flex justify-between items-center border-b border-gray-300 py-4">
+        <div>
+          <%= link_to 'Enquire about this room', new_room_booking_enquiry_path(room), data: { turbo_frame: "main-content" }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
+        </div>
+        <div>
+          <%= link_to 'Show', room_path(room), data: { turbo_frame: "main-content" }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
+          <%= link_to 'Edit', edit_room_path(room), data: { turbo_frame: "main-content" }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
+          <%= link_to 'Destroy', room_path(room), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
+        </div>
       </div>
-      <div>
-        <%= link_to 'Show', care_home_room_path(@care_home, room), class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
-        <%= link_to 'Edit', edit_care_home_room_path(@care_home, room), class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
-        <%= link_to 'Destroy', care_home_room_path(@care_home, room), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
-      </div>
-    </div>
-  <% end %>
-</div>
+    <% end %>
+  </div>
 </turbo-frame>
