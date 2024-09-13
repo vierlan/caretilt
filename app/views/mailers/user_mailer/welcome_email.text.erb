@@ -1,0 +1,9 @@
+Welcome to caretilt.com, <%= @user.name %>!
+
+You have successfully signed up to caretilt.com,
+your username is: <%= @user.email %>
+
+Thanks for joining and have a great day!
+```
+I have a `User` model and a `UserMailer` mailer. I have a `welcome` method in the `UserMailer` class that sends an email to the user when they sign up. I have a `welcome.text.erb` file in the `app/views/mailers/user_mailer` directory that contains the email body.
+When I run the `UserMailer.welcome(@user).deliver` command in the console, I get the following error:
