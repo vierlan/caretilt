@@ -6,6 +6,9 @@
       <%= render "form", user: User.new %>
     <% end %>
   </div>
+  <div>
+<i class="fa-solid fa-house"></i>
+  </div>
 
   <!-- Table -->
   <div class="mt-8 flow-root">
@@ -23,17 +26,22 @@
               </th>
             </tr>
           </thead>
+
           <tbody class="bg-white">
             <tr class="border-t border-gray-200">
               <th colspan="5" class="bg-gray-100 py-2 pl-4 pr-3 text-left text-base font-bold text-black sm:pl-3">Invitation Sent - Awaiting Verification</th>
             </tr>
 
             <tbody id="member-list">
-              <!-- This is where new members will be dynamically injected -->
-              <%= @unverified_users.each do |user| %>
+              <!-- chatgpt check code between here -->
+              <% @unverified_users.each do |user| %>
+
                 <%= render partial: "member", locals: { user: user } %>
               <% end %>
             </tbody>
+            <!-- and here  -->
+
+
 
             <tr class="border-t border-gray-200">
               <th colspan="5" class="bg-gray-100 py-2 pl-4 pr-3 text-left text-base font-bold text-black sm:pl-3"><%= @company.name %></th>

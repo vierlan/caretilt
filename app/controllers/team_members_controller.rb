@@ -5,14 +5,15 @@ class TeamMembersController < ApplicationController
   end
 
   def index
+
     @user = User.new
     @members = current_user.company.users
-    @team_members = @members.where(verified: true)
+    @team_members = @members.not_not_verified
     @company = current_user.company
-    @team_super_user = @team_members.find_by(role: 'care_provider_super_user')
-    @team_users = @team_members.where(role: 'care_provider_user')
+    @team_super_user = @members.care_provider_super_user || @members.la_super_user
+    @team_users = @members.care_provider_user || @members.la_user
     @care_homes = @company.care_homes
-    @unverified_users = @team_users.where(verified: false)
+    @unverified_users = @team_users.not_verified
     @unassigned_users = @team_users.where(care_home_id: nil)
   end
 
@@ -52,17 +53,22 @@ class TeamMembersController < ApplicationController
   def verify
     verify_user = User.find(params[:id])
     if current_user.role == 'care_provider_super_user' && verify_user.company == current_user.company
-      verify_user.update(verified: true)
+      verify_user.update(status: 2)
     elsif current_user.role == 'la_super_user' && verify_user.local_authority == current_user.local_authority
-      verify_user.update(verified: true)
+      verify_user.update(status: 2)
     else
       render status: :forbidden
     end
   end
 
-  def unverified
+  def make_user_inactive
+    @user = User.find(params[:id])
     @company = current_user.company
-    @users = @company.users.where(verified: false)
+    if @users.update(status: 3)
+      redirect_to team_members_index_path(current_user), notice: 'User has been made inactive.'
+    else
+      redirect_to team_members_index_path(current_user), alert: 'Error making user inactive.'
+    end
   end
 
   def error; end
