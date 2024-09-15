@@ -22,6 +22,13 @@ class User < ApplicationRecord
   la_user: 6
   }
 
+  enum status: {
+    not_verified: 0,
+    password_changed: 1,
+    verified: 2,
+    inactive: 3
+  }
+
  # Validation to ensure terms are accepted and role is selected
   validates :terms_of_service, acceptance: { accept: 'on', message: 'must be accepted' }
 

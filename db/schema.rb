@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_13_224333) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_14_142549) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -108,6 +108,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_13_224333) do
     t.string "billing_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "registration_pin", default: "2285", null: false
+    t.string "super_pin", default: "7223", null: false
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -184,8 +186,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_13_224333) do
     t.float "longitude"
     t.bigint "company_id"
     t.bigint "local_authority_id"
-    t.boolean "verified", default: false
     t.bigint "care_home_id"
+    t.integer "status", default: 0, null: false
     t.index ["care_home_id"], name: "index_users_on_care_home_id"
     t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true

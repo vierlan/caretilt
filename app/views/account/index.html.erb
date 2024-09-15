@@ -5,7 +5,6 @@
     <div class="flex">
       <div class="flex-auto">
         Billing Status: <%= current_user.paying_customer? ? 'Active' : 'Inactive' %><br>
-      </div>
       <div class="flex-shrink">
         <%= button_to 'Manage >>', billing_portal_index_path, method: :post, data: { turbo: false }, class: "font-medium text-primary-500" %>
       </div>
