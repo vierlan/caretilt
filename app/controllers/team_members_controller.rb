@@ -7,14 +7,14 @@ class TeamMembersController < ApplicationController
   def index
 
     @user = User.new
-    @members = current_user.company.users
-    @team_members = @members.not_not_verified
+    @all_members = current_user.company.users
+    @verified_members = @all_members.not_not_verified
     @company = current_user.company
-    @team_super_user = @members.care_provider_super_user || @members.la_super_user
-    @team_users = @members.care_provider_user || @members.la_user
+    @team_super_user = @all_members.care_provider_super_user || @all_members.la_super_user
+    @team_users = @all_members.care_provider_user || @all_members.la_user
     @care_homes = @company.care_homes
     @unverified_users = @team_users.not_verified
-    @unassigned_users = @team_users.where(care_home_id: nil)
+    @unassigned_users = @verified_members.where(care_home_id: nil)
   end
 
   def create

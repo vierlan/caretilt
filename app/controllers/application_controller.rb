@@ -9,8 +9,11 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    redirect_to verify_user_path if current_user.status == 'not_verified'
-    dashboard_index_path(current_user)
+    if current_user.status == 'not_verified'
+      verify_user_path(resource)
+    else
+      dashboard_index_path(current_user)
+    end
   end
 
   def maybe_skip_onboarding
@@ -22,6 +25,26 @@ class ApplicationController < ActionController::Base
   # whitelist extra User model params by uncommenting below and adding User attrs as keys
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:terms_of_service, :role])
+  end
+
+  def verify_user
+    @user = current_user
+    @company = @user.company
+
+    # Check if the user has entered a valid registration pin and if password is being changed
+    if validate_registration_pin && password_change_requested?
+      if request.patch? && @user.update(user_params.except(:registration_pin))
+        @user.update(status: 'password_changed') # Update status after successful update
+        redirect_to root_path, notice: "Password successfully updated."
+      else
+        flash.now[:alert] = "Error updating password: " + @user.errors.full_messages.to_sentence
+        render :edit # or another view to show the form again
+      end
+    else
+      @user.errors.add(:registration_pin, "is invalid") unless validate_registration_pin
+      flash.now[:alert] = @user.errors.full_messages.to_sentence
+      render :edit
+    end
   end
 
 end

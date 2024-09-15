@@ -1,15 +1,19 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
 
+  def verify
+    @user = current_user
+    @company = @user.company
+  end
+
   def verify_user
     @user = current_user
     @company = @user.company
-
     # Check if the user has entered a valid registration pin and if password is being changed
-    if validate_registration_pin && password_change_requested?
+    if validate_registration_pin(@company) && password_change_requested?
       if request.patch? && @user.update(user_params.except(:registration_pin))
         @user.update(status: 'password_changed') # Update status after successful update
-        redirect_to root_path, notice: "Password successfully updated."
+        redirect_to dashboard_index_path(current_user), notice: "Password successfully updated."
       else
         flash.now[:alert] = "Error updating password: " + @user.errors.full_messages.to_sentence
         render :edit # or another view to show the form again
@@ -27,9 +31,9 @@ class UsersController < ApplicationController
     params.require(:user).permit(:password, :password_confirmation, :current_password, :registration_pin)
   end
 
-  def validate_registration_pin
+  def validate_registration_pin(company)
     # Compare the registration_pin entered by the user with the one for their company
-    params[:user][:registration_pin] == @company.registration_pin
+    params[:user][:registration_pin] == company.registration_pin
   end
 
   def password_change_requested?
@@ -37,4 +41,3 @@ class UsersController < ApplicationController
     params[:user][:password].present? && params[:user][:password_confirmation].present?
   end
 end
-
