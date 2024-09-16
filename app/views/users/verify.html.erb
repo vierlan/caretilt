@@ -1,8 +1,8 @@
-<%= turbo_frame_tag "modal" do%>
+<%= turbo_frame_tag "main-content" do %>
 <div class="fixed z-20 p-2 object-center">
   <h2>Verify Your Account</h2>
 
-  <%= form_with(model: @user, url: verify_user_path, method: :patch, local: true) do |f| %>
+  <%= form_with(model: @user, url: '/verify_user/:id', method: :patch, local: true) do |f| %>
 
     <% if @user.errors.any? %>
       <div id="error_explanation">

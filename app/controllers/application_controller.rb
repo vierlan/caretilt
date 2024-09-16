@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     if current_user.status == 'not_verified'
-      verify_user_path(resource)
+      turbo_frame_request? ? verify_path(current_user, data: { turbo_frame: "main-content" }) : dashboard_index_path(current_user)
     else
       dashboard_index_path(current_user)
     end

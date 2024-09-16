@@ -2,10 +2,15 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
   root 'pages#home'
-  get 'verify_user/:id', to: 'users#verify', as: 'verify_user'
+  get 'verify/:id', to: 'users#verify', as: 'verify'
   patch '/verify_user/:id', to: 'users#verify_user'
   get '/dashboard/:id', to: 'dashboard#index', as: 'dashboard_index'
   get '/team_members/error', to: 'team_members#error', as: 'team_members_error'
+  get '/team_members/:id/verify', to: 'team_members#verify_member', as: 'verify_member'
+  patch '/team_members/:id/verify', to: 'team_members#verify_member_update'
+  patch '/team_members/:id/make_inactive', to: 'team_members#make_user_inactive', as: 'make_inactive'
+  get '/team_members/:id/make_inactive', to: 'team_members#make_user_inactive'
+
 
   resources :companies do
     member do

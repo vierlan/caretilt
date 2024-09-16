@@ -15,6 +15,8 @@ class TeamMembersController < ApplicationController
     @care_homes = @company.care_homes
     @unverified_users = @team_users.not_verified
     @unassigned_users = @verified_members.where(care_home_id: nil)
+
+
   end
 
   def create
@@ -52,14 +54,56 @@ class TeamMembersController < ApplicationController
 
   def verify
     verify_user = User.find(params[:id])
-    if current_user.role == 'care_provider_super_user' && verify_user.company == current_user.company
-      verify_user.update(status: 2)
-    elsif current_user.role == 'la_super_user' && verify_user.local_authority == current_user.local_authority
-      verify_user.update(status: 2)
-    else
-      render status: :forbidden
+    if check_registration_pin
+      if current_user.role == 'care_provider_super_user' && verify_user.company == current_user.company
+        verify_user.update
+      elsif current_user.role == 'la_super_user' && verify_user.local_authority == current_user.local_authority
+        verify_user.update
+      else
+        render status: :forbidden
+      end
     end
   end
+
+  def verify_member
+    @user = User.find(params[:id])
+    @company = current_user.company
+  end
+
+  def verify_member_update
+    @user = User.find(params[:id])
+    @company = current_user.company
+    if @user.update(user_params)
+      redirect_to team_company_path(@company, data: { turbo_frame: "main-content" }), notice: 'User has been verified.'
+    else
+      render :verify_member, status: :unprocessable_entity
+    end
+  end
+
+
+  private
+
+  def user_params
+    params.require(:user).permit(
+      :email, :first_name, :last_name, :care_home_id, :status, :role
+    )
+  end
+
+  def check_registration_pin
+    @user = User.find(params[:id])
+    @company = current_user.company
+    @pin = params[:pin]
+    case @pin
+    when @company.registration_pin
+      true
+    when nil
+      errors.add(:pin, 'Please enter a pin')
+    else
+      errors.add(:pin, 'Incorrect pin')
+    end
+  end
+
+
 
   def make_user_inactive
     @user = User.find(params[:id])
