@@ -97,9 +97,9 @@ export default class extends Controller {
     document.getElementById('address1').value = street.trim();
     document.getElementById('address2').value = street2.trim();
     document.getElementById('city').value = city;
-    document.getElementById('postcode').value = postcode;
+    document.getElementById('postcode').value = postcode.replaceAll(/\s/g,'')
     document.getElementById('name').value = name;
-    document.getElementById('phone_number').value = phoneNumber.trim();
+    document.getElementById('phone_number').value = phoneNumber.replaceAll(/\s/g,'');
     document.getElementById('website').value = website;
 
     // Optionally, hide the confirm button after the address is populated

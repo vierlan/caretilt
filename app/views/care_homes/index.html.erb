@@ -5,13 +5,13 @@
       <%= link_to "Add a New Home",
       new_company_care_home_path(@company),
       data: { turbo_frame: "new_home" },
-       class: "mt-10 w-60 block text-white text-center font-bold py-2 px-4 rounded-full bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg"%>
+       class: "mt-10 w-60 block text-white text-center font-bold py-2 px-4 rounded-full bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg" 
+       %>
     <% end %>
   </div>
   <div>
-    <%= turbo_frame_tag "new_home" do %>
-      <%= render @care_homes %>
-
+    <%= turbo_frame_tag "new_home_top" do %>
+      <% render @care_homes %>
     <% end %>
   </div>
 </turbo-frame>

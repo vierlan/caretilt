@@ -412,6 +412,9 @@ GEM
       activesupport (>= 3)
     shoulda-matchers (6.2.0)
       activesupport (>= 5.2.0)
+    simple_form (5.3.1)
+      actionpack (>= 5.2)
+      activemodel (>= 5.2)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -530,6 +533,7 @@ DEPENDENCIES
   selenium-webdriver
   shoulda-callback-matchers
   shoulda-matchers
+  simple_form
   simplecov
   simplecov-tailwindcss
   split

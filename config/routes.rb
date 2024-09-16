@@ -14,7 +14,9 @@ Rails.application.routes.draw do
       post 'add_team_member', to: 'team_members#create'
       get 'account', to: 'account#index'
     end
-    resources :care_homes, only: %i[index new create] do
+
+    # resources :care_homes, only: %i[index new create] do
+    resources :care_homes do
     end
   end
 
