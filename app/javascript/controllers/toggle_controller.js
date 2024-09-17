@@ -39,10 +39,14 @@ export default class extends Controller {
   }
 
   getLabel(type, isChecked) {
+    console.log("get label type: ", type, " isChecked: ", isChecked);
     if (type === "vacant") {
       return isChecked ? '<span class="font-lg text-gray-900 font-bold">Vacant</span>' : '<span class="font-lg text-gray-200">Not Vacant</span>';
     } else if (type === "status") {
       return isChecked ? '<span class="font-lg text-gray-900 font-bold">Verified</span>' : '<span class="font-lg text-gray-200">Inactive</span>';
+    } else {
+      console.warn("Unknown type: ", type);
+      return '<span class="font-lg text-gray-200">Unknown</span>';
     }
   }
 }
