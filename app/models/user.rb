@@ -47,4 +47,8 @@ class User < ApplicationRecord
   end
   # :nocov:
 
+  def onboarding_complete?
+    first_name.present? && last_name.present? && (company_id.present? || local_authority_id.present?)
+  end
+  
 end

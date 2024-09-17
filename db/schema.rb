@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_14_142549) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_17_201256) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -96,6 +96,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_14_142549) do
     t.string "postcode", null: false
     t.string "county"
     t.string "country"
+    t.string "local_authority_name"
     t.index ["company_id"], name: "index_care_homes_on_company_id"
   end
 
@@ -108,8 +109,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_14_142549) do
     t.string "billing_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "registration_pin", default: "8738", null: false
-    t.string "super_pin", default: "9138", null: false
+    t.string "registration_pin", default: "8996", null: false
+    t.string "super_pin", default: "9395", null: false
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -129,6 +130,14 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_14_142549) do
 
   create_table "local_authorities", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "local_authority_data", force: :cascade do |t|
+    t.string "local_authority_code"
+    t.string "official_name"
+    t.string "nice_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

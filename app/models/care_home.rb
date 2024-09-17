@@ -39,7 +39,7 @@ class CareHome < ApplicationRecord
   validates :long_description, length: { in: 1..200, message: "Long description must be between 1 and 200 characters" }, allow_blank: true
   validates :type_of_home, presence: { message: "Type of home cannot be blank" }, inclusion: { in: TYPEHOME, message: "%{value} is not a valid home type" }
   validates :types_of_client_group, presence: { message: "Types of client group cannot be blank" }, inclusion: { in: TYPECLIENT, message: "%{value} is not a valid client type" }
-
+  validates :local_authority_name, presence: { message: "Local authority cannot be blank" }
 
   # validates :name, presence: true
   # validates :main_contact, presence: true

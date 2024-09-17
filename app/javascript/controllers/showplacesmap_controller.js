@@ -1,138 +1,84 @@
+// app/javascript/controllers/showplacesmap_controller.js
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = { careHomes: Array, markerUrl: String, apiKey: String } // Added apiKey to static values
+  static values = { careHomes: Array, markerUrl: String }
 
   connect() {
     console.log("Stimulus showplacesmap controller connected");
     this.initMap();
-    this.initAutocomplete(); // Initialize the autocomplete
   }
 
   initMap() {
-    const careHomes = this.careHomesValue;
-    const markerUrl = this.markerUrlValue;
+      const careHomes = this.careHomesValue;
+      const markerUrl = this.markerUrlValue; // Get the marker URL
 
-    // Create the map with a default center
-    this.map = new google.maps.Map(this.element.querySelector('#map'), {
-      zoom: 6,
-      center: { lat: 51.5074, lng: -0.1278 }, // Default to London
-    });
+      // Create the map with a default center
+      const map = new google.maps.Map(this.element.querySelector('#map'), {
+          zoom: 6, // Initial zoom level; will be adjusted
+      });
 
-    // Create a LatLngBounds object to manage the map's viewport
-    this.bounds = new google.maps.LatLngBounds();
+      // Create a LatLngBounds object to manage the map's viewport
+      const bounds = new google.maps.LatLngBounds();
 
-    // Add markers for each care home
-    careHomes.forEach((home) => {
-      const lat = parseFloat(home.latitude);
-      const lng = parseFloat(home.longitude);
+      // Track whether any markers were added
+      let markersAdded = false;
 
-      if (!isNaN(lat) && !isNaN(lng)) {
-        const position = { lat, lng };
-        this.bounds.extend(position);
+      // Add markers for each care home
+      careHomes.forEach((home) => {
+          const lat = parseFloat(home.latitude);
+          const lng = parseFloat(home.longitude);
 
-        const marker = new google.maps.Marker({
-          position: position,
-          map: this.map,
-          title: home.name,
-          icon: {
-            url: markerUrl,
-            scaledSize: new google.maps.Size(100, 100),
-          },
-          animation: google.maps.Animation.DROP
-        });
+          // Validate latitude and longitude
+          if (!isNaN(lat) && !isNaN(lng)) {
+              const position = { lat, lng };
 
-        const infoWindow = new google.maps.InfoWindow({
-          content: `<div><strong>${home.name}</strong></div>`,
-        });
+              // Extend the bounds to include this marker's location
+              bounds.extend(position);
+              markersAdded = true;
 
-        marker.addListener('click', () => {
-          infoWindow.open(this.map, marker);
-        });
-      }
-    });
+              const marker = new google.maps.Marker({
+                  position: position,
+                  map: map,
+                  title: home.name, // Tooltip when you hover over the marker
+                  // Use the custom marker icon
+                  icon: {
+                      url: markerUrl, // Use the local image passed from the view
+                      scaledSize: new google.maps.Size(100, 100), // Adjust the size as needed
+                  },
+                  animation: google.maps.Animation.DROP
+              });
 
-    // Fit map to markers
-    this.map.fitBounds(this.bounds, { padding: 150 });
-  }
+              // Optionally, add an info window to each marker
+              const infoWindow = new google.maps.InfoWindow({
+                  content: `<div><strong>${home.name}</strong></div>`,
+              });
 
-  initAutocomplete() {
-    const input = this.element.querySelector('#search-box');
-    const autocomplete = new google.maps.places.Autocomplete(input);
-    autocomplete.bindTo('bounds', this.map);
-
-    autocomplete.addListener('place_changed', () => {
-      const place = autocomplete.getPlace();
-
-      if (!place.geometry) {
-        console.error("No details available for the input: '" + place.name + "'");
-        return;
-      }
-
-      if (place.geometry.viewport) {
-        this.map.fitBounds(place.geometry.viewport);
-      } else {
-        this.map.setCenter(place.geometry.location);
-        this.map.setZoom(12);
-      }
-
-      // Call the Geocoding API to get the polygon coordinates
-      this.getPolygonCoordinates(place.name);
-    });
-  }
-
-  getPolygonCoordinates(regionName) {
-    const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(regionName)}&key=${this.apiKeyValue}`; // Use this.apiKeyValue
-
-    fetch(geocodeUrl)
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === "OK") {
-          const geometry = data.results[0].geometry;
-          // Use viewport as a fallback if bounds are not available
-          const bounds = geometry.bounds || geometry.viewport;
-
-          if (bounds) {
-            this.drawPolygon(bounds);
-          } else {
-            console.error("No polygon data available for this region.");
+              // Show the info window when the marker is clicked
+              marker.addListener('click', () => {
+                  infoWindow.open(map, marker);
+              });
           }
-        } else {
-          console.error("Geocode was not successful for the following reason: " + data.status);
-        }
-      })
-      .catch(error => console.error("Geocode error:", error));
+      });
+
+      // Adjust map zoom and center only if markers were added
+      if (markersAdded) {
+          // Auto-zoom and center the map to fit all markers within bounds
+          map.fitBounds(bounds, { padding: 150 });
+
+          // If there's only one marker or the markers are very close, manually set a minimum zoom level
+          const listener = google.maps.event.addListenerOnce(map, 'bounds_changed', () => {
+              const MAX_ZOOM = 15; // Set a maximum zoom level (e.g., 15)
+
+              if (map.getZoom() > MAX_ZOOM) {
+                  map.setZoom(MAX_ZOOM);
+              }
+          });
+      } else {
+          // If no valid markers, set a default view
+          map.setCenter({ lat: 0, lng: 0 });
+          map.setZoom(2); // Default world view
+      }
   }
 
-  drawPolygon(bounds) {
-    const ne = bounds.northeast;
-    const sw = bounds.southwest;
-
-    // Define the LatLng coordinates for the polygon's path (rectangle from bounds)
-    const polygonCoords = [
-      { lat: ne.lat, lng: ne.lng },
-      { lat: ne.lat, lng: sw.lng },
-      { lat: sw.lat, lng: sw.lng },
-      { lat: sw.lat, lng: ne.lng },
-    ];
-
-    // Create the polygon
-    const polygon = new google.maps.Polygon({
-      paths: polygonCoords,
-      strokeColor: '#FF0000',
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: '#FF0000',
-      fillOpacity: 0.35,
-    });
-
-    // Set the polygon on the map
-    polygon.setMap(this.map);
-
-    // Optionally, adjust the bounds to fit the polygon
-    polygonCoords.forEach(coord => {
-      this.bounds.extend(coord);
-    });
-    this.map.fitBounds(this.bounds, { padding: 50 });
-  }
 }

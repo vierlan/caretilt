@@ -1,6 +1,8 @@
 <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 px-6 bg-gradient-to-tr from-primary/80 from-30% via-secondary/80 via-60% to-indigo-100 to-90%">
   <div class="flex h-16 shrink-0 my-20 items-center">
-    <%= image_tag 'logo_trans.png', class: 'h-30 w-auto p-4 mx-auto', alt: '' %>        </a>
+    <%= link_to root_path do %> 
+      <%= image_tag 'logo_trans.png', class: 'h-30 w-auto p-4 mx-auto', alt: '' %>
+    <% end %>
 </div>
 <nav class="flex flex-1 flex-col"
 data-controller="navigation" data-navigation-class-value="bg-white"

@@ -1,11 +1,12 @@
 class DashboardController < ApplicationController
   before_action :authenticate_user!
+  before_action :ensure_onboarding_complete, only: [:index, :team, :account]
 
   def index
     @user = current_user
     if @user.company
-    @company = @user.company
-    @care_homes = @company.care_homes
+      @company = @user.company
+      @care_homes = @company.care_homes
     elsif @user.local_authority
       @local_authority = @user.local_authority
       @care_homes = @local_authority.care_homes
@@ -23,4 +24,13 @@ class DashboardController < ApplicationController
   end
 
   def account; end
+
+  private
+
+  def ensure_onboarding_complete
+    unless current_user.onboarding_complete?
+      # Redirect to the appropriate wizard step if onboarding is not complete
+      redirect_to after_signup_path(:add_name)
+    end
+  end
 end
