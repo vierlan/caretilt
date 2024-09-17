@@ -5,7 +5,7 @@ export default class extends Controller {
   static values = { careHomes: Array, markerUrl: String }
 
   connect() {
-    console.log("Stimulus showplacesmap controller connected");
+    console.log("Stimulus placesapi controller connected");
     this.initMap();
     this.initAutocomplete(); // Initialize the autocomplete
   }
