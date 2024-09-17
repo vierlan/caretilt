@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       get 'account', to: 'dashboard#account'
     end
 
+    # care homes under company for create and new because needed for creation. After creation, easy to get just
     # resources :care_homes, only: %i[index new create] do
     resources :care_homes, only: %i[new create index] do
     end

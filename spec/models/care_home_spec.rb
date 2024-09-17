@@ -3,6 +3,9 @@ require 'rails_helper'
 # bundle exec rspec spec/models/care_home_spec.rb     
 
 RSpec.describe CareHome, type: :model do
+
+  subject{CareHome.new}
+
   let(:company) { Company.first_or_create(name: "Test Company") }
   let(:current_user) { User.first_or_create!(email: "rtest@test.com", password: 'password', password_confirmation: 'password', company: company) }
 
@@ -29,8 +32,10 @@ RSpec.describe CareHome, type: :model do
 
     it 'is invalid without a name' do
       care_home = CareHome.new(name: nil)
-      expect(care_home).not_to be_valid
-      expect(care_home.errors[:name]).to include("Name cannot be blank")
+      aggregate_failures do
+        expect(care_home).not_to be_valid
+        expect(care_home.errors[:name]).to include("Name cannot be blank")
+      end
     end
 
     it 'is invalid without a main contact' do
@@ -82,7 +87,7 @@ RSpec.describe CareHome, type: :model do
     end
 
     it 'is invalid with an incorrect phone number' do
-      care_home = CareHome.new(phone_number: "0750538219")
+      care_home = CareHome.new(phone_number: "07387174")
       expect(care_home).not_to be_valid
       expect(care_home.errors[:phone_number]).to include("must be a valid UK phone number")
     end

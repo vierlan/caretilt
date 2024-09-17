@@ -12,4 +12,6 @@ class Room < ApplicationRecord
   # validates: :additional_fees_associated, presence: true, inclusion: [true, false]
 
   # validates: :additional_fees_associated
+
+  
 end
