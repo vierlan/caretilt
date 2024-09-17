@@ -1,12 +1,5 @@
  <turbo-frame id="main-content">
-<div class="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
-  <div class="px-4 py-5 sm:px-6">
-  <p>hello from dashboard account</p>
-    <!-- Content goes here -->
-    <!-- We use less vertical padding on card headers on desktop than on body sections -->
-  </div>
-  <div class="px-4 py-5 sm:p-6">
-    <!-- Content goes here -->
-  </div>
-</div>
+<% @bookings.each do |booking| %>
+<%= render partial: "booking", locals: {booking: booking} %>
+<% end %>
 </turbo-frame>

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "activity_feeds/index"
   ActiveAdmin.routes(self)
 
   root 'pages#home'

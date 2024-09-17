@@ -6,6 +6,8 @@ class DashboardController < ApplicationController
     if @user.company
     @company = @user.company
     @care_homes = @company.care_homes
+    @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten.sort_by(&:created_at).reverse
+
     elsif @user.local_authority
       @local_authority = @user.local_authority
       @care_homes = @local_authority.care_homes
@@ -20,6 +22,13 @@ class DashboardController < ApplicationController
     @team_users = @verified_members.where(role: 'care_provider_user')
     @care_homes = @company.care_homes
     @unverified_users = @team_users.where(status: 0)
+  end
+
+  def activity_feeds
+    @user = current_user
+    @company = @user.company
+    @care_homes = @company.care_homes
+    @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten.sort_by(&:created_at).reverse
   end
 
   def account; end
