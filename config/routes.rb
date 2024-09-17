@@ -1,4 +1,18 @@
 Rails.application.routes.draw do
+  get "subscriptions/index"
+  get "subscriptions/show"
+  get "subscriptions/new"
+  get "subscriptions/create"
+  get "subscriptions/edit"
+  get "subscriptions/update"
+  get "subscriptions/destroy"
+  get "packages/index"
+  get "packages/show"
+  get "packages/new"
+  get "packages/create"
+  get "packages/edit"
+  get "packages/update"
+  get "packages/destroy"
   get "activity_feeds/index"
   ActiveAdmin.routes(self)
 
