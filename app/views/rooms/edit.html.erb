@@ -9,7 +9,7 @@
           <h2 class="text-base font-semibold leading-7 text-gray-900"><%= @room.name.capitalize %> Profile</h2>
           <p class="mt-1 text-sm leading-6 text-gray-600">This information will be displayed publicly so be careful what you share.</p>
         </div>
-        <div class="flex items-center" data-controller="toggle">
+        <div class="flex items-center" data-controller="toggle" data-toggle-type="vacant">
 
             <button type="button" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent <%= @room.vacant ? 'bg-secondary' : 'bg-gray-200' %> transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" role="switch" aria-checked="<%= @room.vacant %>" data-action="click->toggle#toggle" data-toggle-target="button">
               <span aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 <%= @room.vacant ? 'translate-x-5' : 'translate-x-0' %> transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
