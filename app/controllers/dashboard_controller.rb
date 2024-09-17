@@ -21,4 +21,6 @@ class DashboardController < ApplicationController
     @care_homes = @company.care_homes
     @unverified_users = @team_users.where(status: 0)
   end
+
+  def account; end
 end

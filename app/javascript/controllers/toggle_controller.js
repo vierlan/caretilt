@@ -7,12 +7,15 @@ export default class extends Controller {
 
   connect() {
     console.log("toggle connected")
+    const currentValue = this.inputTarget.value;
+    console.log("currentValue: ", currentValue);
     this.updateToggle();
   }
 
   toggle() {
-    console.log("toggle clicked")
-    this.inputTarget.checked = !this.inputTarget.checked;
+    console.log("toggle clicked");
+    const currentValue = this.inputTarget.value;
+    console.log("currentValue: ", currentValue);
     this.updateToggle();
   }
 
