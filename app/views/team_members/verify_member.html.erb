@@ -63,26 +63,19 @@
               <div class="text-red-500">
                 User needs to log in and change password, please ensure registration pin is given to user a method other than email provided.
               </div>
-            <% elsif %>
-              <% @user.verified? %>
-              <div class="flex items-center" data-controller="toggle" data-toggle-type="status">
-                <button type="button" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-secondary transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" role="switch" aria-checked="true" data-action="click->toggle#toggle" data-toggle-target="button">
-                  <span aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 translate-x-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
-                </button>
-                <span class="mx-4 text-sm" id="verify_member-label" data-toggle-target="label">
-                  <span class="font-lg text-gray-900 font-bold">Verified</span>
-                </span>
-                <%= f.hidden_field :status, id: "user_status", value: "verified", data: { toggle_target: "input" } %>
             <% else %>
-              <div class="flex items-center" data-controller="toggle" data-toggle-type="status">
-                <button type="button" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent <%= @user.verified ? 'bg-secondary' : 'bg-gray-200' %> transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" role="switch" aria-checked="<%= @user.status == 'verified' %>" data-action="click->toggle#toggle" data-toggle-target="button">
-                  <span aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 <%= @user.verified ? 'translate-x-5' : 'translate-x-0' %> transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
-                </button>
-                <span class="mx-4 text-sm" id="verify_member-label" data-toggle-target="label">
-                  <span class="font-lg text-gray-900 font-bold"><%= @user.verified ? 'Verified' : 'Inactive' %></span>
-                </span>
-                <%= f.hidden_field :status, id: "user_status", value: @user.status, data: { toggle_target: "input" } %>
+              <div>
+                <%= f.label :staus, "Account Activation Status", class: "block text-sm font-medium text-gray-700" %>
+                <div class="mt-1">
+                  <%= f.radio_button :status, :verified, class: "mr-2" %>
+                  <%= f.label :status_verified, "Verifed", class: "inline-block text-sm font-medium text-gray-700" %>
+                </div>
+                <div class="mt-1">
+                  <%= f.radio_button :status, :inactive, class: "mr-2" %>
+                  <%= f.label :status_inactive, "Inactive", class: "inline-block text-sm font-medium text-gray-700" %>
+                </div>
               </div>
+
             <% end %>
             <%= f.submit "Save", class: "btn bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg" %>
           </div>

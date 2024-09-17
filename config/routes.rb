@@ -17,11 +17,11 @@ Rails.application.routes.draw do
       get 'add_team_member', to: 'team_members#new' # Updated to use 'new' action
       get 'team', to: 'team_members#index'
       post 'add_team_member', to: 'team_members#create'
-      get 'account', to: 'account#index'
+      get 'account', to: 'dashboard#account'
     end
 
     # resources :care_homes, only: %i[index new create] do
-    resources :care_homes do
+    resources :care_homes, only: %i[new create index] do
     end
   end
 
