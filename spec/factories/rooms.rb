@@ -5,7 +5,8 @@ FactoryBot.define do
     core_hours_of_care { 1 }
     additional_fees_associated { false }
     other_data { "" }
-    single/double { "MyString" }
+    single { "MyString" } # Assuming 'single' is an attribute
+    double { "MyString" } # Assuming 'double' is an attribute
     ensuite { false }
     care_home { nil }
   end

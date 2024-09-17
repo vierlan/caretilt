@@ -10,6 +10,7 @@
     <% end %>
   </div>
   <div>
+    <h2><%=@care_homes.count%></h2>
     <%= turbo_frame_tag "new_home_top" do %>
       <% render @care_homes %>
     <% end %>

@@ -1,5 +1,10 @@
 <!-- views/care_homes/_form.html.erb -->
 <%= simple_form_for [@company, @care_home] do |f| %>
+
+  <!-- Hidden Fields for Latitude and Longitude -->
+  <%= f.hidden_field :latitude, id: "latitude" %>
+  <%= f.hidden_field :longitude, id: "longitude" %>
+  
   <div class="space-y-12">
     <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
       <div>
