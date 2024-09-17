@@ -63,11 +63,22 @@
           <%= f.input :types_of_client_group, label: "Types Of Client Group", collection: CareHome::TYPECLIENT, include_blank: 'Select a type', input_html: { id: "types_of_client_group" } %>
         </div>
 
+        <!-- Local Authority -->
+        <div class="col-span-6">
+          <%= f.input :local_authority_name, label: "Local Authority", 
+            collection: LocalAuthorityData.all, 
+            label_method: :nice_name, 
+            value_method: :official_name, 
+            prompt: 'Select a local authority', 
+            input_html: { class: 'custom-class' } %>
+        </div>
+
         <!-- Short Description -->
         <div class="col-span-6">
           <%= f.input :short_description, label: "About", as: :text, input_html: { id: "short_description", rows: 3 } %>
           <p class="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about the care home.</p>
         </div>
+
 
         <!-- Photos -->
         <div class="col-span-6">
