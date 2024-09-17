@@ -32,6 +32,10 @@ gem 'stripe'
 gem 'tailwindcss-rails'
 gem 'turbo-rails'
 gem 'wicked'
+gem 'simple_form'
+# gem 'simple_form-tailwind'
+# gem "simple_form_tailwind_css"
+
 
 gem 'rspec'
 gem 'mainstreet'

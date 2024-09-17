@@ -1,0 +1,9 @@
+<div data-controller="showplacesmap" 
+     data-showplacesmap-care-homes-value="<%= @care_homes.to_json(only: [:name, :latitude, :longitude]) %>"
+     data-showplacesmap-marker-url-value="<%= image_path('logo_trans.png') %>">
+  <div id="map" style="height: 500px; width: 100%;"></div>
+  <%=  @care_homes.map do |home| %>
+    <%= home.longitude %>
+    <%= home.latitude %>
+  <% end %>
+</div>

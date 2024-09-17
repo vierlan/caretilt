@@ -66,6 +66,8 @@ export default class extends Controller {
     let postcode = '';
     let phoneNumber = '';
     let website = '';
+    let latitude = '';
+    let longitude = '';
 
     // Loop through the address components to find the desired information
     addressComponents.forEach((component) => {
@@ -80,7 +82,7 @@ export default class extends Controller {
         street2 = component.long_name;
       } else if (types.includes('administrative_area_level_2')) {
         city = component.short_name;
-      }
+      } 
     });
 
     if (place.name) {
@@ -92,15 +94,21 @@ export default class extends Controller {
     if (place.website) {
       website = place.website;
     }
+    if (place.geometry && place.geometry.location) {
+      latitude = place.geometry.location.lat();
+      longitude = place.geometry.location.lng();
+    }
 
     // Populate the form fields with the extracted values
     document.getElementById('address1').value = street.trim();
     document.getElementById('address2').value = street2.trim();
     document.getElementById('city').value = city;
-    document.getElementById('postcode').value = postcode;
+    document.getElementById('postcode').value = postcode.replaceAll(/\s/g,'')
     document.getElementById('name').value = name;
-    document.getElementById('phone_number').value = phoneNumber.trim();
+    document.getElementById('phone_number').value = phoneNumber.replaceAll(/\s/g,'');
     document.getElementById('website').value = website;
+    document.getElementById('latitude').value = latitude;
+    document.getElementById('longitude').value = longitude;
 
     // Optionally, hide the confirm button after the address is populated
     const confirmButton = document.getElementById('confirm-address');

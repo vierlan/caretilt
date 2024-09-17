@@ -28,4 +28,8 @@ class PagesController < ApplicationController
   end
 
   def quiz; end
+
+  def test2
+    @care_homes = CareHome.where.not(latitude: nil, longitude: nil)
+  end
 end

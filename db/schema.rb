@@ -108,8 +108,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_14_142549) do
     t.string "billing_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "registration_pin", default: "9290", null: false
-    t.string "super_pin", default: "3426", null: false
+    t.string "registration_pin", default: "8738", null: false
+    t.string "super_pin", default: "9138", null: false
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
