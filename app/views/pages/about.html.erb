@@ -49,7 +49,10 @@
           </div>
         </dl>
         <div class="mt-10 flex">
-          <a href="#" class="text-base font-semibold leading-7 text-indigo-600">Learn more about our company <span aria-hidden="true">&rarr;</span></a>
+          <%= link_to contact_path, class: "button-arrow" do %>
+            Still have questions? <span aria-hidden="true">&rarr;</span>
+          <% end %> 
+          <%# <a href="#" class="button-arrow">Learn more about our company <span aria-hidden="true">&rarr;</span></a> %>
         </div>
       </div>
     </div>

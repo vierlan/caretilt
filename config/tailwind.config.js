@@ -6,7 +6,8 @@ module.exports = {
   content: [
     './app/helpers/**/*.rb',
     './app/javascript/**/*.js',
-    './app/views/**/*'
+    './app/views/**/*',
+    './app/assets/stylesheets/**/*.css'
   ],
   daisyui: {
     themes: [
