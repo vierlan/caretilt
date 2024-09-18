@@ -1,0 +1,21 @@
+<%# How Turbo Stream Works:
+- Turbo Streams work by sending Turbo Stream responses from the server, which contain instructions to update parts of the page.
+- These responses are defined in the server-side controllers, and they tell the browser what changes to make in the DOM (e.g., append, prepend, replace, remove).
+- When the server sends a Turbo Stream response, the changes are applied to the page using WebSocket or Ajax.
+ %>
+
+
+<turbo-stream target="care-homes-list">
+  <template>
+    <%= render partial: "care_homes/care_home", collection: @care_homes, as: :home %>
+  </template>
+</turbo-stream>
+
+<turbo-stream target="map">
+  <template>
+    <div id="map" data-controller="showplacesmap"
+         data-showplacesmap-care-homes-value="<%= @care_homes.to_json(only: [:name, :latitude, :longitude, :local_authority_name]) %>"
+         data-showplacesmap-marker-url-value="<%= image_path('logo_trans.png') %>">
+    </div>
+  </template>
+</turbo-stream>
