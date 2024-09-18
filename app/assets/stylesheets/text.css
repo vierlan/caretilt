@@ -1,0 +1,4 @@
+.text-description {
+    @apply text-3xl;
+    color: red;
+}

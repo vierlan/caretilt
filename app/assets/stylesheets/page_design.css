@@ -1,0 +1,28 @@
+.text-dev{
+    color: red;
+}
+
+.bg-gradient-design{
+
+    /* background: rgb(57,167,243);
+    background: linear-gradient(130deg, rgba(57,167,243,0.6755077030812324) 0%, rgba(0,0,0,0) 15%, rgba(96,75,166,0) 80%, rgba(141,110,245,0.6138830532212884) 100%); */
+   
+    background: rgb(57,167,243);
+    background: linear-gradient(130deg, rgba(57, 166, 243, 0.527) 0%, rgba(0,0,0,0) 15%, rgba(96,75,166,0) 80%, rgba(142, 110, 245, 0.432) 100%);
+
+
+    background-attachment: fixed;
+    background-size: cover;
+
+    /* background-size: 100% 100vh; /* Cover the viewport height */
+    background-repeat: no-repeat; /* Prevent tiling */
+    min-height: 100vh; */
+}
+
+.negative-container {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: none;
+}
