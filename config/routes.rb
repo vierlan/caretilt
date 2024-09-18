@@ -25,6 +25,12 @@ Rails.application.routes.draw do
   patch '/team_members/:id/verify', to: 'team_members#verify_member_update'
   patch '/team_members/:id/make_inactive', to: 'team_members#make_user_inactive', as: 'make_inactive'
   get '/team_members/:id/make_inactive', to: 'team_members#make_user_inactive'
+  post '/stripe/webhooks', to: 'stripe/webhooks#create'
+  post '/stripe/checkout', to: 'stripe/checkout#checkout'
+  get '/stripe/checkout/pricing', to: 'stripe/checkout#pricing'
+  get '/stripe/checkout/success', to: 'stripe/checkout#success'
+  get '/stripe/checkout/cancel', to: 'stripe/checkout#cancel'
+
 
 
   resources :companies do

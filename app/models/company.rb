@@ -1,7 +1,17 @@
 class Company < ApplicationRecord
   attr_accessor :address, :address2, :city, :postcode
 
+
+  include Billable
+
+
   TYPES = ["type1", "type2", "type3"]
+
+  after_create do
+    Rails.logger.info("Creating Stripe customer for #{self.name}")
+    company = Stripe::Customer.create(name: self.name, email: self.email)
+    Rails.logger.info("Stripe customer created: #{company.name}")
+  end
 
   # include SharedValidAttributes #In models/concerns/shared_valid we are inclusing all phone and address validation since they shared.
 
@@ -13,5 +23,6 @@ class Company < ApplicationRecord
 
   has_many :users
   has_many :care_homes
+  has_many :packages, through: :subscriptions
 
 end

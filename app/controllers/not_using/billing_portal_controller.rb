@@ -29,9 +29,14 @@ class BillingPortalController < ApplicationController
 
   # invoked from /subscribe during onboarding
   def create_subscription
+    @company.find(param[:company_id])
+    if @company.stripe_customer_id.nil?
+      customer = Stripe::Customer.create(name: @company.name, email: @company.email)
+      @company.update(stripe_customer_id: customer.id)
+    end
     session = Stripe::Checkout::Session.create({
       ui_mode: 'embedded',
-      customer: current_user.stripe_customer_id,
+      customer: @company.stripe_customer_id,
       allow_promotion_codes: true,
       payment_method_types: ['card'],
       line_items: [{

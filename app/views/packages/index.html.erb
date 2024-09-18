@@ -1,4 +1,6 @@
-<div>
-  <h1 class="font-bold text-4xl">Packages#index</h1>
-  <p>Find me in app/views/packages/index.html.erb</p>
-</div>
+<% @packages.each do |package|%>
+  <h2><%= package.name %></h2>
+  <p><%= package.price %></p>
+  <p><%= package.validity %></p>
+  <%= button_to "buy Now!", stripe_checkout_path(price_id: price.id), data: {turbo: 'false'} %>
+  <% end %>
