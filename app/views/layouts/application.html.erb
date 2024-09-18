@@ -18,7 +18,7 @@
     <%= javascript_importmap_tags %>
     <%= render "shared/script_tags" %>
   </head>
-  <body>
+  <body class="bg-gradient-design overflow-x-hidden">
   <%= turbo_frame_tag "modal" %>
     <% if controller.controller_name == "dashboard" %>
       <main class="container mt-14 ">

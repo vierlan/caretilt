@@ -6,12 +6,13 @@
         <p class="mt-2 text-base text-gray-900">A list of all the users in your account including their name, title, email and role.</p>
       </div>
 
-        <%= link_to "Add a new team member",
+      <%= link_to "Add a new team member",
                   add_team_member_company_path(@company),
                   data: { turbo_frame: "new_team_member" },
-                   class: "btn block rounded-md px-3 py-2 text-center text-base font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg" %>
+                   class: "btn block rounded-md px-3 py-2 text-center text-base font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg" 
+                   %>
       <turbo-frame id="new_team_member">
-        </turbo-frame>
+      </turbo-frame>
 
     </div>
     <div>
