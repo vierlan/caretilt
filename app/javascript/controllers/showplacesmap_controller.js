@@ -22,7 +22,7 @@ export default class extends Controller {
 
   addMarkers(careHomes) {
     const markerUrl = this.markerUrlValue;
-
+  
     this.clearMarkers(); // Clear any existing markers
     careHomes.forEach((home) => {
       const position = { lat: parseFloat(home.latitude), lng: parseFloat(home.longitude) };
@@ -39,22 +39,30 @@ export default class extends Controller {
           },
           animation: google.maps.Animation.DROP
         });
-
+  
         const infoWindow = new google.maps.InfoWindow({
           content: `<div><strong>${home.name}</strong></div>`,
         });
-
+  
         marker.addListener('click', () => {
           infoWindow.open(this.map, marker);
         });
-
+  
         this.markers.push(marker);
       }
     });
-
-    // Adjust the map to fit the markers
-    this.map.fitBounds(this.bounds, { padding: 150 });
+  
+    // Adjust the map
+    if (careHomes.length === 1) {
+      // If there's only one marker, set the map center and a default zoom level
+      this.map.setCenter(this.bounds.getCenter());
+      this.map.setZoom(17); // Set to a reasonable zoom level for a single marker
+    } else if (careHomes.length > 1) {
+      // Adjust the map to fit the markers with padding if there are multiple markers
+      this.map.fitBounds(this.bounds, { padding: 150 });
+    }
   }
+  
 
   clearMarkers() {
     // Remove all markers from the map

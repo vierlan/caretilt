@@ -9,16 +9,17 @@
       <!-- Local Authority Dropdown -->
       <div class="col-span-6">
             <%= f.input :local_authority_name, label: "Local Authority", 
-              collection: LocalAuthorityData.all, 
+              collection: @all_local_authorities, 
               label_method: :nice_name, 
               value_method: :nice_name, 
               prompt: 'Select a local authority', 
               input_html: { class: 'custom-class' } %>
-          </div>
+      </div>
       
       <!-- Submit Button -->
       <div class="form-group">
         <%= f.button :submit, "Filter", class: "p-2 bg-blue-500 text-white rounded" %>
+        <%= link_to "Reset", care_homes_path, class: "button-base-round" %>
       </div>
     <% end %>
 

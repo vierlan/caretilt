@@ -7,15 +7,21 @@ class CareHomesController < ApplicationController
   end
 
   def index
-    @all_local_authorities = LocalAuthorityData.pluck(:nice_name).uniq
+    # Get only the local authorities that are associated with existing care homes
+    @all_local_authorities = LocalAuthorityData.where(nice_name: CareHome.select(:local_authority_name).distinct)
 
     # Filter care homes if a local authority is selected
-    if params[:query].present?
-      @care_homes = CareHome.where(local_authority_name: params[:local_authority_name])
-      raise
+    if params[:care_home] && params[:care_home][:local_authority_name].present?
+      @care_homes = CareHome.where(local_authority_name: params[:care_home][:local_authority_name])
     else
       @care_homes = CareHome.all
     end
+
+    respond_to do |format|
+      format.html # Renders the default HTML view
+      format.turbo_stream # Respond to Turbo Stream requests
+    end
+
   end
 
   def show
@@ -112,6 +118,13 @@ class CareHomesController < ApplicationController
   end
 
   def destroy
+    @care_home = CareHome.find(params[:id])
+    @care_home.destroy
+
+    respond_to do |format|
+      format.html { redirect_to care_homes_path, notice: 'Care home was successfully deleted.' }
+      format.turbo_stream # Turbo Stream response for Turbo
+    end
   end
 
   private

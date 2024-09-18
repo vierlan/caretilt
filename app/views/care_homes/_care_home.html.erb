@@ -1,4 +1,4 @@
-<div class="care-home">
+<div id="<%= dom_id(home) %>" class="care-home">
     <div class="overflow-hidden rounded-lg bg-white shadow-lg grid grid-cols-2 grid-flow-col gap-4 mt-5">
       <div class="px-4 py-5 sm:px-6 col-span-2 flex justify-between">
         <div class="ml-4 mt-4">
@@ -63,9 +63,10 @@
       <div>
       </div>
       <div>
-        <%= link_to 'Rooms / Flats', care_home_rooms_path(home), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
+        <%= link_to 'Care / Support Services', care_home_rooms_path(home), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
         <%= link_to 'Edit', edit_care_home_path(home), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
-        <%= link_to 'Delete', care_home_path(home), data: {turbo_method: :delete, turbo_confirm: "Are you sure?  This process is irreversible!"}, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
+        <%= button_to 'Delete', care_home_path(home), method: :delete, data: { turbo_confirm: "Are you sure? This process is irreversible!" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
+
       </div>
     </div>
 </div>
