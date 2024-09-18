@@ -87,16 +87,30 @@
       <!-- Main area -->
       <turbo-frame id="main-content" >
       </turbo-frame>
-
-      <%#= render "team" %>
       <!-- Secondary column (hidden on smaller screens) -->
     </div>
   </div>
 </main>
 <aside class="fixed inset-y-0 right-0 hidden w-1/4 overflow-y-auto border-l border-gray-200 px-4 py-6 sm:px-6 lg:px-8 xl:block">
-  <header class="flex items-center justify-between border-b border-white/5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
-    <h2 class="text-lg font-semibold leading-7 text-slate-800">Activity feed</h2>
-    <!--<a href="#" class="text-lg font-semibold leading-6 text-indigo-400">View all</a>-->
-  </header>
-  <%= render "activity_feed" %>
-</div>
+ <div>
+    <header class="flex items-center justify-between border-b border-white/5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+      <h2 class="text-lg font-semibold leading-7 text-slate-800">Activity feed</h2>
+    </header>
+
+   <% @bookings.each do |booking| %>
+  <ul role="list" class="divide-y divide-slate-300/50">
+    <li class="px-4 py-4 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-x-3">
+        <img src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="h-6 w-6 flex-none rounded-full bg-gray-800">
+        <h3 class="flex-auto truncate text-lg font-semibold leading-6 text-black">
+          <p><strong>Enquiry from:</strong> <%= booking.contact_name %></p>
+        </h3>
+        <time datetime="<%= booking.created_at.iso8601 %>" class="flex-none text-xs text-gray-600"><%= time_ago_in_words(booking.created_at) %> ago</time>      </div>
+      <p class="mt-3 truncate text-lg text-gray-500">
+        <p><strong>Booking for:</strong> <%= booking.room.name %></p>
+        <span class="text-gray-700"><%= booking.room.care_home.name %></span> (<span class="font-mono text-gray-700"><%= booking.contact_name %></span> <span class="text-gray-700"></span>)</p>
+    </li>
+  </ul>
+<% end %>
+ </div>
+</aside></div>

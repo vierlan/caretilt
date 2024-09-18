@@ -23,6 +23,13 @@ class DashboardController < ApplicationController
     @unverified_users = @team_users.where(status: 0)
   end
 
+  def activity_feeds
+    @user = current_user
+    @company = @user.company
+    @care_homes = @company.care_homes
+    @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten.sort_by(&:created_at).reverse
+  end
+
   def account; end
 
   private

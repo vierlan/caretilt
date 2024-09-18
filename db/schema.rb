@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_17_201256) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_18_111659) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -109,8 +109,11 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_17_201256) do
     t.string "billing_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "registration_pin", default: "8996", null: false
-    t.string "super_pin", default: "9395", null: false
+    t.string "registration_pin", default: "2285", null: false
+    t.string "super_pin", default: "7223", null: false
+    t.string "stripe_customer_id"
+    t.string "email"
+    t.string "contact_name"
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -153,6 +156,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_17_201256) do
     t.index ["user_id"], name: "index_mail_logs_on_user_id"
   end
 
+  create_table "packages", force: :cascade do |t|
+    t.string "name"
+    t.integer "validity"
+    t.integer "credits"
+    t.integer "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "rooms", force: :cascade do |t|
     t.string "name"
     t.integer "core_fee_level"
@@ -174,6 +186,23 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_17_201256) do
     t.boolean "enabled", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.string "receipt_number"
+    t.date "expires_on"
+    t.integer "credits_left"
+    t.string "credit_log", default: [], array: true
+    t.date "next_payment_date"
+    t.boolean "active"
+    t.date "subscribed_on"
+    t.integer "number_of_payments"
+    t.bigint "company_id", null: false
+    t.bigint "package_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_subscriptions_on_company_id"
+    t.index ["package_id"], name: "index_subscriptions_on_package_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -210,6 +239,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_17_201256) do
   add_foreign_key "booking_enquiries", "users"
   add_foreign_key "care_homes", "companies"
   add_foreign_key "rooms", "care_homes"
+  add_foreign_key "subscriptions", "companies"
+  add_foreign_key "subscriptions", "packages"
   add_foreign_key "users", "care_homes"
   add_foreign_key "users", "companies"
   add_foreign_key "users", "local_authorities"

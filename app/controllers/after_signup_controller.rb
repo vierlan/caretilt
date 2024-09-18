@@ -22,7 +22,6 @@ class AfterSignupController < ApplicationController
 
   def update
     @user = current_user
-
     case step
     when :add_name
       if @user.update(onboarding_params(step))
@@ -60,7 +59,7 @@ class AfterSignupController < ApplicationController
     when :add_name
       params.require(:user).permit(:first_name, :last_name)
     when :add_company
-      params.require(:company).permit(:name, :company_type, :companies_house_id, :registered_address, :phone_number, :address, :address2, :city, :postcode, :companies_house_id)
+      params.require(:company).permit(:name, :type, :companies_house_id, :registered_address, :phone_number, :contact_name, :email, :address, :address2, :city, :postcode, :companies_house_id)
     when :add_local_authority
       params.require(:local_authority).permit(:name)
     end

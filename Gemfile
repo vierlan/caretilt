@@ -33,6 +33,7 @@ gem 'tailwindcss-rails'
 gem 'turbo-rails'
 gem 'wicked'
 gem 'simple_form'
+gem 'bundle-audit'
 # gem 'simple_form-tailwind'
 # gem "simple_form_tailwind_css"
 
@@ -55,7 +56,6 @@ group :development, :test do
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
   gem 'dotenv-rails'
-
 end
 
 group :development do

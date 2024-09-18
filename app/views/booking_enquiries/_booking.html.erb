@@ -1,0 +1,11 @@
+<div class="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
+  <div class="px-4 py-5 sm:px-6">
+  <p><strong>Enquiry from:</strong> <%= booking.contact_name %></p>
+  <p><strong>contact_email:</strong> <%= booking.user.email %></p>
+  <p><strong>Contact number:</strong> <%= booking.contact_phone %></p>
+  <p><strong>Booking for:</strong> <%= booking.room.name %></p>
+
+  <p><strong>Local Authority:</strong> <%= booking.user.local_authority_id.present? ? booking.user.local_authority.name : "From Care tilt Staff" %></p>
+  <p><strong>Message:</strong> <%= booking.message %></p>
+  </div>
+</div>

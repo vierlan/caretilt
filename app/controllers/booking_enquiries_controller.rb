@@ -29,12 +29,10 @@ class BookingEnquiriesController < ApplicationController
   end
 
   def index
-    @booking = BookingEnquiry.find(params[:id])
-    @room = @booking.room
-    @care_home = @room.care_home
-    @company = @care_home.company
-    @care_home_bookings = @care_home.rooms.map(&:booking_enquiries).flatten
-    @company_bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten
+    @user = current_user
+    @company = @user.company
+    @care_homes = @company.care_homes
+    @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten
 
   end
 
