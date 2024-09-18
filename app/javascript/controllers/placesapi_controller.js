@@ -1,88 +1,145 @@
-// app/javascript/controllers/showplacesmap_controller.js
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static values = { careHomes: Array, markerUrl: String }
+  static targets = ["place", "resultsContainer"]
 
   connect() {
-    console.log("Stimulus showplacesmap controller connected");
-    this.initMap();
-    this.initAutocomplete(); // Initialize the autocomplete
+    console.log("Stimulus Places controller connected");
+    this.initPlacesAutocomplete();
   }
 
-  initMap() {
-    const careHomes = this.careHomesValue;
-    const markerUrl = this.markerUrlValue;
-
-    // Create the map with a default center
-    this.map = new google.maps.Map(this.element.querySelector('#map'), {
-      zoom: 6,
-      center: { lat: 51.5074, lng: -0.1278 }, // Default to London
-    });
-
-    // Create a LatLngBounds object to manage the map's viewport
-    this.bounds = new google.maps.LatLngBounds();
-
-    // Add markers for each care home
-    careHomes.forEach((home) => {
-      const lat = parseFloat(home.latitude);
-      const lng = parseFloat(home.longitude);
-
-      if (!isNaN(lat) && !isNaN(lng)) {
-        const position = { lat, lng };
-        this.bounds.extend(position);
-
-        const marker = new google.maps.Marker({
-          position: position,
-          map: this.map,
-          title: home.name,
-          icon: {
-            url: markerUrl,
-            scaledSize: new google.maps.Size(100, 100),
-          },
-          animation: google.maps.Animation.DROP
-        });
-
-        const infoWindow = new google.maps.InfoWindow({
-          content: `<div><strong>${home.name}</strong></div>`,
-        });
-
-        marker.addListener('click', () => {
-          infoWindow.open(this.map, marker);
-        });
-      }
-    });
-
-    // Adjust the map to fit the markers
-    this.map.fitBounds(this.bounds, { padding: 150 });
-  }
-
-  initAutocomplete() {
-    // Get the search box input element
-    const input = this.element.querySelector('#search-box');
-
-    // Create the autocomplete object and associate it with the input element
+  initPlacesAutocomplete() {
+    const input = this.placeTarget;
     const autocomplete = new google.maps.places.Autocomplete(input);
 
-    // Bias the results to the map's viewport
-    autocomplete.bindTo('bounds', this.map);
-
-    // Add listener for place changed event
+    // When the user selects an address, place it on the map
     autocomplete.addListener('place_changed', () => {
       const place = autocomplete.getPlace();
-
-      if (!place.geometry) {
-        console.error("No details available for the input: '" + place.name + "'");
-        return;
-      }
-
-      // If the place has a geometry, then center the map and adjust zoom
-      if (place.geometry.viewport) {
-        this.map.fitBounds(place.geometry.viewport);
+      if (place.geometry) {
+        console.log("Place selected:", place);
+        this.displayMapWithLocation(place.geometry.location);
+        this.showSelectedAddress(place);
+        this.displayPhotos(place.photos);  // Include photo display logic
       } else {
-        this.map.setCenter(place.geometry.location);
-        this.map.setZoom(12); // Adjust zoom level as needed
+        console.error("No geometry available for this place.");
       }
     });
+  }
+
+  displayMapWithLocation(location) {
+    // Initialize map
+    const map = new google.maps.Map(document.getElementById('map'), {
+      center: location,
+      zoom: 15,
+    });
+
+    // Place marker
+    new google.maps.Marker({
+      position: location,
+      map: map,
+    });
+  }
+
+  showSelectedAddress(place) {
+    // Display selected address details
+    const addressDetailsElement = document.getElementById('address-details');
+    addressDetailsElement.textContent = place.formatted_address;
+
+    // Show confirm button
+    const confirmButton = document.getElementById('confirm-address');
+    confirmButton.classList.remove('hidden');
+
+    // Attach the event listener for the confirmation button
+    confirmButton.addEventListener('click', () => {
+      this.populateFormWithAddress(place);
+    });
+  }
+
+  populateFormWithAddress(place) {
+    // Extract relevant address components
+    const addressComponents = place.address_components;
+
+    let name = '';
+    let street = '';
+    let street2 = '';
+    let city = '';
+    let postcode = '';
+    let phoneNumber = '';
+    let website = '';
+    let latitude = '';
+    let longitude = '';
+
+    // Loop through the address components to find the desired information
+    addressComponents.forEach((component) => {
+      const types = component.types;
+      if (types.includes('street_number') || types.includes('route')) {
+        street += component.long_name + ' ';
+      } else if (types.includes('locality')) {
+        city = component.long_name;
+      } else if (types.includes('postal_code')) {
+        postcode = component.long_name;
+      } else if (types.includes('postal_town')) {
+        street2 = component.long_name;
+      } else if (types.includes('administrative_area_level_2')) {
+        city = component.short_name;
+      } 
+    });
+
+    if (place.name) {
+      name = place.name;
+    }
+    if (place.formatted_phone_number) {
+      phoneNumber = place.formatted_phone_number;
+    }
+    if (place.website) {
+      website = place.website;
+    }
+    if (place.geometry && place.geometry.location) {
+      latitude = place.geometry.location.lat();
+      longitude = place.geometry.location.lng();
+    }
+
+    // Populate the form fields with the extracted values
+    document.getElementById('address1').value = street.trim();
+    document.getElementById('address2').value = street2.trim();
+    document.getElementById('city').value = city;
+    document.getElementById('postcode').value = postcode.replaceAll(/\s/g,'')
+    document.getElementById('name').value = name;
+    document.getElementById('phone_number').value = phoneNumber.replaceAll(/\s/g,'');
+    document.getElementById('website').value = website;
+    document.getElementById('latitude').value = latitude;
+    document.getElementById('longitude').value = longitude;
+
+    // Optionally, hide the confirm button after the address is populated
+    const confirmButton = document.getElementById('confirm-address');
+    confirmButton.classList.add('hidden');
+  }
+
+  displayPhotos(photos) {
+    const photosContainer = document.getElementById('photos-container');
+    photosContainer.innerHTML = ""; // Clear any previous photos
+
+    if (photos && photos.length > 0) {
+      photos.forEach((photo, index) => {
+        const photoUrl = photo.getUrl({ maxWidth: 400, maxHeight: 400 });
+
+        // Create the HTML for displaying the photo in the list
+        const listItem = `
+          <li class="relative">
+            <div class="group aspect-h-7 aspect-w-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
+              <img src="${photoUrl}" alt="Place photo" class="pointer-events-none object-cover group-hover:opacity-75">
+              <button type="button" class="absolute inset-0 focus:outline-none">
+                <span class="sr-only">View details for ${index}</span>
+              </button>
+            </div>
+          </li>
+        `;
+
+        // Append the photo to the results container
+        photosContainer.innerHTML += listItem;
+      });
+    } else {
+      photosContainer.innerHTML = "<p>No photos available for this location.</p>";
+    }
   }
 }

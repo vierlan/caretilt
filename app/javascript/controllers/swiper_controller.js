@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["place", "radiusSlider", "resultsContainer"]
 
   connect() {
-    console.log("Stimulus Places controller connected")
+    console.log("Stimulus swiper controller connected")
     this.initPlacesAutocomplete()
   }
 
