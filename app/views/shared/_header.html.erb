@@ -1,11 +1,11 @@
-<header class="">
+<header class="bg-white drop-shadow-md">
   <nav class="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8" aria-label="Global"
     data-controller="navigation togglevisibility" data-navigation-class-value="underline">
     
     <div class="flex lg:flex-1">
       <%= link_to root_path, class: "-m-1.5 p-1.5" do %>
         <span class="sr-only">CareTilt</span>
-        <%= image_tag 'logo_symbol.png', class: 'h-20 w-auto', alt: 'caretilt_logo' %>
+        <%= image_tag 'logo_symbol_trans.png', class: 'w-auto', alt: 'caretilt_logo', style: 'height: 60px' %>
       <% end %>
     </div>
 
@@ -22,22 +22,21 @@
 
     <!-- Desktop Links -->
     <div class="hidden lg:flex flex-start lg:gap-x-12">
-      <%= link_to "Home", root_path, class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
-      <%= link_to "About", about_path, class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
-      <%= link_to "Free Calculator", calculator_path, class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
-      <%= link_to "Pricing", pricing_path, class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
-      <%= link_to "Guides", guides_path, class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
+      <%= link_to "Home", root_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
+      <%= link_to "About", about_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
+      <%= link_to "Free Calculator", calculator_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
+      <%= link_to "Pricing", pricing_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
+      <%= link_to "Guides", guides_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
       
       <% if !current_user %>
-        <%= link_to "Pricing", pricing_path, class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
-        <%= link_to "Contact", contact_path, class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
+        <%= link_to "Contact", contact_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
           <a href="/login" class="text-lg font-bold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
           <a href="/signup" class="text-lg font-bold leading-6 text-gray-900 ml-6">Register <span aria-hidden="true">&rarr;</span></a>
         </div>
       <% else %>
-        <%= link_to "Dashboard", dashboard_index_path(current_user), class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
-        <%= link_to "Logout", logout_path, class: "text-sm font-semibold leading-6 text-gray-900", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
+        <%= link_to "Dashboard", dashboard_index_path(current_user), class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
+        <%= link_to "Logout", logout_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
       <% end %>
     </div>
 

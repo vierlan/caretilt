@@ -96,6 +96,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_18_111659) do
     t.string "postcode", null: false
     t.string "county"
     t.string "country"
+    t.string "local_authority_name"
     t.index ["company_id"], name: "index_care_homes_on_company_id"
   end
 
@@ -132,6 +133,14 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_18_111659) do
 
   create_table "local_authorities", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "local_authority_data", force: :cascade do |t|
+    t.string "local_authority_code"
+    t.string "official_name"
+    t.string "nice_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

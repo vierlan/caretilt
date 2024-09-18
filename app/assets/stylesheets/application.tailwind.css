@@ -1,6 +1,10 @@
+@import 'text.css';
+@import 'buttons.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @import "actiontext.css";
 @import "trix.css";
+

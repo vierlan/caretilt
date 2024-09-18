@@ -7,12 +7,14 @@ class AfterSignupController < ApplicationController
     @user = current_user
     case step
     when :add_name
-
+      # No additional setup needed for this step
     when :add_company
-      @company = Company.new
+      # Assign the existing company or initialize a new one
+      @company = @user.company || Company.new
       skip_step if @user.role == "la_super_user"
     when :add_local_authority
-      @local_authority = LocalAuthority.new
+      # Assign the existing local authority or initialize a new one
+      @local_authority = @user.local_authority || LocalAuthority.new
       skip_step if @user.role == "care_provider_super_user"
     end
     render_wizard
@@ -22,22 +24,29 @@ class AfterSignupController < ApplicationController
     @user = current_user
     case step
     when :add_name
-      @user.update(onboarding_params(step))
+      if @user.update(onboarding_params(step))
+        render_wizard @user
+      else
+        render step # Re-render the current step if validation fails
+      end
     when :add_company
-      @company = @user.company || Company.new(onboarding_params(step))
-      @company.update(onboarding_params(step))
-      @user.update(company_id: @company.id)  # Ensure the company is associated with the user
+      @company = @user.company || Company.new
+      if @company.update(onboarding_params(step))
+        @user.update(company_id: @company.id)  # Ensure the company is associated with the user
+        render_wizard @user
+      else
+        render step
+      end
     when :add_local_authority
-      @local_authority = @user.local_authority || LocalAuthority.new(onboarding_params(step))
-      @local_authority.update(onboarding_params(step))
-      @user.update(local_authority_id: @local_authority.id)  # Ensure the local authority is associated with the user
+      @local_authority = @user.local_authority || LocalAuthority.new
+      if @local_authority.update(onboarding_params(step))
+        @user.update(local_authority_id: @local_authority.id)  # Ensure the local authority is associated with the user
+        render_wizard @user
+      else
+        render step
+      end
     end
-
-    # Render the next step in the wizard flow
-    render_wizard @user
   end
-
-
 
   private
 
@@ -55,6 +64,4 @@ class AfterSignupController < ApplicationController
       params.require(:local_authority).permit(:name)
     end
   end
-
-
 end

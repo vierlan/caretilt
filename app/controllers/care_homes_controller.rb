@@ -104,6 +104,6 @@ class CareHomesController < ApplicationController
   private
 
   def care_home_params
-    params.require(:care_home).permit(:name, :main_contact,:phone_number, :website, :address, :email, :address1, :address2, :city, :postcode, :type_of_home, :types_of_client_group, :short_description, :latitude, :longitude, photos: [])
+    params.require(:care_home).permit(:name, :main_contact,:phone_number, :website, :address, :email, :address1, :address2, :city, :postcode, :type_of_home, :types_of_client_group, :short_description, :latitude, :longitude, :local_authority_name, photos: [])
   end
 end
