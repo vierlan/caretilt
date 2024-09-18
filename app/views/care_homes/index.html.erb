@@ -1,20 +1,33 @@
+<!-- views/care_homes/index.html.erb -->
 <turbo-frame id="main-content">
-  <div>
-    <%= turbo_frame_tag "new_home" do %>
-      <h1>View and edit your Care / Support Service here</h1>
-      <%= link_to "Add a New Service",
-      new_company_care_home_path(@company),
-      data: { turbo_frame: "new_home" },
-      class: "mt-10 w-60 button-base-round"
-      %>
-    <% end %>
-  </div>
+  <div data-controller="showplacesmap" 
+      data-showplacesmap-care-homes-value="<%= @care_homes.to_json(only: [:name, :latitude, :longitude, :local_authority_name]) %>"
+      data-showplacesmap-marker-url-value="<%= image_path('logo_trans.png') %>">
 
-  <div>
-    <%= turbo_frame_tag "new_home_top" do %>
-    <% @care_homes.each do |home|%>
-      <%= render partial: "care_home", locals: {home: home} %>
+    <!-- Form for Filtering -->
+    <%= simple_form_for :care_home, url: care_homes_path, method: :get, html: { class: "form-inline" } do |f| %>
+      <!-- Local Authority Dropdown -->
+      <div class="col-span-6">
+            <%= f.input :local_authority_name, label: "Local Authority", 
+              collection: LocalAuthorityData.all, 
+              label_method: :nice_name, 
+              value_method: :nice_name, 
+              prompt: 'Select a local authority', 
+              input_html: { class: 'custom-class' } %>
+          </div>
+      
+      <!-- Submit Button -->
+      <div class="form-group">
+        <%= f.button :submit, "Filter", class: "p-2 bg-blue-500 text-white rounded" %>
+      </div>
     <% end %>
+
+    <!-- Map Container -->
+    <div id="map" style="height: 500px; width: 100%;"></div>
+
+    <!-- Render the filtered care homes as an index -->
+    <div id="care-homes-list">
+      <%= render partial: "care_homes/care_home", collection: @care_homes, as: :home %>
+    </div>
   </div>
-  <% end %>
 </turbo-frame>

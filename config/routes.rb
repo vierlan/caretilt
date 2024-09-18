@@ -22,11 +22,14 @@ Rails.application.routes.draw do
 
     # care homes under company for create and new because needed for creation. After creation, easy to get just
     # resources :care_homes, only: %i[index new create] do
-    resources :care_homes, only: %i[new create index] do
+    resources :care_homes, only: %i[new create] do
+      collection do
+        get 'all'
+      end
     end
   end
 
-  resources :care_homes, only: %i[show edit update destroy] do
+  resources :care_homes, only: %i[show edit update destroy index] do
     resources :rooms, only: %i[index new create]
   end
 

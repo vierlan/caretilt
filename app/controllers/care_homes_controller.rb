@@ -1,8 +1,21 @@
 class CareHomesController < ApplicationController
-  def index
+
+  def all
     @user = current_user
     @company = @user.company
     @care_homes = @company.care_homes
+  end
+
+  def index
+    @all_local_authorities = LocalAuthorityData.pluck(:nice_name).uniq
+
+    # Filter care homes if a local authority is selected
+    if params[:query].present?
+      @care_homes = CareHome.where(local_authority_name: params[:local_authority_name])
+      raise
+    else
+      @care_homes = CareHome.all
+    end
   end
 
   def show
