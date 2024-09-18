@@ -39,12 +39,14 @@ class CareHome < ApplicationRecord
   validates :long_description, length: { in: 1..200, message: "Long description must be between 1 and 200 characters" }, allow_blank: true
   validates :type_of_home, presence: { message: "Type of home cannot be blank" }, inclusion: { in: TYPEHOME, message: "%{value} is not a valid home type" }
   validates :types_of_client_group, presence: { message: "Types of client group cannot be blank" }, inclusion: { in: TYPECLIENT, message: "%{value} is not a valid client type" }
-  validates :local_authority_name, presence: { message: "Local authority cannot be blank" }
+  validates :local_authority_name, presence: { message: "Local authority cannot be blank" },
+                                  inclusion: { in: ->(_) { cached_local_authority_names },
+                                              message: "%{value} is not a valid local authority" }
 
-  # validates :name, presence: true
-  # validates :main_contact, presence: true
-  # validates :short_description, presence: true, length: {in 1..50}
-  # validates :long_description, length: {in 1.200}
-  # validates :type_of_home, presence: true, inclusion: { in: TYPEHOME, message: "%{value} is not a valid home type" }
-  # validates :types_of_client_group, presence: true, inclusion: { in: TYPECLIENT, message: "%{value} is not a valid client type" }
+  def self.cached_local_authority_names
+    @cached_local_authority_names ||= LocalAuthorityData.pluck(:nice_name)
+  end
+  
+# Inclusion Validation: Uses a lambda (->(_) { ... }) to dynamically fetch the nice_name values from the LocalAuthorityData model.
+# LocalAuthorityData.pluck(:nice_name): This fetches all nice_name values from the LocalAuthorityData table and returns them as an array. The lambda function ensures that this list is generated at runtime when the validation is checked.
 end

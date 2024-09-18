@@ -1,14 +1,31 @@
 <div data-controller="showplacesmap" 
-     data-showplacesmap-care-homes-value="<%= @care_homes.to_json(only: [:name, :latitude, :longitude]) %>"
+     data-showplacesmap-care-homes-value="<%= @care_homes.to_json(only: [:name, :latitude, :longitude, :local_authority_name]) %>"
      data-showplacesmap-marker-url-value="<%= image_path('logo_trans.png') %>">
-  
-  <!-- Search Box -->
+
+  <!-- Autocomplete Search Box -->
   <input id="search-box" type="text" placeholder="Search for a location" style="margin-bottom: 10px; width: 100%; padding: 10px;">
+
+  <!-- Local Authority Dropdown -->
+  <select id="local-authority-dropdown" style="margin-bottom: 10px; width: 100%; padding: 10px;">
+    <option value="">Select a Local Authority</option>
+    <% filtered = @care_homes.pluck(:local_authority_name).uniq %>
+    <% filtered.each do |authority| %>
+      <option value="<%= authority %>"><%= authority %></option>
+    <% end %>
+  </select>
 
   <!-- Map Container -->
   <div id="map" style="height: 500px; width: 100%;"></div>
 
-  <%=  @care_homes.map do |home| %>
+  <!-- Render Partials for Each Home -->
+  <div id="care-homes-list">
+    <% filtered.each do |home| %>
+      <%= render partial: "care_home", locals: { home: home } %>
+    <% end %>
+  </div>
+
+  <!-- Hidden Elements to Show Longitude and Latitude (For Debugging) -->
+  <%= @care_homes.map do |home| %>
     <%= home.longitude %>
     <%= home.latitude %>
   <% end %>
