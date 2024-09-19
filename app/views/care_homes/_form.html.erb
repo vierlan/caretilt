@@ -1,5 +1,5 @@
 <!-- views/care_homes/_form.html.erb -->
-<%= simple_form_for [@company, @care_home] do |f| %>
+<%= simple_form_for(@care_home, url: @care_home.new_record? ? company_care_homes_path(@company) : care_home_path(@care_home)) do |f| %>
   <!-- Hidden Fields for Latitude and Longitude -->
   <%= f.hidden_field :latitude, id: "latitude" %>
   <%= f.hidden_field :longitude, id: "longitude" %>
@@ -48,9 +48,8 @@
         </div>
         <!-- Types of Client Group -->
         <div class="sm:col-span-6">
-          <%= f.label :types_of_client_group, "Types Of Client Group", class: "sm:col-span-6" %>
-          <%= f.collection_check_boxes :types_of_client_group, CareHome::TYPECLIENT, :to_s, :to_s do |b| %>
-            <div class="checkbox col-span-6">
+          <%= f.collection_check_boxes :types_of_client_group, CareHome::TYPECLIENT, :itself, :to_s do |b| %>
+            <div>
               <%= b.check_box %>
               <%= b.label %>
             </div>

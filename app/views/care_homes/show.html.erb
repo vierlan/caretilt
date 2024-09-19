@@ -4,6 +4,7 @@
       <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
         Add a room
       </button>
+      <%= button_to 'Delete', care_home_path(@care_home), method: :delete, data: { turbo_confirm: "Are you sure? This process is irreversible!" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
     <% end %>
   </div>
 
@@ -18,9 +19,15 @@
     </div>
   </div>
   <div class="mt-3 flex justify-end gap-4">
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"> View Website </button>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"> Send Email </button>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"> View Phone Number </button>
+    <a href="<%= @care_home.website %>" target="_blank" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+      View Website
+    </a>
+    <a href="mailto:<%= @care_home.email %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+      Send Email
+    </a>
+    <a href="tel:<%= @care_home.phone_number %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+      View Phone Number
+    </a>
   </div>
   <div class="mt-4">
     <!-- Dropdown menu on small screens -->
