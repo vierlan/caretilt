@@ -8,7 +8,18 @@ FactoryBot.define do
     active { false }
     subscribed_on { "2024-09-17" }
     number_of_payments { 1 }
-    company { nil }
+    company { 2 }
     package { nil }
+
+    trait :active do
+      active { true }
+      expires_on { 1.year.from_now }
+
+    end
+
+    trait :expired do
+      active { false }
+      expires_on { 1.day.ago }
+    end
   end
 end

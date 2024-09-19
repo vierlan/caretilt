@@ -30,7 +30,7 @@ class CompaniesController < ApplicationController
 
   def edit
     @user = current_user
-    @company = current_user.company
+    @company = Company.find(params[:id]) || @user.company
   end
 
   def update

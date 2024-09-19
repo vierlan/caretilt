@@ -23,6 +23,11 @@ class Company < ApplicationRecord
 
   has_many :users
   has_many :care_homes
+  has_many :subscriptions
   has_many :packages, through: :subscriptions
+
+  def active_subscription
+    subscriptions.exists?(company.subscriptions.active)
+  end
 
 end
