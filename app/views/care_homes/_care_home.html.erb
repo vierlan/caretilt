@@ -12,13 +12,12 @@
         <%= image_tag "Cloisters.CareHome.External", size: "200x200" %>
         <div class="provider-info">
           <div>
-            <h3 class="font-medium">Location Type: <span class="text-grey font-normal">Care Home</span></h3>
+            <h3 class="font-medium">Location Type: <span class="text-grey font-normal"><%= home.type_of_home %></span></h3>
           </div>
           <div class="description mt-2 h-32 overflow-hidden">
             <p>
               <p><%= home.short_description %></p>
             </p>
-            <%= link_to "More Info", test_path, class: "text-blue-600" %>
           </div>
           <div>
           </div>
@@ -35,11 +34,9 @@
         <div>
           <h2>Services provided:</h2>
           <ul class="list-disc list-inside mt-2">
-            <li><%= home.type_of_home %></li>
-            <li><%= home.types_of_client_group %></li>
-            <li>Dementia</li>
-            <li>Mental Health</li>
-            <li>Short Term/Respite</li>
+            <% home.types_of_client_group.each do |service| %>
+              <li><%= service %></li>
+            <% end %>
           </ul>
         </div>
         <div class="flex gap-2">
@@ -65,8 +62,6 @@
       <div>
         <%= link_to 'Care / Support Services', care_home_rooms_path(home), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
         <%= link_to 'Edit', edit_care_home_path(home), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
-        <%= button_to 'Delete', care_home_path(home), method: :delete, data: { turbo_confirm: "Are you sure? This process is irreversible!" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
-
       </div>
     </div>
 </div>

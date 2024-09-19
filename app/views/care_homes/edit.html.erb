@@ -5,6 +5,8 @@
   <!-- Link to go back -->
   <div>
     <%= link_to "&larr; Back to homes".html_safe, all_company_care_homes_path(@company), class: "btn mb-4 font-bold text-lg bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg" %>
+    <%= button_to 'Delete', care_home_path(@care_home), method: :delete, data: { turbo_confirm: "Are you sure? This process is irreversible!" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
+
   </div>
   <%= render 'form', company: @company, care_home: @care_home %> <!-- Render the form partial -->
 </turbo-frame>

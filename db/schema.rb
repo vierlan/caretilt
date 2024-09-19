@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_18_111659) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_19_112843) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -82,7 +82,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_18_111659) do
     t.text "short_description"
     t.text "long_description"
     t.string "type_of_home"
-    t.string "types_of_client_group"
+    t.string "types_of_client_group", default: [], array: true
     t.bigint "company_id", null: false
     t.float "latitude"
     t.float "longitude"
@@ -109,8 +109,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_18_111659) do
     t.string "billing_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "registration_pin", default: "2285", null: false
-    t.string "super_pin", default: "7223", null: false
+    t.string "registration_pin", default: "8996", null: false
+    t.string "super_pin", default: "9395", null: false
     t.string "stripe_customer_id"
     t.string "email"
     t.string "contact_name"
