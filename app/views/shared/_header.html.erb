@@ -1,7 +1,7 @@
 <header class="bg-white drop-shadow-md">
   <nav class="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8" aria-label="Global"
     data-controller="navigation togglevisibility" data-navigation-class-value="underline">
-    
+
     <div class="flex lg:flex-1">
       <%= link_to root_path, class: "-m-1.5 p-1.5" do %>
         <span class="sr-only">CareTilt</span>
@@ -27,8 +27,11 @@
       <%= link_to "Free Calculator", calculator_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
       <%= link_to "Pricing", pricing_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
       <%= link_to "Guides", guides_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
-      
+                <%= link_to 'Admin', admin_root_path, class: nav_link_classes('admin/dashboard') if current_user&.admin? %>
+
       <% if !current_user %>
+                <%= link_to 'Admin', admin_root_path, class: nav_link_classes('admin/dashboard') if current_user&.admin? %>
+
         <%= link_to "Contact", contact_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
           <a href="/login" class="text-lg font-bold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
@@ -56,7 +59,7 @@
           </svg>
         </button>
       </div>
-      
+
       <div class="mt-6 flow-root">
         <div class="-my-6 divide-y divide-gray-500/10">
           <div class="space-y-2 py-6">
