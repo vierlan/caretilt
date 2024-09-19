@@ -1,4 +1,44 @@
-<div>
-  <h1 class="font-bold text-4xl">Companies#index</h1>
-  <p>Find me in app/views/companies/index.html.erb</p>
-</div>
+<turbo-frame id="main-content">
+  <div>
+    <h1 class="font-bold text-2xl">Manage Companies</h1>
+    <p>Find me in app/views/companies/index.html.erb</p>
+  </div>
+  <ul role="list" class="divide-y divide-gray-100">
+    <% @companies.each do | company | %>
+      <li class="flex justify-between gap-x-6 py-5">
+        <div class="flex min-w-0 gap-x-4" data-controller="toggle" >
+          <div class="min-w-0 flex-auto">
+            <a data-action="toggle#toggleHiddenField"><span class="text-xl font-semibold leading-6 text-gray-900"><%= company.name %> <i class="fa-solid fa-plus"></i></span></a>
+            <div class="hidden" data-target="toggle.hiddenField">
+              <% company.attributes.each do |key, value| %>
+                <p class="text-xs leading-5 text-gray-500"><%= key %>: <%= value %></p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class=" flex flex-col" data-controller="toggle">
+        <p class="text-xl font-semibold text-gray-900"> Care Facilities</p>
+          <% company.care_homes.each do |care_home| %>
+            <a data-action="toggle#toggleHiddenField"><span class="text-lg text-gray-700 mr-4"><%= care_home.name %>  <i class="fa-solid fa-plus"></i></span></a>
+            <div class="hidden" data-target="toggle.hiddenField">
+              <% care_home.attributes.each do |key, value| %>
+                <p class="text-xs leading-5 text-gray-500"><%= key %>: <%= value %></p>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+         <div class=" flex flex-col" data-controller="toggle">
+        <p class="text-xl font-semibold text-gray-900">Users</p>
+          <% company.users.each do |user| %>
+            <a data-action="toggle#toggleHiddenField"><span class="text-base text-gray-700"><%= user.first_name.capitalize %> <%= user.last_name.capitalize %> <i class="fa-solid fa-plus"></i></span></a>
+            <div class="hidden" data-target="toggle.hiddenField">
+              <% user.attributes.each do |key, value| %>
+                <p class="text-xs leading-5 text-gray-500"><%= key %>: <%= value %></p>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </li>
+  </ul>
+</turbo-frame>
