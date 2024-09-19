@@ -52,4 +52,14 @@ export default class extends Controller {
       return '<span class="font-lg text-gray-200">Unknown</span>';
     }
   }
+
+  toggleHiddenField(event) {
+    event.preventDefault();
+    const hiddenField = event.currentTarget.nextElementSibling;
+    if (hiddenField.classList.contains("hidden")) {
+      hiddenField.classList.remove("hidden");
+    } else {
+      hiddenField.classList.add("hidden");
+    }
+  }
 }
