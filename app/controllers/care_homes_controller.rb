@@ -2,7 +2,7 @@ class CareHomesController < ApplicationController
 
   def all
     @user = current_user
-    @company = @user.company
+    @company = Company.find(params[:company_id])
     @care_homes = @company.care_homes
   end
 
@@ -79,7 +79,7 @@ class CareHomesController < ApplicationController
   def edit
     @care_home = CareHome.find(params[:id])
     @company = @care_home.company
-    
+
 
     # @home_types = [
     #   "Adult Homes",

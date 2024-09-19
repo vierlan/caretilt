@@ -9,10 +9,16 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
+    @company = current_user.company
+
     if current_user.status == 'not_verified'
-      turbo_frame_request? ? verify_path(current_user, data: { turbo_frame: "main-content" }) : dashboard_index_path(current_user)
+      verify_path(current_user, data: { turbo_frame: "main-content" })
     else
-      dashboard_index_path(current_user)
+      if request.format.turbo_stream?
+        render turbo_stream: turbo_stream.replace("main-content", partial: "companies/company", locals: { company: @company })
+      else
+        dashboard_index_path(current_user)
+      end
     end
   end
 
