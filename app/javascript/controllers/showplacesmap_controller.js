@@ -10,49 +10,64 @@ export default class extends Controller {
   }
 
   initMap() {
-    const careHomes = this.careHomesValue;
-    const markerUrl = this.markerUrlValue; // Get the marker URL
-
-    // Create the map with a default center
-    const map = new google.maps.Map(this.element.querySelector('#map'), {
-      zoom: 6, // Initial zoom level; will be adjusted
+    this.map = new google.maps.Map(this.element.querySelector('#map'), {
+      zoom: 6,
+      center: { lat: 51.5074, lng: -0.1278 }, // Default to London
     });
 
-    // Create a LatLngBounds object to manage the map's viewport
-    const bounds = new google.maps.LatLngBounds();
+    this.bounds = new google.maps.LatLngBounds();
+    this.markers = []; // Store markers for later use
+    this.addMarkers(this.careHomesValue); // Add markers to the map
+  }
 
-    // Add markers for each care home
+  addMarkers(careHomes) {
+    const markerUrl = this.markerUrlValue;
+  
+    this.clearMarkers(); // Clear any existing markers
     careHomes.forEach((home) => {
       const position = { lat: parseFloat(home.latitude), lng: parseFloat(home.longitude) };
-
-      // Extend the bounds to include this marker's location
-      bounds.extend(position);
-      console.log(position)
-
-      const marker = new google.maps.Marker({
-        position: position,
-        map: map,
-        title: home.name, // Tooltip when you hover over the marker
-        // Use the custom marker icon
-        icon: {
-          url: markerUrl, // Use the local image passed from the view
-          scaledSize: new google.maps.Size(100, 100), // Adjust the size as needed
-        },
-        animation: google.maps.Animation.DROP
-      });
-
-      // Optionally, add an info window to each marker
-      const infoWindow = new google.maps.InfoWindow({
-        content: `<div><strong>${home.name}</strong></div>`,
-      });
-
-      // Show the info window when the marker is clicked
-      marker.addListener('click', () => {
-        infoWindow.open(map, marker);
-      });
+      if (!isNaN(position.lat) && !isNaN(position.lng)) {
+        this.bounds.extend(position);
+        
+        const marker = new google.maps.Marker({
+          position: position,
+          map: this.map,
+          title: home.name,
+          icon: {
+            url: markerUrl,
+            scaledSize: new google.maps.Size(100, 100),
+          },
+          animation: google.maps.Animation.DROP
+        });
+  
+        const infoWindow = new google.maps.InfoWindow({
+          content: `<div><strong>${home.name}</strong></div>`,
+        });
+  
+        marker.addListener('click', () => {
+          infoWindow.open(this.map, marker);
+        });
+  
+        this.markers.push(marker);
+      }
     });
+  
+    // Adjust the map
+    if (careHomes.length === 1) {
+      // If there's only one marker, set the map center and a default zoom level
+      this.map.setCenter(this.bounds.getCenter());
+      this.map.setZoom(17); // Set to a reasonable zoom level for a single marker
+    } else if (careHomes.length > 1) {
+      // Adjust the map to fit the markers with padding if there are multiple markers
+      this.map.fitBounds(this.bounds, { padding: 150 });
+    }
+  }
+  
 
-    // Auto-zoom and center the map to fit all markers within bounds
-    map.fitBounds(bounds, {padding: 150});
+  clearMarkers() {
+    // Remove all markers from the map
+    this.markers.forEach(marker => marker.setMap(null));
+    this.markers = [];
+    this.bounds = new google.maps.LatLngBounds(); // Reset bounds
   }
 }

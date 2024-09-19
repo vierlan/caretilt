@@ -58,11 +58,13 @@
         </div>
         <!-- Local Authority -->
         <div class="col-span-6">
-          <%= f.input :local_authority_name, label: "Local Authority",
-            collection: LocalAuthorityData.all,
-            label_method: :nice_name,
-            value_method: :official_name,
-            prompt: 'Select a local authority',
+
+          <%= f.input :local_authority_name, label: "Local Authority", 
+            collection: LocalAuthorityData.all, 
+            label_method: :nice_name, 
+            value_method: :nice_name, 
+            prompt: 'Select a local authority', 
+
             input_html: { class: 'custom-class' } %>
         </div>
         <!-- Short Description -->

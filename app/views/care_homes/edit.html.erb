@@ -4,7 +4,7 @@
 
   <!-- Link to go back -->
   <div>
-    <%= link_to "&larr; Back to homes".html_safe, company_care_homes_path(@company), class: "btn mb-4 font-bold text-lg bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg" %>
+    <%= link_to "&larr; Back to homes".html_safe, all_company_care_homes_path(@company), class: "btn mb-4 font-bold text-lg bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg" %>
   </div>
   <%= render 'form', company: @company, care_home: @care_home %> <!-- Render the form partial -->
 </turbo-frame>

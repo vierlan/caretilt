@@ -1,0 +1,20 @@
+<turbo-frame id="main-content">
+  <div>
+    <%= turbo_frame_tag "new_home" do %>
+      <h1>View and edit your Care / Support Service here</h1>
+      <%= link_to "Add a New Service",
+      new_company_care_home_path(@company),
+      data: { turbo_frame: "new_home" },
+      class: "mt-10 w-60 button-base-round"
+      %>
+    <% end %>
+  </div>
+
+  <div>
+    <%= turbo_frame_tag "new_home_top" do %>
+    <% @care_homes.each do |home|%>
+      <%= render partial: "care_home", locals: {home: home} %>
+    <% end %>
+  </div>
+  <% end %>
+</turbo-frame>

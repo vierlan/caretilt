@@ -8,7 +8,7 @@
     <div data-controller="placesapi" data-placesapi-types="cafe,restaurant,library" class="flex flex-col justify-center">
       <div class="flex m-3 gap-4">
         <input data-placesapi-target="place" type="text" placeholder="Search for a place" class="">
-        <button data-placesapi-target="locationButton" class="p-2 bg-blue-500 text-white rounded">Get Current Location</button>
+        <%# <button data-placesapi-target="locationButton" class="p-2 bg-blue-500 text-white rounded">Get Current Location</button> %>
         <button id="confirm-address" class="hidden p-2 bg-green-500 text-white rounded">Confirm Address</button>
         <%= link_to "&larr; Back to homes".html_safe, company_care_homes_path(@company), class: "btn mb-4 font-bold text-lg bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg" %>
       </div>
