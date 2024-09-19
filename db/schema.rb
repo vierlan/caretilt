@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_18_111659) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_19_200048) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -114,6 +114,11 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_18_111659) do
     t.string "stripe_customer_id"
     t.string "email"
     t.string "contact_name"
+    t.string "address1"
+    t.string "address2"
+    t.string "city"
+    t.string "postcode"
+    t.string "country"
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
