@@ -82,7 +82,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_19_200048) do
     t.text "short_description"
     t.text "long_description"
     t.string "type_of_home"
-    t.string "types_of_client_group"
+    t.string "types_of_client_group", default: [], array: true
     t.bigint "company_id", null: false
     t.float "latitude"
     t.float "longitude"
