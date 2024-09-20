@@ -1,19 +1,18 @@
 class TeamMembersController < ApplicationController
   def new
-    @company = current_user.company
+    @company = Company.find(params[:id])
     @user = User.new
   end
 
   def index
-
     @user = User.new
-    @all_members = current_user.company.users
-    @verified_members = @all_members.not_not_verified
-    @company = current_user.company
+    @company = Company.find(params[:id])
+    @all_members = @company.users
+    @verified_members = @all_members.not_added
     @team_super_user = @all_members.care_provider_super_user || @all_members.la_super_user
     @team_users = @all_members.care_provider_user || @all_members.la_user
     @care_homes = @company.care_homes
-    @unverified_users = @team_users.not_verified
+    @unverified_users = @team_users.added
     @unassigned_users = @verified_members.where(care_home_id: nil)
 
 
@@ -26,7 +25,7 @@ class TeamMembersController < ApplicationController
     case current_user.role
     when 'care_provider_super_user'
       @member.role = 'care_provider_user'
-      @member.company = current_user.company
+      @member.company = @company
     when 'la_super_user'
       @member.role = 'la_user'
       @member.local_authority = current_user.local_authority
@@ -67,13 +66,13 @@ class TeamMembersController < ApplicationController
 
   def verify_member
     @user = User.find(params[:id])
-    @company = current_user.company
+    @company = @user.company
   end
 
   def verify_member_update
     @user = User.find(params[:id])
-    @company = current_user.company
-    
+    @company = Company.find(params[:id])
+
     if @user.update(user_params)
       redirect_to team_company_path(@company, data: { turbo_frame: "main-content" }), notice: 'User has been verified.'
     else
@@ -92,7 +91,7 @@ class TeamMembersController < ApplicationController
 
   def check_registration_pin
     @user = User.find(params[:id])
-    @company = current_user.company
+    @company = Company.find(params[:id])
     @pin = params[:pin]
     case @pin
     when @company.registration_pin
@@ -108,7 +107,7 @@ class TeamMembersController < ApplicationController
 
   def make_user_inactive
     @user = User.find(params[:id])
-    @company = current_user.company
+    @company = Company.find(params[:id])
     if @users.update(status: 3)
       redirect_to team_members_index_path(current_user), notice: 'User has been made inactive.'
     else

@@ -23,7 +23,7 @@ class User < ApplicationRecord
   }
 
   enum status: {
-    not_verified: 0,
+    added: 0,
     password_changed: 1,
     verified: 2,
     inactive: 3
@@ -50,5 +50,5 @@ class User < ApplicationRecord
   def onboarding_complete?
     first_name.present? && last_name.present? && (company_id.present? || local_authority_id.present?)
   end
-  
+
 end

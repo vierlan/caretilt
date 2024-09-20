@@ -1,13 +1,12 @@
 class PagesController < ApplicationController
-  before_action :authenticate_user!, only: [:logout]
-
+#skip_before_action :authenticate_user!, except: [:logout]
   def home
     # @current_user = current_user
   end
 
   def logout
     sign_out(current_user)
-    redirect_to root_path
+    redirect_to home_path
   end
 
   def page

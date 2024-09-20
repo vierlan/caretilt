@@ -1,15 +1,48 @@
 <turbo-frame id="main-content">
   <h2>Add team member</h2>
-
-  <div id="new_member">
+    <div id="new_member">
     <%= turbo_frame_tag "new_member" do %>
       <%= render "form", user: User.new %>
     <% end %>
   </div>
   <div>
-<i class="fa-solid fa-house"></i>
   </div>
-
+  <div data-controller="open">
+    <a href='#'data-action="open#toggleHiddenField" tabindex="0"><i class="fa-solid fa-circle-info" ></i></a>
+    <div class="hidden" data-open-target="info">
+      <ol class="list-decimal ml-6 space-y-4" data-target="info">
+        <li class="text-lg font-medium">
+          <span class="font-semibold">Add Team Member:</span>
+          Enter the new team member's email address and click the <button class="bg-blue-500 text-white px-3 py-1 rounded">Add Team Member</button> button.
+        </li>
+        <li class="text-lg font-medium">
+          <span class="font-semibold">Share Company Registration Pin:</span>
+          Provide the new team member with the Company Registration Pin, which can be found on your dashboard.
+        </li>
+        <li class="text-lg font-medium">
+          <span class="font-semibold">Account Creation Confirmation:</span>
+          The new team member will receive a confirmation email containing their account password.
+        </li>
+        <li class="text-lg font-medium">
+          <span class="font-semibold">Initial Login:</span>
+          The team member logs in using the provided password. They will be prompted to enter the Company Registration Pin and change their password.
+        </li>
+        <li class="text-lg font-medium">
+          <span class="font-semibold">Password Change and Status Update:</span>
+          After entering the correct Company Registration Pin and changing their password, the team member's status on the Team Management Dashboard will update to "Password Changed." A Super User can then click the
+          <button class="bg-blue-500 text-white px-3 py-1 rounded">Edit</button> button next to their name to verify their account.
+        </li>
+        <li class="text-lg font-medium">
+          <span class="font-semibold">Account Access:</span>
+          Once verified, the new user will have full access to their account.
+        </li>
+        <li class="text-lg font-medium">
+          <span class="font-semibold">Temporary Access Suspension:</span>
+          If needed, you can temporarily disable a user's access by setting their account to inactive.
+        </li>
+      </ol>
+    </div>
+  </div>
   <!-- Table -->
   <div class="mt-8 flow-root">
     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -26,32 +59,24 @@
               </th>
             </tr>
           </thead>
-
           <tbody class="bg-white">
             <tr class="border-t border-gray-200">
               <th colspan="5" class="bg-gray-100 py-2 pl-4 pr-3 text-left text-base font-bold text-black sm:pl-3">Invitation Sent - Awaiting Verification</th>
             </tr>
-
             <tbody id="member-list">
               <!-- chatgpt check code between here -->
               <% @unverified_users.each do |user| %>
-
                 <%= render partial: "member", locals: { user: user } %>
               <% end %>
             </tbody>
             <!-- and here  -->
-
-
-
             <tr class="border-t border-gray-200">
               <th colspan="5" class="bg-gray-100 py-2 pl-4 pr-3 text-left text-base font-bold text-black sm:pl-3"><%= @company.name %></th>
             </tr>
-
             <!-- Existing members -->
             <% @unassigned_users.each do |user| %>
               <%= render partial: "member", locals: { user: user } %>
             <% end %>
-
             <% @care_homes.each do |care_home| %>
               <tr class="border-t border-gray-200">
                 <th colspan="5" class="bg-gray-100 py-2 pl-4 pr-3 text-left text-base font-bold text-black sm:pl-3"><%= care_home.name %></th>

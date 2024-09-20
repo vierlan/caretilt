@@ -1,5 +1,4 @@
 class BillingPortalController < ApplicationController
-  before_action :authenticate_user!
   skip_before_action :verify_authenticity_token, only: [:create] # ajax
 
   def new

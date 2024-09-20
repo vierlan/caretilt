@@ -22,5 +22,5 @@ export default class extends Controller {
       iconClosed.classList.toggle("hidden");
     }
   }
-  
+
 }
