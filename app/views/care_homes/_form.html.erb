@@ -42,6 +42,10 @@
         <div class="sm:col-span-6">
           <%= f.input :phone_number, label: "Phone Number", input_html: { id: "phone_number" } %>
         </div>
+        <!-- Email Address -->
+        <div class="sm:col-span-6">
+          <%= f.input :email, label: "Email Address", input_html: { id: "email" } %>
+        </div>
         <!-- Type of Home -->
         <div class="sm:col-span-6">
           <%= f.input :type_of_home, label: "Type of Home", collection: CareHome::TYPEHOME, include_blank: 'Select a type', input_html: { id: "type_of_home" } %>

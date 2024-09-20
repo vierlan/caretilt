@@ -33,7 +33,6 @@ class BookingEnquiriesController < ApplicationController
     @company = @user.company
     @care_homes = @company.care_homes
     @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten
-
   end
 
   def edit

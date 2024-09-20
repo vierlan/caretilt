@@ -1,5 +1,6 @@
 @import 'text.css';
 @import 'buttons.css';
+@import 'page_design.css';
 
 @tailwind base;
 @tailwind components;
