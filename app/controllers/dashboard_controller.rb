@@ -10,7 +10,7 @@ class DashboardController < ApplicationController
       @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten.sort_by(&:created_at).reverse
     elsif @user.local_authority
       @local_authority = @user.local_authority
-      @care_homes = @local_authority.care_homes
+      @care_homes = CareHome.all
     end
   end
 
