@@ -42,6 +42,9 @@ class CareHome < ApplicationRecord
   validates :local_authority_name, presence: { message: "Local authority cannot be blank" },
                                   inclusion: { in: ->(_) { cached_local_authority_names },
                                               message: "%{value} is not a valid local authority" }
+  
+  
+                                              
   private
 
   def self.cached_local_authority_names

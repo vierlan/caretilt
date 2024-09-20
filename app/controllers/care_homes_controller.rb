@@ -50,7 +50,6 @@ class CareHomesController < ApplicationController
       redirect_to dashboard_index_path(current_user), notice: 'Successfully created'
     else
       render :new, status: :unprocessable_entity
-      raise
     end
   end
 
