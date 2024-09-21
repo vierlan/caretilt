@@ -5,6 +5,10 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
 
+  #debug session route
+  get '/session', to: 'activity_feeds#index'
+  get 'verify/:id', to: 'users#verify', as: 'verify'
+  patch 'verify/:id', to: 'users#verify_user'
   get '/team_members/:id/verify', to: 'team_members#verify_member', as: 'verify_member'
   patch '/team_members/:id/verify', to: 'team_members#verify_member_update'
   get '/stripe/checkout/pricing', to: 'stripe/checkout#pricing'

@@ -22,7 +22,8 @@ class User < ApplicationRecord
   la_user: 6
   }
 
-  enum status: {
+  # changed to positional enmum
+  enum :status, {
     added: 0,
     password_changed: 1,
     verified: 2,
