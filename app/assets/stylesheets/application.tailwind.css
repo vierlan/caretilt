@@ -1,5 +1,11 @@
+/* If nothing is updating on Tailwind classes run commands below to recompile tailwind. */
+/* rails assets:clobber
+rails assets:precompile */
+
+
 @import 'text.css';
 @import 'buttons.css';
+@import 'page_design.css';
 
 @tailwind base;
 @tailwind components;
@@ -7,4 +13,5 @@
 
 @import "actiontext.css";
 @import "trix.css";
+
 

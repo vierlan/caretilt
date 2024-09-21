@@ -49,9 +49,11 @@ data-controller="navigation" data-navigation-class-value="bg-white"
           </li>
           <li>
             <%= link_to booking_enquiries_path, data: { turbo_frame: "main-content", navigation_target: "link" } do %>
-              <div class="group flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-900 hover:bg-gray-50 hover:text-primary">
+              <div class="group flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-900 hover:bg-gray-50 hover:text-primary"
+                data-navigation-target="button"
+                data-action="click->navigation#highlightButton">
                 <svg class="h-6 w-6 shrink-0 text-gray-700 group-hover:text-primary" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
                 </svg>
                 Booking Requests
               </div>

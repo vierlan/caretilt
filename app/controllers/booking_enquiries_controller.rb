@@ -29,7 +29,11 @@ class BookingEnquiriesController < ApplicationController
   end
 
   def index
-    @bookings = BookingEnquiry.joins(room: { care_home: :company }).where(companies: { id: current_user.company.id })
+    @company_bookings = BookingEnquiry.joins(room: { care_home: :company }).where(companies: { id: current_user.company.id })
+    @user = current_user
+    @company = @user.company
+    @care_homes = @company.care_homes
+    @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten
   end
 
   def edit
