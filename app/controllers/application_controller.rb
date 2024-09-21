@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  #before_action :authenticate_user!
   impersonates :user
 
   # uncomment to allow extra User model params during registration (beyond email/password)
@@ -11,7 +12,7 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     @company = current_user.company
 
-    if current_user.status == 'not_verified'
+    if current_user.status == 'added'
       verify_path(current_user, data: { turbo_frame: "main-content" })
     else
       if request.format.turbo_stream?

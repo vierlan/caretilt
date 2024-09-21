@@ -1,6 +1,4 @@
 class DashboardController < ApplicationController
-  before_action :authenticate_user!
-  before_action :ensure_onboarding_complete, only: [:index, :team, :account]
 
   def index
     @user = current_user
@@ -15,7 +13,8 @@ class DashboardController < ApplicationController
   end
 
   def team
-    @team_users = current_user.company.users
+    @company = Company.find(params[:id])
+    @team_users = @comapny.users
     @verified_members = @team_users.where.not(status: 0)
     @company = current_user.company
     @team_super_user = @verified_members.find_by(role: 'care_provider_super_user')

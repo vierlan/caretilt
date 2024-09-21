@@ -1,4 +1,6 @@
 class CompaniesController < ApplicationController
+  before_action :set_company, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:edit, :update]
   def index
     @companies = Company.all
   end
@@ -29,14 +31,9 @@ class CompaniesController < ApplicationController
   end
 
   def edit
-    @user = current_user
-    @company = Company.find(params[:id]) || @user.company
   end
 
   def update
-    @user = current_user
-    @company = @user.company || Company.find(params[:id])
-
     # Combine the address fields into the registered_address field
     @company.registered_address = [
       params[:company][:address],
@@ -56,6 +53,13 @@ class CompaniesController < ApplicationController
   end
 
   private
+  def set_company
+    @company = Company.find(params[:id]) || current_user.company
+  end
+
+  def set_user
+    @user = current_user
+  end
 
   def company_params
     params.require(:company).permit(:name, :phone, :companies_house_id, :address, :address2, :city, :postcode)

@@ -1,15 +1,15 @@
 class BookingEnquiriesController < ApplicationController
   def new
+    @booking = BookingEnquiry.new
     @room = Room.find(params[:room_id])
     @care_home = @room.care_home
-    @company = @care_home.company
-    @booking = BookingEnquiry.new
+
   end
 
   def create
+    @booking = BookingEnquiry.new(booking_params)
     @room = Room.find(params[:room_id])
     @care_home = @room.care_home
-    @booking = BookingEnquiry.new(booking_params)
     @booking.room = Room.find(params[:room_id])
     @booking.user = current_user
     @company = @care_home.company
@@ -29,6 +29,7 @@ class BookingEnquiriesController < ApplicationController
   end
 
   def index
+    @company_bookings = BookingEnquiry.joins(room: { care_home: :company }).where(companies: { id: current_user.company.id })
     @user = current_user
     @company = @user.company
     @care_homes = @company.care_homes

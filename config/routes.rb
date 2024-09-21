@@ -1,37 +1,23 @@
 Rails.application.routes.draw do
-  get "subscriptions/index"
-  get "subscriptions/show"
-  get "subscriptions/new"
-  get "subscriptions/create"
-  get "subscriptions/edit"
-  get "subscriptions/update"
-  get "subscriptions/destroy"
-  get "packages/index"
-  get "packages/show"
-  get "packages/new"
-  get "packages/create"
-  get "packages/edit"
-  get "packages/update"
-  get "packages/destroy"
-  get "activity_feeds/index"
-  ActiveAdmin.routes(self)
+
 
   root 'pages#home'
+  ActiveAdmin.routes(self)
+
+
+  #debug session route
+  get '/session', to: 'activity_feeds#index'
   get 'verify/:id', to: 'users#verify', as: 'verify'
-  patch '/verify_user/:id', to: 'users#verify_user'
-  get '/dashboard/:id', to: 'dashboard#index', as: 'dashboard_index'
-  get '/team_members/error', to: 'team_members#error', as: 'team_members_error'
+  patch 'verify/:id', to: 'users#verify_user'
   get '/team_members/:id/verify', to: 'team_members#verify_member', as: 'verify_member'
   patch '/team_members/:id/verify', to: 'team_members#verify_member_update'
-  patch '/team_members/:id/make_inactive', to: 'team_members#make_user_inactive', as: 'make_inactive'
-  get '/team_members/:id/make_inactive', to: 'team_members#make_user_inactive'
-  post '/stripe/webhooks', to: 'stripe/webhooks#create'
-  post '/stripe/checkout', to: 'stripe/checkout#checkout'
   get '/stripe/checkout/pricing', to: 'stripe/checkout#pricing'
-  get '/stripe/checkout/success', to: 'stripe/checkout#success'
-  get '/stripe/checkout/cancel', to: 'stripe/checkout#cancel'
+  #get '/stripe/checkout/success', to: 'stripe/checkout#success'
+  #get '/stripe/checkout/cancel', to: 'stripe/checkout#cancel'
 
-
+  pages = %w[
+    privacy terms about contact home home2 home3 home4 guides calculator faq pricing search quiz test test2
+  ]
 
   resources :companies do
     member do
@@ -80,10 +66,24 @@ Rails.application.routes.draw do
   resources :billing_portal, only: [:new, :create]
   resources :blog_posts, controller: :blog_posts, path: "blog", param: :slug
 
+
+  #get "subscriptions/index"
+  #get "subscriptions/show"
+  #get "subscriptions/new"
+  #get "subscriptions/create"
+  #get "subscriptions/edit"
+  #get "subscriptions/update"
+  #get "subscriptions/destroy"
+  #get "packages/index"
+  #get "packages/show"
+  #get "packages/new"
+  #get "packages/create"
+  #get "packages/edit"
+  #get "packages/update"
+  #get "packages/destroy"
+  #get "activity_feeds/index"
   # static pages
-  pages = %w[
-    privacy terms about contact home home2 home3 home4 guides calculator faq pricing search quiz test test2
-  ]
+
 
   pages.each do |page|
     get "/#{page}", to: "pages##{page}", as: page.gsub('-', '_').to_s
