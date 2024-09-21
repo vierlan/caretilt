@@ -279,6 +279,8 @@ GEM
     parser (3.3.5.0)
       ast (~> 2.4.1)
       racc
+    pay (7.3.0)
+      rails (>= 6.0.0)
     pg (1.5.6)
     postmark (1.24.1)
       json
@@ -449,7 +451,7 @@ GEM
     stimulus-rails (1.3.3)
       railties (>= 6.0.0)
     stringio (3.1.1)
-    stripe (11.2.0)
+    stripe (12.6.0)
     strscan (3.1.0)
     tailwindcss-rails (2.7.2-arm64-darwin)
       railties (>= 7.0.0)
@@ -521,6 +523,7 @@ DEPENDENCIES
   mainstreet
   metamagic
   methodz
+  pay
   pg
   postmark-rails
   pretender
@@ -545,7 +548,7 @@ DEPENDENCIES
   split
   sprockets-rails
   stimulus-rails
-  stripe
+  stripe (~> 12.6)
   tailwindcss-rails
   turbo-rails
   tzinfo-data

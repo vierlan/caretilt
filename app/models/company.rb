@@ -3,7 +3,7 @@ class Company < ApplicationRecord
 
 
   include Billable
-
+  pay_customer stripe_attributes: :stripe_attributes
 
   TYPES = ["type1", "type2", "type3"]
 
@@ -28,6 +28,24 @@ class Company < ApplicationRecord
 
   def active_subscription
     subscriptions.exists?(company.subscriptions.active)
+  end
+
+  def stripe_attributes(pay_customer)
+    {
+      name: name,
+      email: email,
+      address: {
+        line1: address1,
+        line2: address2,
+        city: city,
+        postal_code: postcode
+      },
+      metadata: {
+        pay_customer_id: pay_customer.id,
+        user_id: id
+
+    }
+  }
   end
 
 end
