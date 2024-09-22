@@ -4,6 +4,9 @@ class StripePackage
     @package = package
   end
 
+   # When caretilt wants to create a new package, it will call this method
+   #  This is all the data sent to stripe to create a new package
+   # Stripe API responds with the ids of the product, plan and price and the @package is updated with these ids
   def create_package
     return if @package.stripe_id.present?
     Stripe.api_key = Rails.application.credentials.stripe[:api_key]
@@ -18,11 +21,13 @@ class StripePackage
         created: Date.today.to_time.to_i
       }
     )
+
     stripe_price = Stripe::Price.create(
       currency: 'gbp',
       unit_amount_decimal: @package.price * 100,
       product: stripe_product.id
     )
+    # Plan is needed for subscription model
     Stripe::Plan.create(
       amount: @package.price * 100,
       currency: 'gbp',

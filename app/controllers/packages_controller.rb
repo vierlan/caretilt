@@ -12,6 +12,7 @@ class PackagesController < ApplicationController
     @package = Package.new
   end
 
+    # creating a package also creates a new instance in StripePackage model which will update Stripe with the new package
   def create
     @package = Package.new(package_params)
     Stripe.api_key = Rails.application.credentials.stripe[:api_key]
