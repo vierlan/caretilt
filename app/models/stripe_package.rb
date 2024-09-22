@@ -6,20 +6,32 @@ class StripePackage
 
   def create_package
     return if @package.stripe_id.present?
-    Stripe.api_key = Rails.application.credentials.stripe[:secret_key]
+    Stripe.api_key = Rails.application.credentials.stripe[:api_key]
     stripe_product = Stripe::Product.create(
       name: @package.name,
-      credits: @package.credits,
-      validity: @package.validity,
-      created: Date.today.to_time.to_i,
+      description: @package.description,
+      active: true,
       metadata: {
         package_id: @package.id,
+        credits: @package.credits,
+        validity: @package.validity,
+        created: Date.today.to_time.to_i
       }
     )
     stripe_price = Stripe::Price.create(
-      currency: 'eur',
-      unit_amount_decimal: @package.package_price * 100,
+      currency: 'gbp',
+      unit_amount_decimal: @package.price * 100,
       product: stripe_product.id
+    )
+    Stripe::Plan.create(
+      amount: @package.price * 100,
+      currency: 'gbp',
+      interval: 'month',
+      product: stripe_product.id,
+      id: stripe_product.id,
+      nickname: @package.name,
+      usage_type: 'licensed',
+      interval_count: 1
     )
     @package.update(
       stripe_id: stripe_product.id,

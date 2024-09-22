@@ -14,14 +14,15 @@ class Stripe::CheckoutController < ApplicationController
     @company.payment_processor.customer
     Rails.logger.info("Creating Stripe customer for #{current_user.company.name}")
     @checkout_session = current_user.company
-        .payment_processor
-        .checkout(
-            mode: 'subscription',
-            line_items: 'price_1Q0TarJrOF6hrB5XbaAHc0FY',
-            success_url: checkout_success_url,
-            cancel_url: checkout_cancel_url
+      .payment_processor
+      .checkout(
+          mode: 'subscription',
+          line_items: 'price_1Q0TarJrOF6hrB5XbaAHc0FY',
+        
+          success_url: checkout_success_url,
+          cancel_url: checkout_cancel_url
 
-        )
+      )
 
 # Log the Stripe session URL
       redirect_to @checkout_session.url, status: 303, allow_other_host: true

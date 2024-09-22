@@ -75,12 +75,12 @@ Rails.application.routes.draw do
   #get "subscriptions/edit"
   #get "subscriptions/update"
   #get "subscriptions/destroy"
-  #get "packages/index"
-  #get "packages/show"
-  #get "packages/new"
-  #get "packages/create"
-  #get "packages/edit"
-  #get "packages/update"
+  get "packages/index"
+  get "packages/show"
+  get "packages/new"
+  post "packages", to: 'packages#create'
+  get "packages/edit"
+  get "packages/update"
   #get "packages/destroy"
   #get "activity_feeds/index"
   # static pages
