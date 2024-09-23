@@ -12,13 +12,14 @@ class PackagesController < ApplicationController
     @package = Package.new
   end
 
+    # creating a package also creates a new instance in StripePackage model which will update Stripe with the new package
   def create
     @package = Package.new(package_params)
-    Stripe.api_key = Rails.application.credentials.stripe[:secret_key]
+    Stripe.api_key = Rails.application.credentials.stripe[:api_key]
     if @package.save
       service = StripePackage.new(@package)
       service.create_package
-      redirect_to packages_path
+      redirect_to packages_index_path
     else
       render :new, status: :unprocessable_entity
     end
@@ -74,7 +75,7 @@ class PackagesController < ApplicationController
   end
 
   def package_params
-    params.require(:package).permit(:name, :description, :price, :duration)
+    params.require(:package).permit(:name, :description, :credits, :price, :validity, :stripe_price_id, :stripe_id, data: {})
   end
 
 

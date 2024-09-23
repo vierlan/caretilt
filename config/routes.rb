@@ -6,14 +6,15 @@ Rails.application.routes.draw do
 
 
   #debug session route
-  get '/session', to: 'activity_feeds#index'
+  #get '/session', to: 'activity_feeds#index'
   get 'verify/:id', to: 'users#verify', as: 'verify'
   patch 'verify/:id', to: 'users#verify_user'
   get '/team_members/:id/verify', to: 'team_members#verify_member', as: 'verify_member'
   patch '/team_members/:id/verify', to: 'team_members#verify_member_update'
-  get '/stripe/checkout/pricing', to: 'stripe/checkout#pricing'
-  #get '/stripe/checkout/success', to: 'stripe/checkout#success'
-  #get '/stripe/checkout/cancel', to: 'stripe/checkout#cancel'
+  get '/checkout', to: 'stripe/checkout#show'
+  get '/checkout/pricing', to: 'stripe/checkout#pricing'
+  get '/checkout/success', to: 'stripe/checkout#success'
+  get '/checkout/cancel', to: 'stripe/checkout#cancel'
 
   pages = %w[
     privacy terms about contact home home2 home3 home4 guides calculator faq pricing search quiz test test2
@@ -74,12 +75,12 @@ Rails.application.routes.draw do
   #get "subscriptions/edit"
   #get "subscriptions/update"
   #get "subscriptions/destroy"
-  #get "packages/index"
-  #get "packages/show"
-  #get "packages/new"
-  #get "packages/create"
-  #get "packages/edit"
-  #get "packages/update"
+  get "packages/index"
+  get "packages/show"
+  get "packages/new"
+  post "packages", to: 'packages#create'
+  get "packages/edit"
+  get "packages/update"
   #get "packages/destroy"
   #get "activity_feeds/index"
   # static pages

@@ -49,7 +49,6 @@ module Caretilt
       g.helper true
 
       # middleware added by Vierlan added to lib to enable session logging
-      config.middleware.use "LogWardenUserKeyMiddleware"
     end
   end
 end
