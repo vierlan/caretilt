@@ -11,7 +11,8 @@ Rails.application.routes.draw do
   patch 'verify/:id', to: 'users#verify_user'
   get '/team_members/:id/verify', to: 'team_members#verify_member', as: 'verify_member'
   patch '/team_members/:id/verify', to: 'team_members#verify_member_update'
-  get '/checkout', to: 'stripe/checkout#show'
+  get '/checkout', to: 'stripe/checkout#show', as: 'checkout'
+  #post '/checkout', to: 'stripe/checkout#checkout'
   get '/checkout/pricing', to: 'stripe/checkout#pricing'
   get '/checkout/success', to: 'stripe/checkout#success'
   get '/checkout/cancel', to: 'stripe/checkout#cancel'
@@ -22,20 +23,30 @@ Rails.application.routes.draw do
 
   resources :companies do
     member do
-      get 'add_team_member', to: 'team_members#new' # Updated to use 'new' action
+      get 'add_team_member', to: 'team_members#new', as: 'company_member' # Updated to use 'new' action
       get 'team', to: 'team_members#index'
       post 'add_team_member', to: 'team_members#create'
       get 'account', to: 'dashboard#account'
     end
-
-    # care homes under company for create and new because needed for creation. After creation, easy to get just
-    # resources :care_homes, only: %i[index new create] do
     resources :care_homes, only: %i[new create] do
       collection do
         get 'all'
       end
     end
   end
+
+  resources :local_authority do
+    member do
+      get 'add_team_member', to: 'team_members#new', as: 'la_member'
+      post 'add_team_member', to: 'team_members#create'
+      get 'account', to: 'dashboard#account'
+    end
+  end
+
+    # care homes under company for create and new because needed for creation. After creation, easy to get just
+    # resources :care_homes, only: %i[index new create] do
+
+
 
   resources :care_homes, only: %i[show edit update destroy index] do
     resources :rooms, only: %i[index new create]

@@ -22,22 +22,19 @@ class StripePackage
       }
     )
 
+    # Create Stripe recurring price (replaces Plan)
     stripe_price = Stripe::Price.create(
       currency: 'gbp',
-      unit_amount_decimal: @package.price * 100,
+      unit_amount: (@package.price * 100).to_i,  # Ensure unit amount is an integer
+      recurring: {
+        interval: 'month', # Adjust as needed (e.g., 'year' for yearly subscriptions)
+        interval_count: 1   # How often the subscription should recur (e.g., every month)
+      },
       product: stripe_product.id
     )
-    # Plan is needed for subscription model
-    Stripe::Plan.create(
-      amount: @package.price * 100,
-      currency: 'gbp',
-      interval: 'month',
-      product: stripe_product.id,
-      id: stripe_product.id,
-      nickname: @package.name,
-      usage_type: 'licensed',
-      interval_count: 1
-    )
+    
+      # Update the package with Stripe product and price IDs
+
     @package.update(
       stripe_id: stripe_product.id,
       data: stripe_product.to_json,
@@ -49,28 +46,17 @@ class StripePackage
   def update_package
     return if @package.stripe_id.blank?
     Stripe.api_key = ENV['STRIPE_SECRET_KEY']
-    cloudinary_base_url = 'https://res.cloudinary.com/drirqdfbt/image/upload/v1724362903/development/'
-    if @package.photo.nil?
-      raise "Package photo is missing"
-    else
-      puts @package.photo.key
-      image_url_append = @package.photo.key
-      Rails.logger.info "Updating Stripe product for package: #{@package} with photo: #{image_url_append}"
-      image = "#{cloudinary_base_url}#{image_url_append}.jpg"
-      stripe_product = Stripe::Product.retrieve(@package.stripe_id)
-      stripe_product.name = @package.package_name
-      stripe_product.description = @package.package_description
-      stripe_product.images = [image]
-      stripe_product.save
-      stripe_price = Stripe::Price.retrieve(@package.stripe_price_id)
-      stripe_price.unit_amount_decimal = @package.package_price * 100
-      stripe_price.save
-      @package.update(
-        data: stripe_product.to_json
-      )
-    end
+    Rails.logger.info "Updating Stripe product for package: #{@package}
+    image = "#{cloudinary_base_url}#{image_url_append}.jpg"
+    stripe_product = Stripe::Product.retrieve(@package.stripe_id)
+    stripe_product.name = @package.package_name
+    stripe_product.description = @package.package_description
+    stripe_product.save
+    stripe_price = Stripe::Price.retrieve(@package.stripe_price_id)
+    stripe_price.unit_amount_decimal = @package.package_price * 100
+    stripe_price.save
+    @package.update(
+      data: stripe_product.to_json
+    )
   end
-
-
-
 end

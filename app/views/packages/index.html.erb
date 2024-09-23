@@ -1,20 +1,39 @@
 <turbo-frame id= "main-content">
-            <!-- Current: "bg-gray-50 text-primary", Default: "text-gray-900 hover:text-primary hover:bg-gray-50" -->
-            <%= link_to packages_new_path, data: { turbo_frame: "main-content", navigation_target: "link" } do %>
-              <div class="group flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-900 hover:bg-gray-50 hover:text-primary"
+  <!-- Current: "bg-gray-50 text-primary", Default: "text-gray-900 hover:text-primary hover:bg-gray-50" -->
+  <%= link_to packages_new_path, data: { turbo_frame: "main-content", navigation_target: "link" } do %>
+    <div class="group flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-900 hover:bg-gray-50 hover:text-primary"
                 data-navigation-target="button"
                 data-action="click->navigation#highlightButton">
-                <svg class="h-6 w-6 shrink-0 text-gray-700 group-hover:text-primary" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-                </svg>
-                Make a new Package
-              </div>
-            <% end %>
-
-<% @packages.each do |package|%>
-  <h2><%= package.name %></h2>
-  <p><%= package.price %></p>
-  <p><%= package.validity %></p>
-  <%= button_to "buy Now!", checkout_path(price_id: package.stripe_price_id), data: {turbo: 'false'} %>
+      <svg class="h-6 w-6 shrink-0 text-gray-700 group-hover:text-primary" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+      </svg>
+      Make a new Package
+    </div>
   <% end %>
+  <div class="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 md:max-w-2xl md:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-4">
+    <% @packages.each do |package|%>
+      <%#= render 'template', locals: {package: package} %>
+      <div class='package'>
+        <div class="rounded-3xl p-8 ring-1 ring-gray-200">
+          <h3 id="tier-hobby" class="text-lg font-semibold leading-8 text-gray-900"><%= package.name %></h3>
+          <p class="mt-4 text-description-small" style="min-height: 220px">
+            <%= package.description %>          </p>
+          <p class="mt-6 flex items-baseline gap-x-1">
+            <!-- Price, update based on frequency toggle state -->
+            <span class="text-4xl font-bold tracking-tight text-gray-900">£360</span>
+            <!-- Payment frequency, update based on frequency toggle state -->
+            <span class="text-sm font-semibold leading-6 text-gray-600">/annum</span>
+          </p>
+          <%= link_to "buy Now!", checkout_path(price_id: package.stripe_price_id), data: {turbo: 'false'}, class: "mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+          <a href="/stripe/checkout" aria-describedby="tier-hobby" >Buy plan</a>
+          <% starter_plan_features = ["#{package.credits} credits per month"," #{package.validity} month subscription", "Added to Caretilt database"] %>
+          <ul role="list" class="mt-8 space-y-3 text-description-small">
+            <% starter_plan_features.each do |feature| %>
+              <%= render partial: "shared/pricing_list_item", locals: { content: feature } %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </turbo-frame>

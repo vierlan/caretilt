@@ -12,16 +12,16 @@ class Stripe::CheckoutController < ApplicationController
     @company = current_user.company
     @company.set_payment_processor :stripe
     @company.payment_processor.customer
-    Rails.logger.info("Creating Stripe customer for #{current_user.company.name}")
+    Rails.logger.info("Creating Stripe customer for #{current_user.company.name} + #{@price} ")
     @checkout_session = current_user.company
       .payment_processor
       .checkout(
-          mode: 'subscription',
-          line_items: 'price_1Q0TarJrOF6hrB5XbaAHc0FY',
-        
-          success_url: checkout_success_url,
-          cancel_url: checkout_cancel_url
-
+        mode: 'subscription',
+        line_items: [{
+          quantity: 1,
+          price: params[:price_id]}],
+        success_url: checkout_success_url,
+        cancel_url: checkout_cancel_url
       )
 
 # Log the Stripe session URL
@@ -31,37 +31,45 @@ class Stripe::CheckoutController < ApplicationController
   end
 
   def checkout
-
+    Stripe.api_key = Rails.application.credentials.stripe[:api_key]
+    @user = current_user
+    @company = current_user.company
+    @company.set_payment_processor :stripe
+    @company.payment_processor.customer
     begin
-      session = Stripe::Checkout::Session.create({
+      @checkout_session = current_user.company
+      .payment_processor
+      .checkout(
         mode: 'subscription',
         payment_method_types: ['card'],
         line_items: [{
           quantity: 1,
           price: params[:price_id]
         }],
-        success_url: stripe_checkout_success_path,
-        cancel_url: stripe_checkout_cancel_path
-      })
+        success_url: checkout_success_path,
+        cancel_url: checkout_cancel_path
+      )
 
     rescue StandardError => e
       render json: { error: { message: e.message } }, status: :bad_request
 
     end
-    #redirect_to session.url, allow_other_host: true
+    Rails.logger.info "Redirecting to Stripe checkout session URL: #{@checkout_session.url}"
+
+    redirect_to @checkout_session.url, status: 303, allow_other_host: true
 
   end
 
   def success
-    Stripe.api_key = Rails.application.credentials.stripe[:api_key]
-    session = Stripe::Checkout::Session.retrieve(params[:session_id])
+   #Stripe.api_key = Rails.application.credentials.stripe[:api_key]
+   #session = Stripe::Checkout::Session.retrieve(params[:session_id])
 
-    if session.payment_status == 'paid'
-      current_user.company.set_stripe_subscription
-      redirect_to dashboard_index_path, notice: 'Your account is now active!'
-    else
-      redirect_to subscribe_index_path, alert: "Please subscribe to continue."
-    end
+   #if session.payment_status == 'paid'
+   #  current_user.company.set_stripe_subscription
+   #  redirect_to dashboard_index_path, notice: 'Your account is now active!'
+   #else
+   #  redirect_to subscribe_index_path, alert: "Please subscribe to continue."
+   #end
   end
 
   def cancel
