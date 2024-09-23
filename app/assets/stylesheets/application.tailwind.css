@@ -6,6 +6,7 @@ rails assets:precompile */
 @import 'text.css';
 @import 'buttons.css';
 @import 'page_design.css';
+@import 'form.css';
 
 @tailwind base;
 @tailwind components;
