@@ -1,4 +1,6 @@
 <!-- views/care_homes/_form.html.erb -->
+
+<%# Same form used here for new and edit. New required company to attach to, edit just requires edit to append. %>
 <%= simple_form_for(@care_home, url: @care_home.new_record? ? company_care_homes_path(@company) : care_home_path(@care_home)) do |f| %>
   <!-- Hidden Fields for Latitude and Longitude -->
   <%= f.hidden_field :latitude, id: "latitude" %>

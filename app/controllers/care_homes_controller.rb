@@ -14,6 +14,7 @@ class CareHomesController < ApplicationController
     @type_of_home_options = ['Any'] + CareHome::TYPEHOME 
     @types_of_client_group_options = CareHome::TYPECLIENT 
 
+    # Logic here will return all care homes by default unless front end form specifies filtering params.
     @care_homes = CareHome.all
     if params[:care_home]
       # Local authority filter (if not "Any")
@@ -42,6 +43,13 @@ class CareHomesController < ApplicationController
   def show
     @care_home = CareHome.find(params[:id])
     @rooms = @care_home.rooms
+  
+    if @rooms.any?
+      @room_cheapest = @rooms.order(:core_fee_level).first
+    else
+      @room_cheapest = nil
+    end
+  
     render "care_homes/show"
   end
 

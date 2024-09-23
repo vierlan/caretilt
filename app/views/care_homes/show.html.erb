@@ -9,16 +9,20 @@
           <%= image_tag "advina", size: "150x150" %>
       </div>
     </div>
-    <div class="mt-3 flex justify-end gap-4">
-      <a href="<%= @care_home.website %>" target="_blank" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-        View Website
-      </a>
-      <a href="mailto:<%= @care_home.email %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-        Send Email
-      </a>
-      <a href="tel:<%= @care_home.phone_number %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-        View Phone Number
-      </a>
+    <div class="flex justify-between">
+      <%= link_to 'Care / Support Services', care_home_rooms_path(@care_home), data: { turbo_frame: "main-content" }, class: "button-blue-pill" %>
+
+      <div class="mt-3 flex justify-end gap-4">
+        <a href="<%= @care_home.website %>" target="_blank" class="button-blue-pill">
+          View Website
+        </a>
+        <a href="mailto:<%= @care_home.email %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+          Send Email
+        </a>
+        <a href="tel:<%= @care_home.phone_number %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+          View Phone Number
+        </a>
+      </div>
     </div>
   </div>
 
