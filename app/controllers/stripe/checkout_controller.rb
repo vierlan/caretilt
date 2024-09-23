@@ -61,15 +61,32 @@ class Stripe::CheckoutController < ApplicationController
   end
 
   def success
-   #Stripe.api_key = Rails.application.credentials.stripe[:api_key]
-   #session = Stripe::Checkout::Session.retrieve(params[:session_id])
+    Stripe.api_key = Rails.application.credentials.stripe[:api_key]
+    @stripe_session = Stripe::Checkout::Session.retrieve(params[:session_id])
+    line_items = Stripe::Checkout::Session.list_line_items(@stripe_session.id)
+    line_items.each do |item|
+      @package = Package.find_by(stripe_id: item.price.product)
 
-   #if session.payment_status == 'paid'
-   #  current_user.company.set_stripe_subscription
-   #  redirect_to dashboard_index_path, notice: 'Your account is now active!'
-   #else
-   #  redirect_to subscribe_index_path, alert: "Please subscribe to continue."
-   #end
+      if @stripe_session.payment_status == 'paid'
+        # Create a new subscription instance
+        @subscription = Subscription.new
+        @subscription.company = current_user.company
+        @subscription.package = @package
+        @subscription.receipt_number = @stripe_session.subscription
+        @subscription.expires_on = Time.now + @package.validity.months # Assuming validity is in months
+        @subscription.credits_left = @package.credits
+        @subscription.active = true
+        @subscription.subscribed_on = Time.now
+        # Log the credits purchase
+        @subscription.credit_log <<  ["purchased_on: #{Time.now}, package: #{@package.name}, credits: #{@package.credits}, expiry_date: #{Time.now + @package.validity.months} "]
+
+        # Save the subscription
+        @subscription.save!
+      else
+        redirect_to subscribe_index_path, alert: "Please subscribe to continue."
+      end
+    end
+    redirect_to dashboard_index_path, notice: 'Subscription successful.'
   end
 
   def cancel

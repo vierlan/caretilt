@@ -14,15 +14,7 @@ class SubscriptionsController < ApplicationController
     @subscription = Subscription.new
   end
 
-  def create
-    @subscription = Subscription.new(subscription_params)
-    @subscription.company = @company
-    @subscription.package = @package
-    if @subscription.save
-      redirect_to company_path(@company)
-    else
-      render :new, status: :unprocessable_entity
-    end
+  def Create(attributes = {})
   end
 
   def edit

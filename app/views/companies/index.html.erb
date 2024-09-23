@@ -14,7 +14,15 @@
                 <p class="text-xs leading-5 text-gray-500"><%= key %>: <%= value %></p>
               <% end %>
             </div>
+            <% company.subscriptions.each do |subscription| %>
+              <a href='#' data-action="open#toggleHiddenField"><span class="text-lg text-gray-700 mr-4"><%= subscription.expires_on %>  <i class="fa-solid fa-plus"></i></span></a>
+              <div class="hidden" data-target="info">
+              <% subscription.attributes.each do |key, value| %>
+                <p class="text-xs leading-5 text-gray-500"><%= key %>: <%= value %></p>
+              <% end %>
           </div>
+        </div>
+        <% end %>
         </div>
         <div class=" flex flex-col" data-controller="open">
         <p class="text-xl font-semibold text-gray-900"> Care Facilities</p>

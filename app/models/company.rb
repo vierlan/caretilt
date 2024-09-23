@@ -1,4 +1,5 @@
 class Company < ApplicationRecord
+  include Pay::Billable
   attr_accessor :address, :address2, :city, :postcode
 
 
