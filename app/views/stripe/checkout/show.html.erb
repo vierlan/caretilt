@@ -1,7 +1,13 @@
+<turbo-frame id="main-content">
 <h1>Checkout!</h1>
 
+<% if !current_user %>
+  <p>You need to be signed in to checkout</p>
+  <%= link_to 'Sign in', new_user_session_path %>
+<% end %>
 <%= render partial: 'pay/stripe/checkout_button', locals: {
   session: @checkout_session,
   title: 'Checkout',
   data: {turbo: false}
 } %>
+</turbo-frame>

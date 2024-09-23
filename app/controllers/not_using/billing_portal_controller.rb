@@ -29,7 +29,8 @@ class BillingPortalController < ApplicationController
 
   # invoked from /subscribe during onboarding
   def create_subscription
-    @company.find(param[:company_id])
+    @package = Package.find(params[:package_id])
+    @company = current_user.company
     if @company.stripe_customer_id.nil?
       customer = Stripe::Customer.create(name: @company.name, email: @company.email)
       @company.update(stripe_customer_id: customer.id)
@@ -41,7 +42,7 @@ class BillingPortalController < ApplicationController
       payment_method_types: ['card'],
       line_items: [{
         # Provide the Price ID (e.g. price_1234) of the product you want to sell
-        price: Rails.application.credentials.stripe.product_price_id,
+        price: @package.stripe_price_id,
         quantity: 1
       }],
       mode: 'subscription', # use 'payment' for products with 1-time pricing
