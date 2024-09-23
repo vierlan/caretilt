@@ -29,7 +29,11 @@
           <h1 class="text-blue-600 font-semibold p-1 ms-2">73 Reviews</h1>
         </div>
         <div>
-          <h3 class="font-semibold">10 Rooms from £1,310 / week</h3>
+          <% if home.rooms.length > 0 %>
+            <h3 class="font-semibold">
+              <%= home.rooms.length %> <%= home.rooms.length > 1 ? "rooms" : "room" %> starting at home.rooms.chea
+            </h3>
+          <% end %>
         </div>
         <div>
           <h2>Services provided:</h2>
@@ -60,7 +64,7 @@
       <div>
       </div>
       <div>
-        <%= link_to 'Care / Support Services', care_home_rooms_path(home), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
+        <%# <%= link_to 'Care / Support Services', care_home_rooms_path(home), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %> 
         <%= link_to 'Edit', edit_care_home_path(home), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
       </div>
     </div>

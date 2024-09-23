@@ -14,7 +14,8 @@ class CareHome < ApplicationRecord
     "Nursing Home",
     "Residential Care Homes",
     "Supported Living"
-  ]
+  ].sort_by { |item| item}
+
   TYPECLIENT = [
     "Learning Disabilities and/or Autism",
     "Mental Health and/or Autism",
@@ -24,7 +25,7 @@ class CareHome < ApplicationRecord
     "Children and Young People",
     "Children with SEN",
     "Young People / Unaccompanied Minors"
-  ]
+  ].sort_by { |item| item}
 
   belongs_to :company
   has_many :users
