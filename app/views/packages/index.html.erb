@@ -10,7 +10,12 @@
       Make a new Package
     </div>
   <% end %>
+
+  <% if current_user&.company&.has_active_subscription? %>
+    <%= render 'current_package', locals: { subscription: @active_subsciption, package: @active_package} %>
+    <% end %>
   <div class="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 md:max-w-2xl md:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-4">
+
     <% @packages.each do |package|%>
       <%#= render 'template', locals: {package: package} %>
       <div class='package'>
@@ -23,14 +28,20 @@
             <span class="text-4xl font-bold tracking-tight text-gray-900"><%= package.price %></span>
             <!-- Payment frequency, update based on frequency toggle state -->
             <% if package.validity == 12 %>
-            <span class="text-sm font-semibold leading-6 text-gray-600">/annum</span>
+              <span class="text-sm font-semibold leading-6 text-gray-600">/annum</span>
             <% elsif package.validity == 1 %>
-            <span class="text-sm font-semibold leading-6 text-gray-600">/month</span>
+              <span class="text-sm font-semibold leading-6 text-gray-600">/month</span>
+            <% else %>
+              <span class="text-sm font-semibold leading-6 text-gray-600"> Credits</span>
             <% end %>
           </p>
           <%= link_to "buy Now!", checkout_path(price_id: package.stripe_price_id), data: {turbo: 'false'}, class: "mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
           <a href="/stripe/checkout" aria-describedby="tier-hobby" >Buy plan</a>
-          <% starter_plan_features = ["#{package.credits} credits per month"," #{package.validity} month subscription", "Added to Caretilt database"] %>
+          <% if package.validity == 0 %>
+            <% starter_plan_features = ["#{package.credits} credits", "Must have active subscription", "Added to Caretilt database"] %>
+          <% else %>
+            <% starter_plan_features = ["#{package.credits} credits per month"," #{package.validity} month subscription", "Added to Caretilt database"] %>
+          <% end %>
           <ul role="list" class="mt-8 space-y-3 text-description-small">
             <% starter_plan_features.each do |feature| %>
               <%= render partial: "shared/pricing_list_item", locals: { content: feature } %>

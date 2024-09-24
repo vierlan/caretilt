@@ -2,7 +2,12 @@ class PackagesController < ApplicationController
   before_action :set_packages, only: %i[show edit update destroy]
   def index
     @packages = Package.all
-
+    @subscription_packages = Package.where.not(validity: 0)
+    @credit_packages = Package.where(validity: 0)
+    if current_user&.company&.has_active_subscription?
+      @active_subscription = Subscription.find_by(company_id: current_user.company.id, active: true)
+      @active_package = Package.find(@active_subscription.package_id)
+    end
   end
 
   def show
