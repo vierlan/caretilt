@@ -4,6 +4,13 @@ class CareHomesController < ApplicationController
     @user = current_user
     @company = Company.find(params[:company_id])
     @care_homes = @company.care_homes
+    @care_homes = @care_homes.map do |care_home|
+      {
+        care_home: care_home,
+        vacant_rooms: care_home.rooms.where(vacant: true),
+        lowest_price: care_home.rooms.minimum(:total)
+      }
+    end
   end
 
   def index
@@ -32,6 +39,17 @@ class CareHomesController < ApplicationController
         @care_homes = @care_homes.where("types_of_client_group @> ARRAY[?]::varchar[]", params[:care_home][:types_of_client_group].reject(&:blank?))
       end
     end
+
+    # Prepare additional information: vacant rooms and minimum total price
+    # In the carehome index we need to show all care homes, but cards needs to display only vacant rooms and lowest prices. Filter here instead of view.
+    # Access following in the view by care_home[:key]
+    @care_homes = @care_homes.map do |care_home|
+      {
+        care_home: care_home,
+        vacant_rooms: care_home.rooms.where(vacant: true),
+        lowest_price: care_home.rooms.minimum(:total)
+      }
+    end
   
     respond_to do |format|
       format.html # Renders the default HTML view
@@ -42,7 +60,7 @@ class CareHomesController < ApplicationController
 
   def show
     @care_home = CareHome.find(params[:id])
-    @rooms = @care_home.rooms
+    @rooms = @care_home.rooms.where(vacant: true)
   
     if @rooms.any?
       @room_cheapest = @rooms.order(:core_fee_level).first

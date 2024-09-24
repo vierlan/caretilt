@@ -1,7 +1,10 @@
 <!-- views/care_homes/index.html.erb -->
 <turbo-frame id="main-content">
+  <%# Explanation:
+  Instead of passing @care_homes directly, we're now mapping over @care_homes to extract only the care_home object from each hash (home_data[:care_home]).
+  We convert that array of care_home objects into JSON, as before, and limit it to include only the relevant attributes (:name, :latitude, :longitude, :local_authority_name). %>
   <div data-controller="showplacesmap" 
-      data-showplacesmap-care-homes-value="<%= @care_homes.to_json(only: [:name, :latitude, :longitude, :local_authority_name]) %>"
+      data-showplacesmap-care-homes-value="<%= @care_homes.map { |home_data| home_data[:care_home] }.to_json(only: [:name, :latitude, :longitude, :local_authority_name]) %>"
       data-showplacesmap-marker-url-value="<%= image_path('logo_trans.png') %>">
 
     <!-- Form for Filtering -->

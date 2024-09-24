@@ -45,9 +45,14 @@ class CareHome < ApplicationRecord
   inclusion: { in: ->(_) { cached_local_authority_names },
   message: "%{value} is not a valid local authority" }
   validate :types_of_client_group
-  
-  
-                                              
+
+
+
+  #Used for care home card
+  def short_address
+    [address1, city, postcode].reject(&:blank?).join(', ')
+  end
+                                        
   private
 
   def self.cached_local_authority_names
