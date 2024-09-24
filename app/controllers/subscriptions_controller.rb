@@ -28,10 +28,19 @@ class SubscriptionsController < ApplicationController
     end
   end
 
+
   def destroy
   end
 
   private
+
+  def add_credits(package)
+    @package = package
+    @active_subscription = Subscription.find_by(company_id: current_user.company.id, active: true)
+    if current_user&.company&.has_active_subscription?
+      @active_subscription.update(credits: @active_subscription.credits + @package.credits)
+    end
+  end
 
   def set_subscriptions
     @subscription = Subscription.find(params[:id])

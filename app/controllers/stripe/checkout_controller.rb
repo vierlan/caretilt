@@ -62,6 +62,7 @@ class Stripe::CheckoutController < ApplicationController
 
   def success
     Stripe.api_key = Rails.application.credentials.stripe[:api_key]
+    #retrives a json object of the purchase session
     @stripe_session = Stripe::Checkout::Session.retrieve(params[:session_id])
     line_items = Stripe::Checkout::Session.list_line_items(@stripe_session.id)
     line_items.each do |item|

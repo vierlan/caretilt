@@ -20,9 +20,13 @@
             <%= package.description %>          </p>
           <p class="mt-6 flex items-baseline gap-x-1">
             <!-- Price, update based on frequency toggle state -->
-            <span class="text-4xl font-bold tracking-tight text-gray-900">£360</span>
+            <span class="text-4xl font-bold tracking-tight text-gray-900"><%= package.price %></span>
             <!-- Payment frequency, update based on frequency toggle state -->
+            <% if package.validity == 12 %>
             <span class="text-sm font-semibold leading-6 text-gray-600">/annum</span>
+            <% elsif package.validity == 1 %>
+            <span class="text-sm font-semibold leading-6 text-gray-600">/month</span>
+            <% end %>
           </p>
           <%= link_to "buy Now!", checkout_path(price_id: package.stripe_price_id), data: {turbo: 'false'}, class: "mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
           <a href="/stripe/checkout" aria-describedby="tier-hobby" >Buy plan</a>

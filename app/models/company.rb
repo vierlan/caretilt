@@ -27,8 +27,9 @@ class Company < ApplicationRecord
   has_many :subscriptions
   has_many :packages, through: :subscriptions
 
-  def active_subscription
-    subscriptions.exists?(company.subscriptions.active)
+  # checks the company has an active subscription
+  def has_active_subscription?
+    subscriptions.where(active: true).exists?
   end
 
   def stripe_attributes(pay_customer)
