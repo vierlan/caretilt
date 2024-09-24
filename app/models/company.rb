@@ -5,7 +5,6 @@ class Company < ApplicationRecord
   # include Billable
   # pay_customer stripe_attributes: :stripe_attributes
 
-  TYPES = ["type1", "type2", "type3"]
 
   # after_create do
   #   Rails.logger.info("Creating Stripe customer for #{self.name}")
@@ -13,13 +12,10 @@ class Company < ApplicationRecord
   #   Rails.logger.info("Stripe customer created: #{company.name}")
   # end
 
-  # include SharedValidAttributes #In models/concerns/shared_valid we are inclusing all phone and address validation since they shared.
+  include SharedValidAttributes #In models/concerns/shared_valid we are inclusing all phone and address validation since they shared.
 
-  # validates :name, presence: true
-  # validates :companies_house_id, presence: true, length: { is: 8 }, format: { with: /\A[A-Z0-9]{8}\z/, message: "must be 8 alphanumeric characters" }
-  # validates :type, presence: true, inclusion: { in: TYPES, message: "%{value} is not a valid company type" }
-
-  # Check phone number validation on country - TBC
+  validates :name, presence: true
+  validates :companies_house_id, presence: true, length: { is: 8 }, format: { with: /\A[A-Z0-9]{8}\z/, message: "must be 8 alphanumeric characters" }
 
   has_many :users
   has_many :care_homes

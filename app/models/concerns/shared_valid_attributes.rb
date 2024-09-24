@@ -7,6 +7,7 @@ module SharedValidAttributes
         message: "must be a valid UK phone number" }, allow_blank: true
 
       validates :postcode,
+        presence: true,
         format: { with:  /\A([A-Z]{1,2}\d{1,2}[A-Z]?) ?\d[A-Z]{2}\z/i,
         message: "must be a valid UK postcode" }, allow_blank: false
 

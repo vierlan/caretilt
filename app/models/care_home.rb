@@ -41,6 +41,9 @@ class CareHome < ApplicationRecord
   validates :short_description, presence: { message: "Short description cannot be blank" }, length: { in: 1..300, message: "Short description must be between 1 and 300 characters" }
   validates :long_description, length: { in: 1..800, message: "Long description must be between 1 and 800 characters" }, allow_blank: true
   validates :type_of_home, presence: { message: "Type of home cannot be blank" }, inclusion: { in: TYPEHOME, message: "%{value} is not a valid home type" }
+
+  # For local authority name check out 'import_local_authorities.rb' under rake.
+  # We're getting a csv to make models for each row in the csv to hold data. Then this data can be used for dropdown inclusion depending on attribute.
   validates :local_authority_name, presence: { message: "Local authority cannot be blank" },
   inclusion: { in: ->(_) { cached_local_authority_names },
   message: "%{value} is not a valid local authority" }
@@ -55,20 +58,23 @@ class CareHome < ApplicationRecord
                                         
   private
 
+  # Performance could be an issue plucking the value time, so we're 
   def self.cached_local_authority_names
     @cached_local_authority_names ||= LocalAuthorityData.pluck(:nice_name)
   end
   
   def validate_client_groups
-    invalid_client_groups = types_of_client_group - TYPECLIENT
-    if invalid_client_groups.any?
-      errors.add(:types_of_client_group, "#{invalid_client_groups.join(', ')} are not valid client types")
+    if types_of_client_group.blank?
+      errors.add(:types_of_client_group, "cannot be blank")
+    else
+      invalid_client_groups = types_of_client_group - TYPECLIENT
+      if invalid_client_groups.any?
+        errors.add(:types_of_client_group, "#{invalid_client_groups.join(', ')} are not valid client types")
+      end
     end
   end
-
+  
   def set_formatted_address
     self.formatted_address = [name, address1, address2, city, postcode, country].reject(&:blank?).join(', ')
   end
-# Inclusion Validation: Uses a lambda (->(_) { ... }) to dynamically fetch the nice_name values from the LocalAuthorityData model.
-# LocalAuthorityData.pluck(:nice_name): This fetches all nice_name values from the LocalAuthorityData table and returns them as an array. The lambda function ensures that this list is generated at runtime when the validation is checked.
 end
