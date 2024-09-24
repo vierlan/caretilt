@@ -1,13 +1,14 @@
 <div class='package'>
   <div class="rounded-3xl p-8 ring-1 ring-gray-200">
   <h3 class="text-lg font-semibold leading-8 text-gray-900">Subscription details: </h3>
-    <h3 id="tier-hobby" class="text-lg font-bold leading-8 text-gray-900"><%= @active_package.name %></h3>
+    <h3 id="current_subscription" class="text-lg font-bold leading-8 text-gray-900"><%= @active_package.name %></h3>
     <p class="mt-4 text-description-small" style="min-height: 220px">
       <%= @active_package.description %>          </p>
     <p class="mt-6 flex items-baseline gap-x-1">
       <!-- Price, update based on frequency toggle state -->
-      <span class="text-4xl font-bold tracking-tight text-gray-900"><%= @active_package.price %></span>
-      <!-- Payment frequency, update based on frequency toggle state -->
+      <span class="text-4xl font-bold tracking-tight text-gray-900"><%= @active_package.price %> & </span>
+      <span class="text-4xl font-bold tracking-tight text-gray-900"><%= @active_package.credits %> credits  </span>
+      <!-- Payment frequency, update based on frequency toggle state validity == 12 is anual subscription -->
       <% if @active_package.validity == 12 %>
         <span class="text-sm font-semibold leading-6 text-gray-600">/annum</span>
       <% elsif @active_package.validity == 1 %>
@@ -17,12 +18,21 @@
       <% end %>
     </p>
     <%= link_to "buy Now!", checkout_path(price_id: @active_package.stripe_price_id), data: {turbo: 'false'}, class: "mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
-    <a href="/stripe/checkout" aria-describedby="tier-hobby" >Change Plan (to be implemented)</a>
+    <a href="#" aria-describedby="current_subscription" >Change Plan (to be implemented)</a>
     <% if current_user&.company&.has_active_subscription? %>
     <ul role="list" class="mt-8 space-y-3 text-description-small">
       <li>Next Payment Due: <%= @active_subscription.next_payment_date %></li>
       <li>Credits remaining: <%= @active_subscription.credits_left  %></li>
-      <% end %>
+      <div data-controller="open">
+        <a href="#" data-action="open#toggleHiddenField"><span><li>Credit log: </li><i class="fa-solid fa-plus"></i></span></a>
+        <ul class="hidden" data-target="info">
+          <% @active_subscription.credit_log.each do | log | %>
+            <li><%= log %></li>
+          <% end %>
+        </ul>
+
+        <% end %>
+      </div>
     </ul>
   </div>
 </div>
