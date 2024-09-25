@@ -1,0 +1,64 @@
+<turbo-frame id="main-content">
+  <div>
+    <%= link_to sanitize("&larr; Back to homes"), care_home_path(@care_home), class: "btn mb-4 font-bold text-lg text-white bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg" %>
+  </div>
+
+  <%= simple_form_for [@care_home, @room], url: @room.new_record? ? care_home_rooms_path(@care_home) : care_home_rooms_path(@room), local: true do |f| %>
+    <div class="space-y-12">
+      <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
+        <div>
+          <h2 class="text-base font-semibold leading-7 text-gray-900">Care Home Room Profile</h2>
+          <p class="mt-1 text-sm leading-6 text-gray-600">This information will be displayed publicly so be careful what you share.</p>
+        </div>
+        <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+          <!-- Room Name -->
+          <div class="sm:col-span-6">
+            <%= f.input :name, label: "Room Name", input_html: { id: "name" } %>
+          </div>
+
+          <!-- Core Fee Level -->
+          <div class="sm:col-span-6">
+            <%= f.input :core_fee_level, label: "Core Fee Level", input_html: { id: "core_fee_level" } %>
+          </div>
+
+          <!-- Core Hours of Care -->
+          <div class="sm:col-span-6">
+            <%= f.input :core_hours_of_care, label: "Core Hours of Care", input_html: { id: "core_hours_of_care" } %>
+          </div>
+
+          <!-- Additional Fees Associated -->
+          <div class="sm:col-span-6">
+            <div class="mt-2 flex items-center">
+              <%= f.input :additional_fees_associated, as: :boolean, label: "Additional fees associated?", input_html: { id: "additional_fees_associated" } %>
+            </div>
+          </div>
+
+          <!-- Single/Double Room -->
+          <div class="sm:col-span-6">
+            <%= f.input :single_double, label: "Single/Double Room", collection: ["Single Room", "Double Room"], prompt: 'Select a room', input_html: { class: "w-full" } %>
+          </div>
+
+          <!-- Ensuite -->
+          <div class="sm:col-span-6 mt-2 flex items-center">
+            <%= f.input :ensuite, as: :boolean, label: "Ensuite?", input_html: { id: "ensuite" } %>
+          </div>
+
+          <!-- Photos -->
+          <div class="ml-8 mt-2">
+            <%= f.input :photos, as: :file, label: "Photo", input_html: { name: 'photos[]', multiple: true } %>
+          </div>
+
+          <!-- Vacant -->
+          <div class="sm:col-span-6 mt-2 flex items-center">
+            <%= f.input :vacant, as: :boolean, label: "List this room as Vacant", input_html: { id: "vacant" } %>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="mt-6 sm:col-span-6">
+            <%= f.button :submit, "Save", class: "btn bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg w-full" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</turbo-frame>

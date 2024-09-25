@@ -1,27 +1,48 @@
 <!-- views/care_homes/index.html.erb -->
 <turbo-frame id="main-content">
+  <%# Explanation:
+  Instead of passing @care_homes directly, we're now mapping over @care_homes to extract only the care_home object from each hash (home_data[:care_home]).
+  We convert that array of care_home objects into JSON, as before, and limit it to include only the relevant attributes (:name, :latitude, :longitude, :local_authority_name). %>
   <div data-controller="showplacesmap" 
-      data-showplacesmap-care-homes-value="<%= @care_homes.to_json(only: [:name, :latitude, :longitude, :local_authority_name]) %>"
+      data-showplacesmap-care-homes-value="<%= @care_homes.map { |home_data| home_data[:care_home] }.to_json(only: [:name, :latitude, :longitude, :local_authority_name]) %>"
       data-showplacesmap-marker-url-value="<%= image_path('logo_trans.png') %>">
 
     <!-- Form for Filtering -->
     <%= simple_form_for :care_home, url: care_homes_path, method: :get, html: { class: "form-inline" } do |f| %>
-      <!-- Local Authority Dropdown -->
-      <div class="col-span-6">
-            <%= f.input :local_authority_name, label: "Local Authority", 
-              collection: @all_local_authorities, 
-              label_method: :nice_name, 
-              value_method: :nice_name, 
-              prompt: 'Select a local authority', 
-              input_html: { class: 'custom-class' } %>
-      </div>
-      
-      <!-- Submit Button -->
-      <div class="form-group">
-        <%= f.button :submit, "Filter", class: "p-2 bg-blue-500 text-white rounded" %>
-      </div>
-      <%= link_to "Reset", care_homes_path, class: "button-base-round" %>
-    <% end %>
+
+    <!-- Local Authority Dropdown with 'Any' as the default option -->
+    <div class="col-span-6">
+      <%= f.input :local_authority_name, label: "Local Authority", 
+        collection: ['Any'] + @all_local_authorities.pluck(:nice_name), 
+        selected: params.dig(:care_home, :local_authority_name) || 'Any',
+        input_html: { class: 'custom-class' } %>
+    </div>
+
+    <!-- Type of Home Dropdown with 'Any' as the default option -->
+    <div class="col-span-6">
+      <%= f.input :type_of_home, label: "Type of Home", 
+        collection: ['Any'] + @type_of_home_options, 
+        selected: params.dig(:care_home, :type_of_home) || 'Any',
+        input_html: { class: 'custom-class' } %>
+    </div>
+
+    <!-- Types of Client Group Multi-Checkbox -->
+    <div class="col-span-6">
+      <%= f.collection_check_boxes :types_of_client_group, @types_of_client_group_options, :to_s, :to_s do |b| %>
+        <div class="">
+          <%= b.check_box %>
+          <%= b.label %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="form-group">
+      <%= f.button :submit, "Filter", class: "p-2 bg-blue-500 text-white rounded" %>
+    </div>
+
+    <%= link_to "Reset", care_homes_path, class: "button-base-round" %>
+  <% end %>
 
     <!-- Map Container -->
     <div id="map" style="height: 500px; width: 100%;"></div>

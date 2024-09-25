@@ -13,3 +13,7 @@
 /* .button-base-square {
     @apply btn block rounded-md px-3 py-2 text-center text-base font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg
 } */
+
+.button-blue-pill {
+    @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full
+}

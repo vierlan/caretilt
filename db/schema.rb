@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_22_204819) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_24_132413) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -104,14 +104,14 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_22_204819) do
   create_table "companies", force: :cascade do |t|
     t.string "name"
     t.string "type"
-    t.integer "companies_house_id"
+    t.string "companies_house_id"
     t.string "registered_address"
     t.string "phone_number"
     t.string "billing_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "registration_pin", default: "2285", null: false
-    t.string "super_pin", default: "7223", null: false
+    t.string "registration_pin", default: "2101", null: false
+    t.string "super_pin", default: "2399", null: false
     t.string "stripe_customer_id"
     t.string "email"
     t.string "contact_name"
@@ -280,6 +280,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_22_204819) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "vacant", default: false
+    t.decimal "total", precision: 10, scale: 2
     t.index ["care_home_id"], name: "index_rooms_on_care_home_id"
   end
 
