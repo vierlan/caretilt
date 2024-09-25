@@ -1,2 +1,11 @@
 COMPANY_NAME: Caretilt
 BASE_URL: http://localhost:3000
+development:
+  twilio_account_sid: <%= ENV["TWILIO_ACCOUNT_SID"] %>
+  twilio_auth_token: <%= ENV["TWILIO_AUTH_TOKEN"] %>
+  twilio_phone_number: <%= ENV["TWILIO_PHONE_NUMBER"] %>
+
+production:
+  twilio_account_sid: <%= ENV["TWILIO_ACCOUNT_SID"] %>
+  twilio_auth_token: <%= ENV["TWILIO_AUTH_TOKEN"] %>
+  twilio_phone_number: <%= ENV["TWILIO_PHONE_NUMBER"] %>

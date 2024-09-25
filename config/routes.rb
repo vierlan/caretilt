@@ -67,6 +67,11 @@ Rails.application.routes.draw do
   post 'add_team_member', to: 'team_members#create'
 
   devise_for :users, path: '', path_names: { sign_in: 'login', sign_up: 'signup' }, controllers: { registrations: 'registrations' }
+  devise_scope :user do
+    get 'users/verify', to: 'users/two_factor_authentication#show', as: :user_verify
+    post 'users/verify', to: 'users/two_factor_authentication#verify', as: :user_verify_post
+    post 'users/send_verification', to: 'users/two_factor_authentication#send_verification', as: :send_verification_user
+  end
   get 'logout', to: 'pages#logout', as: 'logout'
   resources :after_signup, only: %i[show update]
 

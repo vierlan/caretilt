@@ -3,7 +3,9 @@ class RegistrationsController < Devise::RegistrationsController
 
   def create
     super do |resource|
-
+      if @user.persisted?
+        send_verification_code(user.phone_number)
+      end
       # Assign the role based on checkbox selection
       if params[:user][:is_service_provider] == "1"
         resource.role = "care_provider_super_user"
@@ -23,7 +25,13 @@ class RegistrationsController < Devise::RegistrationsController
 
   def after_sign_up_path_for(resource)
     after_signup_path(:add_name)
+  end
 
+  def send_verification_code(phone_number)
+    client = Twilio::REST::Client.new(ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN'])
+    client.verify.services(ENV['TWILIO_VERIFICATION_SID'])
+                 .verifications
+                 .create(to: phone_number, channel: 'sms')
   end
 
 

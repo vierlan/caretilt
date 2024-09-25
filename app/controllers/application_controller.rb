@@ -10,6 +10,12 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
+
+    # Check if the user needs 2FA verification
+    if !current_user.verified
+      return user_verify_path # Redirect to the 2FA verification page
+    end
+    
     @company = current_user.company
 
     if current_user.status == 'added'

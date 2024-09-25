@@ -12,10 +12,10 @@ class Company < ApplicationRecord
   #   Rails.logger.info("Stripe customer created: #{company.name}")
   # end
 
-  include SharedValidAttributes #In models/concerns/shared_valid we are inclusing all phone and address validation since they shared.
+  # include SharedValidAttributes #In models/concerns/shared_valid we are inclusing all phone and address validation since they shared.
 
-  validates :name, presence: true
-  validates :companies_house_id, presence: true, length: { is: 8 }, format: { with: /\A[A-Z0-9]{8}\z/, message: "must be 8 alphanumeric characters" }
+  # validates :name, presence: true
+  # validates :companies_house_id, presence: true, length: { is: 8 }, format: { with: /\A[A-Z0-9]{8}\z/, message: "must be 8 alphanumeric characters" }
 
   has_many :users
   has_many :care_homes

@@ -32,10 +32,15 @@ class User < ApplicationRecord
 
  # Validation to ensure terms are accepted and role is selected
   validates :terms_of_service, acceptance: { accept: 'on', message: 'must be accepted' }
-
+  validates :verified, inclusion: { in: [true, false] }
   # validates :first_name, presence: true
   # validates :last_name, presence: true
 
+  before_create :set_verified_default
+
+  def set_verified_default
+    self.verified = false
+  end
 
 
   # :nocov:
@@ -48,6 +53,7 @@ class User < ApplicationRecord
   end
   # :nocov:
 
+  # For Wicked Controller. Checks if they filled in basic things (because we can't use rails validations).
   def onboarding_complete?
     first_name.present? && last_name.present? && (company_id.present? || local_authority_id.present?)
   end

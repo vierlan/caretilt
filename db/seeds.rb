@@ -54,7 +54,9 @@ careprovidersuperuser = User.create!(
   last_name: 'Provider',
   role: 'care_provider_super_user',
   status: 'verified',
-  company: company
+  company: company,
+  phone_number: "+447387170544",
+  verified: true
 )
 
 lasuperuser = User.create!(
@@ -65,7 +67,8 @@ lasuperuser = User.create!(
     last_name: 'Authority',
     role: 'la_super_user',
     status: 'verified',
-    local_authority: localauthority
+    local_authority: localauthority,
+    verified: false
   )
 
 

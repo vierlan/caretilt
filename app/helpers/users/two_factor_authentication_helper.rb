@@ -1,0 +1,2 @@
+module Users::TwoFactorAuthenticationHelper
+end
