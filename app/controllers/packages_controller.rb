@@ -23,7 +23,11 @@ class PackagesController < ApplicationController
     Stripe.api_key = Rails.application.credentials.stripe[:api_key]
     if @package.save
       service = StripePackage.new(@package)
-      service.create_package
+      if @package.validity == 0
+        service.create_add_credits_package
+      else
+        service.create_package
+      end
       redirect_to packages_index_path
     else
       render :new, status: :unprocessable_entity

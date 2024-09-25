@@ -1,6 +1,6 @@
 <turbo-frame id="main-content">
   <div class="mx-auto">
-    <%= link_to sanitize("&larr; Back to homes"), care_home_path(@care_home), class: "btn mb-4 font-bold text-lg text-white bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg" %>
+    <%= link_to sanitize("&larr; Back to homes"), care_homes_path, class: "btn mb-4 font-bold text-lg text-white bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg" %>
   </div>
   <%= form_with(model: [@room], local: true, method: :patch) do |f| %>
     <div class="space-y-12">
@@ -10,15 +10,14 @@
           <p class="mt-1 text-sm leading-6 text-gray-600">This information will be displayed publicly so be careful what you share.</p>
         </div>
         <div class="flex items-center" data-controller="toggle" data-toggle-type="vacant">
-
-            <button type="button" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent <%= @room.vacant ? 'bg-secondary' : 'bg-gray-200' %> transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" role="switch" aria-checked="<%= @room.vacant %>" data-action="click->toggle#toggle" data-toggle-target="button">
-              <span aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 <%= @room.vacant ? 'translate-x-5' : 'translate-x-0' %> transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
-            </button>
-            <span class="mx-4 text-sm" id="vacant-label" data-toggle-target="label">
-              <span class="font-lg text-gray-900 font-bold"><%= @room.vacant ? 'Vacant' : 'Not Vacant' %></span>
-            </span>
-            <%= f.check_box :vacant, id: "vacant", class: "hidden", data: { toggle_target: "input" } %>
-          </div>
+          <button type="button" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent <%= @room.vacant ? 'bg-secondary' : 'bg-gray-200' %> transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" role="switch" aria-checked="<%= @room.vacant %>" data-action="click->toggle#toggle" data-toggle-target="button">
+            <span aria-hidden="true" class="pointer-events-none inline-block h-5 w-5 <%= @room.vacant ? 'translate-x-5' : 'translate-x-0' %> transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+          </button>
+          <span class="mx-4 text-sm" id="vacant-label" data-toggle-target="label">
+            <span class="font-lg text-gray-900 font-bold"><%= @room.vacant ? 'Vacant' : 'Not Vacant' %></span>
+          </span>
+          <%= f.check_box :vacant, id: "vacant", class: "hidden", data: { toggle_target: "input" } %>
+        </div>
         <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
           <div class="sm:col-span-6">
             <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Room Name</label>
@@ -64,7 +63,6 @@
               </div>
             </div>
           </div>
-
           <div class="mt-6 sm:col-span-6">
             <%= f.submit "Save", class: "btn bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg w-full" %>
           </div>

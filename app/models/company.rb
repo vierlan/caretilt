@@ -32,6 +32,11 @@ class Company < ApplicationRecord
     subscriptions.where(active: true).exists?
   end
 
+  def get_active_subscription
+    subscriptions.where(active: true).first
+    
+  end
+
   def stripe_attributes(pay_customer)
     {
       name: name,
