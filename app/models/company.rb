@@ -1,4 +1,5 @@
 class Company < ApplicationRecord
+  include Pay::Billable
   attr_accessor :address, :address2, :city, :postcode
 
 
@@ -22,6 +23,14 @@ class Company < ApplicationRecord
   has_many :subscriptions
   has_many :packages, through: :subscriptions
 
+  # checks the company has an active subscription
+  def has_active_subscription?
+    subscriptions.where(active: true).exists?
+  end
+
+  def get_active_subscription
+    subscriptions.where(active: true).first
+  end
   private
 
   def active_subscription

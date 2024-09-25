@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   patch '/team_members/:id/verify', to: 'team_members#verify_member_update'
   get '/checkout', to: 'stripe/checkout#show', as: 'checkout'
   #post '/checkout', to: 'stripe/checkout#checkout'
+  get '/checkout/add_credits', to: 'stripe/checkout#add_credits'
   get '/checkout/pricing', to: 'stripe/checkout#pricing'
   get '/checkout/success', to: 'stripe/checkout#success'
   get '/checkout/cancel', to: 'stripe/checkout#cancel'

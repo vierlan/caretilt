@@ -2,7 +2,12 @@ class PackagesController < ApplicationController
   before_action :set_packages, only: %i[show edit update destroy]
   def index
     @packages = Package.all
-
+    @subscription_packages = Package.where.not(validity: 0)
+    @credit_packages = Package.where(validity: 0)
+    if current_user&.company&.has_active_subscription?
+      @active_subscription = Subscription.find_by(company_id: current_user.company.id, active: true)
+      @active_package = Package.find(@active_subscription.package_id)
+    end
   end
 
   def show
@@ -18,7 +23,11 @@ class PackagesController < ApplicationController
     Stripe.api_key = Rails.application.credentials.stripe[:api_key]
     if @package.save
       service = StripePackage.new(@package)
-      service.create_package
+      if @package.validity == 0
+        service.create_add_credits_package
+      else
+        service.create_package
+      end
       redirect_to packages_index_path
     else
       render :new, status: :unprocessable_entity
