@@ -72,7 +72,7 @@ Rails.application.routes.draw do
   get  'two_factor_authentication', to: 'users/two_factor_authentication#show', as: :two_factor_authentication
   post 'two_factor_authentication/send_verification', to: 'users/two_factor_authentication#send_verification', as: :send_otp
   post 'two_factor_authentication/verify_otp', to: 'users/two_factor_authentication#verify_otp', as: :verify_otp
-  
+
 
   devise_for :users, path: '', path_names: { sign_in: 'login', sign_up: 'signup' }, controllers: { registrations: 'registrations' }
   get 'logout', to: 'pages#logout', as: 'logout'
@@ -83,9 +83,10 @@ Rails.application.routes.draw do
   resources :account, only: %i[index] do
     get :stop_impersonating, on: :collection
   end
-  resources :billing_portal, only: [:new, :create]
+  resources :billing_portal_sessions, only: [:new, :create]
   resources :blog_posts, controller: :blog_posts, path: "blog", param: :slug
 
+  # resources :billing_portal_sessions, only: [:create]
 
   #get "subscriptions/index"
   #get "subscriptions/show"

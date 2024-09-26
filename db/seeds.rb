@@ -11,15 +11,27 @@ raise StandardError, "DO NOT RUN THIS IN PRODUCTION" if Rails.env.production?
 #SeedSupport::Rewardful.run
 
 
-#Package.create(name: 'starter',  price: 360, validity: 1, credits: 1)
-#Package.create(name: 'lite_monthly',  price: 150, validity: 1, credits: 1)
-#Package.create(name: 'lite_yearly',  price: 1500, validity: 12, credits: 10)
-#Package.create(name: 'pro_monthly',  price: 300, validity: 1, credits: 4)
-#Package.create(name: 'pro_yearly',  price: 3000, validity: 12, credits: 50)
-#Package.create(name: 'unlimited_monthly',  price: 600, validity: 1, credits: 100000)
-#Package.create(name: 'unlimited_yearly',  price: 6000, validity: 12, credits: 100000)
-#Package.create(name: 'Add 5 credits',  price: 290, validity: 0, credits: 5)
+Package.create(name: 'starter', price: 360, validity: 1, credits: 1, description: 'Starter package for one off listings', data: { lookup: 'starter' })
+Package.create(name: 'lite_monthly', price: 150, validity: 1, credits: 1, description: 'Lite package for monthly listings', data: { lookup: 'lite_monthly' })
+Package.create(name: 'lite_yearly', price: 1500, validity: 12, credits: 10, description: 'Lite package for yearly listings', data: { lookup: 'lite_yearly' })
+Package.create(name: 'pro_monthly', price: 300, validity: 1, credits: 4, description: 'Pro package for monthly listings', data: { lookup: 'pro_monthly' })
+Package.create(name: 'pro_yearly', price: 3000, validity: 12, credits: 50, description: 'Pro package for yearly listings', data: { lookup: 'pro_yearly' })
+Package.create(name: 'unlimited_monthly', price: 600, validity: 1, credits: 100000, description: 'Unlimited package for monthly listings', data: { lookup: 'unlimited_monthly' })
+Package.create(name: 'unlimited_yearly', price: 6000, validity: 12, credits: 100000, description: 'Unlimited package for yearly listings', data: { lookup: 'unlimited_yearly' })
+Package.create(name: 'Add 5 credits', price: 290, validity: 0, credits: 5, description: 'Add 5 credits to your account', data: { lookup: 'add_5_credits' })
 
+@packages = Package.all
+
+@packages.each do |package|
+  Stripe.api_key = Rails.application.credentials&.stripe&.api_key
+  service = StripePackage.new(package)
+  case package.validity
+  when 0
+    service.create_add_credits_package
+  else
+    service.create_package
+  end
+end
 
 # Used as reference to delete all seeded things when re-seeding.
 seeded_org_names = ['Care Provider Company']

@@ -4,7 +4,7 @@ class Company < ApplicationRecord
 
 
   include Billable
-  pay_customer stripe_attributes: :stripe_attribute
+  pay_customer stripe_attributes: :stripe_attributes
 
   after_create do
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
