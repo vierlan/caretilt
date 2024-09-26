@@ -20,7 +20,7 @@ class PackagesController < ApplicationController
     # creating a package also creates a new instance in StripePackage model which will update Stripe with the new package
   def create
     @package = Package.new(package_params)
-    Stripe.api_key = Rails.application.credentials.stripe[:api_key]
+    Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     if @package.save
       service = StripePackage.new(@package)
       if @package.validity == 0
@@ -35,7 +35,7 @@ class PackagesController < ApplicationController
   end
 
   def create_stripe_checkout_session(package)
-    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
+    Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     @package = package
     @package_id = @package.id
     @stripe_price_id = @package.stripe_price_id

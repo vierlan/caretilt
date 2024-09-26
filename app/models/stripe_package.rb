@@ -11,7 +11,7 @@ class StripePackage
   # one-off purchase of credits only, must have existing subscription
   def create_add_credits_package
     return if @package.stripe_id.present?
-    Stripe.api_key = Rails.application.credentials.stripe[:api_key]
+    Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     stripe_product = Stripe::Product.create(
       name: @package.name,
       description: @package.description,
@@ -37,7 +37,7 @@ class StripePackage
 
   def create_package
     return if @package.stripe_id.present?
-    Stripe.api_key = Rails.application.credentials.stripe[:api_key]
+    Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     stripe_product = Stripe::Product.create(
       name: @package.name,
       description: @package.description,
@@ -73,7 +73,7 @@ class StripePackage
 
   def update_package
     return if @package.stripe_id.blank?
-    Stripe.api_key = ENV['STRIPE_SECRET_KEY']
+    Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     stripe_product = Stripe::Product.retrieve(@package.stripe_id)
     stripe_product.name = @package.package_name
     stripe_product.description = @package.package_description
