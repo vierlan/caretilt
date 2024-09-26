@@ -1,4 +1,4 @@
-<!-- app/views/users/two_factor_authentication/show.html.erb -->
+<!-- app/views/users/two_factor_authentication/verify_otp.html.erb -->
 <h2>Verify Your Identity</h2>
 
 <!-- Form to submit the OTP -->
@@ -12,4 +12,4 @@
 <% end %>
 
 <!-- Button to trigger sending OTP again -->
-<%= button_to 'Send Verification Code', send_otp_path, method: :post, class: "btn btn-secondary" %>
+<%= button_to 'Send Verification Code', send_verification_two_factor_authentication_path, method: :post, class: "btn btn-secondary" %>

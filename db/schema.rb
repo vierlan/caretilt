@@ -111,8 +111,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_25_170537) do
     t.string "billing_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "registration_pin", default: "9710", null: false
-    t.string "super_pin", default: "7078", null: false
+    t.string "registration_pin", default: "3368", null: false
+    t.string "super_pin", default: "6971", null: false
     t.string "stripe_customer_id"
     t.string "email"
     t.string "contact_name"

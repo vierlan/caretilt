@@ -37,7 +37,7 @@ Rails.application.configure do
   config.hosts << /[a-z0-9-]+\.ngrok..*/
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  config.active_storage.service = :amazon #:local
 
   # added by vierlan
   config.action_mailer.perform_deliveries = true

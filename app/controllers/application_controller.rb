@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
-  #before_action :authenticate_user!
+  # before_action :authenticate_user!
+
   impersonates :user
 
   # uncomment to allow extra User model params during registration (beyond email/password)
@@ -10,24 +11,30 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-
-    # Check if the user needs 2FA verification
-    if !current_user.verified
-      return user_verify_path # Redirect to the 2FA verification page
+    if !session[:two_factor_authenticated]
+      # If user hasn't passed 2FA, redirect to OTP verification page
+      return two_factor_authentication_path
     end
-    
-    @company = current_user.company
-
-    if current_user.status == 'added'
-      verify_path(current_user, data: { turbo_frame: "main-content" })
-    else
-      if request.format.turbo_stream?
-        render turbo_stream: turbo_stream.replace("main-content", partial: "companies/company", locals: { company: @company })
-      else
-        dashboard_index_path(current_user)
-      end
-    end
+  
+    # Proceed with Devise's default behavior once 2FA is verified
+    super
   end
+
+  # New method to check 2FA verification
+  def check_two_factor_authentication
+    # Skip if user is already on the 2FA page to avoid infinite loop
+    return if request.path == two_factor_authentication_path
+    Rails.logger.info "Running 2FA check: #{current_user&.verified?}, session[:two_factor_authenticated]: #{session[:two_factor_authenticated]}"
+
+    # Skip if the user has passed 2FA or is not logged in
+    return unless current_user && !session[:two_factor_authenticated]
+
+    # Redirect to the OTP verification page if they haven't passed 2FA
+    Rails.logger.info "User has not passed 2FA. Redirecting to 2FA page."
+    redirect_to two_factor_authentication_path, status: :see_other
+
+  end
+
 
   def maybe_skip_onboarding
     redirect_to dashboard_index_path, notice: "You're already subscribed" if current_user.finished_onboarding?

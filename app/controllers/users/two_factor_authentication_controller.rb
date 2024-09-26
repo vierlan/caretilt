@@ -1,49 +1,57 @@
 class Users::TwoFactorAuthenticationController < ApplicationController
-  before_action :authenticate_user!, only: [:show, :verify]
+
+  before_action :authenticate_user!
 
   def show
-    # Send the OTP when the user reaches this page (the form to input the code)
-    send_verification_code_to_user
+    # TwilioService.new(current_user).send_otp_twilio
 
-    # Render the form where the user enters the verification code
+    # Displays OTP Entry form as /user/two_factor_authentication/show
+    if request.fullpath != two_factor_authentication_path
+      # If not on the OTP page, redirect them there to OTP form
+      redirect_to two_factor_authentication_path
+    end
   end
 
-  def verify
-    # This checks if the verification code entered by the user is correct
-    if verify_code(params[:verification_code])
-      # If correct, mark user as verified
+#   This controller method handles the web request when the user submits the OTP form. It takes the OTP entered by the user (from params[:otp_code]) and passes it to the service method (TwilioService#verify_otp).
+# It orchestrates the flow: it checks the OTP, updates the session, and decides whether to proceed or show an error. It does not directly verify the OTP itself; instead, it delegates that responsibility to the TwilioService.
+
+  # Sends the OTP to the user's phone
+  def send_verification
+    TwilioService.new(current_user).send_otp_twilio
+    # Redirect to the OTP entry page (def show in this controller)
+    redirect_to two_factor_authentication_path, notice: 'Verification code sent.'
+  end
+
+  # Verifies the OTP entered by the user by sending to Twilio
+  def verify_otp
+    unless Rails.env.development? # Turn on for no SMS verificaiton whilst developing.
+    # if Rails.env.development? #Turn on for SMS verification whilst developing (increase cost)
+      # Simulate OTP verification in development
+      session[:two_factor_authenticated] = true
       current_user.update(verified: true)
-      redirect_to after_sign_in_path_for(current_user), notice: 'Phone number successfully verified'
+      redirect_to after_sign_in_path_for(current_user), notice: 'Successfully verified (development mode).'
     else
-      # If incorrect, show an error message
-      flash[:alert] = 'Invalid verification code. Please try again.'
-      redirect_to user_verify_path
+      code = params[:otp_code]
+    
+      begin
+        if TwilioService.new(current_user).verify_otp_twilio(code)
+          # Mark the session as 2FA complete
+          session[:two_factor_authenticated] = true
+    
+          # Mark user as verified
+          current_user.update(verified: true)
+    
+          # Redirect to the user's dashboard or intended destination
+          redirect_to after_sign_in_path_for(current_user), notice: 'Successfully verified!'
+        else
+          flash[:alert] = 'Invalid OTP code. Please try again.'
+          redirect_to two_factor_authentication_path
+        end
+      rescue Twilio::REST::RestError => e
+        # Handle errors like invalid code formats or other Twilio issues
+        flash[:alert] = "Error verifying OTP: #{e.message}"
+        redirect_to two_factor_authentication_path
+      end
     end
-  end
-
-  private
-
-  # Sends the OTP (One-Time Password) via Twilio when user reaches the verification page
-  def send_verification_code_to_user
-    TwilioService.new(current_user).send_otp
-  end
-
-  # Verifies the code entered by the user using Twilio's API
-  def verify_code(code)
-
-    begin
-      numeric_code = Integer(code)
-    rescue ArgumentError
-      flash[:alert] = 'The verification code must be a numeric value.'
-      return false
-    end
-  
-    client = Twilio::REST::Client.new(ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN'])
-    verification_check = client.verify
-                               .services(ENV['TWILIO_VERIFY_SERVICE_SID'])
-                               .verification_checks
-                               .create(to: current_user.phone_number, code: numeric_code)
-
-    verification_check.status == 'approved'
   end
 end
