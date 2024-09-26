@@ -5,7 +5,9 @@ class Company < ApplicationRecord
 
   include Billable
   pay_customer stripe_attributes: :stripe_attribute
+
   after_create do
+    Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     Rails.logger.info("Creating Stripe customer for #{self.name}")
     company = Stripe::Customer.create(name: self.name, email: self.email)
     Rails.logger.info("Stripe customer created: #{company.name}")

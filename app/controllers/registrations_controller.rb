@@ -6,7 +6,7 @@ class RegistrationsController < Devise::RegistrationsController
       # LOGIC NOT NEEDED:  CONFIRM LAN AHN
 
       if @user.persisted?
-        send_verification_code(user.phone_number)
+        send_verification_code(@user.phone_number)
       end
       # Assign the role based on checkbox selection
       if params[:user][:is_service_provider] == "1"
@@ -31,12 +31,8 @@ class RegistrationsController < Devise::RegistrationsController
 
   def send_verification_code(phone_number)
     client = Twilio::REST::Client.new(ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN'])
-    client.verify.services(ENV['TWILIO_VERIFICATION_SID'])
+    client.verify.services(ENV['TWILIO_VERIFY_SERVICE_SID'])
                  .verifications
                  .create(to: phone_number, channel: 'sms')
   end
-
-
-
-
 end
