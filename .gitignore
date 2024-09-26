@@ -32,7 +32,8 @@ dump.rdb
 /config/master.key
 
 # Ignore ENV
-
+.env/*
+.ENV/*
 .env
 .ENV
 
@@ -49,3 +50,5 @@ dump.rdb
 /config/credentials/test.key
 coverage
 
+#ignore my seed file changes
+/db/seeds.rb

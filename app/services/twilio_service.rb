@@ -23,7 +23,7 @@ class TwilioService
                                  .create(to: phone_number, code: code)
     verification_check.status == 'approved' # This returns true if the OTP was valid
   end
-  
+
 
   private
 

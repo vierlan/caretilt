@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
       # If user hasn't passed 2FA, redirect to OTP verification page
       return two_factor_authentication_path
     end
-  
+
     # Proceed with Devise's default behavior once 2FA is verified
     super
   end
@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
 
   # whitelist extra User model params by uncommenting below and adding User attrs as keys
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:terms_of_service, :role])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:terms_of_service, :role, :phone_number])
   end
 
   def verify_user
