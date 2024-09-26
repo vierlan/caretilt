@@ -1,16 +1,15 @@
 class Company < ApplicationRecord
+  include Pay::Billable
   attr_accessor :address, :address2, :city, :postcode
 
 
-  # include Billable
-  # pay_customer stripe_attributes: :stripe_attributes
-
-
-  # after_create do
-  #   Rails.logger.info("Creating Stripe customer for #{self.name}")
-  #   company = Stripe::Customer.create(name: self.name, email: self.email)
-  #   Rails.logger.info("Stripe customer created: #{company.name}")
-  # end
+  include Billable
+  pay_customer stripe_attributes: :stripe_attribute
+  after_create do
+    Rails.logger.info("Creating Stripe customer for #{self.name}")
+    company = Stripe::Customer.create(name: self.name, email: self.email)
+    Rails.logger.info("Stripe customer created: #{company.name}")
+  end
 
   # include SharedValidAttributes #In models/concerns/shared_valid we are inclusing all phone and address validation since they shared.
 
@@ -22,6 +21,14 @@ class Company < ApplicationRecord
   has_many :subscriptions
   has_many :packages, through: :subscriptions
 
+  # checks the company has an active subscription
+  def has_active_subscription?
+    subscriptions.where(active: true).exists?
+  end
+
+  def get_active_subscription
+    subscriptions.where(active: true).first
+  end
   private
 
   def active_subscription

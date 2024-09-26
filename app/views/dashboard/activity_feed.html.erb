@@ -1,9 +1,0 @@
-<turbo-frame id="activity-feed">
-  <div class="activity-feed" id="activity-feed">
-    <ul role="list" class="divide-y divide-slate-300/50">
-      <% @bookings.each do |booking| %>
-        <%= render partial: 'bookings/booking', locals: { booking: booking } %>
-      <% end %>
-    </ul>
-  </div>
-</turbo-frame>

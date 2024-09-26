@@ -14,15 +14,7 @@ class SubscriptionsController < ApplicationController
     @subscription = Subscription.new
   end
 
-  def create
-    @subscription = Subscription.new(subscription_params)
-    @subscription.company = @company
-    @subscription.package = @package
-    if @subscription.save
-      redirect_to company_path(@company)
-    else
-      render :new, status: :unprocessable_entity
-    end
+  def Create(attributes = {})
   end
 
   def edit
@@ -36,10 +28,19 @@ class SubscriptionsController < ApplicationController
     end
   end
 
+
   def destroy
   end
 
   private
+
+  def add_credits(package)
+    @package = package
+    @active_subscription = Subscription.find_by(company_id: current_user.company.id, active: true)
+    if current_user&.company&.has_active_subscription?
+      @active_subscription.update(credits: @active_subscription.credits + @package.credits)
+    end
+  end
 
   def set_subscriptions
     @subscription = Subscription.find(params[:id])

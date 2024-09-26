@@ -7,6 +7,34 @@ class StripePackage
    # When caretilt wants to create a new package, it will call this method
    #  This is all the data sent to stripe to create a new package
    # Stripe API responds with the ids of the product, plan and price and the @package is updated with these ids
+
+  # one-off purchase of credits only, must have existing subscription
+  def create_add_credits_package
+    return if @package.stripe_id.present?
+    Stripe.api_key = Rails.application.credentials.stripe[:api_key]
+    stripe_product = Stripe::Product.create(
+      name: @package.name,
+      description: @package.description,
+      active: true,
+      metadata: {
+        package_id: @package.id,
+        credits: @package.credits,
+      }
+    )
+    stripe_price = Stripe::Price.create(
+      currency: 'gbp',
+      unit_amount: (@package.price * 100).to_i,  # Ensure unit amount is an integer
+      product: stripe_product.id,
+    )
+    @package.update(
+      stripe_id: stripe_product.id,
+      data: stripe_product.to_json,
+      stripe_price_id: stripe_price.id
+    )
+  end
+
+
+
   def create_package
     return if @package.stripe_id.present?
     Stripe.api_key = Rails.application.credentials.stripe[:api_key]
@@ -32,7 +60,7 @@ class StripePackage
       },
       product: stripe_product.id
     )
-    
+
       # Update the package with Stripe product and price IDs
 
     @package.update(
@@ -46,8 +74,6 @@ class StripePackage
   def update_package
     return if @package.stripe_id.blank?
     Stripe.api_key = ENV['STRIPE_SECRET_KEY']
-    Rails.logger.info "Updating Stripe product for package: #{@package}
-    image = "#{cloudinary_base_url}#{image_url_append}.jpg"
     stripe_product = Stripe::Product.retrieve(@package.stripe_id)
     stripe_product.name = @package.package_name
     stripe_product.description = @package.package_description

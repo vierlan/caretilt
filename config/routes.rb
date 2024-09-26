@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   patch '/team_members/:id/verify', to: 'team_members#verify_member_update'
   get '/checkout', to: 'stripe/checkout#show', as: 'checkout'
   #post '/checkout', to: 'stripe/checkout#checkout'
+  get '/checkout/add_credits', to: 'stripe/checkout#add_credits'
   get '/checkout/pricing', to: 'stripe/checkout#pricing'
   get '/checkout/success', to: 'stripe/checkout#success'
   get '/checkout/cancel', to: 'stripe/checkout#cancel'
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
   pages = %w[
     privacy terms about contact home home2 home3 home4 guides calculator faq pricing search quiz test test2
   ]
+  get 'activity_feeds', to: 'activity_feeds#index'
 
   resources :companies do
     member do
@@ -27,6 +29,7 @@ Rails.application.routes.draw do
       get 'team', to: 'team_members#index'
       post 'add_team_member', to: 'team_members#create'
       get 'account', to: 'dashboard#account'
+      get 'activity_feeds', to: 'activity_feeds#index'
     end
     resources :care_homes, only: %i[new create] do
       collection do

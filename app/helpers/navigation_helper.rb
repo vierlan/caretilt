@@ -7,11 +7,13 @@ module NavigationHelper
     # Common links for all users
     #links << { name: 'My Dashboard', path: dashboard_index_path, icon: 'dashboard-icon-class' }
 
+    
+
     if current_user.role == 'caretilt_user'
       links << {
-         name: 'Admin dashboard',
-         path: companies_path,
-         icon: 'team-members-icon-class' }
+        name: 'Admin dashboard',
+        path: companies_path,
+        icon: 'team-members-icon-class' }
     end
 
     # Conditional links based on the user role or attributes
