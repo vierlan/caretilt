@@ -4,14 +4,14 @@
       <div class="flex items-center gap-x-3">
         <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-slate-200 text-[.8rem] font-bold text-gray-800 group-hover:border-primary group-hover:text-primary"><%= feed[4].split.map { |word| word[0] }.join %></span>
         <h3 class="flex-auto text-lg font-semibold leading-6 text-black">
-          <p><strong><%= feed[0] %></strong> <%= feed[1] %></p>
+          <p><strong><%= feed[0] %></strong> <%= feed[1].humanize %></p>
         </h3>
         <% parsed_time = feed[2].is_a?(String) ? Time.parse(feed[2]) : feed[2] %>
         <time datetime="<%= parsed_time.iso8601 %>" class="relative bottom-6 flex-none text-xs text-gray-600">
           <%= time_ago_in_words(parsed_time) %> ago</time>      </div>
       <p class="mt-3 truncate text-lg text-gray-500">
-        <p><strong>Booking for:</strong> <%= feed[1] %></p>
-        <span class="text-gray-700"><%= feed[4] %></span> (<span class="font-mono text-gray-700"><%=feed[3]  %></span> <span class="text-gray-700"></span>)</p>
+        <p><%= feed[1].humanize %></p>
+        <span class="text-gray-700">Credits Remaining: <%= feed[4] %></span> (<span class="font-mono text-gray-700"><%=feed[3]  %></span> <span class="text-gray-700"></span>)</p>
     </li>
   </div>
 </turbo-frame>

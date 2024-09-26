@@ -56,7 +56,7 @@ class StripePackage
       unit_amount: (@package.price * 100).to_i,  # Ensure unit amount is an integer
       recurring: {
         interval: 'month', # Adjust as needed (e.g., 'year' for yearly subscriptions)
-        interval_count: 1   # How often the subscription should recur (e.g., every month)
+        interval_count: @package.validity   # How often the subscription should recur (e.g., every month)
       },
       product: stripe_product.id
     )

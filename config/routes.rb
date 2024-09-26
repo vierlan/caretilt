@@ -86,25 +86,14 @@ Rails.application.routes.draw do
   resources :billing_portal_sessions, only: [:new, :create]
   resources :blog_posts, controller: :blog_posts, path: "blog", param: :slug
 
-  # resources :billing_portal_sessions, only: [:create]
-
-  #get "subscriptions/index"
-  #get "subscriptions/show"
-  #get "subscriptions/new"
-  #get "subscriptions/create"
-  #get "subscriptions/edit"
-  #get "subscriptions/update"
-  #get "subscriptions/destroy"
   get "packages/index"
   get "packages/show"
   get "packages/new"
   post "packages", to: 'packages#create'
   get "packages/edit"
   get "packages/update"
-  #get "packages/destroy"
-  #get "activity_feeds/index"
-  # static pages
 
+  # static pages
 
   pages.each do |page|
     get "/#{page}", to: "pages##{page}", as: page.gsub('-', '_').to_s

@@ -5,10 +5,8 @@ module NavigationHelper
     links = []
 
     # Common links for all users
-    #links << { name: 'My Dashboard', path: dashboard_index_path, icon: 'dashboard-icon-class' }
 
-    
-
+    links << { name: 'My details', path: edit_user_registration_path, svg: svg_for_path(root_path) }
     if current_user.role == 'caretilt_user'
       links << {
         name: 'Admin dashboard',
@@ -22,7 +20,7 @@ module NavigationHelper
     #end
 
     if current_user.role == 'care_provider_super_user'
-      links << { name: 'Dashboard', path: stripe_checkout_pricing_path, svg: svg_for_path(stripe_checkout_pricing_path) }
+      links << { name: 'Dashboard', path: packages_index_path, svg: svg_for_path(checkout_pricing_path) }
       links << { name: 'Team Management', path: team_company_path(@company), svg: svg_for_path(team_company_path(@company)) }
       links << { name: 'Account', path: edit_company_path(current_user.company), svg: svg_for_path(edit_company_path(current_user.company)) }
     end

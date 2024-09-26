@@ -34,7 +34,7 @@ class Company < ApplicationRecord
   private
 
   def active_subscription
-    subscriptions.exists?(company.subscriptions.active)
+    subscriptions.exists?(self.subscriptions.active)
   end
 
   def stripe_attributes(pay_customer)
