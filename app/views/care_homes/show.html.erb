@@ -6,6 +6,13 @@
       <% end %>
     </div>
   <% end %>
+  <% if @care_home.videos.attached? %>
+  <div class="videos">
+      <% @care_home.videos.each do |video| %>
+        <%= video_tag video, controls: true, class: "uploaded-video" %>
+      <% end %>
+    </div>
+  <% end %>
   <div class="relative border-b border-gray-200 pb-5 sm:pb-2 mt-10">
     <div class="md:flex md:items-center md:justify-between">
       <div class="mt-4">
@@ -39,7 +46,7 @@
     <!-- Carousel Wrapper -->
     <div class="carousel-inner flex overflow-x-auto snap-x snap-mandatory scrollbar-hide">
       <!-- 10 Random Images from Unsplash -->
-      <% 10.times do |i| %>
+      <% 1.times do |i| %>
         <div class="carousel-item flex-none w-1/3 snap-start p-2">
           <%= image_tag "Cloisters.CareHome.External", alt: "Slide #{i + 1}", class: "w-full h-auto rounded-lg" %>
         </div>

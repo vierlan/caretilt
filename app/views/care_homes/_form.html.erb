@@ -16,6 +16,10 @@
         <div class="sm:col-span-6">
           <%= f.input :photos, as: :file, input_html: { multiple: true }, label: "Upload Photos" %>
         </div>
+          <!-- videos Upload -->
+        <div class="sm:col-span-6">
+          <%= f.input :videos, as: :file, input_html: { multiple: true }, label: "Upload Videos" %>
+        </div>
         <!-- Website -->
         <div class="sm:col-span-6">
           <%= f.input :website, label: "Website", placeholder: "https://www.example.com", input_html: { id: "website" } %>

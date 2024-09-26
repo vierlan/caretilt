@@ -128,7 +128,7 @@ class CareHomesController < ApplicationController
     :name, :main_contact, :phone_number, :website, :address, :email, 
     :address1, :address2, :city, :postcode, :type_of_home, 
     :short_description, :latitude, :longitude, :local_authority_name, 
-    photos: [], types_of_client_group: [] # Allow `types_of_client_group` as an array
+    photos: [], videos: [], types_of_client_group: [] # Allow `types_of_client_group` as an array
     ).tap do |whitelisted| #Makes sure that no empty values allowed in the array.
       whitelisted[:types_of_client_group].reject!(&:blank?)
     end
