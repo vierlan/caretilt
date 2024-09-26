@@ -32,14 +32,14 @@ class User < ApplicationRecord
 
  # Validation to ensure terms are accepted and role is selected
   validates :terms_of_service, acceptance: { accept: 'on', message: 'must be accepted' }
-  validates :verified, inclusion: { in: [true, false] }
+  # validates :verified, inclusion: { in: [true, false] }
   # validates :first_name, presence: true
   # validates :last_name, presence: true
 
   before_create :set_verified_default
 
   def set_verified_default
-    self.verified = false
+    self.verified = false if self.verified.nil?
   end
 
 
