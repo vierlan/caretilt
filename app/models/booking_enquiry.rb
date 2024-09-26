@@ -8,7 +8,7 @@ class BookingEnquiry < ApplicationRecord
   # end
 
   validates :contact_name, presence: { message: "Contact name cannot be blank" }, length: { maximum: 100, message: "Contact name cannot be over 100 characters long." }  # Ensure name is not too long
-  validates :contact_phone, presence: { message: "Contact name cannot be blank" }, length: { maximum: 100, message: "Contact name cannot be over 100 characters long." }  # Ensure name is not too long
+  validates :phone_number, presence: { message: "Contact name cannot be blank" }, length: { maximum: 100, message: "Contact name cannot be over 100 characters long." }  # Ensure name is not too long
   validates :message, presence: { message: "Please leave a note as to what this is regarding to." }, length: { maximum: 500, message: "Please keep the messages short for the first contact." }  # Ensure name is not too long
 
 end
