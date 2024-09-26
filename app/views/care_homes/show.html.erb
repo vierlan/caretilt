@@ -1,4 +1,11 @@
 <turbo-frame id="main-content">
+  <% if @care_home.photos.attached? %>
+    <div class="photos">
+      <% @care_home.photos.each do |photo| %>
+        <%= image_tag photo, class: "uploaded-photo" %>
+      <% end %>
+    </div>
+  <% end %>
   <div class="relative border-b border-gray-200 pb-5 sm:pb-2 mt-10">
     <div class="md:flex md:items-center md:justify-between">
       <div class="mt-4">

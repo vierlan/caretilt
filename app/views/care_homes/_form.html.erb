@@ -12,6 +12,10 @@
         <p class="mt-1 text-description-small">This information will be displayed publicly so be careful what you share.</p>
       </div>
       <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+          <!-- Photos Upload -->
+        <div class="sm:col-span-6">
+          <%= f.input :photos, as: :file, input_html: { multiple: true }, label: "Upload Photos" %>
+        </div>
         <!-- Website -->
         <div class="sm:col-span-6">
           <%= f.input :website, label: "Website", placeholder: "https://www.example.com", input_html: { id: "website" } %>
