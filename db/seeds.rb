@@ -55,7 +55,7 @@ careprovidersuperuser = User.create!(
   role: 'care_provider_super_user',
   status: 'verified',
   company: company,
-  phone_number: "+447387170544",
+  phone_number: "+447387176666",
   verified: true
 )
 

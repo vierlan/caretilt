@@ -22,10 +22,12 @@ class TeamMembersController < ApplicationController
     email = params[:email]
     password = Devise.friendly_token.first(8)
     @member = User.new(email: email, password: password)
+    
+
     case current_user.role
     when 'care_provider_super_user'
       @member.role = 'care_provider_user'
-      @member.company = @company
+      @member.company = current_user.company
     when 'la_super_user'
       @member.role = 'la_user'
       @member.local_authority = current_user.local_authority

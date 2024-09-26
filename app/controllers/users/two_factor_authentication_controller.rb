@@ -24,8 +24,8 @@ class Users::TwoFactorAuthenticationController < ApplicationController
 
   # Verifies the OTP entered by the user by sending to Twilio
   def verify_otp
-    unless Rails.env.development? # Turn on for no SMS verificaiton whilst developing.
-    # if Rails.env.development? #Turn on for SMS verification whilst developing (increase cost)
+    unless Rails.env.development? #Turn on for SMS verification whilst developing (increase cost)
+    # if Rails.env.development? # Turn ON for no SMS verificaiton whilst developing.
       # Simulate OTP verification in development
       session[:two_factor_authenticated] = true
       current_user.update(verified: true)

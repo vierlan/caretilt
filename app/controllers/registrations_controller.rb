@@ -5,9 +5,9 @@ class RegistrationsController < Devise::RegistrationsController
     super do |resource|
       # LOGIC NOT NEEDED:  CONFIRM LAN AHN
 
-      # if @user.persisted?
-      #   send_verification_code(user.phone_number)
-      # end
+      if @user.persisted?
+        send_verification_code(user.phone_number)
+      end
       # Assign the role based on checkbox selection
       if params[:user][:is_service_provider] == "1"
         resource.role = "care_provider_super_user"
