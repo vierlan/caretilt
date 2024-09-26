@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   pages = %w[
     privacy terms about contact home home2 home3 home4 guides calculator faq pricing search quiz test test2
   ]
+  get 'activity_feeds', to: 'activity_feeds#index'
 
   resources :companies do
     member do
@@ -28,6 +29,7 @@ Rails.application.routes.draw do
       get 'team', to: 'team_members#index'
       post 'add_team_member', to: 'team_members#create'
       get 'account', to: 'dashboard#account'
+      get 'activity_feeds', to: 'activity_feeds#index'
     end
     resources :care_homes, only: %i[new create] do
       collection do

@@ -63,7 +63,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_24_132413) do
 
   create_table "booking_enquiries", force: :cascade do |t|
     t.string "contact_name"
-    t.string "contact_phone"
+    t.string "phone_number"
     t.string "service_user_name"
     t.text "message"
     t.bigint "user_id", null: false

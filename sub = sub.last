@@ -1,0 +1,15 @@
+=>
+[32m#<Subscription:0x00007fc5933c5798[0m
+ company_id: [34m[1m1[0m,
+ id: [34m[1m6[0m,
+ receipt_number: [31m[1m"[0m[31msub_1Q2Y1UJrOF6hrB5XtJFFgbbA[0m[31m[1m"[0m,
+ expires_on: [31m[1m"[0m[31m2024-10-24[0m[31m[1m"[0m,
+ credits_left: [34m[1m22[0m,
+ credit_log: [],
+ next_payment_date: [36m[1mnil[0m,
+ active: [36m[1mtrue[0m,
+ subscribed_on: [31m[1m"[0m[31m2024-09-24[0m[31m[1m"[0m,
+ number_of_payments: [36m[1mnil[0m,
+ package_id: [34m[1m17[0m,
+ created_at: [31m[1m"[0m[31m2024-09-24 12:39:24.937579000 +0000[0m[31m[1m"[0m,
+ updated_at: [31m[1m"[0m[31m2024-09-25 18:25:42.438350000 +0000[0m[31m[1m"[0m[32m>[0m

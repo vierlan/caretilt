@@ -78,7 +78,7 @@ class Stripe::CheckoutController < ApplicationController
         @subscription.subscribed_on = Time.now
         end
         # Log the credits purchase
-        @subscription.credit_log <<  ["purchased_on: #{Time.now}, package: #{@package.name}, credits: #{@package.credits}, total_credits: #{@subscription.credits_left}"]
+        @subscription.credit_log <<  ["Purchase:", "#{@package.name}", "#{Time.now}", "added #{@package.credits} credits", "#{@subscription.credits_left}"]
 
         # Save the subscription
         @subscription.save!

@@ -16,7 +16,7 @@ class BookingEnquiriesController < ApplicationController
     if @booking.save
       redirect_to care_home_rooms_path(@care_home)
     else
-      render :new
+      render :new, unprocessable_entity: @booking.errors
     end
   end
 
@@ -67,6 +67,6 @@ class BookingEnquiriesController < ApplicationController
   private
 
   def booking_params
-    params.require(:booking_enquiry).permit(:contact_name, :contact_phone, :service_user_name, :message)
+    params.require(:booking_enquiry).permit(:contact_name, :phone_number, :reference_name, :message)
   end
 end
