@@ -3,6 +3,12 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.2.2'
 
+gem 'twilio-ruby'
+gem 'devise-two-factor'
+
+gem "pundit"
+
+
 gem 'activeadmin', '4.0.0.beta11'
 gem 'aws-sdk-s3', require: false
 gem 'chartkick'

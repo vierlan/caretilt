@@ -48,6 +48,14 @@ class AfterSignupController < ApplicationController
     end
   end
 
+  def after_sign_in_path_for(resource)
+    if resource.verified?
+      super
+    else
+      user_verify_path
+    end
+  end
+
   private
 
   def finish_wizard_path

@@ -5,6 +5,7 @@ class PagesController < ApplicationController
   end
 
   def logout
+    reset_session
     sign_out(current_user)
     redirect_to home_path
   end

@@ -69,6 +69,11 @@ Rails.application.routes.draw do
   get '/dashboard/:id/new_team_member', to: 'dashboard#new_team_member', as: 'dashboard_new_team_member'
   post 'add_team_member', to: 'team_members#create'
 
+  get  'two_factor_authentication', to: 'users/two_factor_authentication#show', as: :two_factor_authentication
+  post 'two_factor_authentication/send_verification', to: 'users/two_factor_authentication#send_verification', as: :send_otp
+  post 'two_factor_authentication/verify_otp', to: 'users/two_factor_authentication#verify_otp', as: :verify_otp
+  
+
   devise_for :users, path: '', path_names: { sign_in: 'login', sign_up: 'signup' }, controllers: { registrations: 'registrations' }
   get 'logout', to: 'pages#logout', as: 'logout'
   resources :after_signup, only: %i[show update]

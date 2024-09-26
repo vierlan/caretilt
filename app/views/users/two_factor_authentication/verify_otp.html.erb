@@ -1,0 +1,15 @@
+<!-- app/views/users/two_factor_authentication/verify_otp.html.erb -->
+<h2>Verify Your Identity</h2>
+
+<!-- Form to submit the OTP -->
+<%= form_with url: verify_otp_path, method: :post do |form| %>
+  <div class="form-group">
+    <%= form.label :otp_code, "Enter the verification code sent to your phone" %>
+    <%= form.text_field :otp_code, class: "form-control" %>
+  </div>
+
+  <%= form.submit "Verify", class: "btn btn-primary" %>
+<% end %>
+
+<!-- Button to trigger sending OTP again -->
+<%= button_to 'Send Verification Code', send_verification_two_factor_authentication_path, method: :post, class: "btn btn-secondary" %>
