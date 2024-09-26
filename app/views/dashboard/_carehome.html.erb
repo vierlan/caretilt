@@ -1,0 +1,11 @@
+
+  <!-- Current: "bg-gray-50 text-primary", Default: "text-gray-900 hover:text-primary hover:bg-gray-50" -->
+  <%= link_to care_home_path(care_home), data: { turbo_frame: "main-content", navigation_target: "link" } do %>
+    <div class="group flex gap-x-3 rounded-md py-3 p-2 text-lg font-semibold leading-6 text-gray-900 hover:bg-gray-50 hover:text-primary"
+              data-navigation-target="button"
+              data-action="click->navigation#highlightButton">
+      <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white text-[0.625rem] font-medium text-gray-700 group-hover:border-primary group-hover:text-primary">
+        <%= care_home.name.split.first(2).map { |word| word[0] }.join %>
+      </span>   <span class="truncate"><%= care_home.name.humanize %></span>
+    </div>
+  <% end %>

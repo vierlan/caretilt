@@ -1,9 +1,8 @@
 <turbo-frame id= "main-content">
 
 <div>
-  <h1 class="font-bold text-4xl">Packages#new</h1>
-  <p>Find me in app/views/packages/new.html.erb</p>
+
 </div>
-<%= link_to 'Back', packages_index_path %>
+<%= link_to 'Back', packages_index_path, class: "btn-caretilt" %>
 <%= render 'form', package: @package %>
 </turbo-frame>

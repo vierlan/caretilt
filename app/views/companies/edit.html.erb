@@ -59,11 +59,11 @@
           <h2 class="text-base font-semibold leading-7 text-gray-900">User Information</h2>
           <p class="mt-1 text-sm leading-6 text-gray-600">Update your personal information.</p>
         </div>
+        <% if @user %>
         <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
           <div class="sm:col-span-4">
             <label for="first_name" class="block text-sm font-medium leading-6 text-gray-900">First Name</label>
             <div class="mt-2">
-            <% if @user %>
               <%= form.text_field :first_name, id: "first_name", value: @user.first_name, class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
             </div>
           </div>

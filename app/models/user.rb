@@ -54,6 +54,9 @@ class User < ApplicationRecord
     self.verified = false if self.verified.nil?
   end
 
+  def full_name
+    "#{first_name.capitalize} #{last_name.capitalize}"
+  end
 
   # :nocov:
   def self.ransackable_attributes(*)
