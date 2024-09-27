@@ -3,11 +3,15 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.2.2'
 
+# Authentication and Authorization
 gem 'twilio-ruby'
 gem 'devise-two-factor'
-
 gem "pundit"
 
+# smart lists management
+
+gem 'acts_as_list', '~> 1.0.4'
+gem 'requestjs-rails'
 
 gem 'activeadmin', '4.0.0.beta11'
 gem 'aws-sdk-s3', require: false

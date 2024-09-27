@@ -104,7 +104,21 @@ class CareHomesController < ApplicationController
     @care_home = CareHome.find(params[:id])
     @company = @care_home.company
 
-    if @care_home.update(care_home_params)
+    # If new media files are uploaded, append them; don't replace the old ones.
+    if care_home_params[:media]
+      @care_home.media.attach(care_home_params[:media])
+    end
+
+    # Handle media reordering if provided
+    if params[:media_order].present?
+      params[:media_order].each do |media_id, position|
+        media = @care_home.media.find(media_id)
+        media.update(position: position.to_i)
+      end
+    end
+
+    # Now update the rest of the attributes (excluding media)
+    if @care_home.update(care_home_params.except(:media)) # Exclude media from update, handled separately
       redirect_to dashboard_index_path(current_user), notice: 'Successfully updated'
     else
       render :edit, status: :unprocessable_entity
@@ -121,6 +135,30 @@ class CareHomesController < ApplicationController
     end
   end
 
+  # only used for moving or removing media from care home dynamically
+
+  def move_image
+    #Find the car who's images we are re-arranging
+    @care_home = CareHome.find(params[:id])
+    #Find the image we are moving
+    @image = @care_home.images[params[:old_position].to_i - 1]
+    # Use the insert_at method we get from acts_as_list gem
+    @image.insert_at(params[:new_position].to_i)
+    head :ok
+  end
+
+  def remove_media
+    @care_home = CareHome.find(params[:id])
+    media = @care_home.media.find(params[:media_id])
+    media_id = media.id
+    media.purge
+
+    respond_to do |format|
+      format.html { redirect_to edit_care_home_path(@care_home), notice: 'Media removed successfully.' }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove("media_#{media_id}") }
+    end
+  end
+
   private
 
   def care_home_params
@@ -128,7 +166,7 @@ class CareHomesController < ApplicationController
     :name, :main_contact, :phone_number, :website, :address, :email, 
     :address1, :address2, :city, :postcode, :type_of_home, 
     :short_description, :latitude, :longitude, :local_authority_name, 
-    photos: [], types_of_client_group: [] # Allow `types_of_client_group` as an array
+    photos: [], videos: [], media: [], types_of_client_group: [] # Allow `types_of_client_group` as an array
     ).tap do |whitelisted| #Makes sure that no empty values allowed in the array.
       whitelisted[:types_of_client_group].reject!(&:blank?)
     end

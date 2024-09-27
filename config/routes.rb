@@ -52,6 +52,14 @@ Rails.application.routes.draw do
 
 
   resources :care_homes, only: %i[show edit update destroy index] do
+    # This is for the drag reordering and delete button to remove the media for the correct care home and save to database.
+
+    # member is used for a single instance of care_home i.e care_home:id
+    member do
+      patch :move_media
+      delete :remove_media
+    end
+
     resources :rooms, only: %i[index new create]
   end
 

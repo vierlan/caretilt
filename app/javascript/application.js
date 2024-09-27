@@ -48,3 +48,5 @@ addEventListener("trix-initialize", (event) => {
   `
   );
 });
+
+import "@rails/request.js"
