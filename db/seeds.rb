@@ -85,9 +85,6 @@ lasuperuser = User.create!(
     verified: true
   )
 
-
-
-
 # Attach all homes to the created user (since the user must be associated with a company)
 
 care_homes = [
