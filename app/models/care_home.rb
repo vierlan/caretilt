@@ -33,6 +33,7 @@ class CareHome < ApplicationRecord
   has_many_attached :photos
   has_many_attached :videos
   has_many_attached :documents
+  has_many_attached :media
 
   include SharedValidAttributes
 
