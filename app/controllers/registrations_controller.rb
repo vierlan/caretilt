@@ -31,8 +31,14 @@ class RegistrationsController < Devise::RegistrationsController
 
   def send_verification_code(phone_number)
     client = Twilio::REST::Client.new(ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN'])
+    phone_number = format_phone_number(phone_number)
     client.verify.services(ENV['TWILIO_VERIFY_SERVICE_SID'])
                  .verifications
                  .create(to: phone_number, channel: 'sms')
+  end
+
+  def format_phone_number(number)
+    # Ensure the phone number is in E.164 format
+    number.start_with?('0') ? "+44#{number[1..-1]}" : number
   end
 end

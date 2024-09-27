@@ -21,8 +21,9 @@ class TeamMembersController < ApplicationController
   def create
     email = params[:email]
     password = Devise.friendly_token.first(8)
-    @member = User.new(email: email, password: password)
-    
+    phone_number = params[:phone_number]
+    @member = User.new(email: email, password: password, phone_number: phone_number)
+
 
     case current_user.role
     when 'care_provider_super_user'
@@ -87,7 +88,7 @@ class TeamMembersController < ApplicationController
 
   def user_params
     params.require(:user).permit(
-      :email, :first_name, :last_name, :care_home_id, :status, :role
+      :email, :first_name, :last_name, :care_home_id, :status, :role, :phone_number
     )
   end
 
