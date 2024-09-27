@@ -1,5 +1,5 @@
 <%= form_with(model: @package, local: true) do |form| %>
-<div class="lg:pl-10 p-6">
+  <div class="lg:pl-10 p-6">
     <% if @package.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@package.errors.count, "error") %> prohibited this package from being saved:</h2>
@@ -10,36 +10,30 @@
         </ul>
       </div>
     <% end %>
-
     <div class="p-4">
       <div class="field">
         <%= form.label :name %>
         <%= form.text_field :name, class: 'form-control' %>
       </div>
-
       <div class="field">
         <%= form.label :description %>
         <%= form.text_area :description, class: 'form-control' %>
       </div>
-
       <div class="field">
         <%= form.label :price %>
         <%= form.number_field :price, class: 'form-control' %>
       </div>
-
       <div class="field">
         <%= form.label :credits %>
         <%= form.number_field :credits, class: 'form-control' %>
       </div>
-
       <div class="field">
         <%= form.label :validity %>
         <%= form.select :validity, [0, 1, 12], {}, class: 'form-control' %>
       </div>
     </div>
-
     <div class="actions">
-      <%= form.submit class: 'btn-caretilt' %>
+      <%= form.submit class: 'button-caretilt' %>
     </div>
   <% end %>
 </div>

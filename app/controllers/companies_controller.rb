@@ -14,12 +14,12 @@ class CompaniesController < ApplicationController
 
   def create
     # Combine the address fields into the registered_address field
-    params[:company][:registered_address] = [
-      params[:company][:address],
-      params[:company][:address2],
-      params[:company][:city],
-      params[:company][:postcode]
-    ].compact.join(', ')
+    #  params[:company][:registered_address] = [
+    #  params[:company][:address1],
+    #  params[:company][:address2],
+    #  params[:company][:city],
+    #  params[:company][:postcode]
+    #  ].compact.join(', ')
 
     @company = Company.new(company_params)
 
@@ -36,7 +36,7 @@ class CompaniesController < ApplicationController
   def update
     # Combine the address fields into the registered_address field
     @company.registered_address = [
-      params[:company][:address],
+      params[:company][:address1],
       params[:company][:address2],
       params[:company][:city],
       params[:company][:postcode]
@@ -62,7 +62,7 @@ class CompaniesController < ApplicationController
   end
 
   def company_params
-    params.require(:company).permit(:name, :phone, :companies_house_id, :address, :address2, :city, :postcode)
+    params.require(:company).permit(:name, :phone, :companies_house_id, :address1, :address2, :city, :postcode)
   end
 
 end

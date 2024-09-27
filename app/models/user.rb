@@ -55,7 +55,11 @@ class User < ApplicationRecord
   end
 
   def full_name
+    if self.first_name && self.last_name
     "#{first_name.capitalize} #{last_name.capitalize}"
+    else
+      self.email
+    end
   end
 
   # :nocov:
