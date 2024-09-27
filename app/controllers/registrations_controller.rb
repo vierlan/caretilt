@@ -5,9 +5,9 @@ class RegistrationsController < Devise::RegistrationsController
     super do |resource|
       # LOGIC NOT NEEDED:  CONFIRM LAN AHN
 
-      if @user.persisted?
-        send_verification_code(@user.phone_number)
-      end
+      # if @user.persisted?
+      #   send_verification_code(@user.phone_number)
+      # end
       # Assign the role based on checkbox selection
       if params[:user][:is_service_provider] == "1"
         resource.role = "care_provider_super_user"
@@ -37,8 +37,8 @@ class RegistrationsController < Devise::RegistrationsController
                  .create(to: phone_number, channel: 'sms')
   end
 
-  def format_phone_number(number)
-    # Ensure the phone number is in E.164 format
-    number.start_with?('0') ? "+44#{number[1..-1]}" : number
-  end
+  # def format_phone_number(number)
+  #   # Ensure the phone number is in E.164 format
+  #   number.start_with?('0') ? "+44#{number[1..-1]}" : number
+  # end
 end

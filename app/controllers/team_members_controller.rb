@@ -8,7 +8,7 @@ class TeamMembersController < ApplicationController
     @user = User.new
     @company = Company.find(params[:id])
     @all_members = @company.users
-    @verified_members = @all_members.not_added
+    @verified_members = @all_members.where(verified: true)
     @team_super_user = @all_members.care_provider_super_user || @all_members.la_super_user
     @team_users = @all_members.care_provider_user || @all_members.la_user
     @care_homes = @company.care_homes
@@ -74,7 +74,7 @@ class TeamMembersController < ApplicationController
 
   def verify_member_update
     @user = User.find(params[:id])
-    @company = Company.find(params[:id])
+    @company = @user.company
 
     if @user.update(user_params)
       redirect_to team_company_path(@company, data: { turbo_frame: "main-content" }), notice: 'User has been verified.'

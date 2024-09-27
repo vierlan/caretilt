@@ -67,8 +67,8 @@
 <!-- Static sidebar for desktop -->
 <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col ">
   <!-- Sidebar component, swap this element with another sidebar if you like. Either sidenav_desktop or desktop_nav -->
-  <%#= render "sidenav_desktop" %>
-  <%= render "desktop_nav" %>
+  <%= render "sidenav_desktop" %>
+  <%# <%= render "desktop_nav" %> 
 </div>
 <div class="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-6 lg:hidden">
   <button type="button" class="-m-2.5 p-2.5 text-gray-900 lg:hidden">
@@ -87,7 +87,7 @@
   <div class=" xl:pr-60">
     <div class="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
       <!-- Main area -->
-      <turbo-frame id="main-content" src="<%= team_company_path(current_user.company) %>" >
+      <turbo-frame id="main-content" src="<%= all_company_care_homes_path(current_user.company) %>" >
       </turbo-frame>
       <!-- Secondary column (hidden on smaller screens) -->
     </div>
