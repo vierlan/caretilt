@@ -5,8 +5,10 @@ class PackagesController < ApplicationController
     @subscription_packages = Package.where.not(validity: 0)
     @credit_packages = Package.where(validity: 0)
     if current_user&.company&.has_active_subscription?
-      @active_subscription = Subscription.find_by(company_id: current_user.company.id, active: true)
+      @active_subscription = current_user.company.get_active_subscription
+      @logs = @active_subscription&.credit_log || []
       @active_package = Package.find(@active_subscription.package_id)
+      @packages = @packages.where(validity: 0)
     end
   end
 

@@ -80,7 +80,7 @@ Rails.application.routes.draw do
   get  'two_factor_authentication', to: 'users/two_factor_authentication#show', as: :two_factor_authentication
   post 'two_factor_authentication/send_verification', to: 'users/two_factor_authentication#send_verification', as: :send_otp
   post 'two_factor_authentication/verify_otp', to: 'users/two_factor_authentication#verify_otp', as: :verify_otp
-  
+
 
   devise_for :users, path: '', path_names: { sign_in: 'login', sign_up: 'signup' }, controllers: { registrations: 'registrations' }
   get 'logout', to: 'pages#logout', as: 'logout'
@@ -91,27 +91,17 @@ Rails.application.routes.draw do
   resources :account, only: %i[index] do
     get :stop_impersonating, on: :collection
   end
-  resources :billing_portal, only: [:new, :create]
+  resources :billing_portal_sessions, only: [:new, :create]
   resources :blog_posts, controller: :blog_posts, path: "blog", param: :slug
 
-
-  #get "subscriptions/index"
-  #get "subscriptions/show"
-  #get "subscriptions/new"
-  #get "subscriptions/create"
-  #get "subscriptions/edit"
-  #get "subscriptions/update"
-  #get "subscriptions/destroy"
   get "packages/index"
   get "packages/show"
   get "packages/new"
   post "packages", to: 'packages#create'
   get "packages/edit"
   get "packages/update"
-  #get "packages/destroy"
-  #get "activity_feeds/index"
-  # static pages
 
+  # static pages
 
   pages.each do |page|
     get "/#{page}", to: "pages##{page}", as: page.gsub('-', '_').to_s

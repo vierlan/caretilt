@@ -1,5 +1,6 @@
 <turbo-frame id= "main-content">
-  <!-- Current: "bg-gray-50 text-primary", Default: "text-gray-900 hover:text-primary hover:bg-gray-50" -->
+  <!-- If Caretilt staff show link to make new packages -->
+  <%# if current_user.role == "caretilt_staff" %>
   <%= link_to packages_new_path, data: { turbo_frame: "main-content", navigation_target: "link" } do %>
     <div class="group flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-900 hover:bg-gray-50 hover:text-primary"
                 data-navigation-target="button"
@@ -9,6 +10,7 @@
       </svg>
       Make a new Package
     </div>
+    <%# end %>
   <% end %>
   <% if current_user&.company&.has_active_subscription? %>
     <%= render 'current_package', locals: { subscription: @active_subsciption, package: @active_package} %>
