@@ -68,7 +68,7 @@ careprovidersuperuser = User.create!(
   role: 'care_provider_super_user',
   status: 'verified',
   company: company,
-  phone_number: "+447378836888",
+  phone_number: ENV['PHONE_NUMBER'],
   verified: true
 )
 
@@ -81,9 +81,10 @@ lasuperuser = User.create!(
     role: 'la_super_user',
     status: 'verified',
     local_authority: localauthority,
-    phone_number: "+447378836888",
+    phone_number: ENV['PHONE_NUMBER'],
     verified: true
   )
+
 
 
 
@@ -93,9 +94,9 @@ lasuperuser = User.create!(
 care_homes = [
   { name: "Oak Lodge Medical Centre", main_contact: "Mr Oak", short_description: "Burnt Oak Care Home", email: "oaklodge@care.com", phone_number:"02084332000",
     long_description: "Welcome to Oak Lodge Medical Practice With patients' needs at the heart of everything we do, our website has been designed to make it easy for you to gain instant access to the information you need. As well as specific practice details such as opening hours and how to register, you’ll find a wealth of useful pages covering a wide range of health issues along with links to other relevant medical organisations.",
-    type_of_home: "Adult Homes", types_of_client_group: ["Learning Disabilities and/or Autism", "Mental Health and/or Autism"], local_authority_name: "City of London", latitude: 51.6043591, longitude: -0.2716591, address1: "234 Burnt Oak Broadway", address2: "Edgware", city: "Greater London", postcode: "HA80AP", website: "http://www.oaklodgemedicalcentre.co.uk/" },
+    type_of_home: "Adult Homes", types_of_client_group: ["Learning Disabilities and/or Autism", "Mental Health and/or Autism"], local_authority_name: "London - City of London", latitude: 51.6043591, longitude: -0.2716591, address1: "234 Burnt Oak Broadway", address2: "Edgware", city: "Greater London", postcode: "HA80AP", website: "http://www.oaklodgemedicalcentre.co.uk/" },
   { name: "Ashton Lodge Care Home", main_contact: "Mr Ashton", short_description: "Ashton", long_description: "Ashton Lodge is a quality, purpose built care home that offers specialist facilities and care from highly trained staff. The home aims to maintain good links within the community to provide meaningful visits, trips and activities for the residents who can enjoy taking part in regular group events.
-The home has an open door policy, encouraging family and friends to come to the home and spend time with their loved ones. Whether it is spending time in the resident’s private bedroom, in the garden or in communal lounges, residents are helped to see their loved ones regularly.", type_of_home: "Nursing Home", types_of_client_group: ["Older People"], local_authority_name: "City of London", latitude: 51.58442179999999, longitude: -0.2486285, address1: "unknown", city: "Greater London", postcode: "NW96LE", address2:"" },
+The home has an open door policy, encouraging family and friends to come to the home and spend time with their loved ones. Whether it is spending time in the resident’s private bedroom, in the garden or in communal lounges, residents are helped to see their loved ones regularly.", type_of_home: "Nursing Home", types_of_client_group: ["Older People"], local_authority_name: "London - City of London", latitude: 51.58442179999999, longitude: -0.2486285, address1: "unknown", city: "Greater London", postcode: "NW96LE", address2:"" },
   { name: "Bridgeside Lodge", main_contact: "Mr Lodge", short_description: "Bridgeside Lodge", long_description: "Welcome to Bridgeside Lodge Care Home in Islington, London. Situated by the beautiful Regent’s Canal, our luxurious modern gated care home offers 24-hour care for those between the ages of 18 to 65 and above. We provide specialist care for younger people with neurological and spinal conditions, and elderly people with or without Dementia. Our purpose-built nursing home comprises 64 single bedrooms, all with en-suite facilities.",
   type_of_home: "Nursing Home", types_of_client_group: ["Older People"], local_authority_name: "Greater London", latitude: 51.5327147, longitude: -0.09709860000000001, address1: "61 Wharf Road", address2: "London", city: "Greater London", postcode: "N17RY", website: "https://www.foresthc.com/our-care-centres/bridgeside-lodge"},
   { name: "MHA Hampton Lodge", main_contact: "Mr Hampton", short_description: "MHA Lodge", long_description: "Hampton Lodge in Southampton provides high quality nursing and residential dementia care for up to 44 people. We are passionate about our home and residents. We provide a warm and homely environment and treat all our residents as individuals who have the right to be given choice. Residents enjoy our calm, relaxed atmosphere and benefit from our person-centred care. At Hampton Lodge, we take time to get to know each individual’s history, personality and preferences, and find ways to make every day fulfilling. Our Activity Coordinator ensures residents are kept active and entertained with a variety of optional events and activities",

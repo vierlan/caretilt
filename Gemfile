@@ -9,7 +9,6 @@ gem 'devise-two-factor'
 gem "pundit"
 
 # smart lists management
-
 gem 'acts_as_list', '~> 1.0.4'
 gem 'requestjs-rails'
 
