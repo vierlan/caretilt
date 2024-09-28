@@ -1,5 +1,6 @@
 class BookingEnquiriesController < ApplicationController
   def new
+    @user = current_user
     @room = Room.find(params[:room_id])
     @care_home = @room.care_home
     @company = @care_home.company

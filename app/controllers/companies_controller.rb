@@ -34,16 +34,18 @@ class CompaniesController < ApplicationController
   end
 
   def update
-    # Combine the address fields into the registered_address field
-    @company.registered_address = [
-      params[:company][:address1],
-      params[:company][:address2],
-      params[:company][:city],
-      params[:company][:postcode]
-    ].compact.join(', ')
+    logger.debug "Company Params: #{company_params.inspect}"
 
+    # Combine the address fields into the registered_address field
     if @company.update(company_params)
-      redirect_to next_step_path, notice: 'Company updated successfully.'
+      logger.debug "Company After First Update: #{@company.attributes.inspect}"
+      @company.update(registered_address: [
+        @company.address1,
+        @company.address2,
+        @company.city,
+        @company.postcode
+      ].compact.join(', '))
+      redirect_to dashboard_index_path(@company), notice: 'Changes Saved'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -62,7 +64,7 @@ class CompaniesController < ApplicationController
   end
 
   def company_params
-    params.require(:company).permit(:name, :phone, :companies_house_id, :address1, :address2, :city, :postcode)
+    params.require(:company).permit(:website, :address, :name, :phone_number, :companies_house_id, :address1, :address2, :city, :postcode)
   end
 
 end
