@@ -87,7 +87,12 @@
   <div class=" xl:pr-60">
     <div class="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
       <!-- Main area -->
-      <turbo-frame id="main-content" src="<%= team_company_path(current_user.company) %>" >
+      <turbo-frame id="main-content"
+        <% if current_user.company %>
+       src="<%= team_company_path(current_user.company) %>" >
+       <% else current_user.local_authority %>
+       src='<%= care_homes_path %>'
+       <% end %>
       </turbo-frame>
       <!-- Secondary column (hidden on smaller screens) -->
     </div>
@@ -106,6 +111,7 @@
         <%= render partial: "activity_feed", locals: {feed: feed} %>
 </turbo-frame>
       </ul>
+   
     <% end %>
  </div>
 </aside></div>

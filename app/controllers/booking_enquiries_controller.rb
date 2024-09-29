@@ -1,5 +1,6 @@
 class BookingEnquiriesController < ApplicationController
   def new
+    @user = current_user
     @room = Room.find(params[:room_id])
     @care_home = @room.care_home
     @company = @care_home.company
@@ -30,9 +31,16 @@ class BookingEnquiriesController < ApplicationController
 
   def index
     @user = current_user
+    if @user.company
     @company = @user.company
     @care_homes = @company.care_homes
     @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten
+    elsif @user.local_authority
+      @bookings = BookingEnquiry.where(user: @user)
+      @care_homes = @bookings.map { |booking| booking.room.care_home }
+    else
+      @bookings = Booking.all
+    end
   end
 
   def edit

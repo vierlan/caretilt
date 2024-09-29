@@ -74,7 +74,7 @@ class TeamMembersController < ApplicationController
 
   def verify_member_update
     @user = User.find(params[:id])
-    @company = Company.find(params[:id])
+    @company = @user.company
 
     if @user.update(user_params)
       redirect_to team_company_path(@company, data: { turbo_frame: "main-content" }), notice: 'User has been verified.'
