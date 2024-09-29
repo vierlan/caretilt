@@ -2,50 +2,45 @@ class DashboardController < ApplicationController
 
   before_action :check_two_factor_authentication
 
-  #def index
-  #  @user = current_user
-  #  if @user.company
-  #    @company = @user.company
-  #    @care_homes = @company.care_homes
-  #    @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten.sort_by(&:created_at).reverse
-  #  elsif @user.local_authority
-  #    @local_authority = @user.local_authority
-  #    @care_homes = CareHome.all
-  #  end
-  #end
-
   def index
     @user = current_user
+    @activity_feeds = []
+    @booking_log = []
     if @user.company
       @company = current_user.company
       @care_homes = @company.care_homes
       @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten.sort_by(&:created_at).reverse
       @credit_logs = @company.get_active_subscription&.credit_log
-      @activity_feeds = []
-      @booking_log = []
-      @bookings.each do |booking|
-        log = []
-        log << "Equiry:"
-        log << booking.room.name + " - " + booking.room.care_home.name
-        log << booking.created_at
-        log << booking.contact_name
-        log << "Tower Hamlets" # booking.user.local_authority.name
-        @booking_log << log
-      end
-      @credit_logs&.each do |log|
-        @activity_feeds << log
-      end
-        #  sort the activity feeds by activity_time newest to oldest
-      @booking_log&.each do |log|
-        @activity_feeds << log
-      end
-        @activity_feeds.sort_by! { |log| log[2] }.reverse!
+      # send credit logs to activity feeds
+
+
+    @activity_feeds.sort_by! { |log| log[2] }.reverse!
     elsif @user.local_authority
       @la = @user.local_authority
       @care_homes = CareHome.all  # make some logice here which will select care_homes in region/local authority
+      @bookings = BookingEnquiry.where(user: @user).sort_by(&:created_at).reverse
+    else # admin
+      @bookings = BookingEnquiry.all.sort_by(&:created_at).reverse
+      @care_homes = CareHome.all
+      # get all subscriptions within the last 2 weeks and reverse sort them
+      @subscriptions = Subscription.where(created_at: 2.weeks.ago..Time.now).sort_by(&:created_at).reverse
     end
-
-
+    @bookings.each do |booking|
+      log = []
+      log << "Equiry:"
+      log << booking.room.name + " - " + booking.room.care_home.name
+      log << booking.created_at
+      log << booking.contact_name
+      log << "Tower Hamlets" # booking.user.local_authority.name
+      @booking_log << log
+    end
+    #  sort the activity feeds by activity_time newest to oldest
+    @booking_log&.each do |log|
+      @activity_feeds << log
+    end
+    @credit_logs&.each do |log|
+      @activity_feeds << log
+    end
   end
 
   def team

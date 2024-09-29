@@ -7,6 +7,12 @@ module NavigationHelper
     # Common links for all users
 
     links << { name: 'My details', path: edit_user_registration_path, icon: 'team-members-icon-class' }
+    links << {
+      name: 'Booking Requests',
+      path: booking_enquiries_path,
+      svg: svg_for_path(booking_enquiries_path)
+    }
+
     if current_user.role == 'caretilt_user'
       links << {
         name: 'Admin dashboard',
@@ -31,11 +37,7 @@ module NavigationHelper
         path: all_company_care_homes_path(@company),
         svg: svg_for_path(all_company_care_homes_path(@company))
       }
-      links << {
-        name: 'Booking Requests',
-        path: booking_enquiries_path,
-        svg: svg_for_path(booking_enquiries_path)
-      }
+
     end
 
     if current_user.local_authority.present?
