@@ -32,21 +32,17 @@ class DashboardController < ApplicationController
         log << "Tower Hamlets" # booking.user.local_authority.name
         @booking_log << log
       end
-      if @credit_logs
-        @credit_logs.each do |log|
+      @credit_logs&.each do |log|
         @activity_feeds << log
-        end
       end
         #  sort the activity feeds by activity_time newest to oldest
-      if @booking_log
-        @booking_log.each do |log|
-          @activity_feeds << log
-        end
+      @booking_log&.each do |log|
+        @activity_feeds << log
       end
         @activity_feeds.sort_by! { |log| log[2] }.reverse!
-    end
-    if @user.local_authority
+    elsif @user.local_authority
       @la = @user.local_authority
+      @care_homes = CareHome.all  # make some logice here which will select care_homes in region/local authority
     end
 
 

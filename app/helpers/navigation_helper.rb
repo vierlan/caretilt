@@ -6,7 +6,7 @@ module NavigationHelper
 
     # Common links for all users
 
-    links << { name: 'My details', path: edit_user_registration_path, svg: svg_for_path(root_path) }
+    links << { name: 'My details', path: edit_user_registration_path, icon: 'team-members-icon-class' }
     if current_user.role == 'caretilt_user'
       links << {
         name: 'Admin dashboard',
@@ -38,19 +38,22 @@ module NavigationHelper
       }
     end
 
-    #if current_user.local_authority.present?
-    #  links << {
-    #    name: 'Care Home Search',
-    #    path: care_homes_path,
-    #    svg: svg_for_path(care_homes_path)
-    #  }
-    #end
+    if current_user.local_authority.present?
+      links << {
+        name: 'Care Home Search',
+        path: care_homes_path,
+        svg: svg_for_path(care_homes_path)
+      }
+    end
   end
 
   def svg_for_path(path)
     case path
-    when all_company_care_homes_path(@company)
-      '<svg class="h-6 w-6 shrink-0 text-gray-700 group-hover:text-primary" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" /></svg>'.html_safe
+
+    # this link doesn't work for an LA User error No route matches {:action=>"all", :company_id=>nil, :controller=>"care_homes", :format=>"2"}, possible unmatched constraints: [:company_id]
+
+    #when all_company_care_homes_path(@company)
+      #'<svg class="h-6 w-6 shrink-0 text-gray-700 group-hover:text-primary" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" /></svg>'.html_safe
     when care_homes_path
       '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
       <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
