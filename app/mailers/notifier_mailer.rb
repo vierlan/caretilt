@@ -13,4 +13,10 @@ class NotifierMailer < ApplicationMailer
               </body></html>"
     )
   end
+  def contact_email(contact_params)
+    @contact_params = contact_params
+    mail(to: Rails.application.credentials.gmail[:address], subject: 'New Contact Form Submission')
+  end
+
+
 end

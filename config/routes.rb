@@ -1,9 +1,6 @@
 Rails.application.routes.draw do
-
-
   root 'pages#home'
   ActiveAdmin.routes(self)
-
 
   #debug session route
   #get '/session', to: 'activity_feeds#index'
@@ -17,10 +14,6 @@ Rails.application.routes.draw do
   get '/checkout/pricing', to: 'stripe/checkout#pricing'
   get '/checkout/success', to: 'stripe/checkout#success'
   get '/checkout/cancel', to: 'stripe/checkout#cancel'
-
-  pages = %w[
-    privacy terms about contact home home2 home3 home4 guides calculator faq pricing search quiz test test2
-  ]
   get 'activity_feeds', to: 'activity_feeds#index'
 
   resources :companies do
@@ -48,9 +41,6 @@ Rails.application.routes.draw do
 
     # care homes under company for create and new because needed for creation. After creation, easy to get just
     # resources :care_homes, only: %i[index new create] do
-
-
-
   resources :care_homes, only: %i[show edit update destroy index] do
     # This is for the drag reordering and delete button to remove the media for the correct care home and save to database.
 
@@ -103,6 +93,14 @@ Rails.application.routes.draw do
 
   # static pages
 
+  # new/create and send email for contact form
+  get "contact_mailer/contact_email"
+  get "contact", to: "contact_mailer#new", as: :contact
+  post "contact", to: "contact_mailer#create", as: :contact_email
+
+  pages = %w[
+    privacy terms about home home2 home3 home4 guides calculator faq pricing search quiz test test2
+  ]
   pages.each do |page|
     get "/#{page}", to: "pages##{page}", as: page.gsub('-', '_').to_s
   end
