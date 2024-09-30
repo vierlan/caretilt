@@ -11,10 +11,7 @@ class DashboardController < ApplicationController
       @care_homes = @company.care_homes
       @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten.sort_by(&:created_at).reverse
       @credit_logs = @company.get_active_subscription&.credit_log
-      # send credit logs to activity feeds
-
-
-    @activity_feeds.sort_by! { |log| log[2] }.reverse!
+      @activity_feeds.sort_by! { |log| log[2] }.reverse!
     elsif @user.local_authority
       @la = @user.local_authority
       @care_homes = CareHome.all  # make some logice here which will select care_homes in region/local authority
@@ -38,6 +35,7 @@ class DashboardController < ApplicationController
     @booking_log&.each do |log|
       @activity_feeds << log
     end
+    # send credit logs to activity feeds
     @credit_logs&.each do |log|
       @activity_feeds << log
     end
