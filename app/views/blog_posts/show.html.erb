@@ -10,6 +10,9 @@
         <%= image_tag @blog_post.cover_image, class:"aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover" if @blog_post.cover_image.attached? %>
         <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
       </div>
+      <div class="py-8">
+        <%= video_tag(@blog_post.video, class: "video", autoplay: true, controls: true) if @blog_post.video.attached? %>
+      </div>
       <% if current_user&.admin? %>
         <div class="mx-auto mt-4">
           <div class="flex space-x-2 my-2 mx-auto justify-center items-center">

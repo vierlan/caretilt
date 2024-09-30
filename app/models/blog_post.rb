@@ -1,6 +1,7 @@
 class BlogPost < ApplicationRecord
   has_one_attached :cover_image
   has_rich_text :body
+  has_one_attached :video
 
   scope :published, -> { where(draft: false) }
   scope :drafts, -> { where(draft: true) }
