@@ -1,4 +1,7 @@
 <div id="<%= dom_id blog_post %>">
+<div>
+ <%= link_to 'Edit Post', edit_blog_post_path(blog_post) %>
+</div>
   <article class="flex flex-col items-start justify-between hover:opacity-80 transition-opacity duration-300 ease-in-out">
 
     <%= link_to blog_post_path(blog_post) do %>
@@ -15,6 +18,9 @@
             <%= blog_post.title %>
           </h2>
           <p class="mt-3 line-clamp-3 text-sm leading-6 text-gray-600"><%= blog_post.description %></p>
+        </div>
+        <div>
+
         </div>
       </div>
     <% end %>

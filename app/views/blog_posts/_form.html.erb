@@ -61,6 +61,29 @@
                 </div>
               </div>
             </div>
+            <div class="col-span-full">
+              <label for="video" class="block text-sm font-medium leading-6 text-gray-900">Video</label>
+              <div id="video_drop_zone" class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                <div class="text-center">
+                  <% if @blog_post.video.attached? %>
+                    <video id="video_preview" controls>
+                      <source src="<%= url_for(@blog_post.video) %>" type="<%= @blog_post.video.content_type %>">
+                      Your browser does not support the video tag.
+                    </video>
+                  <% else %>
+                    <video id="video_preview" src="#" class="hidden" controls></video>
+                  <% end %>
+                  <div class="mt-4 flex text-sm leading-6 text-gray-600 justify-center">
+                    <label for="video" class="relative cursor-pointer rounded-md bg-white font-semibold text-gray-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-gray-600 focus-within:ring-offset-2 hover:text-gray-500">
+                      <span>Upload a file</span>
+                      <%= form.file_field :video, id: 'video', class: 'sr-only' %>
+                    </label>
+                    <p class="pl-1">or drag and drop</p>
+                  </div>
+                  <p class="text-xs leading-5 text-gray-600">MP4, MOV, AVI up to 50MB</p>
+                </div>
+              </div>
+            </div>
             <div class="field relative border rounded-lg min-h-[275px] border-gray-300 group">
               <%= form.rich_text_area :body, placeholder: "Write your blog post...", required: true, class:"group-focus:ring-gray-500 group-focus:border-gray-500 prose pb-5" %>
             </div>
