@@ -34,6 +34,8 @@ Rails.application.routes.draw do
   resources :local_authority do
     member do
       get 'add_team_member', to: 'team_members#new', as: 'la_member'
+      get 'team', to: 'team_members#index'
+
       post 'add_team_member', to: 'team_members#create'
       get 'account', to: 'dashboard#account'
     end
