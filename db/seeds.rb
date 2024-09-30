@@ -68,7 +68,7 @@ careprovidersuperuser = User.create!(
   role: 'care_provider_super_user',
   status: 'verified',
   company: company,
-  phone_number: "+447378836888",
+  phone_number: ENV['PHONE_NUMBER'],
   verified: true
 )
 
@@ -81,7 +81,18 @@ lasuperuser = User.create!(
     role: 'la_super_user',
     status: 'verified',
     local_authority: localauthority,
-    phone_number: "+447378836888",
+    phone_number: ENV['PHONE_NUMBER'],
+    verified: true
+  )
+
+  caretilt_user = User.create!(
+    email: 'caretilt@gmail.com',
+    password: '123456',
+    first_name: 'Carey',
+    last_name: 'Tilt',
+    role: 'caretilt_user',
+    status: 'verified',
+    phone_number: ENV['PHONE_NUMBER'],
     verified: true
   )
 

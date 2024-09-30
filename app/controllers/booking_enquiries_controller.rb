@@ -39,7 +39,7 @@ class BookingEnquiriesController < ApplicationController
       @bookings = BookingEnquiry.where(user: @user)
       @care_homes = @bookings.map { |booking| booking.room.care_home }
     else
-      @bookings = Booking.all
+      @bookings = BookingEnquiry.all
     end
   end
 

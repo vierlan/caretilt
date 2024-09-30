@@ -1,8 +1,8 @@
 class BlogPostsController < ApplicationController
   before_action :set_blog_post, except: %i[index new create]
-  before_action only: [:new, :edit, :create, :update, :destroy] do
-    authenticate_admin!(alert_message: 'You are not authorized')
-  end
+  #before_action only: [:new, :edit, :create, :update, :destroy] do
+  #  authenticate_admin!(alert_message: 'You are not authorized')
+  #end
 
   # GET /blog
   def index

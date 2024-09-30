@@ -1,3 +1,5 @@
+<turbo-frame id="main-content">
+
 <% meta title: "Blog posts", description: "All blog posts from #{Rails.application.credentials.company_name}." %>
 <%= render partial: "shared/heading", locals: { title: 'Blog Posts', description: '' } %>
 <% if current_user&.admin? %>
@@ -40,3 +42,4 @@
     </section>
   </main>
 </div>
+</turbo-frame>
