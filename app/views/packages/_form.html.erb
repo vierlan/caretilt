@@ -31,6 +31,10 @@
         <%= form.label :validity %>
         <%= form.select :validity, [0, 1, 12], {}, class: 'form-control' %>
       </div>
+      <div class="field">
+        <%= form.label :subscription_type %>
+        <%= form.select :subscription_type, [:company, :local_authority], {}, class: 'form-control' %>
+      </div>
     </div>
     <div class="actions">
       <%= form.submit class: 'button-caretilt' %>

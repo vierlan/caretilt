@@ -86,13 +86,7 @@ Rails.application.routes.draw do
   resources :billing_portal_sessions, only: [:new, :create]
   resources :blog_posts, controller: :blog_posts, path: "blog", param: :slug
 
-  get "packages/index"
-  get "packages/show"
-  get "packages/new"
-  post "packages", to: 'packages#create'
-  get "packages/edit"
-  get "packages/update"
-
+ resources :packages
   # static pages
 
   # new/create and send email for contact form

@@ -19,6 +19,7 @@ Package.create(name: 'pro_yearly', price: 3000, validity: 12, credits: 50, descr
 Package.create(name: 'unlimited_monthly', price: 600, validity: 1, credits: 100000, description: 'Unlimited package for monthly listings', data: { lookup: 'unlimited_monthly' })
 Package.create(name: 'unlimited_yearly', price: 6000, validity: 12, credits: 100000, description: 'Unlimited package for yearly listings', data: { lookup: 'unlimited_yearly' })
 Package.create(name: 'Add 5 credits', price: 290, validity: 0, credits: 5, description: 'Add 5 credits to your account', data: { lookup: 'add_5_credits' })
+Package.create(name: 'Local Authority Licence', price: 1000, validity: 12, credits: nil, description: 'Allows local Authorities workers to view vacancies in Local care home', data: { lookup: 'la_licence' }, subscription_type: 1 )
 
 @packages = Package.all
 
@@ -93,7 +94,8 @@ lasuperuser = User.create!(
     role: 'caretilt_user',
     status: 'verified',
     phone_number: ENV['PHONE_NUMBER'],
-    verified: true
+    verified: true,
+    admin: true
   )
 
 # Attach all homes to the created user (since the user must be associated with a company)

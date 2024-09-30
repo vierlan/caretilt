@@ -13,7 +13,12 @@ module NavigationHelper
       icon: 'home'
     }
 
-    if current_user.role == 'caretilt_user'
+    if current_user.role == 'caretilt_user' || current_user&.admin?
+      links << {
+        name: 'Subscription Packages',
+        path:  packages_path,
+        icon: 'folder'
+      }
       links << {
         name: 'Admin dashboard',
         path: companies_path,
