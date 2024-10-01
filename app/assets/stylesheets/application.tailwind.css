@@ -18,7 +18,11 @@ rails assets:precompile */
 @import "actiontext.css";
 @import "trix.css";
 
-.dev-class-test{
+.dev-class-custom{
     color: red;
     font-size: 100px;
+}
+
+.dev-class-tailwind1{
+    @apply text-green-700
 }
