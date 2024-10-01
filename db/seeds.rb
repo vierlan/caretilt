@@ -35,7 +35,7 @@ end
 
 # Used as reference to delete all seeded things when re-seeding.
 seeded_org_names = ['Care Provider Company London', 'Care Provider Company London North']
-seeded_user_email = ['caresuper1@test.com', 'caresuper2@test.com', 'careuser1@test.com', 'la@test.com', 'caretilt@gmail.com']
+seeded_user_email = ['super@care1.com', 'super@care2.com', 'user@care1.com', 'super@la.com', 'user@la.com', 'super@caretilt.com', 'user@caretilt.com', 'caretilt@gmail.com']
 seeded_care_home_names = [
   "Oak Lodge Medical Centre",
   "Ashton Lodge Care Home",
@@ -61,7 +61,7 @@ localauthority = LocalAuthority.find_or_create_by!(name: 'Local Authority Organi
 
 # Users
 careprovidersuperuser1 = User.create!(
-  email: 'caresuper1@test.com',
+  email: 'super@care1.com',
   password: '123456',
   password_confirmation: '123456',
   first_name: 'Care',
@@ -74,7 +74,7 @@ careprovidersuperuser1 = User.create!(
 )
 
 careprovidersuperuser1 = User.create!(
-  email: 'careuser1@test.com',
+  email: 'user@care1.com',
   password: '123456',
   password_confirmation: '123456',
   first_name: 'Care',
@@ -87,7 +87,7 @@ careprovidersuperuser1 = User.create!(
 )
 
 careprovidersuperuser2 = User.create!(
-  email: 'caresuper2@test.com',
+  email: 'super@care2.com',
   password: '123456',
   password_confirmation: '123456',
   first_name: 'Care',
@@ -100,11 +100,11 @@ careprovidersuperuser2 = User.create!(
 )
 
 lasuperuser = User.create!(
-    email: 'la@test.com',
+    email: 'super@la.com',
     password: '123456',
     password_confirmation: '123456',
     first_name: 'Local',
-    last_name: 'Authority',
+    last_name: 'Super',
     role: 'la_super_user',
     status: 'verified',
     local_authority: localauthority,
@@ -112,9 +112,32 @@ lasuperuser = User.create!(
     verified: true
 )
 
+lauser = User.create!(
+    email: 'user@la.com',
+    password: '123456',
+    password_confirmation: '123456',
+    first_name: 'Local',
+    last_name: 'User',
+    role: 'la_user',
+    status: 'verified',
+    local_authority: localauthority,
+    phone_number: ENV['PHONE_NUMBER'],
+    verified: true
+)
+
+caretilt_superuser = User.create!(
+  email: 'super@caretilt.com',
+  password: '123456',
+  first_name: 'Carey',
+  last_name: 'Tilt',
+  role: 'caretilt_user',
+  status: 'verified',
+  phone_number: ENV['PHONE_NUMBER'],
+  verified: true
+)
+
 caretilt_user = User.create!(
-  email: 'caretilt@gmail.com',
-  company: company1,
+  email: 'user@caretilt.com',
   password: '123456',
   first_name: 'Carey',
   last_name: 'Tilt',
