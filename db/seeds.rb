@@ -114,6 +114,7 @@ lasuperuser = User.create!(
 
 caretilt_user = User.create!(
   email: 'caretilt@gmail.com',
+  company: company1,
   password: '123456',
   first_name: 'Carey',
   last_name: 'Tilt',

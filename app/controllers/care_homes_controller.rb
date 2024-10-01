@@ -22,10 +22,10 @@ class CareHomesController < ApplicationController
     @types_of_client_group_options = CareHome::TYPECLIENT 
 
     # Logic here will return all care homes by default unless front end form specifies filtering params.
-    # @care_homes = CareHome.all
+    @care_homes = CareHome.all
 
     # Use Pundit to scope the care homes based on the user's role
-    @care_homes = policy_scope(CareHome)
+    # @care_homes = policy_scope(CareHome)
 
     if params[:care_home]
       # Local authority filter (if not "Any")

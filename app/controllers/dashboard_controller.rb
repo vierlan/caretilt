@@ -1,5 +1,5 @@
 class DashboardController < ApplicationController
-
+  before_action :authenticate_user!
   before_action :check_two_factor_authentication
 
   def index
