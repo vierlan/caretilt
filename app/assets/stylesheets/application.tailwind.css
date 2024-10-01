@@ -18,3 +18,7 @@ rails assets:precompile */
 @import "actiontext.css";
 @import "trix.css";
 
+.dev-class-test{
+    color: red;
+    font-size: 100px;
+}
