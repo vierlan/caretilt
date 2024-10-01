@@ -34,8 +34,8 @@ Package.create(name: 'Add 5 credits', price: 290, validity: 0, credits: 5, descr
 end
 
 # Used as reference to delete all seeded things when re-seeding.
-seeded_org_names = ['Care Provider Company']
-seeded_user_email = ['com@test.com', 'la@test.com']
+seeded_org_names = ['Care Provider Company London', 'Care Provider Company London North']
+seeded_user_email = ['caresuper1@test.com', 'caresuper2@test.com', 'careuser1@test.com', 'la@test.com', 'caretilt@gmail.com']
 seeded_care_home_names = [
   "Oak Lodge Medical Centre",
   "Ashton Lodge Care Home",
@@ -54,20 +54,47 @@ CareHome.where(name: seeded_care_home_names).destroy_all
 Company.where(name: seeded_org_names).destroy_all
 
 # Create or find a company for the care provider user (if needed)
-company = Company.find_or_create_by!(name: 'Care Provider Company')
+company1 = Company.find_or_create_by!(name: 'Care Provider Company London')
+company2 = Company.find_or_create_by!(name: 'Care Provider Company North')
 localauthority = LocalAuthority.find_or_create_by!(name: 'Local Authority Organisation')
 # careprovidersuperuser.company = company
 
 # Users
-careprovidersuperuser = User.create!(
-  email: 'com@test.com',
+careprovidersuperuser1 = User.create!(
+  email: 'caresuper1@test.com',
   password: '123456',
   password_confirmation: '123456',
   first_name: 'Care',
   last_name: 'Provider',
   role: 'care_provider_super_user',
   status: 'verified',
-  company: company,
+  company: company1,
+  phone_number: ENV['PHONE_NUMBER'],
+  verified: true
+)
+
+careprovidersuperuser1 = User.create!(
+  email: 'careuser1@test.com',
+  password: '123456',
+  password_confirmation: '123456',
+  first_name: 'Care',
+  last_name: 'Provider',
+  role: 'care_provider_user',
+  status: 'verified',
+  company: company1,
+  phone_number: ENV['PHONE_NUMBER'],
+  verified: true
+)
+
+careprovidersuperuser2 = User.create!(
+  email: 'caresuper2@test.com',
+  password: '123456',
+  password_confirmation: '123456',
+  first_name: 'Care',
+  last_name: 'Provider',
+  role: 'care_provider_super_user',
+  status: 'verified',
+  company: company2,
   phone_number: ENV['PHONE_NUMBER'],
   verified: true
 )
@@ -83,27 +110,27 @@ lasuperuser = User.create!(
     local_authority: localauthority,
     phone_number: ENV['PHONE_NUMBER'],
     verified: true
-  )
+)
 
-  caretilt_user = User.create!(
-    email: 'caretilt@gmail.com',
-    password: '123456',
-    first_name: 'Carey',
-    last_name: 'Tilt',
-    role: 'caretilt_user',
-    status: 'verified',
-    phone_number: ENV['PHONE_NUMBER'],
-    verified: true
-  )
+caretilt_user = User.create!(
+  email: 'caretilt@gmail.com',
+  password: '123456',
+  first_name: 'Carey',
+  last_name: 'Tilt',
+  role: 'caretilt_user',
+  status: 'verified',
+  phone_number: ENV['PHONE_NUMBER'],
+  verified: true
+)
 
 # Attach all homes to the created user (since the user must be associated with a company)
 
 care_homes = [
   { name: "Oak Lodge Medical Centre", main_contact: "Mr Oak", short_description: "Burnt Oak Care Home", email: "oaklodge@care.com", phone_number:"02084332000",
     long_description: "Welcome to Oak Lodge Medical Practice With patients' needs at the heart of everything we do, our website has been designed to make it easy for you to gain instant access to the information you need. As well as specific practice details such as opening hours and how to register, you’ll find a wealth of useful pages covering a wide range of health issues along with links to other relevant medical organisations.",
-    type_of_home: "Adult Homes", types_of_client_group: ["Learning Disabilities and/or Autism", "Mental Health and/or Autism"], local_authority_name: "City of London", latitude: 51.6043591, longitude: -0.2716591, address1: "234 Burnt Oak Broadway", address2: "Edgware", city: "Greater London", postcode: "HA80AP", website: "http://www.oaklodgemedicalcentre.co.uk/" },
+    type_of_home: "Adult Homes", types_of_client_group: ["Learning Disabilities and/or Autism", "Mental Health and/or Autism"], local_authority_name: "London - City of London", latitude: 51.6043591, longitude: -0.2716591, address1: "234 Burnt Oak Broadway", address2: "Edgware", city: "Greater London", postcode: "HA80AP", website: "http://www.oaklodgemedicalcentre.co.uk/" },
   { name: "Ashton Lodge Care Home", main_contact: "Mr Ashton", short_description: "Ashton", long_description: "Ashton Lodge is a quality, purpose built care home that offers specialist facilities and care from highly trained staff. The home aims to maintain good links within the community to provide meaningful visits, trips and activities for the residents who can enjoy taking part in regular group events.
-The home has an open door policy, encouraging family and friends to come to the home and spend time with their loved ones. Whether it is spending time in the resident’s private bedroom, in the garden or in communal lounges, residents are helped to see their loved ones regularly.", type_of_home: "Nursing Home", types_of_client_group: ["Older People"], local_authority_name: "City of London", latitude: 51.58442179999999, longitude: -0.2486285, address1: "unknown", city: "Greater London", postcode: "NW96LE", address2:"" },
+The home has an open door policy, encouraging family and friends to come to the home and spend time with their loved ones. Whether it is spending time in the resident’s private bedroom, in the garden or in communal lounges, residents are helped to see their loved ones regularly.", type_of_home: "Nursing Home", types_of_client_group: ["Older People"], local_authority_name: "London - City of London", latitude: 51.58442179999999, longitude: -0.2486285, address1: "unknown", city: "Greater London", postcode: "NW96LE", address2:"" },
   { name: "Bridgeside Lodge", main_contact: "Mr Lodge", short_description: "Bridgeside Lodge", long_description: "Welcome to Bridgeside Lodge Care Home in Islington, London. Situated by the beautiful Regent’s Canal, our luxurious modern gated care home offers 24-hour care for those between the ages of 18 to 65 and above. We provide specialist care for younger people with neurological and spinal conditions, and elderly people with or without Dementia. Our purpose-built nursing home comprises 64 single bedrooms, all with en-suite facilities.",
   type_of_home: "Nursing Home", types_of_client_group: ["Older People"], local_authority_name: "Greater London", latitude: 51.5327147, longitude: -0.09709860000000001, address1: "61 Wharf Road", address2: "London", city: "Greater London", postcode: "N17RY", website: "https://www.foresthc.com/our-care-centres/bridgeside-lodge"},
   { name: "MHA Hampton Lodge", main_contact: "Mr Hampton", short_description: "MHA Lodge", long_description: "Hampton Lodge in Southampton provides high quality nursing and residential dementia care for up to 44 people. We are passionate about our home and residents. We provide a warm and homely environment and treat all our residents as individuals who have the right to be given choice. Residents enjoy our calm, relaxed atmosphere and benefit from our person-centred care. At Hampton Lodge, we take time to get to know each individual’s history, personality and preferences, and find ways to make every day fulfilling. Our Activity Coordinator ensures residents are kept active and entertained with a variety of optional events and activities",
@@ -121,6 +148,10 @@ We are a family of 28 not-for-profit care homes across England. We support our r
   type_of_home: "Hospice Homes", types_of_client_group: ["Learning Disabilities and/or Autism", "Children and Young People", "Children with SEN", "Young People / Unaccompanied Minors"], local_authority_name: "Crawley", latitude: 51.1135474, longitude: -0.1786974, address1: "Spindle Way", city: "West Sussex", postcode: "RH101TT", website: "http://www.southerncountiescaring.co.uk/", address2:"" }
 ]
 
+
+
+puts "care home length array: #{care_homes.length}"
+
 rooms = [
   {name: "Yellow", core_fee_level: 10, core_hours_of_care: 20, additional_fees_associated: false, ensuite: true, single_double: "Single Room", vacant: true},
   {name: "Blue", core_fee_level: 13, core_hours_of_care: 40, additional_fees_associated: true, ensuite: false, single_double: "Double Room", vacant: true},
@@ -130,8 +161,20 @@ rooms = [
 ]
 
 
-care_homes.each do |care_home_attrs|
-  care_home = company.care_homes.create!(care_home_attrs)
+care_homes[0..2].each do |care_home_attrs|
+  care_home = company1.care_homes.create!(care_home_attrs)
+
+  # Randomly choose the number of rooms to create for each care home (between 0 and 5)
+  number_of_rooms = rand(0..5)
+
+  # Randomly select rooms from the rooms array
+  rooms.sample(number_of_rooms).each do |room_attrs|
+    care_home.rooms.create!(room_attrs)
+  end
+end
+
+care_homes[3..8].each do |care_home_attrs|
+  care_home = company2.care_homes.create!(care_home_attrs)
 
   # Randomly choose the number of rooms to create for each care home (between 0 and 5)
   number_of_rooms = rand(0..5)
