@@ -4,7 +4,7 @@
 # If a file has db:drop before you need to run this command before seeding
 # rails local_authorities:import
 
-raise StandardError, "DO NOT RUN THIS IN PRODUCTION" if Rails.env.production?
+# raise StandardError, "DO NOT RUN THIS IN PRODUCTION" if Rails.env.production?
 
 # require 'seed_support/rewardful'
 

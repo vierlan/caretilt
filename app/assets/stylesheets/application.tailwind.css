@@ -2,21 +2,21 @@
 /* rails assets:clobber
 rails assets:precompile */
 
-.form-image-card{
+/* .form-image-card{
     width: 200px;
-}
+} */
 
 @import 'text.css';
 @import 'buttons.css';
 @import 'page_design.css';
 @import 'form.css';
+@import "actiontext.css";
+@import "trix.css";
+
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import "actiontext.css";
-@import "trix.css";
 
 .dev-class-custom{
     color: red;
