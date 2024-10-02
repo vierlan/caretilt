@@ -1,8 +1,8 @@
 <turbo-frame id="main-content">
   <div>
     <h1 class="font-bold text-2xl">Manage Companies</h1>
-    <p>Find me in app/views/companies/index.html.erb</p>
   </div>
+
   <ul role="list" class="divide-y divide-gray-100">
     <% @companies.each do | company | %>
       <li class="flex justify-between gap-x-6 py-5">
@@ -15,6 +15,7 @@
               <% end %>
             </div>
           </div>
+          <!---->
           <div class="flex flex-cols" data-controller="open">
             <% company.subscriptions.each do |subscription| %>
               <ul>
