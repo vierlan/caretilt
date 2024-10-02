@@ -7,8 +7,30 @@ class BookingEnquiryPolicy < ApplicationPolicy
 
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+    def resolve
+      scope.all
+    end
+  end
+
+
+  def index?
+    true
+  end
+
+  def new?
+    is_local_authority_basic?
+  end
+
+  def create?
+    new?
+  end
+
+  def edit?
+  end
+
+  def patch?
+  end
+
+  def destry?
   end
 end

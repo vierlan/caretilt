@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   get 'activity_feeds', to: 'activity_feeds#index'
   get '/checkout/get_stripe_events', to: 'stripe/checkout#get_stripe_events'
 
+
+  get 'team_members_test', to: 'team_members#test'
   resources :companies do
     member do
       get 'add_team_member', to: 'team_members#new', as: 'company_member' # Updated to use 'new' action
