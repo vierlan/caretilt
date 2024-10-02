@@ -46,8 +46,7 @@ class StripePackage
         package_id: @package.id,
         credits: @package.credits,
         validity: @package.validity,
-        created: Date.today.to_time.to_i,
-        subscription_type: @package.subscription_type
+        created: Date.today.to_time.to_i
       }
     )
 

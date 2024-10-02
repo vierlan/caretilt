@@ -15,7 +15,6 @@ Rails.application.routes.draw do
   get '/checkout/success', to: 'stripe/checkout#success'
   get '/checkout/cancel', to: 'stripe/checkout#cancel'
   get 'activity_feeds', to: 'activity_feeds#index'
-  get '/checkout/get_stripe_events', to: 'stripe/checkout#get_stripe_events'
 
   resources :companies do
     member do
@@ -35,8 +34,6 @@ Rails.application.routes.draw do
   resources :local_authority do
     member do
       get 'add_team_member', to: 'team_members#new', as: 'la_member'
-      get 'team', to: 'team_members#index'
-
       post 'add_team_member', to: 'team_members#create'
       get 'account', to: 'dashboard#account'
     end
@@ -87,7 +84,13 @@ Rails.application.routes.draw do
   resources :billing_portal_sessions, only: [:new, :create]
   resources :blog_posts, controller: :blog_posts, path: "blog", param: :slug
 
- resources :packages
+  get "packages/index"
+  get "packages/show"
+  get "packages/new"
+  post "packages", to: 'packages#create'
+  get "packages/edit"
+  get "packages/update"
+
   # static pages
 
   # new/create and send email for contact form

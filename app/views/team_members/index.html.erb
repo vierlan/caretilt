@@ -44,7 +44,7 @@
     </div>
   </div>
   <div>
-
+  
   </div>
   <!-- Table -->
   <div class="mt-8 flow-root">
@@ -74,13 +74,12 @@
             </tbody>
             <!-- and here  -->
             <tr class="border-t border-gray-200">
-              <th colspan="5" class="bg-gray-100 py-2 pl-4 pr-3 text-left text-base font-bold text-black sm:pl-3"><%= @name %></th>
+              <th colspan="5" class="bg-gray-100 py-2 pl-4 pr-3 text-left text-base font-bold text-black sm:pl-3"><%= @company.name %></th>
             </tr>
             <!-- Existing members -->
             <% @unassigned_users.each do |user| %>
               <%= render partial: "member", locals: { user: user } %>
             <% end %>
-            <% if current_user&.company&.care_homes %>
             <% @care_homes.each do |care_home| %>
               <tr class="border-t border-gray-200">
                 <th colspan="5" class="bg-gray-100 py-2 pl-4 pr-3 text-left text-base font-bold text-black sm:pl-3"><%= care_home.name %></th>
@@ -88,7 +87,6 @@
               <% care_home.users.each do |user| %>
                 <%= render partial: "member", locals: { user: user } %>
               <% end %>
-            <% end %>
             <% end %>
           </tbody>
         </table>

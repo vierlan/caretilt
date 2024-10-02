@@ -1,6 +1,5 @@
 <%= turbo_frame_tag "new_user" do %>
-  <% url = current_user&.company.present? ? add_team_member_company_path(@company) : add_team_member_local_authority_path(@la) %>
-  <%= form_with url: url, method: :post, local: true do |form| %>
+  <%= form_with url: add_team_member_company_path(@company), method: :post, local: true do |form| %>
     <% if @user.errors.any? %>
       <div id="error_explanation" class="text-red-400 fond-bold">
         <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
