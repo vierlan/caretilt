@@ -36,6 +36,7 @@ class PackagesController < ApplicationController
     end
   end
 
+  #  I don't think we are using this one, check the one in checkouts_controller#show
   def create_stripe_checkout_session(package)
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     @package = package

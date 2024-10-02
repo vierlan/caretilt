@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get '/checkout/success', to: 'stripe/checkout#success'
   get '/checkout/cancel', to: 'stripe/checkout#cancel'
   get 'activity_feeds', to: 'activity_feeds#index'
+  get '/checkout/get_stripe_events', to: 'stripe/checkout#get_stripe_events'
 
   resources :companies do
     member do
