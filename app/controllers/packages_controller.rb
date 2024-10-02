@@ -1,5 +1,5 @@
 class PackagesController < ApplicationController
-  before_action :set_packages, only: %i[show edit update destroy]
+  before_action :set_package, only: %i[show edit update destroy]
   def index
     @packages = Package.all
     @subscription_packages = Package.where.not(validity: 0)
@@ -36,6 +36,7 @@ class PackagesController < ApplicationController
     end
   end
 
+  #  I don't think we are using this one, check the one in checkouts_controller#show
   def create_stripe_checkout_session(package)
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     @package = package
@@ -81,6 +82,10 @@ class PackagesController < ApplicationController
 
   private
 
+  def set_package
+    @package = Package.find(params[:id])
+  end
+
   def set_company
     @company = Company.find(params[:id])
   end
@@ -88,6 +93,4 @@ class PackagesController < ApplicationController
   def package_params
     params.require(:package).permit(:name, :description, :credits, :price, :validity, :stripe_price_id, :stripe_id, data: {})
   end
-
-
 end

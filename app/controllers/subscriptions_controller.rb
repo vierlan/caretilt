@@ -5,6 +5,10 @@ class SubscriptionsController < ApplicationController
 
   def index
     @subscriptions = Subscription.all
+    @company_subsriptions = Subscription.where(subscribable_type: 'Company')
+    @active_company_subscriptions = Subscription.where(csubscribable_type: 'Company', active: true)
+    @la_subscriptions = Subscription.where(subscribable_type: 'LocalAuthority')
+    @active_la_subscriptions = Subscription.where(subscribable_type: 'LocalAuthority', active: true)
   end
 
   def show

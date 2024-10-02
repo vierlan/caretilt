@@ -1,0 +1,38 @@
+<!-- app/views/events/index.html.erb -->
+
+<h1>Stripe Events</h1>
+
+<% if @events.present? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Event ID</th>
+        <th>Event Type</th>
+        <th>Created At</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @events.each do |event| %>
+        <tr>
+          <td><%= event[:id] %></td>
+          <td><%= event[:type] %></td>
+          <td><%= Time.at(event[:created]).strftime("%B %d, %Y %H:%M") %></td>
+            <td>
+            <% include_keys = %w[amount_subtotal customer expires_at payment_status] %>
+            <% event[:data][:object].each do |key, value| %>
+              <% if include_keys.include?(key.to_s) %>
+              <p><strong><%= key.to_s %>:</strong> <%= value %></p>
+              <% end %>
+            <% end %>
+            </td>
+
+          </td>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No events found.</p>
+<% end %>
