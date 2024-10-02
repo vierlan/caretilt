@@ -1,4 +1,74 @@
-<div>
-  <h1 class="font-bold text-4xl">Subscriptions#edit</h1>
-  <p>Find me in app/views/subscriptions/edit.html.erb</p>
-</div>
+<!-- app/views/subscriptions/edit.html.erb -->
+<turbo-frame id="main-content">
+  <h1 class="text-2xl font-bold mb-4">Edit Subscription</h1>
+
+  <%= form_with(model: @subscription, local: true, class: "space-y-6") do |form| %>
+    <div class="form-section space-y-4">
+      <h2 class="text-xl font-semibold">Subscription Details</h2>
+      <div class="field">
+        <%= form.label :expires_on, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.date_field :expires_on, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+      </div>
+
+      <div class="field">
+        <%= form.label :next_payment_date, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.date_field :next_payment_date, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+      </div>
+
+      <div class="field">
+        <%= form.label :subscribable_id, "Warning! Changing this will change the entity the subscription is associated with.  Only change if you are sure of what you are doing!!", class: "block text-sm font-medium text-gray-700" %>
+        <%= form.number_field :subscribable_id, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+      </div>
+    </div>
+
+<h1>Editing the field below if you would like to make a log entry</h1>
+ <!-- Action Type Field with Custom Options -->
+  <div class="field">
+    <%= form.label :action_type, "Action Type", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.select :action_type, options_for_select(['Do not add this change to credit log', 'Purchase', 'Credits added', 'Subscription activated']), {}, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+  </div>
+
+  <!-- Package Selection Field -->
+  <div class="field">
+    <%= form.label :package, "Choose a Package", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.collection_select :package_id, Package.all, :id, :name, {}, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+  </div>
+
+  <!-- Hidden Time Field (Sets to Current Time) -->
+  <%= form.hidden_field :time, value: Time.now %>
+
+  <!-- Credits Added Field -->
+  <div class="field">
+    <%= form.label :credits_added, "Enter Credits to Add", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.number_field :credits_added, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", id: "credits_added" %>
+  </div>
+
+  <!-- Credits Left Field (Readonly) -->
+  <div class="field">
+    <%= form.label :credits_left, "Remaining Credits", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :credits_left, value: @subscription.credits_left, readonly: true, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", id: "credits_left" %>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="actions">
+    <%= form.submit "Save Changes", class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+  </div>
+<% end %>
+<script>
+    document.addEventListener("turbo:frame-load", function() {
+      const creditsAddedField = document.getElementById("credits_added");
+      const creditsLeftField = document.getElementById("credits_left");
+      const initialCreditsLeft = parseInt(creditsLeftField.value, 10) || 0;
+
+      console.log("Initial Credits Left:", initialCreditsLeft);
+
+      creditsAddedField.addEventListener("input", function() {
+        const creditsAdded = parseInt(creditsAddedField.value, 10) || 0;
+        console.log("Credits Added:", creditsAdded);
+        creditsLeftField.value = initialCreditsLeft + creditsAdded;
+        console.log("Updated Credits Left:", creditsLeftField.value);
+      });
+    });
+  </script>
+
+</turbo-frame>
