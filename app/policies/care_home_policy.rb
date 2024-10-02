@@ -15,10 +15,18 @@ class CareHomePolicy < ApplicationPolicy
 
   # Example: Authorization for other actions (optional, adjust as needed)
   def show?
-    user.care_provider_super_user? || user.care_provider_user? || user.admin?
+    edit? || user.la_super_user? || user.la_user?
   end
 
   def edit?
-    user.care_provider_super_user? || user.admin?
+    careprovider_basic_edit?
+  end
+
+  def update?
+    edit?
+  end
+
+  def delete?
+    record.company.users.include?(user) && user.care_provider_super_user? || user.caretilt_master_user? || user.caretilt_user?
   end
 end

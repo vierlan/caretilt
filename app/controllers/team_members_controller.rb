@@ -7,6 +7,9 @@ class TeamMembersController < ApplicationController
   def index
     @user = User.new
     @company = Company.find(params[:id])
+
+    authorize :team_member, :index?
+
     @all_members = @company.users
     @verified_members = @all_members.not_added
     @team_super_user = @all_members.care_provider_super_user || @all_members.la_super_user
@@ -14,8 +17,6 @@ class TeamMembersController < ApplicationController
     @care_homes = @company.care_homes
     @unverified_users = @team_users.added
     @unassigned_users = @verified_members.where(care_home_id: nil)
-
-
   end
 
   def create

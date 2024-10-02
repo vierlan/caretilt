@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  # before_action :authenticate_user!
+  before_action :authenticate_user!
   include Pundit::Authorization
 
   impersonates :user
@@ -8,8 +8,8 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   # Pundit: allow-list approach
-  # after_action :verify_authorized, except: :index, unless: :skip_pundit?
-  # after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
+  after_action :verify_authorized, except: :index, unless: :skip_pundit?
+  after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
   
   def skip_pundit?
     Rails.logger.info "Checking if Devise Controller: #{devise_controller?}"
@@ -21,11 +21,11 @@ class ApplicationController < ActionController::Base
   end
 
   # Uncomment when you *really understand* Pundit!
-  # rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
-  # def user_not_authorized
-  #   flash[:alert] = "You are not authorized to perform this action."
-  #   redirect_to(root_path)
-  # end
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  def user_not_authorized
+    flash[:alert] = "You are not authorized to perform this action."
+    redirect_to(root_path)
+  end
 
   def authenticate_admin!(alert_message: nil)
     redirect_to new_user_session_path, alert: alert_message unless current_user&.admin?

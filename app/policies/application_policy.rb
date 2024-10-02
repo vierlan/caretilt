@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+# Main policies are controlled here.
 class ApplicationPolicy
   attr_reader :user, :record
 
@@ -50,4 +50,31 @@ class ApplicationPolicy
 
     attr_reader :user, :scope
   end
+
+  def caretilt_admin?
+    user.caretilt_master_user? || user.caretilt_user?
+  end
+
+  def local_authority_basic_edit?
+  end
+
+  def local_authority_super_edit?
+  end
+
+  def careprovider_basic_edit?
+    record.company.users.include?(user) || user.caretilt_master_user? || user.caretilt_user?
+  end
+
+  def careprovider_super_edit?
+    record.company.users.include?(user) && user.care_provider_super_user? || user.caretilt_master_user? || user.caretilt_user?
+  end
+
+  def company_basic_edit?
+    record.users.include?(user) || user.caretilt_master_user? || user.caretilt_user?
+  end
+  
+  def company_super_edit?
+    record.users.include?(user) && user.care_provider_super_user? || user.caretilt_master_user? || user.caretilt_user?
+  end
+
 end

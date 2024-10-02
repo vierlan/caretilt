@@ -22,7 +22,7 @@
   <body class="bg-gradient-design overflow-x-hidden">
 
     <%# Give a console unless in production environment. %>
-    <% unless ENV['RAILS_ENV'] %>
+    <% unless ENV['RAILS_ENV'] == 'production' %>
       <%= console %>
     <% end %>
 

@@ -102,12 +102,15 @@ class CareHomesController < ApplicationController
   def edit
     @care_home = CareHome.find(params[:id])
     @company = @care_home.company
+    authorize @care_home
 
   end
 
   def update
     @care_home = CareHome.find(params[:id])
     @company = @care_home.company
+
+    authorize @care_home
 
     # If new media files are uploaded, append them; don't replace the old ones.
     if care_home_params[:media]
