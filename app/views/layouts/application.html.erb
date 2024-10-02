@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-theme="fantasy">
+<html>
   <head>
     <%= metamagic site: 'Caretilt', title: [:site, :title], separator: " | " %>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -20,12 +20,10 @@
     <script src="https://js.stripe.com/v3"></script>
   </head>
   <body class="bg-gradient-design overflow-x-hidden">
-
     <%# Give a console unless in production environment. %>
     <% unless ENV['RAILS_ENV'] == 'production' %>
       <%= console %>
     <% end %>
-
 
     <% if controller.controller_name == "dashboard" %>
       <main class="container mt-14 ">

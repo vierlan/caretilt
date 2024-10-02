@@ -1,4 +1,5 @@
 class LocalAuthority < ApplicationRecord
   has_many :users
-  has_many :la_licences
+  has_many :subscriptions, as: :subscribable
+  has_many :packages, through: :subscriptions
 end

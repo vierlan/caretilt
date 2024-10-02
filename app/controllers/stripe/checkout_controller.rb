@@ -6,6 +6,7 @@ class Stripe::CheckoutController < ApplicationController
     @prices = Stripe::Price.list({ lookup_keys: lookup_key, expand: ['data.product'] }).data.sort_by(&:unit_amount)
   end
 
+  #creates a stripe checkout session for company subscriptions
   def show
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     @user = current_user
@@ -19,7 +20,15 @@ class Stripe::CheckoutController < ApplicationController
         mode: 'subscription',
         line_items: [{
           quantity: 1,
-          price: params[:price_id]}],
+          price: params[:price_id]
+        }],
+        metadata: {
+          company_id: current_user.company.id,
+          company_name: current_user.company.name,
+          package_name: Package.find_by(stripe_id: params[:price_id]).name
+        },
+        payment_method_types: ['card'], # Add bank payment methods
+
         success_url: checkout_success_url,
         cancel_url: checkout_cancel_url
       )
@@ -29,6 +38,17 @@ class Stripe::CheckoutController < ApplicationController
       Rails.logger.info "Redirecting to Stripe checkout session URL: #{@checkout_session.url}"
 
   end
+
+  def get_stripe_events
+      Stripe.api_key = Rails.application.credentials&.stripe&.api_key
+      # Fetch the latest events
+      @events = Stripe::Event.list({limit: 20})
+      # You can render this or return as needed
+
+
+
+  end
+
 
   def add_credits
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
@@ -53,6 +73,23 @@ class Stripe::CheckoutController < ApplicationController
       Rails.logger.info "Redirecting to Stripe checkout session URL: #{@checkout_session.url}"
 
   end
+
+  def invoice(package)
+    Stripe.api_key = Rails.application.credentials&.stripe&.api_key
+    @user = current_user
+    @la = current_user.local_authority
+    @customer = @la.stripe_customer_id || Stripe::Customer.create(name: @la.name, email: @la.email)
+    @package = package
+    @invoice = Stripe::Invoice.create({
+      customer: 'cus_NeZwdNtLEOXuvB',
+      collection_method: 'send_invoice',
+      description: 'Invoice for Caretilt subscription',
+
+      })
+
+
+
+  end
   def success
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     #retrives a json object of the purchase session
@@ -69,7 +106,8 @@ class Stripe::CheckoutController < ApplicationController
         # if not Create a new subscription instance
         else
         @subscription = Subscription.new
-        @subscription.company = current_user.company
+        @subscription.subscribable_type = current_user.company.class.name || current_user.local_authority.class.name
+        @subscription.subscribable = current_user.company || current_user.local_authority
         @subscription.package = @package
         @subscription.receipt_number = @stripe_session.subscription
         @subscription.expires_on = Time.now + @package.validity.months # Assuming validity is in months

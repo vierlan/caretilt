@@ -6,17 +6,32 @@ class TeamMembersController < ApplicationController
 
   def index
     @user = User.new
-    @company = Company.find(params[:id])
+    if current_user.company
+      @company = Company.find(params[:id])
+      @all_members = @company.users
+      @verified_members = @all_members.not_added
+      @team_super_user = @all_members.care_provider_super_user
+      @team_users = @all_members.care_provider_user
+      @care_homes = @company.care_homes
+      @unverified_users = @team_users.added
+      @unassigned_users = @verified_members.where(care_home_id: nil)
+      @name = @company.name
+    elsif current_user.local_authority
+      @la = LocalAuthority.find(params[:id])
+      @all_members = @la.users
+      @verified_members = @all_members.not_added
+      @team_super_user = @all_members.la_super_user
+      @team_users = @all_members.la_user
+      @care_homes = CareHome.all
+      @unverified_users = @team_users.added
+      @unassigned_users = @verified_members.where(care_home_id: nil)
+      @name = @la.name
+    else
+      @name = 'Caretilt'
+    end
 
-    authorize :team_member, :index?
 
-    @all_members = @company.users
-    @verified_members = @all_members.not_added
-    @team_super_user = @all_members.care_provider_super_user || @all_members.la_super_user
-    @team_users = @all_members.care_provider_user || @all_members.la_user
-    @care_homes = @company.care_homes
-    @unverified_users = @team_users.added
-    @unassigned_users = @verified_members.where(care_home_id: nil)
+
   end
 
   def create
@@ -70,7 +85,7 @@ class TeamMembersController < ApplicationController
 
   def verify_member
     @user = User.find(params[:id])
-    @company = @user.company
+    @company = @user.company || @user.local_authority
   end
 
   def verify_member_update

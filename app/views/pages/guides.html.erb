@@ -3,58 +3,16 @@
     <div class="mx-auto max-w-2xl text-center">
       <h2 class="text-page-heading">User Guides</h2>
     </div>
-    <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-      <% 3.times do %>
-        <article class="flex flex-col items-start justify-between">
-          <div class="relative w-full">
-            <img src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80" alt="" class="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]">
-            <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
+    <div class="font-inter antialiased text-gray-800 tracking-tight my-16">
+      <main class="grow">
+        <section>
+          <div class="mx-auto max-w-7xl lg:px-8">
+            <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+                <%= render @blog_posts %>
+              </div>
           </div>
-          <div class="mt-3 max-w-xl">
-            <div class="group relative">
-              <h3 class="mt-3 text-card-heading">
-                <a href="#" class="">
-                  <span class="absolute inset-0"></span>
-                  12 steps to setting up Supported Living
-                </a>
-              </h3>
-              <p class="mt-5 line-clamp-3 text-lg leading-6 text-gray-600">
-                  Starting a Supported Living service can be rewarding but it takes some understanding of the market and how placements work. This is how you can avoid some of the pitfalls when starting a Supported Living service in 12 steps.
-              </p>
-            </div>
-          </div>
-        </article>
-        <%# more posts %>
-      <% end %>
-    </div>
-  </div>
-  <div class="mx-auto max-w-7xl px-6 lg:px-8 py-12">
-    <div class="mx-auto max-w-2xl text-center">
-      <h2 class="text-page-heading">Family Guides</h2>
-    </div>
-    <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-      <% 3.times do %>
-        <article class="flex flex-col items-start justify-between">
-          <div class="relative w-full">
-            <img src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80" alt="" class="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]">
-            <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
-          </div>
-          <div class="mt-3 max-w-xl">
-            <div class="group relative">
-              <h3 class="mt-3 text-card-heading">
-                <a href="#">
-                  <span class="absolute inset-0"></span>
-                  12 steps to setting up Supported Living
-                </a>
-              </h3>
-              <p class="mt-5 line-clamp-3 text-description">
-                  Starting a Supported Living service can be rewarding but it takes some understanding of the market and how placements work. This is how you can avoid some of the pitfalls when starting a Supported Living service in 12 steps.
-              </p>
-            </div>
-          </div>
-        </article>
-        <%# more posts %>
-      <% end %>
+        </section>
+      </main>
     </div>
   </div>
 </div>

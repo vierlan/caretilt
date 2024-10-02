@@ -24,6 +24,7 @@ class PagesController < ApplicationController
   end
 
   def guides
+    @blog_posts = BlogPost.published.order(created_at: :asc)
   end
 
   def search

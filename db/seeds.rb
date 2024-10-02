@@ -19,6 +19,7 @@ Package.create(name: 'pro_yearly', price: 3000, validity: 12, credits: 50, descr
 Package.create(name: 'unlimited_monthly', price: 600, validity: 1, credits: 100000, description: 'Unlimited package for monthly listings', data: { lookup: 'unlimited_monthly' })
 Package.create(name: 'unlimited_yearly', price: 6000, validity: 12, credits: 100000, description: 'Unlimited package for yearly listings', data: { lookup: 'unlimited_yearly' })
 Package.create(name: 'Add 5 credits', price: 290, validity: 0, credits: 5, description: 'Add 5 credits to your account', data: { lookup: 'add_5_credits' })
+Package.create(name: 'Local Authority Licence', price: 1000, validity: 12, credits: nil, description: 'Allows local Authorities workers to view vacancies in Local care home', data: { lookup: 'la_licence' }, subscription_type: 1 )
 
 @packages = Package.all
 
@@ -69,7 +70,7 @@ careprovidersuperuser1 = User.create!(
   role: 'care_provider_super_user',
   status: 'verified',
   company: company1,
-  phone_number: ENV['PHONE_NUMBER'],
+  phone_number: ENV['DEV_PHONE_NUMBER'],
   verified: true
 )
 
@@ -82,7 +83,7 @@ careprovidersuperuser1 = User.create!(
   role: 'care_provider_user',
   status: 'verified',
   company: company1,
-  phone_number: ENV['PHONE_NUMBER'],
+  phone_number: ENV['DEV_PHONE_NUMBER'],
   verified: true
 )
 
@@ -95,7 +96,7 @@ careprovidersuperuser2 = User.create!(
   role: 'care_provider_super_user',
   status: 'verified',
   company: company2,
-  phone_number: ENV['PHONE_NUMBER'],
+  phone_number: ENV['DEV_PHONE_NUMBER'],
   verified: true
 )
 
@@ -108,7 +109,7 @@ lasuperuser = User.create!(
     role: 'la_super_user',
     status: 'verified',
     local_authority: localauthority,
-    phone_number: ENV['PHONE_NUMBER'],
+    phone_number: ENV['DEV_PHONE_NUMBER'],
     verified: true
 )
 
@@ -121,7 +122,7 @@ lauser = User.create!(
     role: 'la_user',
     status: 'verified',
     local_authority: localauthority,
-    phone_number: ENV['PHONE_NUMBER'],
+    phone_number: ENV['DEV_PHONE_NUMBER'],
     verified: true
 )
 
@@ -130,10 +131,11 @@ caretilt_superuser = User.create!(
   password: '123456',
   first_name: 'Carey',
   last_name: 'Tilt',
-  role: 'caretilt_user',
+  role: 'care_provider_super_user',
   status: 'verified',
-  phone_number: ENV['PHONE_NUMBER'],
-  verified: true
+  phone_number: ENV['DEV_PHONE_NUMBER'],
+  verified: true,
+  admin: true
 )
 
 caretilt_user = User.create!(
@@ -143,9 +145,35 @@ caretilt_user = User.create!(
   last_name: 'Tilt',
   role: 'caretilt_user',
   status: 'verified',
-  phone_number: ENV['PHONE_NUMBER'],
+  phone_number: ENV['DEV_PHONE_NUMBER'],
   verified: true
 )
+
+lan_la_user = User.create!(
+  email: 'lananhnguyen@live.co.uk',
+  password: '123456',
+  first_name: 'Lan Ahn',
+  last_name: 'Tilt',
+  role: 'la_super_user',
+  status: 'verified',
+  phone_number: ENV['LAN_PHONE_NUMBER'],
+  verified: true,
+  company: localauthority
+)
+
+
+lan_caretilt_user = User.create!(
+  email: 'caretilt@gmail.com',
+  password: '123456',
+  first_name: 'Lan Ahn',
+  last_name: 'Tilt',
+  role: 'care_provider_super_user',
+  status: 'verified',
+  phone_number: ENV['LAN_PHONE_NUMBER'],
+  verified: true,
+  company: company2
+)
+
 
 # Attach all homes to the created user (since the user must be associated with a company)
 

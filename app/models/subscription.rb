@@ -1,6 +1,6 @@
 class Subscription < ApplicationRecord
-  belongs_to :company
   belongs_to :package
+  belongs_to :subscribable, polymorphic: true # Add this polymorphic association
 
   #serialize :credit_log, Array
   def deduct_credit(room)
