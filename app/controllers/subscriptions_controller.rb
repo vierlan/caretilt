@@ -1,4 +1,10 @@
 class SubscriptionsController < ApplicationController
+
+  # Company and local authority is the one with stripe attatched not individual user.
+  # Only super users and caretilt staff can use package, and  checkout package.
+  # Only caretilt staff can edit and add package types.
+  # Only superusers can view subscriptions.
+
   before_action :set_subscriptions, only: %i[show edit update destroy]
   before_action :set_company, only: %i[new create edit update destroy]
   before_action :set_package, only: %i[new create edit update destroy]
