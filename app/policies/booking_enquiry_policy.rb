@@ -18,11 +18,13 @@ class BookingEnquiryPolicy < ApplicationPolicy
   end
 
   def new?
-    is_local_authority_basic?
+    # is_local_authority_basic?
+    true
   end
 
   def create?
-    new?
+    true
+    # new?
   end
 
   def edit?

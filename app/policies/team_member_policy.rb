@@ -12,7 +12,7 @@ class TeamMemberPolicy < ApplicationPolicy
   end
 
   def index?
-    is_company_admin?
+    is_company_admin? || is_local_authority_admin?
   end
 
   def test?

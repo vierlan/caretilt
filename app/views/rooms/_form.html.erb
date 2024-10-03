@@ -1,8 +1,4 @@
 <turbo-frame id="main-content">
-  <div>
-    <%= link_to sanitize("&larr; Back to homes"), care_home_path(@care_home), class: "btn mb-4 font-bold text-lg text-white bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg" %>
-  </div>
-
   <%= simple_form_for [@care_home, @room], url: @room.new_record? ? care_home_rooms_path(@care_home) : room_path(@room), local: true do |f| %>
     <div class="space-y-12">
       <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
@@ -44,9 +40,9 @@
           </div>
 
           <!-- Photos -->
-          <div class="ml-8 mt-2">
-            <%= f.input :photos, as: :file, label: "Photo", input_html: { name: 'photos[]', multiple: true } %>
-          </div>
+          <%# <div class="ml-8 mt-2"> %>
+            <%# <%= f.input :photos, as: :file, label: "Photo", input_html: { name: 'photos[]', multiple: true } %> 
+          <%# </div> %>
 
           <!-- Vacant -->
           <div class="sm:col-span-6 mt-2 flex items-center">
