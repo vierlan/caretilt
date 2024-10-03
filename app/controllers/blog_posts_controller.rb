@@ -1,21 +1,28 @@
 class BlogPostsController < ApplicationController
   before_action :set_blog_post, except: %i[index new create]
+  skip_before_action :authenticate_user!, only: %i[index show]
+
   #before_action only: [:new, :edit, :create, :update, :destroy] do
   #  authenticate_admin!(alert_message: 'You are not authorized')
   #end
 
   # GET /blog
   def index
-    @blog_posts = BlogPost.published.order(created_at: :asc)
+
+    @blog_posts = policy_scope(BlogPost.published.order(created_at: :asc))
     @drafts = BlogPost.drafts.order(created_at: :desc)
   end
 
   # GET /blog/:slug
-  def show; end
+  def show
+    authorize @blog_post
+  end
 
   # GET /blog/new
   def new
+
     @blog_post = BlogPost.new
+    authorize @blog_post
   end
 
   # GET /blog/:slug/edit
@@ -24,7 +31,7 @@ class BlogPostsController < ApplicationController
   # POST /blog
   def create
     @blog_post = BlogPost.new(blog_post_params)
-
+    authorize @blog_post
     if @blog_post.save
       redirect_to blog_post_path(@blog_post.slug), notice: "Blog post was successfully created."
     else
