@@ -35,7 +35,7 @@ data-controller="navigation" data-navigation-class-value="bg-white"
       <% end %>
     </ul>
   </li>
-  <div class="text-xs font-semibold leading-6 text-gray-700">Your Care Homes</div>
+  <div class="text-lg font-bold leading-6 text-gray-800">Care Homes</div>
   <% @care_homes.each do |care_home| %>
     <%= render partial: 'carehome', locals: {care_home: care_home} %>
   <% end %>
