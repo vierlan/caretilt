@@ -4,8 +4,28 @@ class TeamMembersController < ApplicationController
     @user = User.new
   end
 
+  def test
+    authorize :team_member, :test?
+    # def index
+    # end
+  end
+
   def index
+
+    
+    #Pundit Logic for future reference.
+
+    #Index in pundit needs a collection of objects for its policy SCOPE. We have no team member model. 
+    # Opt 1. Either rename index -> all (and feed it no object)
+    # Opt 2. We feed in a policy scope (doesn't have to be used, just done to get rid of the policy scope required error)
+    @company = Company.find(params[:id])
+    @all_members = policy_scope(User, policy_scope_class: TeamMemberPolicy::Scope)
+    authorize :team_member, :index?
+
     @user = User.new
+
+    # Authorize the index action itself
+    # authorize :team_member, :index?
     if current_user.company
       @company = Company.find(params[:id])
       @all_members = @company.users
@@ -29,9 +49,6 @@ class TeamMembersController < ApplicationController
     else
       @name = 'Caretilt'
     end
-
-
-
   end
 
   def create

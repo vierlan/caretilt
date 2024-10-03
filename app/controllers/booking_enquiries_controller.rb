@@ -1,6 +1,7 @@
 class BookingEnquiriesController < ApplicationController
   def new
     @booking = BookingEnquiry.new
+    authorize @booking
     @user = current_user
     @room = Room.find(params[:room_id])
     @care_home = @room.care_home
@@ -13,6 +14,7 @@ class BookingEnquiriesController < ApplicationController
     @room = Room.find(params[:room_id])
     @care_home = @room.care_home
     @company = @care_home.company
+    authorize @booking
     if @booking.save
       redirect_to care_home_rooms_path(@care_home)
     else
@@ -30,10 +32,11 @@ class BookingEnquiriesController < ApplicationController
 
   def index
     @user = current_user
+    authorize policy_scope(BookingEnquiry).all
     if @user&.company
       @company = @user.company
       @care_homes = @company.care_homes
-    @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten
+      @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten
     elsif @user&.local_authority
       @bookings = BookingEnquiry.where(user: @user)
       @care_homes = @bookings.map { |booking| booking.room.care_home }
@@ -49,6 +52,8 @@ class BookingEnquiriesController < ApplicationController
     @room = @booking.room
     @care_home = @room.care_home
     @company = @care_home.company
+
+    authorize @booking
   end
 
   def update
@@ -57,6 +62,7 @@ class BookingEnquiriesController < ApplicationController
     @care_home = @room.care_home
     @company = @care_home.company
 
+    authorize @booking
     if @booking.update(booking_params)
       redirect_to care_home_rooms_path(@care_home)
     else
@@ -66,6 +72,7 @@ class BookingEnquiriesController < ApplicationController
 
   def destroy
     @booking = BookingEnquiry.find(params[:id])
+    authorize @booking
     @booking.destroy
     redirect_to care_home_rooms_path(@care_home)
   end

@@ -131,7 +131,7 @@ caretilt_superuser = User.create!(
   password: '123456',
   first_name: 'Carey',
   last_name: 'Tilt',
-  role: 'care_provider_super_user',
+  role: 'caretilt_master_user',
   status: 'verified',
   phone_number: ENV['DEV_PHONE_NUMBER'],
   verified: true,
@@ -158,7 +158,7 @@ lan_la_user = User.create!(
   status: 'verified',
   phone_number: ENV['LAN_PHONE_NUMBER'],
   verified: true,
-  company: localauthority
+  local_authority: localauthority
 )
 
 

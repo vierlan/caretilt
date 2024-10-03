@@ -77,4 +77,22 @@ class ApplicationPolicy
     record.users.include?(user) && user.care_provider_super_user? || user.caretilt_master_user? || user.caretilt_user?
   end
 
+  # Careprovider admin permission
+
+  def is_company_admin?
+    user.care_provider_super_user? || user.care_provider_super_user? || user.caretilt_master_user?
+  end
+
+  def is_company_basic?
+    user.care_provider_user? || user.care_provider_super_user? || user.care_provider_super_user? || user.caretilt_master_user?
+  end
+
+  def is_local_authority_basic?
+     user.la_user? || user.la_super_user?|| user.care_provider_super_user? || user.caretilt_master_user?
+  end
+
+  def is_local_authority_admin?
+    user.la_super_user?|| user.care_provider_super_user? || user.caretilt_master_user?
+  end
+
 end
