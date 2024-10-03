@@ -26,7 +26,9 @@ class BlogPostsController < ApplicationController
   end
 
   # GET /blog/:slug/edit
-  def edit; end
+  def edit
+    authorize @blog_post
+  end
 
   # POST /blog
   def create

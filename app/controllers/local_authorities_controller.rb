@@ -19,7 +19,7 @@ class LocalAuthoritiesController < ApplicationController
   end
 
   def edit
-    authorize @local_authority
+    authorize :local_authority, :edit?
   end
 
   def update
@@ -32,6 +32,7 @@ class LocalAuthoritiesController < ApplicationController
   end
 
   def destroy
+    authorize :local_authority, :delete?
   end
 
   private
