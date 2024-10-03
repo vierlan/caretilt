@@ -4,7 +4,7 @@
       <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
         <h2><%= pluralize(@booking.errors.count, "error") %> prevented this post from being saved:</h2>
         <ul>
-          <% booking.errors.each do |error| %>
+          <% @booking.errors.each do |error| %>
             <li><%= error.full_message %></li>
           <% end %>
         </ul>
