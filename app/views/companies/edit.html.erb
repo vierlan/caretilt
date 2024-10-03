@@ -16,35 +16,43 @@
               </div>
             </div>
           </div>
-
+          <!-- logo upload -->
+          <div class="col-span-6">
+          <%= form.label :logo, "logo", class: "block text-sm font-medium leading-6 text-gray-900" %>
+          <div class="mt-2 flex items-center">
+            <%= form.file_field :logo, id: "logo", class: "hidden" %>
+            <button type="button" class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" onclick="document.getElementById('photo').click()">Change</button>
+          </div>
+        </div>
+          <!-- logo Container -->
+          <div class="mt-4 col-span-6">
+            <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3" id="logo-container">
+            </ul>
+          </div>
           <div class="sm:col-span-4">
             <label for="address1" class="block text-sm font-medium leading-6 text-gray-900">Address</label>
             <div class="mt-2">
               <%= form.text_field :address1, id: "address1", class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
             </div>
           </div>
-
           <div class="sm:col-span-4">
             <label for="address2" class="block text-sm font-medium leading-6 text-gray-900">Address Line 2</label>
             <div class="mt-2">
               <%= form.text_field :address2, id: "address2", class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
             </div>
           </div>
-
           <div class="sm:col-span-4">
             <label for="city" class="block text-sm font-medium leading-6 text-gray-900">City</label>
             <div class="mt-2">
               <%= form.text_field :city, id: "city", class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
             </div>
           </div>
-
           <div class="sm:col-span-4">
             <label for="postcode" class="block text-sm font-medium leading-6 text-gray-900">Postcode</label>
             <div class="mt-2">
               <%= form.text_field :postcode, id: "postcode", class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
             </div>
           </div>
-          
           <div class="sm:col-span-4">
             <label for="phone_number" class="block text-sm font-medium leading-6 text-gray-900">Phone Number</label>
             <div class="mt-2">
@@ -59,17 +67,16 @@
           </div>
         </div>
       </div>
-
-            <div class="mt-6">
-              <button type="submit" data-turbo="false" class="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg focus:outline-none bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg">
-                Save Changes
-              </button>
-            </div>
-          </div>
-        </div>
+      <div class="mt-6">
+        <button type="submit" data-turbo="false" class="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg focus:outline-none bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg">
+          Save Changes
+        </button>
       </div>
     </div>
-  <% end %>
+  </div>
+</div>
+</div>
+<% end %>
 </turbo-frame>
 <script>
   document.addEventListener("DOMContentLoaded", function() {

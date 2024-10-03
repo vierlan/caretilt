@@ -1,13 +1,10 @@
 class SubscriptionsController < ApplicationController
-
-
   # Company and local authority is the one with stripe attatched not individual user.
   # Only super users and caretilt staff can use package, and  checkout package.
   # Only caretilt staff can edit and add package types.
   # Only superusers can view subscriptions.
-
-  before_action :set_subscriptions, only: %i[show edit update destroy]
-  before_action :set_company, only: %i[new create destroy]
+  before_action :set_subscriptions, only: %i[ edit update ]
+  before_action :set_entity, only: %i[new create destroy]
   before_action :set_package, only: %i[new create destroy]
 
   def index
@@ -20,9 +17,28 @@ class SubscriptionsController < ApplicationController
 
   def new
     @subscription = Subscription.new
+    @local_authority = current_user.local_authority
+
   end
 
-  def Create(attributes = {})
+  #  path for initial subscription creation for local authorities only
+  def create
+    @local_authority = current_user.local_authority
+    @subscription = Subscription.new
+    @subscription.subscribable_id = @local_authority.id
+    @subscription.subscribable_type = "LocalAuthority"
+    @subscription.package_id = @package.id
+    @subscription.active = false
+    @subscription.expires_on = Time.now + 1.year
+    @subscription.next_payment_date = Time.now + 1.year
+    @subscription.subscribed_on = Time.now
+    if @subscription.save!
+      redirect_to local_authorities_path
+    else
+      render :new, status: :unprocessable_entity
+    end
+
+
   end
 
   def edit
@@ -91,8 +107,12 @@ class SubscriptionsController < ApplicationController
     @subscription = Subscription.find(params[:id])
   end
 
-  def set_company
-    @company = Company.find(params[:company_id])
+  def set_entity
+    if current_user.company.present?
+      @company = Company.find(params[:company_id])
+    else
+      @la = current_user.local_authority_id
+    end
   end
 
   def set_package

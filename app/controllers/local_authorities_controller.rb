@@ -1,5 +1,6 @@
 class LocalAuthoritiesController < ApplicationController
   def index
+    @local_authorities = LocalAuthority.all
   end
 
   def show

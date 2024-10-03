@@ -11,11 +11,21 @@ class PackagesController < ApplicationController
     @packages = policy_scope(Package).all
     @subscription_packages = Package.where.not(validity: 0)
     @credit_packages = Package.where(validity: 0)
+    if current_user&.company
+      @packages = @packages.where(subscription_type: 0)
+    end
     if current_user&.company&.has_active_subscription?
       @active_subscription = current_user.company.get_active_subscription
       @logs = @active_subscription&.credit_log || []
       @active_package = Package.find(@active_subscription.package_id)
       @packages = @packages.where(validity: 0)
+    end
+    if current_user&.local_authority
+      @local_authority = current_user.local_authority
+      @subscription = Subscription.new
+      @active_subscription = current_user.local_authority.get_active_subscription || current_user.local_authority.subscriptions.last
+      @active_package = Package.find(@active_subscription.package_id) if @active_subscription
+      @packages = @packages.where(subscription_type: 1)
     end
   end
 

@@ -1,8 +1,7 @@
 <turbo-frame id="main-content">
   <div>
     <h1 class="font-bold text-2xl">Manage Companies</h1>
-<%= button_to 'Deactivate Expired Subscriptions', deactivate_expired_subscriptions_path, method: :post, class: 'btn btn-danger' %>
-
+    <%= button_to 'Deactivate Expired Subscriptions', deactivate_expired_subscriptions_path, method: :post, class: 'btn btn-danger' %>
   </div>
   <ul role="list" class="divide-y divide-gray-100">
     <% @companies.each do | company | %>
@@ -12,58 +11,54 @@
             <a href='#' data-action="open#toggleHiddenField"><span class="text-xl font-semibold leading-6 text-gray-900"><%= company.name.humanize %> <i class="fa-solid fa-plus"></i></span></a>
             <a href="#" data-action="open#toggleHiddenField">Expand/Retract Company</a>
             <div class="hidden" data-target="info">
-            <div class="hidden" data-target="info">
-              <% company.attributes.each do |key, value| %>
-                <p class="text-base leading-5 text-gray-700"><%= key %>: <%= value %></p>
-              <% end %>
-            </div>
-
-          <!--company subsciptions start-->
-          <div class="flex flex-cols" data-controller="open">
-            <% company.subscriptions.each do |subscription| %>
-              <ul>
-                <li>
-                  <a href='#' data-action="open#toggleHiddenField">
-                    <span class="text-lg text-gray-700 mr-4">Subscribed until: <%= subscription.expires_on %>  <i class="fa-solid fa-plus"></i></span>
-                  </a>
-                  <%= link_to 'Edit Subscription', edit_subscription_path(subscription) %>
-
-
+              <div class="hidden" data-target="info">
+                <% company.attributes.each do |key, value| %>
+                  <p class="text-base leading-5 text-gray-700"><%= key %>: <%= value %></p>
+                <% end %>
+              </div>
+              <!--company subscriptions start-->
+              <div class="flex flex-cols" data-controller="open">
+                <% company.subscriptions.each do |subscription| %>
+                  <ul>
+                    <li>
+                      <a href='#' data-action="open#toggleHiddenField">
+                        <span class="text-lg text-gray-700 mr-4">Subscribed until: <%= subscription.expires_on %>  <i class="fa-solid fa-plus"></i></span>
+                      </a>
+                      <%= link_to 'Edit Subscription', edit_subscription_path(subscription) %>
+                      <div class="hidden" data-target="info">
+                        <% subscription.attributes.each do |key, value| %>
+                          <p class="text-base leading-5 text-gray-700"><%= key %>: <%= value %></p>
+                        <% end %>
+                      </div>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+              <div class=" flex flex-col" data-controller="open">
+                <p class="text-xl font-semibold text-gray-900"> Care Facilities</p>
+                <% company.care_homes.each do |care_home| %>
+                  <a href='#' data-action="open#toggleHiddenField"><span class="text-lg text-gray-700 mr-4"><%= care_home.name.humanize %>  <i class="fa-solid fa-plus"></i></span></a>
                   <div class="hidden" data-target="info">
-                    <% subscription.attributes.each do |key, value| %>
-                      <p class="text-base leading-5 text-gray-700"><%= key %>: <%= value %></p>
+                    <% care_home.attributes.each do |key, value| %>
+                      <p class="text-xs leading-5 text-gray-500"><%= key %>: <%= value %></p>
                     <% end %>
                   </div>
-                </li>
-              <% end %>
-            </ul>
+                <% end %>
+              </div>
+              <div class=" flex flex-col" data-controller="open">
+                <p class="text-xl font-semibold text-gray-900">Users</p>
+                <% company.users.each do |user| %>
+                  <a href='#' data-action="open#toggleHiddenField"><span class="text-base text-gray-700"><%= user.first_name.capitalize if user.first_name %> <%= user.last_name.capitalize if user.last_name %> <i class="fa-solid fa-plus"></i></span></a>
+                  <div class="hidden" data-target="info">
+                    <% user.attributes.each do |key, value| %>
+                      <p class="text-xs leading-5 text-gray-500"><%= key %>: <%= value %></p>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
           </div>
-
-        <div class=" flex flex-col" data-controller="open">
-          <p class="text-xl font-semibold text-gray-900"> Care Facilities</p>
-          <% company.care_homes.each do |care_home| %>
-            <a href='#' data-action="open#toggleHiddenField"><span class="text-lg text-gray-700 mr-4"><%= care_home.name.humanize %>  <i class="fa-solid fa-plus"></i></span></a>
-            <div class="hidden" data-target="info">
-              <% care_home.attributes.each do |key, value| %>
-                <p class="text-xs leading-5 text-gray-500"><%= key %>: <%= value %></p>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-        <div class=" flex flex-col" data-controller="open">
-          <p class="text-xl font-semibold text-gray-900">Users</p>
-          <% company.users.each do |user| %>
-            <a href='#' data-action="open#toggleHiddenField"><span class="text-base text-gray-700"><%= user.first_name.capitalize if user.first_name %> <%= user.last_name.capitalize if user.last_name %> <i class="fa-solid fa-plus"></i></span></a>
-            <div class="hidden" data-target="info">
-              <% user.attributes.each do |key, value| %>
-                <p class="text-xs leading-5 text-gray-500"><%= key %>: <%= value %></p>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
+        </li>
+      </ul>
     </div>
-  </li>
-</ul>
-</div>
-</turbo-frame>
+  </turbo-frame>
