@@ -21,6 +21,7 @@ class Company < ApplicationRecord
   has_many :care_homes
   has_many :subscriptions, as: :subscribable
   has_many :packages, through: :subscriptions
+  has_one_attached :logo
   # checks the company has an active subscription
   def has_active_subscription?
     subscriptions.where(active: true).exists?
