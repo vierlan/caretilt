@@ -12,6 +12,7 @@ class Stripe::CheckoutController < ApplicationController
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     @user = current_user
     @company = current_user.company
+    @package = Package.find(params[:package])
     @company.set_payment_processor :stripe
     @company.payment_processor.customer
     Rails.logger.info("Creating Stripe customer for #{current_user.company.name} + #{@price} ")
@@ -21,12 +22,13 @@ class Stripe::CheckoutController < ApplicationController
         mode: 'subscription',
         line_items: [{
           quantity: 1,
-          price: params[:price_id]
+          price: @package.stripe_price_id
         }],
         metadata: {
+          user: current_user.full_name,
           company_id: current_user.company.id,
           company_name: current_user.company.name,
-          package_name: Package.find_by(stripe_id: params[:price_id]).name
+          package_name: @package.name
         },
         payment_method_types: ['card'], # Add bank payment methods
 

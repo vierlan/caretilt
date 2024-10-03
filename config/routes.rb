@@ -37,7 +37,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :local_authority do
+  resources :local_authorities do
     member do
       get 'add_team_member', to: 'team_members#new', as: 'la_member'
       get 'team', to: 'team_members#index'
@@ -67,10 +67,6 @@ Rails.application.routes.draw do
 
   resources :booking_enquiries, only: %i[show index edit update destroy]
 
-  resources :local_authorities do
-    resources :la_licences
-  end
-
   get '/dashboard/:id/team', to: 'dashboard#team', as: 'dashboard_team'
   get '/dashboard/:id/new_team_member', to: 'dashboard#new_team_member', as: 'dashboard_new_team_member'
   post 'add_team_member', to: 'team_members#create'
@@ -92,7 +88,10 @@ Rails.application.routes.draw do
   resources :billing_portal_sessions, only: [:new, :create]
   resources :blog_posts, controller: :blog_posts, path: "blog", param: :slug
 
- resources :packages
+ resources :packages do
+    resources :subscriptions, only: %i[new create]
+  end
+
   # static pages
 
   # new/create and send email for contact form
