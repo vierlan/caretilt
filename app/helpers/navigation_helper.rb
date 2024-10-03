@@ -13,6 +13,7 @@ module NavigationHelper
       icon: 'home'
     }
 
+
     if current_user.role == 'caretilt_user' || current_user&.admin?
       links << {
         name: 'Subscription Packages',
@@ -20,9 +21,14 @@ module NavigationHelper
         icon: 'folder'
       }
       links << {
-        name: 'Admin dashboard',
+        name: 'Manage Care Providers',
         path: companies_path,
         icon: 'folder' }
+      links << {
+        name: 'Manage Local Authorities',
+        path: local_authorities_path,
+        icon: 'folder'
+      }
       links << {
         name: 'Create post',
         path: new_blog_post_path,
@@ -30,9 +36,22 @@ module NavigationHelper
     end
 
     if current_user.role == 'care_provider_super_user'
-      links << { name: 'Dashboard', path: packages_index_path, icon: 'folder' }
       links << { name: 'Account', path: edit_company_path(current_user.company), icon: 'user' }
+      links << {
+        name: 'Subscription Packages',
+        path:  packages_path,
+        icon: 'folder'
+      }
     end
+    if current_user.role == "la_super_user"
+      links << { name: 'Account', path: edit_local_authority_path(current_user.local_authority), icon: 'user' }
+      links << {
+        name: 'Subscription Packages',
+        path:  packages_path,
+        icon: 'folder'
+      }
+    end
+
 
     if current_user.company.present?
       links << {

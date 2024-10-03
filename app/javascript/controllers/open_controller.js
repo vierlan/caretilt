@@ -6,7 +6,7 @@ export default class extends Controller {
     console.log("open connected")
   }
 
-  static targets = ["info"];
+  static targets = ["info", "company"];
 
   toggleHiddenField(event) {
     event.preventDefault();
@@ -17,4 +17,13 @@ export default class extends Controller {
       hiddenField.classList.add("hidden");
     }
   }
+
+  toggleCompany(event) {
+    event.preventDefault();
+    if (this.companyTarget.classList.contains("hidden")) {
+      this.companyTarget.classList.remove("hidden");
+    } else {
+      this.companyTarget.classList.add("hidden");
+  }
+}
 }

@@ -13,7 +13,9 @@
     <%# end %>
   <% end %>
   <% if current_user&.company&.has_active_subscription? %>
-    <%= render 'current_package', locals: { subscription: @active_subsciption, package: @active_package} %>
+    <%= render 'current_package', locals: { subscription: @active_subscription, package: @active_package} %>
+  <% elsif current_user&.local_authority %>
+    <%= render 'current_package', locals: { subscription: @active_subscription, package: @active_package} %>
   <% end %>
   <div class="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 md:max-w-2xl md:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-4">
     <% @packages.each do |package|%>
@@ -37,8 +39,16 @@
           </p>
           <% if package.validity == 0 %>
             <%= link_to "Add credits!", checkout_add_credits_path(price_id: package.stripe_price_id), data: {turbo: 'false'}, class: "mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+          <% elsif package.subscription_type == 0 %>
+            <%= link_to "buy Now!", checkout_path(package: package), data: {turbo: 'false'}, class: "mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
           <% else %>
-            <%= link_to "buy Now!", checkout_path(price_id: package.stripe_price_id), data: {turbo: 'false'}, class: "mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+            <%= form_with model: @subscription, url: package_subscriptions_path(package), method: :post, local: true do |f| %>
+              <!-- Add your form fields here -->
+              <%= f.hidden_field :local_authority_id, value: @local_authority.id %>
+              <div class="actions">
+                <%= f.submit "Create Subscription", class: "btn btn-primary" %>
+              </div>
+            <% end %>
           <% end %>
           <% if package.validity == 0 %>
             <% starter_plan_features = ["#{package.credits} credits", "Must have active subscription", "Added to Caretilt database"] %>

@@ -55,7 +55,7 @@ CareHome.where(name: seeded_care_home_names).destroy_all
 Company.where(name: seeded_org_names).destroy_all
 
 # Create or find a company for the care provider user (if needed)
-company = Company.find_or_create_by!(name: 'Care Provider Company')
+company = Company.find_or_create_by!(name: 'Care Provider Company', registration_pin: '2222', super_pin: '2222')
 localauthority = LocalAuthority.find_or_create_by!(name: 'Local Authority Organisation')
 # careprovidersuperuser.company = company
 
