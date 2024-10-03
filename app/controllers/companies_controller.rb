@@ -31,6 +31,8 @@ class CompaniesController < ApplicationController
   end
 
   def edit
+    @company = current_user.company
+    authorize @company
   end
 
   def update
