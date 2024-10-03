@@ -1,27 +1,26 @@
 class Company < ApplicationRecord
   include Pay::Billable
-
-
   include Billable
   pay_customer stripe_attributes: :stripe_attributes
 
- #after_create do
- #  Stripe.api_key = Rails.application.credentials&.stripe&.api_key
- #  Rails.logger.info("Creating Stripe customer for #{self.name}")
- #  company = Stripe::Customer.create(name: self.name, email: self.email)
- #  Rails.logger.info("Stripe customer created: #{company.name}")
- #end
+  has_many :users
+  has_many :care_homes
+  has_many :rooms, through: :care_homes
+  has_many :subscriptions, as: :subscribable
+  has_many :packages, through: :subscriptions
+
+  # after_create do
+  #   Stripe.api_key = Rails.application.credentials&.stripe&.api_key
+  #   Rails.logger.info("Creating Stripe customer for #{self.name}")
+  #   company = Stripe::Customer.create(name: self.name, email: self.email)
+  #   Rails.logger.info("Stripe customer created: #{company.name}")
+  # end
 
   # include SharedValidAttributes #In models/concerns/shared_valid we are inclusing all phone and address validation since they shared.
 
   # validates :name, presence: true
   # validates :companies_house_id, presence: true, length: { is: 8 }, format: { with: /\A[A-Z0-9]{8}\z/, message: "must be 8 alphanumeric characters" }
 
-  has_many :users
-  has_many :care_homes
-  has_many :subscriptions, as: :subscribable
-  has_many :packages, through: :subscriptions
-  has_one_attached :logo
   # checks the company has an active subscription
   def has_active_subscription?
     subscriptions.where(active: true).exists?

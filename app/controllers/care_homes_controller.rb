@@ -80,6 +80,8 @@ class CareHomesController < ApplicationController
     @company = Company.find(params[:company_id])
     @care_home = CareHome.new
 
+    authorize @care_home
+
     if @care_home.save
       redirect_to dashboard_index_path(current_user), notice: 'Successfully created'
     else

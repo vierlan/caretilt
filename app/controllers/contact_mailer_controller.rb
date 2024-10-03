@@ -1,5 +1,6 @@
 class ContactMailerController < ApplicationController
   def new
+    authorize :contact_mailer, :new?
   end
 
   def create

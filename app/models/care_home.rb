@@ -1,5 +1,13 @@
 class CareHome < ApplicationRecord
 
+  belongs_to :company
+  has_many :users
+  has_many :rooms, dependent: :destroy
+  has_many_attached :photos
+  has_many_attached :videos
+  has_many_attached :documents
+  has_many_attached :media
+
   before_save :set_formatted_address
   
   TYPEHOME = [
@@ -27,13 +35,7 @@ class CareHome < ApplicationRecord
     "Young People / Unaccompanied Minors"
   ].sort_by { |item| item}
 
-  belongs_to :company
-  has_many :users
-  has_many :rooms, dependent: :destroy
-  has_many_attached :photos
-  has_many_attached :videos
-  has_many_attached :documents
-  has_many_attached :media
+ 
 
   include SharedValidAttributes
 

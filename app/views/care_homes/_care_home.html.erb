@@ -22,10 +22,10 @@
     </div>
 
     <div class="px-4 py-5 sm:px-6 row-span-3 flex flex-col justify-between">
-      <div class="flex">
+      <%# <div class="flex">
         <span class="inline-flex items-center rounded-md bg-green-100 px-2 py-1 text-base font-medium text-green-700">Rating: Good</span>
         <h1 class="text-blue-600 font-semibold p-1 ms-2">73 Reviews</h1>
-      </div>
+      </div> %>
 
       <!-- Vacant rooms logic -->
       <% if home[:vacant_rooms].length > 0 %>
@@ -46,24 +46,16 @@
       </div>
 
       <div class="flex gap-2">
-        <button id="favourite-btn" class="flex items-center justify-center p-2 border border-gray-300 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 px-5">
-          <svg id="star-icon" class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-          </svg>
-          <span class="ml-2">Save</span>
-        </button>
-        <%= link_to care_home_path(home[:care_home]), data: { turbo_frame: "main-content" } do %>
-          <button class="text-white font-bold py-2 px-4 rounded-full bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg">
-            More Details
-          </button>
+        <% if policy(home[:care_home]).edit? %> 
+          <%= link_to 'Edit', edit_care_home_path(home[:care_home]), data: { turbo_frame: "main-content" }, class: "button-base-gradient" %>
         <% end %>
+        <%= link_to 'More Details', care_home_path(home[:care_home]), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
+        
       </div>
     </div>
   </div>
-  <% if current_user.company %>
-    <div class="flex justify-end">
-      <%# <%= link_to 'Care / Support Services', care_home_rooms_path(home), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
-      <%= link_to 'Edit', edit_care_home_path(home[:care_home]), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
-    </div>
-  <% end %>
 </div>
+
+          <%# <button class="text-white font-bold py-2 px-4 rounded-full bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg">
+            More Details
+          </button> %>
