@@ -96,7 +96,7 @@ careprovidersuperuser2 = User.create!(
   role: 'care_provider_super_user',
   status: 'verified',
   company: company2,
-  phone_number: ENV['DEV_PHONE_NUMBER'],
+  phone_number: ENV['LAN_PHONE_NUMBER'],
   verified: true
 )
 
