@@ -61,7 +61,7 @@ class CareHome < ApplicationRecord
 
   # Performance could be an issue plucking the value time, so we're 
   def self.cached_local_authority_names
-    @cached_local_authority_names ||= LocalAuthorityData.pluck(:nice_name)
+    @cached_local_authority_names ||= LocalAuthorityData.order(:nice_name).pluck(:nice_name)
   end
   
   def validate_client_groups

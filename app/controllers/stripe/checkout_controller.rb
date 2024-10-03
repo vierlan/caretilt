@@ -1,6 +1,7 @@
 class Stripe::CheckoutController < ApplicationController
 
   def pricing
+    authorize :checkout, :pricing?
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     lookup_key = %w[ starter lite_month lite_year pro_month pro_year unlimited_month unlimited_year ]
     @prices = Stripe::Price.list({ lookup_keys: lookup_key, expand: ['data.product'] }).data.sort_by(&:unit_amount)

@@ -1,24 +1,27 @@
 class DashboardController < ApplicationController
-
+  before_action :authenticate_user!
   before_action :check_two_factor_authentication
 
   def index
     @user = current_user
     @activity_feeds = []
     @booking_log = []
+
+    @care_homes = policy_scope(CareHome)
     if @user.company
       @company = current_user.company
-      @care_homes = @company.care_homes
+      # @care_homes = policy_scope(@company.care_homes)
       @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten.sort_by(&:created_at).reverse
       @credit_logs = @company.get_active_subscription&.credit_log
       @activity_feeds.sort_by! { |log| log[2] }.reverse!
     elsif @user.local_authority
       @la = @user.local_authority
-      @care_homes = CareHome.all  # make some logice here which will select care_homes in region/local authority
+      # @care_homes = CareHome.all  # make some logice here which will select care_homes in region/local authority
+      # @care_homes = policy_scope(CareHome)
       @bookings = BookingEnquiry.where(user: @user).sort_by(&:created_at).reverse
     else # admin
       @bookings = BookingEnquiry.all.sort_by(&:created_at).reverse
-      @care_homes = CareHome.all
+      # @care_homes = CareHome.all
       # get all subscriptions within the last 2 weeks and reverse sort them
       @subscriptions = Subscription.where(created_at: 2.weeks.ago..Time.now).sort_by(&:created_at).reverse
     end

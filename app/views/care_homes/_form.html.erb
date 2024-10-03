@@ -91,11 +91,8 @@
         </div>
         <!-- Local Authority -->
         <div class="col-span-6">
-
           <%= f.input :local_authority_name, label: "Local Authority", 
-            collection: LocalAuthorityData.all, 
-            label_method: :nice_name, 
-            value_method: :nice_name, 
+            collection: CareHome.cached_local_authority_names, 
             prompt: 'Select a local authority', 
             input_html: { class: 'custom-class' } %>
         </div>

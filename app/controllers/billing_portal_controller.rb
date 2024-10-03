@@ -46,7 +46,7 @@ class BillingPortalController < ApplicationController
         quantity: 1
       }],
       mode: 'subscription', # use 'payment' for products with 1-time pricing
-      return_url: "#{Rails.application.credentials.base_url}#{new_billing_portal_path}?session_id={CHECKOUT_SESSION_ID}",
+      return_url: "#{ENV['BASE_URL']}#{new_billing_portal_path}?session_id={CHECKOUT_SESSION_ID}",
       automatic_tax: { enabled: false }
     })
 
@@ -57,7 +57,7 @@ class BillingPortalController < ApplicationController
   def modify_subscription
     session = Stripe::BillingPortal::Session.create({
       customer: current_user.stripe_customer_id,
-      return_url: "#{Rails.application.credentials.base_url}#{account_index_path}?updated=true"
+      return_url: "#{ENV['BASE_URL']}#{account_index_path}?updated=true"
     })
 
     session.url

@@ -4,7 +4,7 @@ class Users::TwoFactorAuthenticationController < ApplicationController
 
   def show
     # TwilioService.new(current_user).send_otp_twilio
-
+    authorize :two_factor_authentication, :show?
     # Displays OTP Entry form as /user/two_factor_authentication/show
     if request.fullpath != two_factor_authentication_path
       # If not on the OTP page, redirect them there to OTP form

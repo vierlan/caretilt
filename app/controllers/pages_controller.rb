@@ -1,5 +1,7 @@
 class PagesController < ApplicationController
-#skip_before_action :authenticate_user!, except: [:logout]
+
+  skip_before_action :authenticate_user!, except: [:logout]
+  
   def home
     # @current_user = current_user
   end
@@ -33,4 +35,5 @@ class PagesController < ApplicationController
   def test2
     @care_homes = CareHome.where.not(latitude: nil, longitude: nil)
   end
+  
 end

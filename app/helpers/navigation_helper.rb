@@ -56,7 +56,7 @@ module NavigationHelper
     if current_user.company.present?
       links << {
         name: 'Care Service Management',
-        path: all_company_care_homes_path(@company),
+        path: care_homes_path(@company),
         icon: 'home'
       }
 
