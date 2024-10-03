@@ -1,14 +1,5 @@
 class TeamMembersController < ApplicationController
-  def new
-    @company = Company.find(params[:id])
-    @user = User.new
-  end
-
-  def test
-    authorize :team_member, :test?
-    # def index
-    # end
-  end
+  
 
   def index
 
@@ -49,6 +40,11 @@ class TeamMembersController < ApplicationController
     else
       @name = 'Caretilt'
     end
+  end
+
+  def new
+    @company = Company.find(params[:id])
+    @user = User.new
   end
 
   def create

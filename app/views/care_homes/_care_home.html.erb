@@ -45,12 +45,11 @@
         </ul>
       </div>
 
-      <div class="flex gap-2">
+      <div class="flex gap-2 justify-end">
         <% if policy(home[:care_home]).edit? %> 
           <%= link_to 'Edit', edit_care_home_path(home[:care_home]), data: { turbo_frame: "main-content" }, class: "button-base-gradient" %>
         <% end %>
         <%= link_to 'More Details', care_home_path(home[:care_home]), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
-        
       </div>
     </div>
   </div>
