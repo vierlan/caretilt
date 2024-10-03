@@ -1,4 +1,4 @@
-class CompanyPolicy < ApplicationPolicy
+class LocalAuthorityPolicy < ApplicationPolicy
   # NOTE: Up to Pundit v2.3.1, the inheritance was declared as
   # `Scope < Scope` rather than `Scope < ApplicationPolicy::Scope`.
   # In most cases the behavior will be identical, but if updating existing
@@ -13,11 +13,11 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def index?
-    caretilt_admin?
+    user.caretilt_admin?
   end
 
   def edit?
-    record.users.include?(user) && user.care_provider_super_user? || user.caretilt_master_user? || user.caretilt_user?
+    user.caretilt_admin?
   end
 
   def update?
