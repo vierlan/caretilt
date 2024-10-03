@@ -17,16 +17,11 @@ Rails.application.routes.draw do
   get 'activity_feeds', to: 'activity_feeds#index'
   get '/checkout/get_stripe_events', to: 'stripe/checkout#get_stripe_events'
 
-<<<<<<< HEAD
-
-  get 'team_members_test', to: 'team_members#test'
-=======
   resources :subscriptions, only: [:edit, :update] do
     collection do
       post :deactivate_expired
     end
   end
->>>>>>> main
   resources :companies do
     member do
       get 'add_team_member', to: 'team_members#new', as: 'company_member' # Updated to use 'new' action
