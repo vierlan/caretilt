@@ -30,11 +30,7 @@ class Company < ApplicationRecord
     subscriptions.where(active: true).first
   end
   private
-
-  def active_subscription
-    subscriptions.exists?(self.subscriptions.active)
-  end
-
+  #  check whether the subscription has a exipres_at date in the future
   def stripe_attributes(pay_customer)
     {
       name: name,
