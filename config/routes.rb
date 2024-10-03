@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   patch 'verify/:id', to: 'users#verify_user'
   get '/team_members/:id/verify', to: 'team_members#verify_member', as: 'verify_member'
   patch '/team_members/:id/verify', to: 'team_members#verify_member_update'
+  delete '/team_members/:id', to: 'team_members#destroy', as: 'delete_member'
   get '/checkout', to: 'stripe/checkout#show', as: 'checkout'
   #post '/checkout', to: 'stripe/checkout#checkout'
   get '/checkout/add_credits', to: 'stripe/checkout#add_credits'

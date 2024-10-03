@@ -1,8 +1,9 @@
+# app/admin/users.rb
 ActiveAdmin.register User do
   menu priority: 3
 
   # Specify parameters which should be permitted for assignment
-  permit_params :email, :admin, :stripe_customer_id, :stripe_subscription_id
+  permit_params :email, :admin, :stripe_customer_id, :stripe_subscription_id, :phone_number
 
   # For security, limit the actions that should be available
   actions :all, except: [:new]
@@ -19,8 +20,9 @@ ActiveAdmin.register User do
   filter :updated_at
   filter :admin
   filter :paying_customer
+  filter :phone_number
 
-  # Add or remove columns to toggle their visiblity in the index action
+  # Add or remove columns to toggle their visibility in the index action
   index do
     selectable_column
     id_column
@@ -35,7 +37,7 @@ ActiveAdmin.register User do
     actions
   end
 
-  # Add or remove rows to toggle their visiblity in the show action
+  # Add or remove rows to toggle their visibility in the show action
   show do
     attributes_table_for(resource) do
       row :id
@@ -43,25 +45,7 @@ ActiveAdmin.register User do
       row :encrypted_password
       row :reset_password_token
       row :reset_password_sent_at
-      row :remember_created_at
-      row :created_at
-      row :updated_at
-      row :admin
-      row :stripe_customer_id
-      row :stripe_subscription_id
-      row :paying_customer
+      row :phone_number
     end
-  end
-
-  # Add or remove fields to toggle their visibility in the form
-  form do |f|
-    f.semantic_errors(*f.object.errors.attribute_names)
-    f.inputs do
-      f.input :email
-      f.input :admin
-      f.input :stripe_customer_id
-      f.input :stripe_subscription_id
-    end
-    f.actions
   end
 end
