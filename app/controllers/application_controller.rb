@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   # Pundit: allow-list approach
   after_action :verify_authorized, except: :index, unless: :skip_pundit?
   after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
-  
+
   def skip_pundit?
     Rails.logger.info "Checking if Devise Controller: #{devise_controller?}"
     devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)|(^users\/two_factor_authentication$)/
@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
     redirect_to new_user_session_path, alert: alert_message unless current_user&.admin?
   end
 
-  
+
   def after_sign_in_path_for(resource)
     if !session[:two_factor_authenticated]
       # If user hasn't passed 2FA, redirect to OTP verification page
@@ -67,6 +67,7 @@ class ApplicationController < ActionController::Base
   # whitelist extra User model params by uncommenting below and adding User attrs as keys
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:terms_of_service, :role, :phone_number])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:terms_of_service, :role, :phone_number])
   end
 
   def verify_user
