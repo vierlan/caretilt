@@ -7,15 +7,20 @@ class LocalAuthorityPolicy < ApplicationPolicy
 
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+    def resolve
+      scope.all
+    end
   end
-  
+
+  def index?
+    user.caretilt_admin?
+  end
 
   def edit?
+    user.caretilt_admin?
   end
 
-  def patch?
+  def update?
+    edit?
   end
 end
