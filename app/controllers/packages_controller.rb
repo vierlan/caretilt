@@ -1,5 +1,5 @@
 class PackagesController < ApplicationController
-  
+
   #Company and local authority is the one with stripe attatched not individual user.
   # Only super users and caretilt staff can use package, and  checkout package.
   # Only caretilt staff can edit and add package types.
@@ -24,7 +24,7 @@ class PackagesController < ApplicationController
       @local_authority = current_user.local_authority
       @subscription = Subscription.new
       @active_subscription = current_user.local_authority.get_active_subscription || current_user.local_authority.subscriptions.last
-      @active_package = Package.find(@active_subscription.package_id) if @active_subscription
+      @active_package = Package.find(@active_subscription.package_id) if @active_subscription.present?
       @packages = @packages.where(subscription_type: 1)
     end
   end

@@ -8,7 +8,7 @@ module NavigationHelper
 
     links << { name: 'My details', path: edit_user_registration_path, icon: 'team' }
     links << {
-      name: 'Booking Requests',
+      name: 'Service Enquiries',
       path: booking_enquiries_path,
       icon: 'home'
     }

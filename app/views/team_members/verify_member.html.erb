@@ -3,6 +3,9 @@
     <div>
       <%= link_to sanitize("&larr; Back to Team"), team_company_path(@company), data: { turbo_frame: "main-content", navigation_target: "link" }, class: "btn mb-4 font-bold text-lg text-white bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg" %>
     </div>
+    <div>
+      <%= link_to "Remove member permenantly!!" %>
+    </div>
     <%= form_with(model: @user, url: verify_member_path(@user), local: true, method: :patch) do |f| %>
       <% @user.attributes.each do |key, value| %>
         <p><strong><%= key.humanize %>:</strong> <%= value %></p>

@@ -6,11 +6,13 @@ class BookingEnquiriesController < ApplicationController
     @care_home = @room.care_home
     @company = @care_home.company
     authorize @booking
-    
+
   end
 
   def create
+
     @booking = BookingEnquiry.new(booking_params)
+    @booking.user = current_user
     @room = Room.find(params[:room_id])
     @care_home = @room.care_home
     @company = @care_home.company

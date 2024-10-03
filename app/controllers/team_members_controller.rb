@@ -1,12 +1,12 @@
 class TeamMembersController < ApplicationController
-  
+
 
   def index
 
-    
+
     #Pundit Logic for future reference.
 
-    #Index in pundit needs a collection of objects for its policy SCOPE. We have no team member model. 
+    #Index in pundit needs a collection of objects for its policy SCOPE. We have no team member model.
     # Opt 1. Either rename index -> all (and feed it no object)
     # Opt 2. We feed in a policy scope (doesn't have to be used, just done to get rid of the policy scope required error)
     @company = Company.find(params[:id])
@@ -109,6 +109,16 @@ class TeamMembersController < ApplicationController
       redirect_to team_company_path(@company, data: { turbo_frame: "main-content" }), notice: 'User has been verified.'
     else
       render :verify_member, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @user = User.find(params[:id])
+    @company = Company.find(params[:id])
+    if @user.destroy
+      redirect_to team_members_index_path(current_user), notice: 'User has been deleted.'
+    else
+      redirect_to team_members_index_path(current_user), alert: 'Error deleting user.'
     end
   end
 
