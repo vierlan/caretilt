@@ -13,6 +13,7 @@ class LocalAuthoritiesController < ApplicationController
   end
 
   def edit
+    true
   end
 
   def update

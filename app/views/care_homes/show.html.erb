@@ -12,10 +12,7 @@
           <%= image_tag "advina.svg", size: "150x150" %>
       </div>
     </div>
-    <div class="flex justify-between">
-      <div class="mt-3 flex">
-        <%= link_to 'Care / Support Services', care_home_rooms_path(@care_home), data: { turbo_frame: "main-content" }, class: "button-blue-pill" %>
-      </div>
+    <div class="flex justify-end">
       <div class="mt-3 flex justify-end gap-4">
         <a href="<%= @care_home.website %>" target="_blank" class="button-blue-pill">
           View Website
@@ -110,6 +107,7 @@
     </div>
   </div>
   
+  <%# # DEV REFACTOR THIS LOGIC NEXT WEEK  %>
   <% if @rooms.length > 0 %>
     <div class="px-4 sm:px-6 lg:px-8">
       <%# <div class="sm:flex sm:items-center">

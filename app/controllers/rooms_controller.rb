@@ -7,7 +7,7 @@ class RoomsController < ApplicationController
     @vacant_rooms = @care_home.rooms.where(vacant: true)
     @home_rooms = @care_home.rooms
     @all_rooms = @care_home.rooms
-    policy_scope(Room).all
+    @rooms = policy_scope(Room).all
     @booking = BookingEnquiry.new
   end
 

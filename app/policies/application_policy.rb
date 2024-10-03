@@ -88,7 +88,7 @@ class ApplicationPolicy
   end
 
   def is_local_authority_basic?
-     user.la_user? || user.la_super_user?|| user.care_provider_super_user? || user.caretilt_master_user?
+     user.la_user? || user.la_super_user?|| user.care_provider_super_user? || user.caretilt_master_user? || user.isadmin?
   end
 
   def is_local_authority_admin?

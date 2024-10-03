@@ -29,4 +29,8 @@ class CareHomePolicy < ApplicationPolicy
   def delete?
     record.company.users.include?(user) && user.care_provider_super_user? || user.caretilt_master_user? || user.caretilt_user?
   end
+
+  def index?
+    
+  end
 end
