@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   def skip_pundit?
     Rails.logger.info "Checking if Devise Controller: #{devise_controller?}"
-    devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)|(^users\/two_factor_authentication$)/
+    devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)|(^users\/two_factor_authentication$)/ || params[:controller] =~ /(^contact_mailer$)/ || current_user&.admin?
   end
 
   # Needed for pundit to work

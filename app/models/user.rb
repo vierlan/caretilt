@@ -8,7 +8,7 @@ class User < ApplicationRecord
 
   include Signupable
   include Onboardable
- 
+
 
   scope :subscribed, -> { where.not(stripe_subscription_id: [nil, '']) }
 
@@ -64,7 +64,7 @@ class User < ApplicationRecord
 
   # :nocov:
   def self.ransackable_attributes(*)
-    ["id", "admin", "created_at", "updated_at", "email", "stripe_customer_id", "stripe_subscription_id", "paying_customer"]
+    ["id", "admin", "created_at", "updated_at", "email"]
   end
 
   def self.ransackable_associations(_auth_object)
