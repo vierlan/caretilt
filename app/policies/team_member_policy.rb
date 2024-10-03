@@ -15,7 +15,11 @@ class TeamMemberPolicy < ApplicationPolicy
     is_company_admin? || is_local_authority_admin?
   end
 
-  def test?
-    true
+  def edit?
+    is_company_admin? || is_local_authority_admin? || caretilt_admin?
+  end
+
+  def delete?
+    is_company_admin? || is_local_authority_admin? || caretilt_admin?
   end
 end

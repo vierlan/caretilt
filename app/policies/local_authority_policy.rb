@@ -17,10 +17,14 @@ class LocalAuthorityPolicy < ApplicationPolicy
   end
 
   def edit?
-    user.caretilt_admin?
+    is_local_authority_admin?
   end
 
   def update?
+    edit?
+  end
+
+  def delete?
     edit?
   end
 end
