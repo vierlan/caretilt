@@ -1,9 +1,13 @@
 class Company < ApplicationRecord
   include Pay::Billable
-
-
   include Billable
   pay_customer stripe_attributes: :stripe_attributes
+
+  has_many :users
+  has_many :care_homes
+  has_many :rooms, through: :care_homes
+  has_many :subscriptions, as: :subscribable
+  has_many :packages, through: :subscriptions
 
   after_create do
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
@@ -17,10 +21,7 @@ class Company < ApplicationRecord
   # validates :name, presence: true
   # validates :companies_house_id, presence: true, length: { is: 8 }, format: { with: /\A[A-Z0-9]{8}\z/, message: "must be 8 alphanumeric characters" }
 
-  has_many :users
-  has_many :care_homes
-  has_many :subscriptions, as: :subscribable
-  has_many :packages, through: :subscriptions
+
   # checks the company has an active subscription
   def has_active_subscription?
     subscriptions.where(active: true).exists?

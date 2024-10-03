@@ -1,10 +1,11 @@
 class Room < ApplicationRecord
   belongs_to :care_home
+  delegate :company, to: :care_home
   has_many :booking_enquiries, dependent: :destroy
 
-  has_many_attached :photos
-  has_one_attached :video
-  has_many_attached :documents
+  # has_many_attached :photos
+  # has_one_attached :video
+  # has_many_attached :documents
 
    # Validations
    validates :name, presence: { message: "Name cannot be blank" }, length: { maximum: 100, message: "Name cannot be over 100 characters long." }  # Ensure name is not too long

@@ -1,4 +1,4 @@
-class BookingEnquiryPolicy < ApplicationPolicy
+class ContactMailerPolicy < ApplicationPolicy
   # NOTE: Up to Pundit v2.3.1, the inheritance was declared as
   # `Scope < Scope` rather than `Scope < ApplicationPolicy::Scope`.
   # In most cases the behavior will be identical, but if updating existing
@@ -7,33 +7,12 @@ class BookingEnquiryPolicy < ApplicationPolicy
 
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
-    def resolve
-      scope.all
-    end
-  end
-
-
-  def index?
-    true
+    # def resolve
+    #   scope.all
+    # end
   end
 
   def new?
-    is_local_authority_basic?
-  end
-
-  def create?
-    new?
-  end
-
-  def edit?
-    is_local_authority_super?
-  end
-
-  def patch?
-    edit?
-  end
-
-  def delete?
-    edit?
+    true
   end
 end
