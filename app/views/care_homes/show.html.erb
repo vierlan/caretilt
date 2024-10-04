@@ -71,10 +71,11 @@
     </div>
 
     <!-- Map Section -->
-    <div class="map-section">
-      <%= image_tag "Map-Placeholder.jpg", class: "w-full h-auto rounded-lg" %>
+    <div class="map-section" data-controller="showplacesmap" 
+        data-showplacesmap-care-home-value="<%= @care_home.to_json(only: [:name, :latitude, :longitude]) %>"
+        data-showplacesmap-marker-url-value="<%= image_path('logo_trans.png') %>">
+      <div id="map" style="height: 500px; width: 100%;"></div>
     </div>
-  </div>
 
   <div class="bg-white py-12 sm:py-24">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">

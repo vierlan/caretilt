@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     end
 
     # Proceed with Devise's default behavior once 2FA is verified
-    redirect_to dashboard_index_path
+    super
   end
 
   # New method to check 2FA verification
