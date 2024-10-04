@@ -8,7 +8,8 @@ class RoomPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve
-      scope.where(company: user.company)
+      # Get rooms that belong to care homes under the user's company
+      scope.joins(:care_home).where(care_homes: { company: user.company })
     end
   end
 
@@ -25,6 +26,10 @@ class RoomPolicy < ApplicationPolicy
   end
 
   def create?
+    index?
+  end
+
+  def edit?
     index?
   end
 

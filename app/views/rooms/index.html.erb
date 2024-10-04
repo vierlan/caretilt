@@ -3,16 +3,56 @@
     <h1 class="font-bold text-4xl">Manage Rooms</h1>
     <%= link_to sanitize("&larr; Back to homes"), care_home_path(@care_home), class: "btn mb-4 font-bold text-lg text-white bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg" %>
     <%= link_to "Add a room", new_care_home_room_path(@care_home), data: { turbo_frame: "main-content" }, class: "bg-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" %>
-    <%  @all_rooms.each do |room| %>
-      <%= render "shared/card2", room: room %>
-      <div class="flex justify-between items-center border-b border-gray-300 py-4">
-        <div>
-          <%= link_to 'Show', room_path(room), data: { turbo_frame: "main-content" }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
-          <%= link_to 'Edit', edit_room_path(room), data: { turbo_frame: "main-content" }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
-          <%= link_to 'Destroy', room_path(room), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
+   
+    <% if @all_rooms.length > 0 %>
+    <div class="px-4 sm:px-6 lg:px-8">
+      <div class="mt-8 flow-root">
+        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+              <table class="min-w-full divide-y divide-gray-300">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-lg font-semibold text-gray-900 sm:pl-6">Room Name</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Core Fee Level</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Core Hours of Care</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Additional Fees associated</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Single / Double</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Ensuite</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Total Weekly</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900"></th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 bg-white">
+                  <% @rooms.each do |room| %>
+                    <tr>
+                      <td class="whitespace-nowrap py-4 pl-4 pr-3 text-description font-medium sm:pl-6"><%= room.name %></td>
+                      <td class="whitespace-nowrap px-3 py-4 text-description"><%= number_to_currency(room.core_fee_level, unit: "£") %></td>
+                      <td class="whitespace-nowrap px-3 py-4 text-description"><%= room.core_hours_of_care %></td>
+                      <td class="whitespace-nowrap px-3 py-4 text-description"><%= room.additional_fees_associated ? render('shared/icons/tick') : render('shared/icons/cross') %></td>
+                      <td class="whitespace-nowrap px-3 py-4 text-description"><%= room.single_double %></td>
+                      <td class="whitespace-nowrap px-3 py-4 text-description"><%= room.ensuite ? render('shared/icons/tick') : render('shared/icons/cross') %> </td>
+                      <td class="whitespace-nowrap px-3 py-4 text-description"><%= number_to_currency(room.total, unit: "£") %></td>
+                      <td class="whitespace-nowrap px-3 py-4 text-description">
+                          <div>
+                            <%# <%= link_to 'Show', room_path(room), data: { turbo_frame: "main-content" }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
+                            <% if policy(room).edit? %> 
+                              <%= link_to 'Edit', edit_room_path(room), data: { turbo_frame: "main-content" }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
+                            <% end %>
+                            <% if policy(room).delete? %> 
+                             <%= link_to 'Delete', room_path(room), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
+                            <% end %>
+                          </div>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
-    <% end %>
-    
+    </div>
+  <% end %>
   </div>
 </turbo-frame>

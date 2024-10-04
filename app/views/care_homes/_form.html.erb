@@ -102,6 +102,16 @@
             <% end %>
           </div>
         <% end %>
+         <!-- Thumbnail Upload -->
+        <div class="sm:col-span-6">
+          <%= f.input :thumbnail_image, as: :file, input_html: { multiple: false }, label: "Upload Your CareHome Preview Thumbnail" %>
+        </div>
+        <!-- Display Existing Media (Images/Videos) -->
+        <% if @care_home.thumbnail_image.attached? %>
+            <div class="home-thumbnail-image">
+                <%= image_tag media_file, class: "carehome-thumbnail" %>
+            </div>
+        <% end %>
         <!-- Submit Button -->
         <div class="mt-6 sm:col-span-6">
           <%= f.button :submit, "Save", class: "btn bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg w-full" %>

@@ -7,6 +7,7 @@ class CareHome < ApplicationRecord
   has_many_attached :videos
   has_many_attached :documents
   has_many_attached :media
+  has_one_attached :thumbnail_image
 
   before_save :set_formatted_address
   
@@ -57,6 +58,15 @@ class CareHome < ApplicationRecord
   #Used for care home card
   def short_address
     [address1, city, postcode].reject(&:blank?).join(', ')
+  end
+
+  # Return the attached thumbnail or a default placeholder image
+  def thumbnail_or_default
+    if thumbnail_image.attached?
+      thumbnail_image
+    else
+      'logo_symbol.png'
+    end
   end
                                         
   private
