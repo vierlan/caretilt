@@ -51,7 +51,7 @@ class TeamMembersController < ApplicationController
     email = params[:email]
     password = Devise.friendly_token.first(8)
     phone_number = params[:phone_number]
-    @member = User.new(email: email, password: password, phone_number: phone_number, status: 3)
+    @member = User.new(email: email, password: password, phone_number: phone_number, status: "inactive")
 
 
     case current_user.role
