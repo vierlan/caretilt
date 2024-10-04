@@ -39,6 +39,9 @@
                 <% local_authority.users.each do |user| %>
                   <a href='#' data-action="open#toggleHiddenField"><span class="text-base text-gray-700"><%= user.first_name.capitalize if user.first_name %> <%= user.last_name.capitalize if user.last_name %> <i class="fa-solid fa-plus"></i></span></a>
                   <div class="hidden" data-open-target="info">
+                  <%= link_to verify_member_path(user), data: { turbo_frame: "main-content" }, class: "text-primary hover:text-indigo-900" do %>
+                     Edit<span class="sr-only">, <%= user.email %></span>
+                     <% end %>
                     <% user.attributes.each do |key, value| %>
                       <p class="text-xs leading-5 text-gray-500"><%= key %>: <%= value %></p>
                     <% end %>
