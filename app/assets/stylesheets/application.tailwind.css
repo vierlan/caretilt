@@ -9,6 +9,7 @@ rails assets:precompile */
 @import 'text.css';
 @import 'buttons.css';
 @import 'page_design.css';
+@import 'care_provider.css';
 @import 'form.css';
 @import "actiontext.css";
 @import "trix.css";
