@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     end
 
     # Proceed with Devise's default behavior once 2FA is verified
-    super
+    redirect_to dashboard_index_path
   end
 
   # New method to check 2FA verification
@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
   # whitelist extra User model params by uncommenting below and adding User attrs as keys
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:terms_of_service, :role, :phone_number])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:terms_of_service, :role, :phone_number])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:phone_number])
   end
 
   def verify_user
