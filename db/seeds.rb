@@ -34,8 +34,10 @@ def create_packages
       service.create_package
     end
   end
+  puts "packages made"
 end
 
+create_packages()
 # Used as reference to delete all seeded things when re-seeding.
 seeded_org_names = ['Care Provider Company London', 'Care Provider Company London North']
 seeded_user_email = ['super@care1.com', 'super@care2.com', 'user@care1.com', 'super@la.com', 'user@la.com', 'super@caretilt.com', 'user@caretilt.com', 'caretilt@gmail.com']
@@ -169,11 +171,12 @@ lan_caretilt_user = User.create!(
   password: '123456',
   first_name: 'Lan Ahn',
   last_name: 'Tilt',
-  role: 'care_provider_super_user',
+  role: 'caretilt_master_user',
   status: 'verified',
   phone_number: ENV['LAN_PHONE_NUMBER'],
   verified: true,
-  company: company2
+  company: company2,
+  admin: true
 )
 
 
