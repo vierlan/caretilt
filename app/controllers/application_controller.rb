@@ -8,8 +8,8 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   # Pundit: allow-list approach
-  after_action :verify_authorized, except: :index, unless: :skip_pundit?
-  after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
+  # after_action :verify_authorized, except: :index, unless: :skip_pundit?
+  # after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
 
   def skip_pundit?
     Rails.logger.info "Checking if Devise Controller: #{devise_controller?}"

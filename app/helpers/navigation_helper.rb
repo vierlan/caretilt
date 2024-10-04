@@ -62,8 +62,11 @@ module NavigationHelper
 
     end
 
-    if current_user.local_authority.present?
+    if current_user.local_authority.present? && current_user.la_super_user?
       links << { name: 'Team Management', path: team_local_authority_path(@la), icon: 'team' }
+    end
+
+    if current_user.local_authority.present?
       links << {
         name: 'Care Home Search',
         path: care_homes_path,

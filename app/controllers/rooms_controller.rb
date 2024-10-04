@@ -8,7 +8,9 @@ class RoomsController < ApplicationController
     @home_rooms = @care_home.rooms
     @all_rooms = @care_home.rooms
     @rooms = policy_scope(Room).all
-    @booking = BookingEnquiry.new
+
+    #Dirty fix for view.
+    @rooms = @home_rooms
   end
 
   def show

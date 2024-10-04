@@ -99,6 +99,7 @@ class TeamMembersController < ApplicationController
   def verify_member
     @user = User.find(params[:id])
     @company = @user.company || @user.local_authority
+    
   end
 
   def verify_member_update

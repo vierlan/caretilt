@@ -8,6 +8,7 @@ class Company < ApplicationRecord
   has_many :rooms, through: :care_homes
   has_many :subscriptions, as: :subscribable
   has_many :packages, through: :subscriptions
+  has_one_attached :logo
 
   # after_create do
   #   Stripe.api_key = Rails.application.credentials&.stripe&.api_key

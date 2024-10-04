@@ -60,9 +60,11 @@
             <% starter_plan_features.each do |feature| %>
               <%= render partial: "shared/pricing_list_item", locals: { content: feature } %>
             <% end %>
-            <div>
-              <%= link_to 'Edit', edit_package_path(package) %>
-            </div>
+            <% if policy(Package).edit? %>
+              <div>
+                <%= link_to 'Edit', edit_package_path(package) %>
+              </div>
+            <% end %>
           </ul>
         </div>
       </div>

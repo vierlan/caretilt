@@ -16,6 +16,7 @@ class BookingEnquiriesController < ApplicationController
     @room = Room.find(params[:room_id])
     @care_home = @room.care_home
     @company = @care_home.company
+    @booking.room = @room
     authorize @booking
     if @booking.save
       redirect_to care_home_rooms_path(@care_home)
@@ -82,6 +83,6 @@ class BookingEnquiriesController < ApplicationController
   private
 
   def booking_params
-    params.require(:booking_enquiry).permit(:contact_name, :phone_number, :reference_name, :message)
+    params.require(:booking_enquiry).permit(:contact_name, :phone_number, :reference_name, :message, :room_id)
   end
 end
