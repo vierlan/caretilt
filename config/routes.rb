@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     end
   end
   resources :companies do
+    get :stop_impersonating, on: :collection
     member do
       get 'add_team_member', to: 'team_members#new', as: 'company_member' # Updated to use 'new' action
       get 'team', to: 'team_members#index'
