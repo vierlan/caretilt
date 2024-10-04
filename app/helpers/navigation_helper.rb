@@ -15,6 +15,8 @@ module NavigationHelper
 
 
     if current_user.role == 'caretilt_user' || current_user&.admin?
+      links << { name: 'Team Management', path: team_company_path(@company), icon: 'team' }
+
       links << {
         name: 'Subscription Packages',
         path:  packages_path,
@@ -36,6 +38,8 @@ module NavigationHelper
     end
 
     if current_user.role == 'care_provider_super_user'
+      links << { name: 'Team Management', path: team_company_path(@company), icon: 'team' }
+
       links << { name: 'Account', path: edit_company_path(current_user.company), icon: 'user' }
       links << {
         name: 'Subscription Packages',
