@@ -28,7 +28,7 @@
         <%= form.number_field :credits, class: 'form-control' %>
       </div>
       <div class="field">
-        <%= form.label :validity %>
+        <%= form.label :validity, "Subscription: Choose 1 for monthly subsciption, 12 for yearly, 0 for credits only" %>
         <%= form.select :validity, [0, 1, 12], {}, class: 'form-control' %>
       </div>
       <div class="field">

@@ -334,7 +334,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_30_220534) do
     t.bigint "company_id"
     t.bigint "local_authority_id"
     t.bigint "care_home_id"
-    t.integer "status", default: 0, null: false
+    t.integer "status", default: 3, null: false
     t.string "otp_secret"
     t.integer "consumed_timestep"
     t.boolean "otp_required_for_login"
