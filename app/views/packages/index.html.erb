@@ -40,7 +40,7 @@
           </p>
           <% if package.validity == 0 %>
             <%= link_to "Add credits!", checkout_add_credits_path(price_id: package.stripe_price_id), data: {turbo: 'false'}, class: "mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
-          <% elsif package.subscription_type == 0 %>
+          <% elsif package.subscription_type == "company" %>
             <%= link_to "buy Now!", checkout_path(package: package), data: {turbo: 'false'}, class: "mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
           <% elsif current_user.local_authority.present? %>
             <%= form_with model: @subscription, url: package_subscriptions_path(package), method: :post, local: true do |f| %>

@@ -10,27 +10,29 @@
 
 #SeedSupport::Rewardful.run
 
+def create_packages
+  Package.create(name: 'starter', price: 360, validity: 1, credits: 1, description: 'Starter package for one off listings', data: { lookup: 'starter' })
+  Package.create(name: 'lite_monthly', price: 150, validity: 1, credits: 1, description: 'Lite package for monthly listings. Perfect for Small providers of 4 or more services who are likely to have less than 1 void / vacancy per month.', data: { lookup: 'lite_monthly' })
+  Package.create(name: 'lite_yearly', price: 1500, validity: 12, credits: 10, description: 'Lite package for yearly listings. Perfect for Small providers of 4 or more services who are likely to have less than 1 void / vacancy per month.', data: { lookup: 'lite_yearly' })
+  Package.create(name: 'pro_monthly', price: 300, validity: 1, credits: 4, description: 'Pro package for monthly listings. Medium providers of 10 or more services who are likely to have more than 3 voids a month. Small referral team or managed by registered managers . Typically work with more than 5 Local Authorities and probably specialist.', data: { lookup: 'pro_monthly' })
+  Package.create(name: 'pro_yearly', price: 3000, validity: 12, credits: 50, description: 'Pro package for yearly listings. Medium providers of 10 or more services who are likely to have more than 3 voids a month. Small referral team or managed by registered managers . Typically work with more than 5 Local Authorities and probably specialist', data: { lookup: 'pro_yearly' })
+  Package.create(name: 'unlimited_monthly', price: 600, validity: 1, credits: 100000, description: 'Unlimited package for monthly listings. Medium to Large providers who have regular voids/ vacancies. Referral team typically handles more than 10 referrals a month and work with more than 10 Local Authorities. ', data: { lookup: 'unlimited_monthly' })
+  Package.create(name: 'unlimited_yearly', price: 6000, validity: 12, credits: 100000, description: 'Unlimited package for yearly listings.  Medium to Large providers who have regular voids/ vacancies. Referral team typically handles more than 10 referrals a month and work with more than 10 Local Authorities ', data: { lookup: 'unlimited_yearly' })
+  Package.create(name: 'Add 3 credits', price: 690, validity: 0, credits: 5, description: 'Add 5 credits to your account', data: { lookup: 'add_5_credits' })
+  Package.create(name: 'Local Authority Licence', price: 3000, validity: 12, credits: nil, description: 'Allows local Authorities workers to view vacancies in Local care home', data: { lookup: 'la_licence' }, subscription_type: 1 )
 
-Package.create(name: 'starter', price: 360, validity: 1, credits: 1, description: 'Starter package for one off listings', data: { lookup: 'starter' })
-Package.create(name: 'lite_monthly', price: 150, validity: 1, credits: 1, description: 'Lite package for monthly listings', data: { lookup: 'lite_monthly' })
-Package.create(name: 'lite_yearly', price: 1500, validity: 12, credits: 10, description: 'Lite package for yearly listings', data: { lookup: 'lite_yearly' })
-Package.create(name: 'pro_monthly', price: 300, validity: 1, credits: 4, description: 'Pro package for monthly listings', data: { lookup: 'pro_monthly' })
-Package.create(name: 'pro_yearly', price: 3000, validity: 12, credits: 50, description: 'Pro package for yearly listings', data: { lookup: 'pro_yearly' })
-Package.create(name: 'unlimited_monthly', price: 600, validity: 1, credits: 100000, description: 'Unlimited package for monthly listings', data: { lookup: 'unlimited_monthly' })
-Package.create(name: 'unlimited_yearly', price: 6000, validity: 12, credits: 100000, description: 'Unlimited package for yearly listings', data: { lookup: 'unlimited_yearly' })
-Package.create(name: 'Add 5 credits', price: 290, validity: 0, credits: 5, description: 'Add 5 credits to your account', data: { lookup: 'add_5_credits' })
-Package.create(name: 'Local Authority Licence', price: 1000, validity: 12, credits: nil, description: 'Allows local Authorities workers to view vacancies in Local care home', data: { lookup: 'la_licence' }, subscription_type: 1 )
+  @packages = Package.all
 
-@packages = Package.all
-
-@packages.each do |package|
-  Stripe.api_key = Rails.application.credentials&.stripe&.api_key
-  service = StripePackage.new(package)
-  case package.validity
-  when 0
-    service.create_add_credits_package
-  else
-    service.create_package
+  @packages.each do |package|
+    # for production, make sure that the stripe api key is accessible in the credentials file
+    Stripe.api_key = Rails.application.credentials&.stripe&.api_key
+    service = StripePackage.new(package)
+    case package.validity
+    when 0
+      service.create_add_credits_package
+    else
+      service.create_package
+    end
   end
 end
 
