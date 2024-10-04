@@ -31,7 +31,7 @@ class DashboardController < ApplicationController
       log << booking.room.name + " - " + booking.room.care_home.name
       log << booking.created_at
       log << booking.contact_name
-      log << "Tower Hamlets" # booking.user.local_authority.name
+      log << booking.user.local_authority.name # booking.user.local_authority.name
       @booking_log << log
     end
     #  sort the activity feeds by activity_time newest to oldest

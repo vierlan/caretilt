@@ -15,7 +15,7 @@ data-controller="navigation" data-navigation-class-value="bg-white"
             <div class="group flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-900 hover:bg-gray-50 hover:text-primary"
          data-navigation-target="button"
          data-action="click->navigation#highlightButton">
-              <%= raw svg_for_path(link[:path]) %>
+              <%= raw icon_for_path(link[:icon]) %>
               <%= content_tag :span, link[:name], class: "nav-link-text" %>
             </div>
           <% end %>
