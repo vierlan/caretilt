@@ -109,7 +109,7 @@
         <!-- Display Existing Media (Images/Videos) -->
         <% if @care_home.thumbnail_image.attached? %>
             <div class="home-thumbnail-image">
-                <%= image_tag media_file, class: "carehome-thumbnail" %>
+                <%= image_tag @care_home.thumbnail_image, class: "carehome-thumbnail" %>
             </div>
         <% end %>
         <!-- Submit Button -->

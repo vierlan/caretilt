@@ -37,8 +37,8 @@ class RoomPolicy < ApplicationPolicy
     index?
   end
 
-  def delete?
-    careprovider_super_edit?
+  def destroy?
+    true
   end
 
 end

@@ -138,6 +138,7 @@ class CareHomesController < ApplicationController
   def destroy
     @care_home = CareHome.find(params[:id])
     @care_home.destroy
+    
 
     respond_to do |format|
       format.html { redirect_to care_homes_path, notice: 'Care home was successfully deleted.' }

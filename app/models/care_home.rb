@@ -75,6 +75,11 @@ class CareHome < ApplicationRecord
   def self.cached_local_authority_names
     @cached_local_authority_names ||= LocalAuthorityData.order(:nice_name).pluck(:nice_name)
   end
+
+  # Method to get the distinct types of homes that are currently in use
+  def self.types_in_use
+    where.not(type_of_home: nil).distinct.pluck(:type_of_home).sort
+  end
   
   def validate_client_groups
     if types_of_client_group.blank?
