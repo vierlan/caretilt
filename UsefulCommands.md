@@ -10,3 +10,9 @@ rails db:drop db:create db:migrate local_authorities:import db:seed
 Rspec tests:
 bundle exec rspec spec/models/care_home_spec.rb    
 bundle exec rspec spec/models/room_spec.rb   
+
+Heroku:
+heroku pg:reset DATABASE
+heroku run rails db:migrate
+heroku run rails local_authorities:import
+heroku run rails db:seed
