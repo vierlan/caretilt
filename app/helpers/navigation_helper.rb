@@ -6,11 +6,11 @@ module NavigationHelper
 
     # Common links for all users
 
-    links << { name: 'My details', path: edit_user_registration_path, icon: 'team' }
+    links << { name: 'My details', path: edit_user_registration_path, icon: 'user' }
     links << {
-      name: 'Service Enquiries',
+      name: current_user.local_authority.present? ? 'My Service Enquiries' : 'Service Enquiries',
       path: booking_enquiries_path,
-      icon: 'home'
+      icon: 'enquiry'
     }
 
 
@@ -80,7 +80,7 @@ module NavigationHelper
     links
   end
 
-  def svg_for_path(icon)
+  def icon_for_path(icon)
     case icon
     when 'team'
       '<i class="fa-solid fa-users"></i>'
