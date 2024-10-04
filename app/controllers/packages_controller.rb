@@ -48,7 +48,7 @@ class PackagesController < ApplicationController
       else
         service.create_package
       end
-      redirect_to packages_index_path
+      redirect_to packages_path
     else
       render :new, status: :unprocessable_entity
     end

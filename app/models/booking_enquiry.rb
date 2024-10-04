@@ -1,7 +1,7 @@
 class BookingEnquiry < ApplicationRecord
   belongs_to :user
-  belongs_to :room, optional: true
-  belongs_to :subscription, optional: true
+  belongs_to :room
+
 
   # Each time a booking is made, it will stream it to the activity_feed turbo stream.
   # after_create_commit do

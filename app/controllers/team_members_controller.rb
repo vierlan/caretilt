@@ -51,7 +51,7 @@ class TeamMembersController < ApplicationController
     email = params[:email]
     password = Devise.friendly_token.first(8)
     phone_number = params[:phone_number]
-    @member = User.new(email: email, password: password, phone_number: phone_number)
+    @member = User.new(email: email, password: password, phone_number: phone_number, status: 3)
 
 
     case current_user.role
@@ -99,7 +99,7 @@ class TeamMembersController < ApplicationController
   def verify_member
     @user = User.find(params[:id])
     @company = @user.company || @user.local_authority
-    
+
   end
 
   def verify_member_update
