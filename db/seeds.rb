@@ -179,6 +179,68 @@ lan_caretilt_user = User.create!(
   admin: true
 )
 
+madi_care_user = User.create!(
+  email: 'maditurpin@gmail.com',
+  password: '123456',
+  first_name: 'Madi',
+  last_name: 'Turpin',
+  role: 'caretilt_master_user',
+  status: 'verified',
+  phone_number: ENV['MADI_NUMBER'],
+  verified: true,
+  company: company1,
+  admin: true
+)
+
+irene_user = User.create!(
+  email: 'solordeveloper@gmail.com',
+  password: '123456',
+  first_name: 'Irene',
+  last_name: 'Solar',
+  role: 'caretilt_master_user',
+  status: 'verified',
+  phone_number: ENV['+639925980374'],
+  verified: true,
+  company: company1,
+  admin: true
+)
+
+irene_la_user = User.create!(
+  email: 'irene@solorr.com',
+  password: '123456',
+  first_name: 'Irene',
+  last_name: 'Tilt',
+  role: 'la_super_user',
+  status: 'verified',
+  phone_number: ENV['IRENE_NUMBER'],
+  verified: true,
+  company: localauthority
+)
+
+Madi_la_user = User.create!(
+  email: 'madi@turpin.com',
+  password: '123456',
+  first_name: 'Madi2',
+  last_name: 'Turpin2',
+  role: 'la_super_user',
+  status: 'verified',
+  phone_number: ENV['MADI_NUMBER'],
+  verified: true,
+  local_authority: localauthority
+)
+
+Madi_care_user = User.create!(
+  email: 'madi@care.com',
+  password: '123456',
+  first_name: 'Madi2',
+  last_name: 'Turpin2',
+  role: 'la_super_user',
+  status: 'verified',
+  phone_number: ENV['MADI_NUMBER'],
+  verified: true,
+  local_authority: localauthority
+)
+
 
 # Attach all homes to the created user (since the user must be associated with a company)
 
