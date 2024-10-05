@@ -90,44 +90,27 @@ class TeamMembersController < ApplicationController
     end
   end
 
- # def verify
- #   verify_user = User.find(params[:id])
- #   if check_registration_pin
- #     if current_user.role == 'care_provider_super_user' && verify_user.company == current_user.company
- #       verify_user.update
- #     elsif current_user.role == 'la_super_user' && verify_user.local_authority == current_user.local_authority
- #       verify_user.update
- #     else
- #       render status: :forbidden
- #     end
- #   end
- # end
-
- #def verify_member
- #  @user = User.find(params[:id])
- #  @company = @user.company || @user.local_authority
- #end
-
- #def verify_member_update
- #  @user = User.find(params[:id])
- #  @company = @user.company
-
- #  if @user.update(user_params)
- #    redirect_to team_company_path(@company, data: { turbo_frame: "main-content" }), notice: 'User has been verified.'
- #  else
- #    render :verify_member, status: :unprocessable_entity
- #  end
- #end
-
-  def destroy
+  def verify_member
     @user = User.find(params[:id])
-    @company = Company.find(params[:id])
-    if @user.destroy
-      redirect_to team_members_index_path(current_user), notice: 'User has been deleted.'
+    @company = @user.company || @user.local_authority
+  end
+
+  def verify_member_update
+    @user = User.find(params[:id])
+    @company = @user.company
+
+    # Handle the mark_for_deletion checkbox value as a string
+    if params[:user][:mark_for_deletion] == '1'
+      flash[:notice] = 'User marked for deletion.'
+      @user.destroy
+      redirect_to team_company_path(@company, data: { turbo_frame: "main-content" }), notice: 'User has been deleted.'
+    elsif @user.update(user_params.except(:mark_for_deletion))
+      redirect_to team_company_path(@company, data: { turbo_frame: "main-content" }), notice: 'User has been verified.'
     else
-      redirect_to team_members_index_path(current_user), alert: 'Error deleting user.'
+      render :verify_member, status: :unprocessable_entity
     end
   end
+
 
 
   private
