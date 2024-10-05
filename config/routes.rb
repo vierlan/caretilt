@@ -23,7 +23,6 @@ Rails.application.routes.draw do
     end
   end
   resources :companies do
-    get :stop_impersonating, on: :collection
     member do
       get 'add_team_member', to: 'team_members#new', as: 'company_member' # Updated to use 'new' action
       get 'team', to: 'team_members#index'
@@ -83,9 +82,7 @@ Rails.application.routes.draw do
 
   resources :subscribe, only: [:index]
   resources :dashboard, only: %i[index team new_team_member]
-  resources :account, only: %i[index] do
-    get :stop_impersonating, on: :collection
-  end
+  resources :account, only: %i[index] 
   resources :billing_portal_sessions, only: [:new, :create]
   resources :blog_posts, controller: :blog_posts, path: "blog", param: :slug
 

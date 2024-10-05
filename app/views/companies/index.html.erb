@@ -50,7 +50,6 @@
                 <% company.users.each do |user| %>
                   <a href='#' data-action="open#toggleHiddenField"><span class="text-base text-gray-700"><%= user.first_name.capitalize if user.first_name %> <%= user.last_name.capitalize if user.last_name %> <i class="fa-solid fa-plus"></i></span></a>
                   <div class="hidden" data-target="info">
-                  <%#= link_to 'Login', impersonate_admin_user_path(user.id), class: "button-caretilt" %>
                   <%= link_to verify_member_path(user), data: { turbo_frame: "main-content" }, class: "text-primary hover:text-indigo-900" do %>
                      Edit<span class="sr-only">, <%= user.email %></span>
                      <% end %>
