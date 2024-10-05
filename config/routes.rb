@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   root 'pages#home'
-  ActiveAdmin.routes(self)
 
   #debug session route
   #get '/session', to: 'activity_feeds#index'

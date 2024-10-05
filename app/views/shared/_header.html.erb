@@ -27,11 +27,8 @@
       <%= link_to "Free Calculator", calculator_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
       <%= link_to "Pricing", pricing_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
       <%= link_to "Guides", guides_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
-                <%= link_to 'Admin', admin_root_path, class: nav_link_classes('admin/dashboard') if current_user&.admin? %>
 
       <% if !current_user %>
-                <%= link_to 'Admin', admin_root_path, class: nav_link_classes('admin/dashboard') if current_user&.admin? %>
-
         <%= link_to "Contact", contact_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
           <a href="/login" class="text-lg font-bold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
