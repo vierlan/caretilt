@@ -1,19 +1,26 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   include Pundit::Authorization
-
-  impersonates :user
-
   # uncomment to allow extra User model params during registration (beyond email/password)
   before_action :configure_permitted_parameters, if: :devise_controller?
-
+  before_action :user_for_paper_trail
+  after_action :user_for_paper_trail
   # Pundit: allow-list approach
   # after_action :verify_authorized, except: :index, unless: :skip_pundit?
   # after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
 
+  # this part is for warden/session debugging by LanAnh
+  def user_for_paper_trail
+    Rails.logger.info "User has passed 2FA. #{session["warden.user.user.key"]}"
+  end
+
+
+
+
+
   def skip_pundit?
     Rails.logger.info "Checking if Devise Controller: #{devise_controller?}"
-    devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)|(^users\/two_factor_authentication$)/ || params[:controller] =~ /(^contact_mailer$)/ || current_user&.admin?
+    devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)|(^users\/two_factor_authentication$)/ || params[:controller] =~ /(^contact_mailer$)/
   end
 
   # Needed for pundit to work
@@ -36,6 +43,8 @@ class ApplicationController < ActionController::Base
     if !session[:two_factor_authenticated]
       # If user hasn't passed 2FA, redirect to OTP verification page
       return two_factor_authentication_path
+    else
+      Rails.logger.info "User has passed 2FA. #{session["warden.user.user.key"]}"
     end
 
     # Proceed with Devise's default behavior once 2FA is verified

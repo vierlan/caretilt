@@ -15,11 +15,11 @@ class CareHomesController < ApplicationController
 
   def index
     # Get only the local authorities that are associated with existing care homes
-    
+
     @all_local_authorities = LocalAuthorityData.where(nice_name: CareHome.select(:local_authority_name).distinct).sort_by { |item| item}
 
-    @type_of_home_options = ['Any'] + CareHome::TYPEHOME 
-    @types_of_client_group_options = CareHome::TYPECLIENT 
+    @type_of_home_options = ['Any'] + CareHome::TYPEHOME
+    @types_of_client_group_options = CareHome::TYPECLIENT
 
     # Logic here will return all care homes by default unless front end form specifies filtering params.
     # @care_homes = CareHome.all
@@ -32,12 +32,12 @@ class CareHomesController < ApplicationController
       if params[:care_home][:local_authority_name].present? && params[:care_home][:local_authority_name] != "Any"
         @care_homes = @care_homes.where(local_authority_name: params[:care_home][:local_authority_name])
       end
-  
+
       # Type of home filter (if not "Any")
       if params[:care_home][:type_of_home].present? && params[:care_home][:type_of_home] != "Any"
         @care_homes = @care_homes.where(type_of_home: params[:care_home][:type_of_home])
       end
-  
+
       # Types of client group filter (if not "Any")
       if params[:care_home][:types_of_client_group].present? && params[:care_home][:types_of_client_group].reject(&:blank?).any?
         @care_homes = @care_homes.where("types_of_client_group @> ARRAY[?]::varchar[]", params[:care_home][:types_of_client_group].reject(&:blank?))
@@ -54,17 +54,16 @@ class CareHomesController < ApplicationController
         lowest_price: care_home.rooms.minimum(:total)
       }
     end
-  
+
     respond_to do |format|
       format.html # Renders the default HTML view
-      format.turbo_stream # Respond to Turbo Stream requests
+    #  format.turbo_stream # Respond to Turbo Stream requests
     end
-
   end
 
   def show
     @care_home = CareHome.find(params[:id])
-    @rooms = @care_home.rooms.where(vacant: true) 
+    @rooms = @care_home.rooms.where(vacant: true)
     authorize @care_home
 
     if @rooms.any?
@@ -72,7 +71,7 @@ class CareHomesController < ApplicationController
     else
       @room_cheapest = nil
     end
-  
+
     render "care_homes/show"
   end
 
@@ -138,11 +137,11 @@ class CareHomesController < ApplicationController
   def destroy
     @care_home = CareHome.find(params[:id])
     @care_home.destroy
-    
+
 
     respond_to do |format|
       format.html { redirect_to care_homes_path, notice: 'Care home was successfully deleted.' }
-      format.turbo_stream # Turbo Stream response for Turbo
+      # format.turbo_stream # Turbo Stream response for Turbo
     end
   end
 
@@ -174,9 +173,9 @@ class CareHomesController < ApplicationController
 
   def care_home_params
     params.require(:care_home).permit(
-    :name, :main_contact, :phone_number, :website, :address, :email, 
-    :address1, :address2, :city, :postcode, :type_of_home, 
-    :short_description, :latitude, :longitude, :local_authority_name, 
+    :name, :main_contact, :phone_number, :website, :address, :email,
+    :address1, :address2, :city, :postcode, :type_of_home,
+    :short_description, :latitude, :longitude, :local_authority_name,
     :thumbnail_image, photos: [], videos: [], media: [], types_of_client_group: [] # Allow `types_of_client_group` as an array
     ).tap do |whitelisted| #Makes sure that no empty values allowed in the array.
       whitelisted[:types_of_client_group].reject!(&:blank?)

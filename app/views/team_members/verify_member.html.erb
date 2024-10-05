@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "main-content" do %>
-  <div class="">
+  <div class="form">
     <div>
       <%= link_to sanitize("&larr; Back to Team"), team_company_path(@company), data: { turbo_frame: "main-content", navigation_target: "link" }, class: "btn mb-4 font-bold text-lg text-white bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg" %>
     </div>
@@ -29,7 +29,23 @@
               <%= f.label :email, "Email", class: "block text-sm font-medium text-gray-700" %>
               <%= f.email_field :email, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm" %>
             </div>
-            <% if @user.company_id.present? %>
+            <div>
+              <%= f.label :phone_number, "Phone Number", class: "block text-sm font-medium text-gray-700" %>
+              <%= f.text_field :phone_number, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm" %>
+            </div>
+            <% if @user.company_id == 1 %>
+              <div>
+                <%= f.label :role, "Role", class: "block text-sm font-medium text-gray-700" %>
+                <div class="mt-1">
+                  <%= f.radio_button :role, :caretilt_master_user, class: "mr-2" %>
+                  <%= f.label :role_caretilt_master_user, "Super User", class: "inline-block text-sm font-medium text-gray-700" %>
+                </div>
+                <div class="mt-1">
+                  <%= f.radio_button :role, :caretilt_user, class: "mr-2" %>
+                  <%= f.label :role_caretilt_user, "User", class: "inline-block text-sm font-medium text-gray-700" %>
+                </div>
+              </div>
+            <% elsif @user.company_id.present? %>
               <div>
                 <%= f.label :role, "Role", class: "block text-sm font-medium text-gray-700" %>
                 <div class="mt-1">
@@ -54,8 +70,8 @@
                   <%= f.label :role_la_user, "User", class: "inline-block text-sm font-medium text-gray-700" %>
                 </div>
               </div>
-              <% end %>
-              <% if current_user&.company&.care_homes %>
+            <% end %>
+            <% if current_user&.company&.care_homes %>
               <div>
                 <%= f.label :care_home, "Care Home", class: "block text-sm font-medium text-gray-700" %>
                 <%= f.collection_select :care_home_id, @user.company.care_homes, :id, :name, { prompt: "Select Care Home" }, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm" %>
@@ -67,14 +83,19 @@
               </div>
             <% else %>
               <div>
-                <%= f.label :staus, "Account Activation Status", class: "block text-sm font-medium text-gray-700" %>
+                <%= f.label :status, "Account Activation Status", class: "block text-sm font-medium text-gray-700" %>
                 <div class="mt-1">
                   <%= f.radio_button :status, :verified, class: "mr-2" %>
                   <%= f.label :status_verified, "Verifed", class: "inline-block text-sm font-medium text-gray-700" %>
                 </div>
                 <div class="mt-1">
                   <%= f.radio_button :status, :inactive, class: "mr-2" %>
-                  <%= f.label :status_inactive, "Inactive", class: "inline-block text-sm font-medium text-gray-700" %>
+                  <%= f.label :status_inactive, "Disable", class: "inline-block text-sm font-medium text-gray-700" %>
+                </div>
+                <!-- Checkbox to delete user-->
+                <div class="mt-1">
+                  <%= f.check_box :mark_for_deletion, class: "mr-2" %>
+                  <%= f.label :mark_for_deletion, "Delete User", class: "inline-block text-sm font-medium text-gray-700" %>
                 </div>
               </div>
             <% end %>

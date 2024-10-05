@@ -13,7 +13,6 @@ gem "pundit"
 gem 'acts_as_list', '~> 1.0.4'
 gem 'requestjs-rails'
 
-gem 'activeadmin', '4.0.0.beta11'
 gem 'aws-sdk-s3', require: false
 gem 'chartkick'
 gem 'delayed' # delayed_job_active_record rails 7 fork: https://github.com/betterment/delayed

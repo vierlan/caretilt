@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_30_220534) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_05_110618) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -112,8 +112,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_30_220534) do
     t.string "billing_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "registration_pin", default: "2370", null: false
-    t.string "super_pin", default: "5647", null: false
+    t.string "registration_pin", default: "2992", null: false
+    t.string "super_pin", default: "4193", null: false
     t.string "stripe_customer_id"
     t.string "email"
     t.string "contact_name"
@@ -323,18 +323,13 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_30_220534) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "admin", default: false
-    t.string "stripe_customer_id"
-    t.boolean "paying_customer", default: false
-    t.string "stripe_subscription_id"
     t.string "first_name"
     t.string "last_name"
     t.integer "role", default: 0
-    t.float "latitude"
-    t.float "longitude"
     t.bigint "company_id"
     t.bigint "local_authority_id"
     t.bigint "care_home_id"
-    t.integer "status", default: 3, null: false
+    t.integer "status", default: 0, null: false
     t.string "otp_secret"
     t.integer "consumed_timestep"
     t.boolean "otp_required_for_login"

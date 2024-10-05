@@ -56,42 +56,36 @@ class TeamMembersController < ApplicationController
 
     case current_user.role
     when 'care_provider_super_user'
+      @company = current_user.company
       @member.role = 'care_provider_user'
-      @member.company = current_user.company
+      @member.company = @company
     when 'la_super_user'
+      @la = current_user.local_authority
       @member.role = 'la_user'
-      @member.local_authority = current_user.local_authority
+      @member.local_authority = @local_authority
     when 'caretilt_master_user'
+      @company = Company.find(1)
       @member.role = 'caretilt_user'
+      @member.company = @company
+
     else
       render status: :forbidden
     end
 
     respond_to do |format|
-      if @member.save
-        NotifierMailer.new_account(member: @member).deliver_now
-        format.html { redirect_to team_members_new_path(current_user), notice: 'Team member added successfully. An email has been sent to the new user.' }
-        format.turbo_stream { render :create, locals: { member: @member, notice: 'Team member added successfully. An email has been sent to the new user.' } }
-        format.json { render :show, status: :created, location: @member }
-        # clear the input field
-        format.js { render js: "document.getElementById('email').value = ''; alert('Team member added successfully. An email has been sent to the new user.');" }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.turbo_stream { render :create, status: :unprocessable_entity, locals: { member: @member } }
-        format.json { render json: @member.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+    if @member.save!
+      NotifierMailer.new_account(member: @member).deliver_now
+      # format.html { redirect_to team_members_new_path(current_user), notice: 'Team member added successfully. An email has been sent to the new user.' }
+      format.turbo_stream { render :create, locals: { member: @member, notice: 'Team member added successfully. An email has been sent to the new user.' } }
+        #format.json { render :show, status: :created, location: @member }
+      # clear the input field
+      # format.js { render js: "document.getElementById('email').value = ''; alert('Team member added successfully. An email has been sent to the new user.');" }
 
-  def verify
-    verify_user = User.find(params[:id])
-    if check_registration_pin
-      if current_user.role == 'care_provider_super_user' && verify_user.company == current_user.company
-        verify_user.update
-      elsif current_user.role == 'la_super_user' && verify_user.local_authority == current_user.local_authority
-        verify_user.update
-      else
-        render status: :forbidden
+    else
+
+      format.html { render partial: 'form', status: :unprocessable_entity }
+      #format.turbo_stream { render :create, status: :unprocessable_entity, locals: { member: @member } }
+      format.json { render json: @member.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -99,29 +93,24 @@ class TeamMembersController < ApplicationController
   def verify_member
     @user = User.find(params[:id])
     @company = @user.company || @user.local_authority
-
   end
 
   def verify_member_update
     @user = User.find(params[:id])
     @company = @user.company
 
-    if @user.update(user_params)
+    # Handle the mark_for_deletion checkbox value as a string
+    if params[:user][:mark_for_deletion] == '1'
+      flash[:notice] = 'User marked for deletion.'
+      @user.destroy
+      redirect_to team_company_path(@company, data: { turbo_frame: "main-content" }), notice: 'User has been deleted.'
+    elsif @user.update(user_params.except(:mark_for_deletion))
       redirect_to team_company_path(@company, data: { turbo_frame: "main-content" }), notice: 'User has been verified.'
     else
       render :verify_member, status: :unprocessable_entity
     end
   end
 
-  def destroy
-    @user = User.find(params[:id])
-    @company = Company.find(params[:id])
-    if @user.destroy
-      redirect_to team_members_index_path(current_user), notice: 'User has been deleted.'
-    else
-      redirect_to team_members_index_path(current_user), alert: 'Error deleting user.'
-    end
-  end
 
 
   private
@@ -132,19 +121,19 @@ class TeamMembersController < ApplicationController
     )
   end
 
-  def check_registration_pin
-    @user = User.find(params[:id])
-    @company = Company.find(params[:id])
-    @pin = params[:pin]
-    case @pin
-    when @company.registration_pin
-      true
-    when nil
-      errors.add(:pin, 'Please enter a pin')
-    else
-      errors.add(:pin, 'Incorrect pin')
-    end
-  end
+  #def check_registration_pin
+  #  @user = User.find(params[:id])
+  #  @company = Company.find(params[:id])
+  #  @pin = params[:pin]
+  #  case @pin
+  #  when @company.registration_pin
+  #    true
+  #  when nil
+  #    errors.add(:pin, 'Please enter a pin')
+  #  else
+  #    errors.add(:pin, 'Incorrect pin')
+  #  end
+  #end
 
 
 
