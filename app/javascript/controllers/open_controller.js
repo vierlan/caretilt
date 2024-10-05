@@ -10,12 +10,11 @@ export default class extends Controller {
 
   toggleHiddenField(event) {
     event.preventDefault();
-    const hiddenField = event.currentTarget.nextElementSibling;
-    if (hiddenField.classList.contains("hidden")) {
-      hiddenField.classList.remove("hidden");
+    if (this.infoTarget.classList.contains("hidden")) {
+      this.infoTarget.classList.remove("hidden");
     } else {
-      hiddenField.classList.add("hidden");
-    }
+      this.infoTarget.classList.add("hidden");
+  }
   }
 
   toggleCompany(event) {
