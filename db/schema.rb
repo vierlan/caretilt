@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_05_110618) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_07_124329) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -146,6 +146,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_05_110618) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email"
+    t.string "stripe_customer_id"
+    t.string "stripe_subscription_id"
   end
 
   create_table "local_authority_data", force: :cascade do |t|
@@ -310,6 +313,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_05_110618) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "subscribable_type"
+    t.string "invoices", default: [], array: true
     t.index ["package_id"], name: "index_subscriptions_on_package_id"
     t.index ["subscribable_type", "subscribable_id"], name: "index_subscriptions_on_subscribable_type_and_subscribable_id"
   end
@@ -353,7 +357,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_05_110618) do
   add_foreign_key "pay_payment_methods", "pay_customers", column: "customer_id"
   add_foreign_key "pay_subscriptions", "pay_customers", column: "customer_id"
   add_foreign_key "rooms", "care_homes"
-  add_foreign_key "subscriptions", "companies", column: "subscribable_id"
   add_foreign_key "subscriptions", "packages"
   add_foreign_key "users", "care_homes"
   add_foreign_key "users", "companies"

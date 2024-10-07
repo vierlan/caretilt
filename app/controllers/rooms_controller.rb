@@ -66,7 +66,7 @@ class RoomsController < ApplicationController
   # end
 
   def update
-    
+
     @room.assign_attributes(room_params)
     authorize @room
     # Validate the super PIN if the room is being marked as vacant

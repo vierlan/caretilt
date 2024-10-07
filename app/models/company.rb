@@ -1,15 +1,15 @@
 class Company < ApplicationRecord
-  include Pay::Billable
-  include Billable
-  pay_customer stripe_attributes: :stripe_attributes
+
 
   has_many :users
   has_many :care_homes
   has_many :rooms, through: :care_homes
-  has_many :subscriptions, as: :subscribable
+  has_many :subscriptions, class_name: 'Subscription', as: :subscribable
   has_many :packages, through: :subscriptions
   has_one_attached :logo
 
+  include Billable
+  pay_customer stripe_attributes: :stripe_attributes
   # after_create do
   #   Stripe.api_key = Rails.application.credentials&.stripe&.api_key
   #   Rails.logger.info("Creating Stripe customer for #{self.name}")
@@ -24,11 +24,11 @@ class Company < ApplicationRecord
 
   # checks the company has an active subscription
   def has_active_subscription?
-    subscriptions.where(active: true).exists?
+    subscriptions.where(status: 'active').exists?
   end
 
   def get_active_subscription
-    subscriptions.where(active: true).first
+    subscriptions.where(status: 'active').first
   end
   private
   #  check whether the subscription has a exipres_at date in the future
@@ -44,7 +44,8 @@ class Company < ApplicationRecord
       },
       metadata: {
         pay_customer_id: pay_customer.id,
-        user_id: id
+        company_id: id,
+        name: name
 
     }
   }

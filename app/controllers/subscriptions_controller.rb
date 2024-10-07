@@ -23,17 +23,28 @@ class SubscriptionsController < ApplicationController
 
   #  path for initial subscription creation for local authorities only
   def create
+    Stripe.api_key = Rails.application.credentials&.stripe&.api_key
+    @package = Package.find(params[:package_id])
     @local_authority = current_user.local_authority
-    @subscription = Subscription.new
-    @subscription.subscribable_id = @local_authority.id
-    @subscription.subscribable_type = "LocalAuthority"
-    @subscription.package_id = @package.id
-    @subscription.active = false
-    @subscription.expires_on = Time.now + 1.year
-    @subscription.next_payment_date = Time.now + 1.year
-    @subscription.subscribed_on = Time.now
+    # Find the stripe customer on payment processor
+    @customer = @local_authority.stripe_customer_id || Stripe::Customer.create(name: @local_authority.name, email: @local_authority.email)
+    #
+    @subscription = Subscription.new(
+      subscribable: @local_authority,
+      subscribable_id: @local_authority.id,
+      package_id: @package.id,
+      active: false,
+      expires_on: Time.now + 1.year,
+      next_payment_date: Time.now + 1.year,
+      subscribed_on: Time.now
+    )
     if @subscription.save!
-      redirect_to local_authorities_path
+      invoice_url = create_stripe_subscription(@local_authority, @package)
+       # Log the credits purchase
+      @subscription.credit_log << ["#{@local_authority.name.to_s}", "#{@package.name.to_s}", "#{Time.now.to_s}", "#{@package.price.to_s}", "#{invoice_url.to_s}"]
+      @subscription.save!
+      redirect_to invoice_url, status: 303, allow_other_host: true, turbo: false
+      # redirect_to subscription_invoice_path(@subscription), notice: "Subscription created successfully. Please check your invoice for payment instructions."
     else
       render :new, status: :unprocessable_entity
     end
@@ -122,6 +133,36 @@ class SubscriptionsController < ApplicationController
   def subscription_params
     params.require(:subscription).permit( :expires_on, :next_payment_date, :subscribable_id, :package_id,
       :credits_added, :credits_left, :action_type)
+  end
+
+  def create_stripe_subscription(local_authority, package)
+    
+    # Define the subscription items (using the package's Stripe price)
+    subscription_items = [{
+      price: package.stripe_price_id, # Assume `stripe_price_id` is set on the package model
+      quantity: 1
+    }]
+
+   stripe_subscription = Stripe::Subscription.create({
+     customer: local_authority.stripe_customer_id,
+     items: subscription_items,
+     payment_behavior: 'default_incomplete',  # This prevents immediate payment
+     expand: ['latest_invoice.payment_intent'],
+     metadata: {
+       subscribable_id: local_authority.id,
+       subscribable_type: "LocalAuthority",
+       package_id: package.id,
+       name: "#{local_authority.name} - #{package.name}"
+     }
+   })
+     invoice = stripe_subscription.latest_invoice
+     url = invoice.hosted_invoice_url
+     pdf = invoice.invoice_pdf
+     Rails.logger.info "Created Stripe subscription with ID: #{stripe_subscription}"
+
+    # Get the Stripe invoice URL for the subscription
+    return url
+
   end
 
 end
