@@ -60,7 +60,7 @@ class RegistrationsController < Devise::RegistrationsController
       local_authority = LocalAuthority.create!(name: "New Local Authority")  # Example creation
       resource.local_authority_id = local_authority.id
     end
-    if @user.update(no_entity_params)
+    if @user.update(no_entity_params.except(:current_password))
       redirect_to after_signup_path(:add_name)
     else
       render :no_entity, status: :unprocessable_entity
@@ -70,7 +70,7 @@ class RegistrationsController < Devise::RegistrationsController
   private
 
   def no_entity_params
-    params.require(:user).permit(:role, :terms_of_service, :is_service_provider, :la_super_user,:phone_number, :password, :password_confirmation, :email)
+    params.require(:user).permit(:role, :terms_of_service, :is_service_provider, :la_super_user,:phone_number, :password, :password_confirmation, :email, :current_password)
   end
 
   def format_phone_number(number)
