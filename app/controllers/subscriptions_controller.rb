@@ -35,7 +35,7 @@ class SubscriptionsController < ApplicationController
        # Log the credits purchase
       @subscription.credit_log << ["#{@local_authority.name.to_s}", "#{@package.name.to_s}", "#{Time.now.to_s}", "#{invoice_id}", "#{invoice_url.to_s}"]
       @subscription.save!
-      redirect_to invoice_url, status: 303, allow_other_host: true, turbo: false
+      redirect_to packages_path, notice: 'Subscription was successfully updated.'
       # redirect_to subscription_invoice_path(@subscription), notice: "Subscription created successfully. Please check your invoice for payment instructions."
     else
       render :new, status: :unprocessable_entity
@@ -78,7 +78,7 @@ class SubscriptionsController < ApplicationController
 
     if @subscription.save!
       @subscription.check_status
-      redirect_to companies_path, notice: 'Subscription was successfully updated.'
+      redirect_to packages_index_path, notice: 'Subscription was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -110,9 +110,9 @@ class SubscriptionsController < ApplicationController
 
   def set_entity
     if current_user.company.present?
-      @company = Company.find(params[:company_id])
+      @company = current_user.company || Company.find(params[:company_id])
     else
-      @la = current_user.local_authority_id
+      @local_authority = current_user.local_authority || LocalAuthority.find(params[:local_authority_id])
     end
   end
 

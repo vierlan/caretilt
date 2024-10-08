@@ -2,8 +2,6 @@ class TeamMembersController < ApplicationController
 
 
   def index
-
-
     #Pundit Logic for future reference.
 
     #Index in pundit needs a collection of objects for its policy SCOPE. We have no team member model.
@@ -19,31 +17,25 @@ class TeamMembersController < ApplicationController
     if current_user.company
       @company = Company.find(params[:id])
       @all_members = @company.users
-      @verified_members = @all_members.not_added
-      @team_super_user = @all_members.care_provider_super_user
-      @team_users = @all_members.care_provider_user
+      @verified_members = @all_members.verified
       @care_homes = @company.care_homes
-      @unverified_users = @team_users.added
+      @unverified_users = @all_members.inactive
       @unassigned_users = @verified_members.where(care_home_id: nil)
       @name = @company.name
     elsif current_user.local_authority
-      @la = LocalAuthority.find(params[:id])
-      @all_members = @la.users
-      @verified_members = @all_members.not_added
-      @team_super_user = @all_members.la_super_user
-      @team_users = @all_members.la_user
+      @local_authority = LocalAuthority.find(params[:id])
+      @all_members = @local_authority.users
+      @verified_members = @all_members.verified
       @care_homes = CareHome.all
-      @unverified_users = @team_users.added
+      @unverified_users = @all_members.inactive
       @unassigned_users = @verified_members.where(care_home_id: nil)
-      @name = @la.name
-    else
-      @name = 'Caretilt'
+      @name = @local_authority.name
     end
   end
 
   def new
-    @company = Company.find(params[:id])
     @user = User.new
+
   end
 
   def create
@@ -59,14 +51,13 @@ class TeamMembersController < ApplicationController
       @member.role = 'care_provider_user'
       @member.company = @company
     when 'la_super_user'
-      @la = current_user.local_authority
+      @local_authority = current_user.local_authority
       @member.role = 'la_user'
       @member.local_authority = @local_authority
     when 'caretilt_master_user'
       @company = Company.find(1)
       @member.role = 'caretilt_user'
       @member.company = @company
-
     else
       render status: :forbidden
     end
@@ -74,16 +65,19 @@ class TeamMembersController < ApplicationController
     respond_to do |format|
     if @member.save!
       NotifierMailer.new_account(member: @member).deliver_now
-      # format.html { redirect_to team_members_new_path(current_user), notice: 'Team member added successfully. An email has been sent to the new user.' }
       format.turbo_stream { render :create, locals: { member: @member, notice: 'Team member added successfully. An email has been sent to the new user.' } }
-        #format.json { render :show, status: :created, location: @member }
-      # clear the input field
-      # format.js { render js: "document.getElementById('email').value = ''; alert('Team member added successfully. An email has been sent to the new user.');" }
+      format.html {
+        redirect_to current_user.la_super_user? ?
+        team_local_authority_path(@local_authority) :
+        team_company_path(@company),
+        data: {turbo_frame: "main-content"},
+        notice: 'Team member added successfully. An email has been sent to the new user.'
+      }
 
+      #redirect_to current_user.la_super_user? ? team_local_authority_path(@local_authority) : team_company_path(@company), data: {turbo_frame: "main-content"}, notice: 'Team member added successfully. An email has been sent to the new user.'
     else
 
       format.html { render partial: 'form', status: :unprocessable_entity }
-      #format.turbo_stream { render :create, status: :unprocessable_entity, locals: { member: @member } }
       format.json { render json: @member.errors, status: :unprocessable_entity }
       end
     end
@@ -91,50 +85,40 @@ class TeamMembersController < ApplicationController
 
   def verify_member
     @user = User.find(params[:id])
-    @company = @user.company || @user.local_authority
+    @company = @user.company if @user.company
+    @local_authority = @user.local_authority if @user.local_authority
   end
 
   def verify_member_update
     @user = User.find(params[:id])
-    @company = @user.company
+    @company = @user.company if @user.company
+    @local_authority = @user.local_authority if @user.local_authority
 
     # Handle the mark_for_deletion checkbox value as a string
     if params[:user][:mark_for_deletion] == '1'
       flash[:notice] = 'User marked for deletion.'
       @user.destroy
-      redirect_to team_company_path(@company, data: { turbo_frame: "main-content" }), notice: 'User has been deleted.'
+      redirect_to current_user.la_super_user? ?
+        team_local_authority_path(@local_authority) :
+        team_company_path(@company),
+        data: {turbo_frame: "main-content"}, notice: 'User has been deleted.'
     elsif @user.update(user_params.except(:mark_for_deletion))
-      redirect_to team_company_path(@company, data: { turbo_frame: "main-content" }), notice: 'User has been verified.'
+      redirect_to current_user.la_super_user? ?
+        team_local_authority_path(@local_authority) :
+        team_company_path(@company),
+        data: {turbo_frame: "main-content"}, notice: 'User Saved'
     else
       render :verify_member, status: :unprocessable_entity
     end
   end
 
-
-
   private
 
   def user_params
     params.require(:user).permit(
-      :email, :first_name, :last_name, :care_home_id, :status, :role, :phone_number
+      :email, :first_name, :last_name, :care_home_id, :status, :role, :phone_number, :mark_for_deletion
     )
   end
-
-  #def check_registration_pin
-  #  @user = User.find(params[:id])
-  #  @company = Company.find(params[:id])
-  #  @pin = params[:pin]
-  #  case @pin
-  #  when @company.registration_pin
-  #    true
-  #  when nil
-  #    errors.add(:pin, 'Please enter a pin')
-  #  else
-  #    errors.add(:pin, 'Incorrect pin')
-  #  end
-  #end
-
-
 
   def make_user_inactive
     @user = User.find(params[:id])
