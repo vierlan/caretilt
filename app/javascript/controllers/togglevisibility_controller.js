@@ -1,26 +1,17 @@
+// app/javascript/controllers/togglevisibility_controller.js
 import { Controller } from "@hotwired/stimulus"
 
-// Connects to data-controller="togglevisibility"
 export default class extends Controller {
-  connect() {
-    console.log("toggle visibility controller connected")
+  static targets = ["content", "iconOpen", "logo"]
+
+  toggle() {
+    // Toggle visibility for the mobile menu
+    this.contentTarget.classList.toggle("hidden")
+
+    // Hide the logo when menu is open
+    this.logoTarget.classList.toggle("hidden")
+
+    // Toggle visibility for the hamburger icon
+    this.iconOpenTarget.classList.toggle("hidden")
   }
-
-  static targets = ["content", "iconOpen", "iconClosed"];
-
-  toggle(event) {
-    const targetId = event.currentTarget.getAttribute("aria-controls");
-    const content = document.getElementById(targetId);
-
-    content.classList.toggle("hidden");
-
-    const iconOpen = event.currentTarget.querySelector("[data-toggle-target='iconOpen']");
-    const iconClosed = event.currentTarget.querySelector("[data-toggle-target='iconClosed']");
-
-    if (iconOpen && iconClosed) {
-      iconOpen.classList.toggle("hidden");
-      iconClosed.classList.toggle("hidden");
-    }
-  }
-
 }
