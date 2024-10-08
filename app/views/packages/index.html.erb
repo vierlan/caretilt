@@ -13,9 +13,9 @@
       </div>
     <% end %>
   <% end %>
-  <% if current_user&.company&.has_active_subscription? %>
+  <% if current_user&.company&.subscriptions.present? %>
     <%= render 'current_package', locals: { subscription: @active_subscription, package: @active_package} %>
-  <% elsif current_user&.local_authority&.has_active_subscription? %>
+  <% elsif current_user&.local_authority&.subscriptions.present? %>
     <%= render 'current_package', locals: { subscription: @active_subscription, package: @active_package} %>
   <% end %>
   <div class="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 md:max-w-2xl md:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-4">

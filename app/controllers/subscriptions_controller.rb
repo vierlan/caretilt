@@ -4,28 +4,17 @@ class SubscriptionsController < ApplicationController
   # Only caretilt staff can edit and add package types.
   # Only superusers can view subscriptions.
   before_action :set_subscriptions, only: %i[ edit update ]
-  before_action :set_entity, only: %i[new create destroy]
+  before_action :set_entity, only: %i[new create]
   before_action :set_package, only: %i[new create destroy]
-
-  def index
-    @subscriptions = Subscription.all
-    @company_subsriptions = Subscription.where(subscribable_type: 'Company')
-    @active_company_subscriptions = Subscription.where(csubscribable_type: 'Company', active: true)
-    @la_subscriptions = Subscription.where(subscribable_type: 'LocalAuthority')
-    @active_la_subscriptions = Subscription.where(subscribable_type: 'LocalAuthority', active: true)
-  end
 
   def new
     @subscription = Subscription.new
-    @local_authority = current_user.local_authority
-
   end
 
   #  path for initial subscription creation for local authorities only
   def create
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     @package = Package.find(params[:package_id])
-    @local_authority = current_user.local_authority
     # Find the stripe customer on payment processor
     @customer = @local_authority.stripe_customer_id || Stripe::Customer.create(name: @local_authority.name, email: @local_authority.email)
     #
@@ -39,9 +28,12 @@ class SubscriptionsController < ApplicationController
       subscribed_on: Time.now
     )
     if @subscription.save!
-      invoice_url = create_stripe_subscription(@local_authority, @package)
+      invoice_data = create_stripe_subscription(@local_authority, @package)
+      invoice_id = invoice_data.id
+      invoice_url = invoice_data.hosted_invoice_url
+
        # Log the credits purchase
-      @subscription.credit_log << ["#{@local_authority.name.to_s}", "#{@package.name.to_s}", "#{Time.now.to_s}", "#{@package.price.to_s}", "#{invoice_url.to_s}"]
+      @subscription.credit_log << ["#{@local_authority.name.to_s}", "#{@package.name.to_s}", "#{Time.now.to_s}", "#{invoice_id}", "#{invoice_url.to_s}"]
       @subscription.save!
       redirect_to invoice_url, status: 303, allow_other_host: true, turbo: false
       # redirect_to subscription_invoice_path(@subscription), notice: "Subscription created successfully. Please check your invoice for payment instructions."
@@ -60,8 +52,6 @@ class SubscriptionsController < ApplicationController
        @subscription.expires_on = params[:subscription][:expires_on]
         @subscription.next_payment_date = params[:subscription][:next_payment_date]
         @subscription.subscribable_id = params[:subscription][:subscribable_id]
-
-
        action_type = params[:subscription][:action_type]
        package = Package.find_by(id: params[:subscription][:package_id]) # Find the package, or nil if not selected
        credits_added = params[:subscription][:credits_added].to_i
@@ -136,7 +126,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def create_stripe_subscription(local_authority, package)
-    
+
     # Define the subscription items (using the package's Stripe price)
     subscription_items = [{
       price: package.stripe_price_id, # Assume `stripe_price_id` is set on the package model
@@ -158,10 +148,11 @@ class SubscriptionsController < ApplicationController
      invoice = stripe_subscription.latest_invoice
      url = invoice.hosted_invoice_url
      pdf = invoice.invoice_pdf
+     invoice_data = invoice
      Rails.logger.info "Created Stripe subscription with ID: #{stripe_subscription}"
 
     # Get the Stripe invoice URL for the subscription
-    return url
+    return invoice_data
 
   end
 

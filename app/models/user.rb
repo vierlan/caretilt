@@ -9,7 +9,6 @@ class User < ApplicationRecord
   include Signupable
   include Onboardable
 
-
   scope :subscribed, -> { where.not(stripe_subscription_id: [nil, '']) }
 
   enum :role, {

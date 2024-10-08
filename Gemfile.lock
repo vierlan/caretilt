@@ -261,8 +261,6 @@ GEM
     parser (3.3.5.0)
       ast (~> 2.4.1)
       racc
-    pay (7.3.0)
-      rails (>= 6.0.0)
     pg (1.5.6)
     postmark (1.24.1)
       json
@@ -512,7 +510,6 @@ DEPENDENCIES
   mainstreet
   metamagic
   methodz
-  pay
   pg
   postmark-rails
   pretender

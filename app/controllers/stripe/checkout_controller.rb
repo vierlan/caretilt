@@ -75,32 +75,39 @@ class Stripe::CheckoutController < ApplicationController
 
   def success
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
-    #retrives a json object of the purchase session
 
+    # Retrieve the Stripe session
     @stripe_session = Stripe::Checkout::Session.retrieve(params[:session_id])
     line_items = Stripe::Checkout::Session.list_line_items(@stripe_session.id)
+
+    # Iterate through line items to find the associated package
     line_items.each do |item|
       @package = Package.find_by(stripe_id: item.price.product)
 
+      # Only proceed if the payment status is 'paid'
       if @stripe_session.payment_status == 'paid'
-        # Check if the company has an active subscription and add credits to the existing subscription
-        if current_user&.company&.has_active_subscription?
-          @subscription = Subscription.find_by(company_id: current_user.company.id, active: true)
+        subscribable_entity = current_user&.company || current_user&.local_authority
+
+        # Check if the user has an active subscription and add credits to the existing subscription
+        @subscription = Subscription.find_by(subscribable: subscribable_entity, active: true)
+
+        if @subscription.present?
           @subscription.credits_left += @package.credits
-        # if not Create a new subscription instance
         else
-        @subscription = Subscription.new
-        @subscription.subscribable_type = current_user.company.class.name || current_user.local_authority.class.name
-        @subscription.subscribable = current_user.company || current_user.local_authority
-        @subscription.package = @package
-        @subscription.receipt_number = @stripe_session.subscription
-        @subscription.expires_on = Time.now + @package.validity.months # Assuming validity is in months
-        @subscription.credits_left = @package.credits
-        @subscription.active = true
-        @subscription.subscribed_on = Time.now
+          # Create a new subscription if none exists
+          @subscription = Subscription.new(
+            subscribable: subscribable_entity,
+            package: @package,
+            receipt_number: @stripe_session.subscription,
+            expires_on: Time.now + @package.validity.months, # Assuming validity is in months
+            credits_left: @package.credits,
+            active: true,
+            subscribed_on: Time.now
+          )
         end
+
         # Log the credits purchase
-        @subscription.credit_log <<  ["Purchase:", "#{@package.name}", "#{Time.now}", "added #{@package.credits} credits", "#{@subscription.credits_left}"]
+        @subscription.credit_log << ["Purchase:", "#{@package.name}", "#{Time.now}", "added #{@package.credits} credits", "#{@subscription.credits_left}"]
 
         # Save the subscription
         @subscription.save!
@@ -108,8 +115,10 @@ class Stripe::CheckoutController < ApplicationController
         redirect_to subscribe_index_path, alert: "Please subscribe to continue."
       end
     end
+
     redirect_to dashboard_index_path, notice: 'Subscription successful.'
   end
+
 
   def cancel
     redirect_to subscribe_index_path, alert: "Subscription canceled."

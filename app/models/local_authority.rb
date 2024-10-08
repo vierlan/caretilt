@@ -4,27 +4,14 @@ class LocalAuthority < ApplicationRecord
   has_many :packages, through: :subscriptions
 
   include Billable
-  pay_customer stripe_attributes: :stripe_attributes
 
   def has_active_subscription?
-    subscriptions.where(status: 'active').exists?
+    subscriptions.where(active: true).exists?
   end
 
   def get_active_subscription
-    subscriptions.where(status: 'active').first
+    subscriptions.where(active: true).last
   end
-  private
 
-  def stripe_attributes(pay_customer)
-    {
-      name: name,
-      email: email,
-      metadata: {
-        pay_customer_id: pay_customer.id,
-        local_authority_id: id,
-        name: name
 
-    }
-  }
-  end
 end
