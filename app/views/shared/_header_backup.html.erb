@@ -1,8 +1,6 @@
-<%# data-navigation-class-value is this custom class applied for active state. %>
 <header class="bg-white drop-shadow-md">
   <nav class="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8" aria-label="Global"
     data-controller="navigation togglevisibility" data-navigation-class-value="underline">
-
 
     <div class="flex lg:flex-1">
       <%= link_to root_path, class: "-m-1.5 p-1.5" do %>
@@ -26,7 +24,7 @@
     <div class="hidden lg:flex flex-start lg:gap-x-12">
       <%= link_to "Home", root_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
       <%= link_to "About", about_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
-      <%= link_to "Free Calculator", pricing_calculator_path(:service_details), class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
+      <%= link_to "Free Calculator", calculator_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
       <%= link_to "Pricing", pricing_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
       <%= link_to "Guides", guides_path, class: "header-link", data: { navigation_target: "link", action: "click->navigation#highlightButton" } %>
 

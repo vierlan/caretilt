@@ -1,0 +1,14 @@
+<!-- app/views/calculator/_calculator_layout.html.erb -->
+<div class="calculator-base bg-gray-100 p-8 rounded-lg shadow-lg w-full max-w-md mx-auto">
+  <h1 class="text-2xl font-bold text-center mb-6">Pricing Calculator</h1>
+  <%= yield %> <!-- This will render the step content here -->
+</div>
+
+<!-- Add Tailwind CSS styles for fixed dimensions in your application CSS or as inline styles -->
+<style>
+  .calculator-base {
+    height: 500px;
+    width: 100%;
+    max-width: 600px;
+  }
+</style>
