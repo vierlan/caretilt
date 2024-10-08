@@ -1,0 +1,14 @@
+<%= render layout: 'pricing_calculator/calculator_layout' do %>
+  <h2 class="text-xl font-bold mb-4">Summary</h2>
+
+  <p>Core Cost per Service User (Day): £<%= @core_cost_per_user_day %></p>
+  <p>Weekly Management Cost per User: £<%= @weekly_management_cost_per_user %></p>
+  <p>Total Service User Cost per Week: £<%= @total_cost_per_user_per_week %></p>
+
+  <%= simple_form_for :calculator, url: wizard_path, method: :patch do |f| %>
+    <div class="mb-4">
+      <%= f.input :email, label: "Enter your email to receive this calculation", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+    </div>
+    <%= f.button :submit, "Send Results", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
+  <% end %>
+<% end %>

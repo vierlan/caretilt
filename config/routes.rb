@@ -97,8 +97,11 @@ Rails.application.routes.draw do
   get "contact", to: "contact_mailer#new", as: :contact
   post "contact", to: "contact_mailer#create", as: :contact_email
 
+  resources :pricing_calculator, only: [:show, :update]
+
+
   pages = %w[
-    privacy terms about home home2 home3 home4 guides calculator faq pricing search quiz test test2
+    privacy terms about home home2 home3 home4 guides faq pricing search
   ]
   pages.each do |page|
     get "/#{page}", to: "pages##{page}", as: page.gsub('-', '_').to_s

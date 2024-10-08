@@ -1,0 +1,14 @@
+<%= render layout: 'pricing_calculator/calculator_layout' do %>
+  <%= simple_form_for :calculator, url: wizard_path, method: :patch do |f| %>
+    <div class="mb-4">
+      <%= f.input :core_staff_day_rate, label: "Day Hourly Rate", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+    </div>
+    <div class="mb-4">
+      <%= f.input :day_hours, label: "Day Hours", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+    </div>
+    <div class="mb-4">
+      <%= f.input :staff_day, label: "Number of Day Staff", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+    </div>
+    <%= f.button :submit, "Next", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
+  <% end %>
+<% end %>
