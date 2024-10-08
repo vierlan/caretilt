@@ -31,6 +31,11 @@
     @apply text-base font-semibold leading-6 text-gray-900 hover:text-primary;
 }
 
+.header-link-active{
+    @apply header-link
+    @apply text-primary
+}
+
 /* footer */
 
 .footer-link {

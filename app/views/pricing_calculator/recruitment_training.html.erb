@@ -1,0 +1,11 @@
+<%= render layout: 'pricing_calculator/calculator_layout' do %>
+  <%= simple_form_for :calculator, url: wizard_path, method: :patch do |f| %>
+    <div class="mb-4">
+      <%= f.input :recruitment_training_budget, label: "Annual Recruitment & Training Budget", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+    </div>
+    <div class="mb-4">
+      <%= f.input :staff_apportionment_percent, label: "Staff Apportionment to Service (%)", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+    </div>
+    <%= f.button :submit, "Next", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
+  <% end %>
+<% end %>

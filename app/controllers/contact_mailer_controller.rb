@@ -1,4 +1,7 @@
 class ContactMailerController < ApplicationController
+
+  skip_before_action :authenticate_user!
+  
   def new
     authorize :contact_mailer, :new?
   end
