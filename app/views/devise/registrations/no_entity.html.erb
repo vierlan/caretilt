@@ -1,0 +1,79 @@
+<div class="min-h-screen flex justify-center py-12 px-8 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full">
+    <%= render 'devise/shared/devise_heading', title: 'Register' %>
+    <%= render "devise/shared/devise_sub_heading", subtitle: "Create your account." %>
+    <%= form_for(resource, as: resource_name, url: update_no_entity_path(resource), html: { method: :put }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+      <h2>Please continue your registration</h2>
+      <div class="mb-2">
+        <% prefilled_email = params[:email].present? ? params[:email] : resource.email %>
+        <input aria-label="Email address" name="user[email]" id="user_email" type="email" required value="<%= prefilled_email %>" class="my-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring focus:ring-primary-500 focus:ring-opacity-50" placeholder="Email address" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Please enter a valid email address." />
+      </div>
+      <div class="mb-2">
+        <input aria-label="Phone number" name="user[phone_number]" id="user_phone_number" type="tel" class="my-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring focus:ring-primary-500 focus:ring-opacity-50" placeholder="Phone number" value="<%= resource.phone_number %>" required />
+      </div>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <input aria-label="Remember me" type="checkbox" name="user[terms_of_service]" id="user_terms_of_service" class="h-8 w-8 my-2 text-primary-600 focus:ring-primary-500 border-gray-300 rounded" required />
+          <label for="user_terms_of_service" class="ml-2 block text-sm font-semibold text-gray-900">
+            I agree to the <%= link_to 'Terms of Service', '#' %>
+          </label>
+        </div>
+      </div>
+      <div class="flex items-center">
+        <input aria-label="role" type="radio" name="user[role]" id="user_is_service_provider" value="care_provider_super_user" class="h-8 w-8 my-2 text-primary-600 focus:ring-primary-500 border-gray-300 rounded" <%= 'checked' if resource.role == 'care_provider_super_user' %> />
+        <label for="user_is_service_provider" class="ml-2 block text-sm text-gray-900">
+          <b>I provide services</b> (e.g. care homes, supported living, semi-independent services)
+        </label>
+      </div>
+      <div class="flex items-center">
+        <input aria-label="role" type="radio" name="user[role]" id="user_is_local_authority" value="la_super_user" class="h-8 w-8 my-2 text-primary-600 focus:ring-primary-500 border-gray-300 rounded" <%= 'checked' if resource.role == 'la_super_user' %> />
+        <label for="user_is_local_authority" class="ml-2 block text-sm text-gray-900">
+          <b>I am looking for services</b> (e.g. local authority, health authority, independent brokerage)
+        </label>
+      </div>
+      <div id="role-selection-error" class="text-red-500 text-sm hidden">
+        Please select either 'I provide services' or 'I am looking for services'.
+      </div>
+      <!-- current password field -->
+      <div class="mb-2">
+        <input aria-label="Current password" name="user[current_password]" id="user_current_password" type="password" value="current_password" class="my-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring focus:ring-primary-500 focus:ring-opacity-50" placeholder="Current password" required />
+      </div>
+      <div class="mt-6">
+        <button type="submit" data-turbo="false" class="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white hover:shadow-slate-500 hover:shadow-lg focus:outline-none bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg">
+          Continue registration
+        </button>
+      </div>
+    <% end %>
+    <div class="mt-6 text-center text-gray-400">
+    <div class="mb-2">
+      Fogot your password?
+
+        <%= link_to 'Reset password', new_user_password_path, class: 'font-medium text-gray text-gray-500 hover:text-gray-600 focus:outline-none focus:underline transition ease-in-out duration-150' %>
+
+      </div>
+      <div class="mb-2">
+        Wrong Account?
+        <%= link_to 'Log in', new_user_session_path, class: 'font-medium text-gray text-gray-500 hover:text-gray-600 focus:outline-none focus:underline transition ease-in-out duration-150' %>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add the JavaScript validation script -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const form = document.querySelector('form');
+    const serviceProviderRadio = document.getElementById('user_is_service_provider');
+    const localAuthorityRadio = document.getElementById('user_is_local_authority');
+    const errorMessage = document.getElementById('role-selection-error');
+
+    form.addEventListener('submit', function(event) {
+      if (!serviceProviderRadio.checked && !localAuthorityRadio.checked) {
+        event.preventDefault();
+        errorMessage.classList.remove('hidden');
+      } else {
+        errorMessage.classList.add('hidden');
+      }
+    });
+  });
+</script>

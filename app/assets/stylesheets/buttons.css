@@ -27,6 +27,3 @@
 
   }
 
-.button-round-clear {
-  @apply text-black font-bold py-2 px-6 rounded-full bg-transparent border-2 border-black hover:bg-white hover:text-primary 
-}
