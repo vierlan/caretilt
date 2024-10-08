@@ -50,8 +50,11 @@ class AfterSignupController < ApplicationController
 
   def after_sign_in_path_for(resource)
     if resource.verified?
+      Rails.logger.debug "after_sign_in_path_for(resource)
+    if resource.verified?"
       super
     else
+      Rails.logger.debug "User not verified, redirecting to verification page"
       user_verify_path
     end
   end
@@ -59,6 +62,8 @@ class AfterSignupController < ApplicationController
   private
 
   def finish_wizard_path
+    Rails.logger.debug "Finish Wizard Path: #{dashboard_index_path(current_user)}"
+
     dashboard_index_path(current_user)
   end
 
@@ -69,7 +74,7 @@ class AfterSignupController < ApplicationController
     when :add_company
       params.require(:company).permit(:name, :type, :companies_house_id, :phone_number, :contact_name, :email, :address1, :address2, :city, :postcode, :companies_house_id)
     when :add_local_authority
-      params.require(:local_authority).permit(:name)
+      params.require(:local_authority).permit(:name, :email)
     end
   end
 end

@@ -4,36 +4,39 @@ class SubscriptionsController < ApplicationController
   # Only caretilt staff can edit and add package types.
   # Only superusers can view subscriptions.
   before_action :set_subscriptions, only: %i[ edit update ]
-  before_action :set_entity, only: %i[new create destroy]
+  before_action :set_entity, only: %i[new create]
   before_action :set_package, only: %i[new create destroy]
-
-  def index
-    @subscriptions = Subscription.all
-    @company_subsriptions = Subscription.where(subscribable_type: 'Company')
-    @active_company_subscriptions = Subscription.where(csubscribable_type: 'Company', active: true)
-    @la_subscriptions = Subscription.where(subscribable_type: 'LocalAuthority')
-    @active_la_subscriptions = Subscription.where(subscribable_type: 'LocalAuthority', active: true)
-  end
 
   def new
     @subscription = Subscription.new
-    @local_authority = current_user.local_authority
-
   end
 
   #  path for initial subscription creation for local authorities only
   def create
-    @local_authority = current_user.local_authority
-    @subscription = Subscription.new
-    @subscription.subscribable_id = @local_authority.id
-    @subscription.subscribable_type = "LocalAuthority"
-    @subscription.package_id = @package.id
-    @subscription.active = false
-    @subscription.expires_on = Time.now + 1.year
-    @subscription.next_payment_date = Time.now + 1.year
-    @subscription.subscribed_on = Time.now
+    Stripe.api_key = Rails.application.credentials&.stripe&.api_key
+    @package = Package.find(params[:package_id])
+    # Find the stripe customer on payment processor
+    @customer = @local_authority.stripe_customer_id || Stripe::Customer.create(name: @local_authority.name, email: @local_authority.email)
+    #
+    @subscription = Subscription.new(
+      subscribable: @local_authority,
+      subscribable_id: @local_authority.id,
+      package_id: @package.id,
+      active: false,
+      expires_on: Time.now + 1.year,
+      next_payment_date: Time.now + 1.year,
+      subscribed_on: Time.now
+    )
     if @subscription.save!
-      redirect_to local_authorities_path
+      invoice_data = create_stripe_subscription(@local_authority, @package)
+      invoice_id = invoice_data.id
+      invoice_url = invoice_data.hosted_invoice_url
+
+       # Log the credits purchase
+      @subscription.credit_log << ["#{@local_authority.name.to_s}", "#{@package.name.to_s}", "#{Time.now.to_s}", "#{invoice_id}", "#{invoice_url.to_s}"]
+      @subscription.save!
+      redirect_to packages_path, notice: 'Subscription was successfully updated.'
+      # redirect_to subscription_invoice_path(@subscription), notice: "Subscription created successfully. Please check your invoice for payment instructions."
     else
       render :new, status: :unprocessable_entity
     end
@@ -49,8 +52,6 @@ class SubscriptionsController < ApplicationController
        @subscription.expires_on = params[:subscription][:expires_on]
         @subscription.next_payment_date = params[:subscription][:next_payment_date]
         @subscription.subscribable_id = params[:subscription][:subscribable_id]
-
-
        action_type = params[:subscription][:action_type]
        package = Package.find_by(id: params[:subscription][:package_id]) # Find the package, or nil if not selected
        credits_added = params[:subscription][:credits_added].to_i
@@ -77,7 +78,7 @@ class SubscriptionsController < ApplicationController
 
     if @subscription.save!
       @subscription.check_status
-      redirect_to companies_path, notice: 'Subscription was successfully updated.'
+      redirect_to packages_index_path, notice: 'Subscription was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -109,9 +110,9 @@ class SubscriptionsController < ApplicationController
 
   def set_entity
     if current_user.company.present?
-      @company = Company.find(params[:company_id])
+      @company = current_user.company || Company.find(params[:company_id])
     else
-      @la = current_user.local_authority_id
+      @local_authority = current_user.local_authority || LocalAuthority.find(params[:local_authority_id])
     end
   end
 
@@ -122,6 +123,37 @@ class SubscriptionsController < ApplicationController
   def subscription_params
     params.require(:subscription).permit( :expires_on, :next_payment_date, :subscribable_id, :package_id,
       :credits_added, :credits_left, :action_type)
+  end
+
+  def create_stripe_subscription(local_authority, package)
+
+    # Define the subscription items (using the package's Stripe price)
+    subscription_items = [{
+      price: package.stripe_price_id, # Assume `stripe_price_id` is set on the package model
+      quantity: 1
+    }]
+
+   stripe_subscription = Stripe::Subscription.create({
+     customer: local_authority.stripe_customer_id,
+     items: subscription_items,
+     payment_behavior: 'default_incomplete',  # This prevents immediate payment
+     expand: ['latest_invoice.payment_intent'],
+     metadata: {
+       subscribable_id: local_authority.id,
+       subscribable_type: "LocalAuthority",
+       package_id: package.id,
+       name: "#{local_authority.name} - #{package.name}"
+     }
+   })
+     invoice = stripe_subscription.latest_invoice
+     url = invoice.hosted_invoice_url
+     pdf = invoice.invoice_pdf
+     invoice_data = invoice
+     Rails.logger.info "Created Stripe subscription with ID: #{stripe_subscription}"
+
+    # Get the Stripe invoice URL for the subscription
+    return invoice_data
+
   end
 
 end

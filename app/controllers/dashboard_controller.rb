@@ -15,7 +15,7 @@ class DashboardController < ApplicationController
       @credit_logs = @company.get_active_subscription&.credit_log
       @activity_feeds.sort_by! { |log| log[2] }.reverse!
     elsif @user.local_authority
-      @la = @user.local_authority
+      @local_authority = @user.local_authority
       # @care_homes = CareHome.all  # make some logice here which will select care_homes in region/local authority
       # @care_homes = policy_scope(CareHome)
       @bookings = BookingEnquiry.where(user: @user).sort_by(&:created_at).reverse

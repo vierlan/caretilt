@@ -26,3 +26,7 @@
     @apply text-white font-bold py-2 px-6 rounded-xl mt-4 bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg
 
   }
+
+.button-round-clear {
+  @apply text-black font-bold py-2 px-6 rounded-full bg-transparent border-2 border-black hover:bg-white hover:text-primary 
+}

@@ -1,5 +1,5 @@
 <turbo-frame id="new_team_member">
-  <%= form_with url: add_team_member_company_path(@company), method: :post, local: true do |form| %>
+  <%= form_with url: <%= current_user.la_super_user? ? add_team_member_local_authority_path(@local_authority) : add_team_member_company_path(@company) %>%, method: :post, local: true do |form| %>
     <div>
       <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
       <div class="mt-2">
