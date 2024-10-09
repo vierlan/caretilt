@@ -1,17 +1,46 @@
+<!-- app/views/pricing_calculator/hourly_rate.html.erb -->
 <%= render layout: 'pricing_calculator/calculator_layout' do %>
-  <%= simple_form_for :calculator, url: wizard_path, method: :patch do |f| %>
+  <%= simple_form_for :calculator, url: wizard_path, method: :patch, html: { data: { controller: "calculator" } } do |f| %>
+    
+    <!-- Living Wage plus oncosts -->
     <div class="mb-4">
-      <%= f.input :core_staff_night_rate, label: "Night Hourly Rate", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+      <%= f.label :core_staff_night_rate, "Living Wage plus oncosts (NI, Tax, Pension) (£)" %>
+      <%= f.number_field :core_staff_night_rate, min: 0, step: 0.01, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateNightCosts", calculator_target: "nightRate" } %>
     </div>
+
+    <!-- Number of waking night hours -->
     <div class="mb-4">
-      <%= f.input :night_hours, label: "Night Hours", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+      <%= f.label :night_hours, "Number of waking night hours in a day covered by staff" %>
+      <%= f.number_field :night_hours, min: 0, max: 24, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateNightCosts", calculator_target: "nightHours" } %>
     </div>
+
+    <!-- Number of waking night staff -->
     <div class="mb-4">
-      <%= f.input :staff_night, label: "Number of Night Staff", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+      <%= f.label :staff_night, "Number of waking night staff excluding managers who provide frontline care /support to the people in the unit" %>
+      <%= f.number_field :staff_night, min: 0, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateNightCosts", calculator_target: "staffNight" } %>
     </div>
+
+    <!-- Daily charge for a sleep-in -->
     <div class="mb-4">
-      <%= f.input :sleep_in_rate, label: "Sleep-In Rate", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+      <%= f.label :sleep_in_rate, "Daily charge for a sleep in (£)" %>
+      <%= f.number_field :sleep_in_rate, min: 0, step: 0.01, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateNightCosts", calculator_target: "sleepInRate" } %>
     </div>
+
+    <!-- Total Beds Flats Target (hidden field) -->
+    <%= hidden_field_tag :total_beds_flats, 10, data: { calculator_target: "totalBedsFlats" } %>
+
+    <!-- Core Cost per Service User (£) for Night Staffing -->
+    <div class="mb-4">
+      <%= f.label :core_cost_night, "Core Cost per Service User for Night Staffing (£)" %>
+      <%= f.number_field :core_cost_night, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "coreCostNight" } %>
+    </div>
+
+    <!-- Total Number of Hours per Service User for Night Staffing -->
+    <div class="mb-4">
+      <%= f.label :total_hours_night, "Total Number of Hours per Service User for Night Staffing" %>
+      <%= f.number_field :total_hours_night, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "totalHoursNight" } %>
+    </div>
+
     <%= f.button :submit, "Next", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
   <% end %>
 <% end %>

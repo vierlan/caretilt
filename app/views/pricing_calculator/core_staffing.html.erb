@@ -1,14 +1,40 @@
+<!-- app/views/pricing_calculator/core_staffing.html.erb -->
 <%= render layout: 'pricing_calculator/calculator_layout' do %>
-  <%= simple_form_for :calculator, url: wizard_path, method: :patch do |f| %>
+  <%= simple_form_for :calculator, url: wizard_path, method: :patch, html: { data: { controller: "calculator" } } do |f| %>
+    
+    <!-- Day Hourly Rate -->
     <div class="mb-4">
-      <%= f.input :core_staff_day_rate, label: "Day Hourly Rate", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+      <%= f.label :core_staff_day_rate, "Day Hourly Rate (£)" %>
+      <%= f.number_field :core_staff_day_rate, min: 0, step: 0.01, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateCosts", calculator_target: "hourlyRate" } %>
     </div>
+
+    <!-- Day Hours -->
     <div class="mb-4">
-      <%= f.input :day_hours, label: "Day Hours", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+      <%= f.label :day_hours, "Day Hours" %>
+      <%= f.number_field :day_hours, min: 0, max: 24, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateCosts", calculator_target: "dayHours" } %>
     </div>
+
+    <!-- Number of Day Staff -->
     <div class="mb-4">
-      <%= f.input :staff_day, label: "Number of Day Staff", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+      <%= f.label :staff_day, "Number of Day Staff" %>
+      <%= f.number_field :staff_day, min: 0, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateCosts", calculator_target: "staffCount" } %>
     </div>
+
+    <!-- Total Beds/Flats (Total Beds Flats Target) -->
+    <%= hidden_field_tag :total_beds_flats, 10, data: { calculator_target: "totalBedsFlats" } %> 
+
+    <!-- Core Cost per Service User (£) -->
+    <div class="mb-4">
+      <%= f.label :core_cost_per_user, "Core Cost per Service User (£)" %>
+      <%= f.number_field :core_cost_per_user, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "coreCost" } %>
+    </div>
+
+    <!-- Total Number of Hours per Service User -->
+    <div class="mb-4">
+      <%= f.label :total_hours_per_user, "Total Number of Hours per Service User" %>
+      <%= f.number_field :total_hours_per_user, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "totalHours" } %>
+    </div>
+
     <%= f.button :submit, "Next", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
   <% end %>
 <% end %>
