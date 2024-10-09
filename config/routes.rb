@@ -2,10 +2,6 @@ Rails.application.routes.draw do
   root 'pages#home'
 
   devise_for :users, path: '', path_names: { sign_in: 'login', sign_up: 'signup' }, controllers: { registrations: 'registrations' }
-  devise_scope :user do
-    get '/no_entity/:id', to: 'registrations#no_entity', as: 'no_entity'
-    put '/no_entity/:id', to: 'registrations#update_no_entity', as: 'update_no_entity'
-  end
   get 'logout', to: 'pages#logout', as: 'logout'
   resources :after_signup, only: %i[show update]
 

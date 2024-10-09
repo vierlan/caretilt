@@ -3,8 +3,8 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   # uncomment to allow extra User model params during registration (beyond email/password)
   before_action :configure_permitted_parameters, if: :devise_controller?
-  #before_action :user_for_paper_trail
-  #after_action :user_for_paper_trail
+  before_action :user_for_paper_trail
+  after_action :user_for_paper_trail
   # Pundit: allow-list approach
   # after_action :verify_authorized, except: :index, unless: :skip_pundit?
   # after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
@@ -37,9 +37,6 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     # Finish resgistration if user hasn't completed it
-    unless resource.company.present? || resource.local_authority.present?
-      no_entity_path(resource)
-    end
     if !session[:two_factor_authenticated]
       # If user hasn't passed 2FA, redirect to OTP verification page
       return two_factor_authentication_path
