@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   root 'pages#home'
 
+  devise_for :users, path: '', path_names: { sign_in: 'login', sign_up: 'signup' }, controllers: { registrations: 'registrations' }
+  get 'logout', to: 'pages#logout', as: 'logout'
+  resources :after_signup, only: %i[show update]
+
   #debug session route
   #get '/session', to: 'activity_feeds#index'
   get 'verify/:id', to: 'users#verify', as: 'verify'
@@ -75,14 +79,9 @@ Rails.application.routes.draw do
   post 'two_factor_authentication/send_verification', to: 'users/two_factor_authentication#send_verification', as: :send_otp
   post 'two_factor_authentication/verify_otp', to: 'users/two_factor_authentication#verify_otp', as: :verify_otp
 
-
-  devise_for :users, path: '', path_names: { sign_in: 'login', sign_up: 'signup' }, controllers: { registrations: 'registrations' }
-  get 'logout', to: 'pages#logout', as: 'logout'
-  resources :after_signup, only: %i[show update]
-
   resources :subscribe, only: [:index]
   resources :dashboard, only: %i[index team new_team_member]
-  resources :account, only: %i[index] 
+  resources :account, only: %i[index]
   resources :billing_portal_sessions, only: [:new, :create]
   resources :blog_posts, controller: :blog_posts, path: "blog", param: :slug
 

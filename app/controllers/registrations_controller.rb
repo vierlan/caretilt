@@ -3,25 +3,25 @@ class RegistrationsController < Devise::RegistrationsController
 
   def create
     super do |resource|
-      # LOGIC NOT NEEDED:  CONFIRM LAN AHN
+    # LOGIC NOT NEEDED:  CONFIRM LAN AHN
 
-     #if @user.persisted?
-     #  send_verification_code(@user.phone_number)
-     #end
-      # Assign the role based on checkbox selection
-      if params[:user][:is_service_provider] == "1"
-        resource.role = "care_provider_super_user"
-        resource.status = "verified"
-        company = Company.create!(name: "New Company")  # Example creation
-        resource.company_id = company.id  # Placeholder, assign actual company_id after creation
-      elsif params[:user][:la_super_user] == "1"
-        resource.role = "la_super_user"
-        resource.status = "verified"
-        local_authority = LocalAuthority.create!(name: "New Local Authority")  # Example creation
-        resource.local_authority_id = local_authority.id
-      end
+    #if resource.persisted?
+    #  send_verification_code(resource.phone_number)
+    #end
+    # Assign the role based on checkbox selection
+    if params[:user] && params[:user][:is_service_provider] == "1"
+      resource.role = "care_provider_super_user"
+      resource.status = "verified"
+      company = Company.create!(name: "New Company")  # Example creation
+      resource.company_id = company.id  # Placeholder, assign actual company_id after creation
+    elsif params[:user] && params[:user][:la_super_user] == "1"
+      resource.role = "la_super_user"
+      resource.status = "verified"
+      local_authority = LocalAuthority.create!(name: "New Local Authority")  # Example creation
+      resource.local_authority_id = local_authority.id
+    end
 
-      resource.save!  # Ensure user is saved with the updated fields
+    resource.save!  # Ensure user is saved with the updated fields
     end
   end
 
@@ -36,6 +36,8 @@ class RegistrationsController < Devise::RegistrationsController
                  .verifications
                  .create(to: phone_number, channel: 'sms')
   end
+
+  private
 
   def format_phone_number(number)
     # Ensure the phone number is in E.164 format

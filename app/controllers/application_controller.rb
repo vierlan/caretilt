@@ -14,10 +14,6 @@ class ApplicationController < ActionController::Base
     Rails.logger.info "User has passed 2FA. #{session["warden.user.user.key"]}"
   end
 
-
-
-
-
   def skip_pundit?
     Rails.logger.info "Checking if Devise Controller: #{devise_controller?}"
     devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)|(^users\/two_factor_authentication$)/ || params[:controller] =~ /(^contact_mailer$)/
@@ -40,22 +36,22 @@ class ApplicationController < ActionController::Base
 
 
   def after_sign_in_path_for(resource)
+    # Finish resgistration if user hasn't completed it
     if !session[:two_factor_authenticated]
       # If user hasn't passed 2FA, redirect to OTP verification page
       return two_factor_authentication_path
     else
-      Rails.logger.info "User has passed 2FA. #{session["warden.user.user.key"]}"
-    end
-
+      Rails.logger.info "User has passed 2FA. #{session['warden.user.user.key']}"
     # Proceed with Devise's default behavior once 2FA is verified
+    end
     super
+
   end
 
   # New method to check 2FA verification
   def check_two_factor_authentication
     # Skip if user is already on the 2FA page to avoid infinite loop
     return if request.path == two_factor_authentication_path
-    Rails.logger.info "Running 2FA check: #{current_user&.verified?}, session[:two_factor_authenticated]: #{session[:two_factor_authenticated]}"
 
     # Skip if the user has passed 2FA or is not logged in
     return unless current_user && !session[:two_factor_authenticated]

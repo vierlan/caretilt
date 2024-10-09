@@ -1,26 +1,23 @@
+
 .text-page-heading{
-    @apply mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl;
-    @apply text-primary;
+    @apply mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl text-primary
 }
 
 .text-page-subheading{
-    @apply mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl;
-    @apply text-primary;
+    @apply mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl text-primary
 }
-  
-  
+
+
 .text-description {
-    @apply text-lg;
-    @apply text-gray-700;
+    @apply text-lg text-gray-700
 }
 
 .text-description-small{
-    @apply text-base leading-7;
-    @apply text-gray-700;
+    @apply text-base leading-7 text-gray-700
 }
 
 .text-card-heading{
-    @apply text-xl font-semibold leading-6 text-gray-900 group-hover:text-primary;
+    @apply text-xl font-semibold leading-6 text-gray-900 group-hover:text-primary
 }
 
 
@@ -28,20 +25,19 @@
 /* header */
 
 .header-link {
-    @apply text-base font-semibold leading-6 text-gray-900 hover:text-primary;
+    @apply text-base font-semibold leading-6 text-gray-900 hover:text-primary
 }
 
 .header-link-active{
-    @apply header-link
-    @apply text-primary
+    @apply header-link text-primary
 }
 
 /* footer */
 
 .footer-link {
-    @apply text-lg leading-6 text-gray-600 hover:text-secondary;
-} 
+    @apply text-lg leading-6 text-gray-600 hover:text-secondary
+}
 
 .dev-class-tailwind2{
-    @apply text-orange-600;
+    @apply text-orange-600
 }
