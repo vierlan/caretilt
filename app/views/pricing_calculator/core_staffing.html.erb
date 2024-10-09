@@ -20,12 +20,15 @@
         <%= f.label :staff_day, "Number of Day Staff" %>
         <%= f.number_field :staff_day, min: 0, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateCosts", calculator_target: "staffCount" } %>
       </div>
-      <div >
-      <input type="hidden" data-controller="calculator" data-calculator-total-beds-and-flats-value=<%=session['calculator_data']['total_beds_flats'].to_i %>>
+      <div class="hidden" <%@flats=session['calculator_data']['total_beds_flats'] %>>
+
 
 
       <!-- Total Beds/Flats (Total Beds Flats Target) -->
-      <%#= hidden_field_tag :total_beds_flats, @flats, data: { calculator_target: "totalBedsFlats", calculator_total_beds_flats_value: @flats } %>
+      <div class="mb-4">
+        <%= f.label :total_beds_flats, "Total Beds/Flats" %>
+        <%= f.number_field :total_beds_flats, value: @flats, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateCosts", calculator_target: "totalBedsFlats" } %>
+      </div>
     </div>
     <!-- Core Cost per Service User (£) -->
     <div class="mb-4">

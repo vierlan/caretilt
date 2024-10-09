@@ -3,7 +3,6 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static values = { totalBedsAndFlats: Number };
   static targets = [
     // Targets for the Total Beds/Flats calculation in service_details
     "totalBedsFlats", "numberOfUnits", "numberOfVacancies",
@@ -24,38 +23,26 @@ export default class extends Controller {
     "additionalHourlyRate", "oneOnOneHours", "twoOnOneHours", "totalAdditionalCost", "totalServiceUserCost"
   ];
 
-  connect() {
-    // Update the total beds/flats calculation when the page loads
-    console.log("Total Beds/Flats:", this.totalBedsAndFlatsValue);
-    console.log("Connected to the calculator controller");
-  }
-
   // Total Beds/Flats calculation
   updateTotal() {
     const numberOfUnits = parseInt(this.numberOfUnitsTarget.value) || 0;
     const numberOfVacancies = parseInt(this.numberOfVacanciesTarget.value) || 0;
-
     this.totalBedsFlatsTarget.value = numberOfUnits + numberOfVacancies;
-
-    console.log("this.totalBedsFlatsTarget.value", this.totalBedsFlatsTarget.value);
-    console.log("this.totalBedsFlats", this.totalBedsAndFlats);
-    console.log("Updated Total Beds/Flats:", this.totalBedsFlatsTarget);
-    console.log("Value Total Beds/Flats:", this.totalBedsAndFlatsValue);
-
+    console.log("Updated Total Beds/Flats:", this.totalBedsFlatsTarget.value);
   }
 
   // Day staffing cost calculations in core_staffing
-  updateCosts(i) {
+  updateCosts() {
     const hourlyRate = parseFloat(this.hourlyRateTarget.value) || 0;
     const dayHours = parseFloat(this.dayHoursTarget.value) || 0;
     const staffCount = parseInt(this.staffCountTarget.value) || 0;
     // Error coming from here?
-    const totalBedsFlats = this.totalBedsAndFlats; // Retrieve the stored value or default to 4
+    const totalBedsFlats = parseInt(this.totalBedsFlatsTarget.value);
 
     console.log("Hourly Rate:", hourlyRate);
     console.log("Day Hours:", dayHours);
     console.log("Staff Count:", staffCount);
-    console.log("Total Beds/Flats:", this.totalBedsFlatsTargetValue);
+    console.log("Total Beds/Flats:", totalBedsFlats);
 
     // Core Cost per Service User for Day Staffing
     const coreCost = (hourlyRate * dayHours * staffCount * 7) / totalBedsFlats;
