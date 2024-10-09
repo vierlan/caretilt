@@ -1,7 +1,7 @@
 class PricingCalculatorController < ApplicationController
 
     skip_before_action :authenticate_user!
-    
+
     include Wicked::Wizard
 
     # Define each main section as a step
@@ -40,7 +40,7 @@ class PricingCalculatorController < ApplicationController
         session[:calculator_data] ||= {}
         session[:calculator_data].merge!(calculator_params)
 
-        
+
         # If we're on the last step, calculate totals and send the email
         if step == :summary
             calculate_totals
