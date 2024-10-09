@@ -32,8 +32,8 @@
 }
 
 .header-link-active{
-    @apply header-link
-    @apply text-primary
+    @apply header-link;
+    @apply text-primary;
 }
 
 /* footer */

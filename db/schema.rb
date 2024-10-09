@@ -146,9 +146,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_07_172619) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "email"
-    t.string "stripe_customer_id"
-    t.string "stripe_subscription_id"
   end
 
   create_table "local_authority_data", force: :cascade do |t|
@@ -222,7 +219,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_07_172619) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "subscribable_type"
-    t.string "invoices", default: [], array: true
     t.index ["package_id"], name: "index_subscriptions_on_package_id"
     t.index ["subscribable_type", "subscribable_id"], name: "index_subscriptions_on_subscribable_type_and_subscribable_id"
   end
