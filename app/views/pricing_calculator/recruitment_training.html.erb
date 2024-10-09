@@ -1,11 +1,25 @@
+<!-- app/views/pricing_calculator/recruitment_training.html.erb -->
 <%= render layout: 'pricing_calculator/calculator_layout' do %>
-  <%= simple_form_for :calculator, url: wizard_path, method: :patch do |f| %>
+  <%= simple_form_for :calculator, url: wizard_path, method: :patch, html: { data: { controller: "calculator" } } do |f| %>
+
+    <!-- Recruitment & Training Annual Budget -->
     <div class="mb-4">
-      <%= f.input :recruitment_training_budget, label: "Annual Recruitment & Training Budget", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+      <%= f.label :recruitment_training_budget, "Cost per service user per week (£)" %>
+      <%= f.number_field :recruitment_training_budget, min: 0, step: 0.01, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateTrainingCosts", calculator_target: "trainingBudget" } %>
     </div>
+
+    <!-- Staff Apportionment Percentage -->
     <div class="mb-4">
-      <%= f.input :staff_apportionment_percent, label: "Staff Apportionment to Service (%)", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+      <%= f.label :staff_apportionment_percent, "% of staff apportioned to this service" %>
+      <%= f.number_field :staff_apportionment_percent, min: 0, max: 100, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateTrainingCosts", calculator_target: "apportionmentPercent" } %>
     </div>
+
+    <!-- Weekly Recruitment and Training per Service User (£) -->
+    <div class="mb-4">
+      <%= f.label :weekly_training_cost_per_user, "Weekly Recruitment and Training per Service User (£)" %>
+      <%= f.number_field :weekly_training_cost_per_user, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "weeklyTrainingCost" } %>
+    </div>
+
     <%= f.button :submit, "Next", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
   <% end %>
 <% end %>
