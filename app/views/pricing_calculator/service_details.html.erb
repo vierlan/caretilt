@@ -1,14 +1,21 @@
+<!-- app/views/pricing_calculator/service_details.html.erb -->
 <%= render layout: 'pricing_calculator/calculator_layout' do %>
-  <%= simple_form_for :calculator, url: wizard_path, method: :patch do |f| %>
+  <%= simple_form_for :calculator, url: wizard_path, method: :patch, html: { data: { controller: "calculator" } } do |f| %>
     <div class="mb-4">
-      <%= f.input :number_of_units, label: "Number of Units (Beds/Flats)", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+      <%= f.label :number_of_units, "Number of Units" %>
+      <%= f.number_field :number_of_units, min: 0, step: 1, class: "input-number", required: true, data: { action: "input->calculator#updateTotal", calculator_target: "numberOfUnits" } %>
     </div>
+
     <div class="mb-4">
-      <%= f.input :number_of_vacancies, label: "Number of Vacancies", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+      <%= f.label :number_of_vacancies, "Number of Vacancies" %>
+      <%= f.number_field :number_of_vacancies, min: 0, step: 1, class: "input-number", required: true, data: { action: "input->calculator#updateTotal", calculator_target: "numberOfVacancies" } %>
     </div>
+
     <div class="mb-4">
-      <%= f.input :total_beds_flats, label: "Total Number of Beds/Flats", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+      <%= f.label :total_beds_flats, "This is the total number of units in the property or service which share staffing and management" %>
+      <%= f.number_field :total_beds_flats, value: 5, readonly: true, class: 'border-gray-300 rounded-lg p-2 w-full', data: { calculator_target: "totalBedsFlats" } %>
     </div>
+
     <%= f.button :submit, "Next", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
   <% end %>
 <% end %>

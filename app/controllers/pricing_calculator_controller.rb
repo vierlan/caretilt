@@ -1,9 +1,27 @@
 class PricingCalculatorController < ApplicationController
+
+    skip_before_action :authenticate_user!
+    
     include Wicked::Wizard
 
     # Define each main section as a step
     steps :service_details, :core_staffing, :hourly_rate, :number_of_managers,
             :recruitment_training, :service_user, :central_overheads, :summary
+
+    # Define a title for each step
+    def step_title
+        {
+        service_details: "Service Details",
+        core_staffing: "Core Staffing",
+        hourly_rate: "Hourly Rate",
+        number_of_managers: "Manager Details",
+        recruitment_training: "Recruitment & Training",
+        service_user: "Service User Costs",
+        central_overheads: "Central Overheads",
+        summary: "Summary"
+        }[step]
+    end
+
 
     # Show action for each step
     def show
@@ -12,6 +30,7 @@ class PricingCalculatorController < ApplicationController
 
         # Set the instance variable for form to use
         @calculator_data = session[:calculator_data]
+        @step_title = step_title
         render_wizard
     end
 

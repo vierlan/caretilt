@@ -5,7 +5,7 @@
   <div class="relative border-b border-gray-200 pb-5 sm:pb-2 mt-10">
     <div class="md:flex md:items-center md:justify-between">
       <div class="mt-4">
-          <h3 class="text-5xl text-blue-600 font-semibold leading-6"> <%= @care_home.name %></h3>
+          <h3 class="text-5xl text-blue-600 font-semibold leading-relaxed sm:leading-6"> <%= @care_home.name %></h3>
           <p class="mt-4 text-base text-gray-500"> <%= @care_home.formatted_address %></p>
       </div>
       <div class="px-4 py-5 sm:px-6 col-span-2 flex justify-between">
@@ -15,14 +15,14 @@
       </div>
     </div>
     <div class="flex justify-end">
-      <div class="mt-3 flex justify-end gap-4">
-        <a href="<%= @care_home.website %>" target="_blank" class="button-blue-pill">
+      <div class="mt-3 flex justify-end gap-4 flex-wrap"> <!-- Added flex-wrap to allow button wrapping -->
+        <a href="<%= @care_home.website %>" target="_blank" class="button-blue-pill whitespace-nowrap">
           View Website
         </a>
-        <a href="mailto:<%= @care_home.email %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+        <a href="mailto:<%= @care_home.email %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full whitespace-nowrap">
           Send Email
         </a>
-        <a href="tel:<%= @care_home.phone_number %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+        <a href="tel:<%= @care_home.phone_number %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full whitespace-nowrap">
           View Phone Number
         </a>
       </div>

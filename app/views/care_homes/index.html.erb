@@ -12,7 +12,7 @@
         <!-- Form for Filtering -->
         <%= simple_form_for :care_home, url: care_homes_path, method: :get, html: { class: "form-inline" } do |f| %>
 
-        <div class="grid grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Local Authority Dropdown with custom label -->
           <div class="col-span-1">
             <%= f.input :local_authority_name, 
@@ -34,8 +34,8 @@
 
         <!-- Types of Client Group Multi-Checkbox -->
         <h2 class="text-description-small mt-8">Services Provided:</h2>
-        <div class="col-span-6 grid grid-cols-2 gap-1 py-5"> <!-- Create a 2-column grid for checkboxes -->
 
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-1 py-5 col-span-6"> 
           <%= f.collection_check_boxes :types_of_client_group, @types_of_client_group_options, :to_s, :to_s do |b| %>
             <div class="flex items-center space-x-2 mx-auto p-1">
               <%= b.check_box(class: 'mr-2') %>
@@ -44,16 +44,17 @@
           <% end %>
         </div>
 
-          <!-- Buttons Section -->
-          <div class="form-group flex space-x-4 mt-4 justify-end"> <!-- Use flex to align buttons side by side -->
-            <%= f.button :submit, "Filter", class: "p-2 bg-blue-500 text-white rounded" %>
-            <%= link_to "Reset", care_homes_path, class: "p-2 bg-gray-500 text-white rounded" %> <!-- Adjusted Reset button to have similar styling -->
-          </div>
+        <!-- Buttons Section -->
+        <div class="form-group flex space-x-4 mt-4 justify-end">
+          <%= f.button :submit, "Filter", class: "p-2 bg-blue-500 text-white rounded" %>
+          <%= link_to "Reset", care_homes_path, class: "p-2 bg-gray-500 text-white rounded" %>
+        </div>
+
         <% end %>
       </div>
       <!-- Map Container -->
       <div id="map" style="height: 500px; width: 100%;"></div>
-    </div>
+       </div>
   <% end %>
 
     <!-- Render the filtered care homes as an index -->

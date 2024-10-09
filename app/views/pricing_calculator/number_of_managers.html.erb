@@ -1,14 +1,34 @@
+<!-- app/views/pricing_calculator/number_of_managers.html.erb -->
 <%= render layout: 'pricing_calculator/calculator_layout' do %>
-  <%= simple_form_for :calculator, url: wizard_path, method: :patch do |f| %>
+  <%= simple_form_for :calculator, url: wizard_path, method: :patch, html: { data: { controller: "calculator" } } do |f| %>
+
+    <!-- Number of Managers -->
     <div class="mb-4">
-      <%= f.input :manager_count, label: "Number of Managers", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+      <%= f.label :manager_count, "Number of Managers" %>
+      <%= f.number_field :manager_count, min: 0, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateManagerCosts", calculator_target: "managerCount" } %>
     </div>
+
+    <!-- Manager Salary -->
     <div class="mb-4">
-      <%= f.input :manager_salary, label: "Manager Salary", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+      <%= f.label :manager_salary, "Annual salary of manager including oncosts (£)" %>
+      <%= f.number_field :manager_salary, min: 1, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateManagerCosts", calculator_target: "managerSalary" } %>
     </div>
+
+    <!-- Manager's Time on Service (%) -->
     <div class="mb-4">
-      <%= f.input :manager_time_percent, label: "Manager's Time on Service (%)", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+      <%= f.label :manager_time_percent, "Manager may have responsibility for more than one service" %>
+      <%= f.number_field :manager_time_percent, min: 0, max: 100, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateManagerCosts", calculator_target: "managerTimePercent" } %>
     </div>
+
+    <!-- Total Beds Flats Target (hidden field) -->
+    <%= hidden_field_tag :total_beds_flats, 10, data: { calculator_target: "totalBedsFlats" } %>
+
+    <!-- Weekly Management Cost per Service User (£) -->
+    <div class="mb-4">
+      <%= f.label :weekly_management_cost_per_user, "Weekly Management per Service User (£)" %>
+      <%= f.number_field :weekly_management_cost_per_user, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "weeklyManagementCost" } %>
+    </div>
+
     <%= f.button :submit, "Next", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
   <% end %>
 <% end %>

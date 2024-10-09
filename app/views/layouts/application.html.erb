@@ -38,7 +38,8 @@
     <% else %>
 
         <%= render "shared/header" %>
-        <main class="container mx-auto mt-14 px-6">
+        <%# container used to to ahve mt-14 - remove for mobile %>
+        <main class="container mx-auto px-6 mt-0 lg:mt-14">
         <% end %>
         <%= render "shared/flash" %>
         <%= yield %>
