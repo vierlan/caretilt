@@ -1,13 +1,24 @@
 <!-- views/care_homes/index.html.erb -->
 <turbo-frame id="main-content">
-  <%# Explanation:
+ <%# Explanation:
   Instead of passing @care_homes directly, we're now mapping over @care_homes to extract only the care_home object from each hash (home_data[:care_home]).
   We convert that array of care_home objects into JSON, as before, and limit it to include only the relevant attributes (:name, :latitude, :longitude, :local_authority_name). %>
+  
+  <% if policy(CareHome).new? %> 
+    <div class="flex justify-end">
+      <%= link_to "Add a New Service",
+                  new_company_care_home_path(current_user.company),
+                  data: { turbo_frame: "main-content" },
+                  class: "button-base-primary" %>
+    </div>
+  <% end %>
+
+
   <% if current_user %>
     <div class="display-map">
       <div data-controller="showplacesmap" 
         data-showplacesmap-care-homes-value="<%= @care_homes.map { |home_data| home_data[:care_home] }.to_json(only: [:name, :latitude, :longitude, :local_authority_name]) %>"
-        data-showplacesmap-marker-url-value="<%= image_path('logo_trans.png') %>">
+        data-showplacesmap-marker-url-value="<%= image_path('location.png') %>">
       <div class="map-filter p-5">
         <!-- Form for Filtering -->
         <%= simple_form_for :care_home, url: care_homes_path, method: :get, html: { class: "form-inline" } do |f| %>
@@ -24,10 +35,10 @@
 
           <!-- Type of Home Dropdown with custom label -->
           <div class="col-span-1">
-            <%= f.input :type_of_home, 
+            <%= f.input :type_of_service, 
               label: "Type of Home",  # Explicitly set the label text here
               collection: ['Any'] + CareHome.types_in_use, 
-              selected: params.dig(:care_home, :type_of_home) || 'Any',
+              selected: params.dig(:care_home, :type_of_service) || 'Any',
               input_html: { class: 'custom-select custom-class' } %>
           </div>
         </div>
