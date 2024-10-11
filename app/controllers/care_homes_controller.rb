@@ -18,7 +18,7 @@ class CareHomesController < ApplicationController
 
     @all_local_authorities = LocalAuthorityData.where(nice_name: CareHome.select(:local_authority_name).distinct).sort_by { |item| item}
 
-    @type_of_home_options = ['Any'] + CareHome::TYPEHOME
+    @type_of_home_options = ['Any'] + CareHome::TYPESERVICE
     @types_of_client_group_options = CareHome::TYPECLIENT
 
     # Logic here will return all care homes by default unless front end form specifies filtering params.
