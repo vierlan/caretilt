@@ -27,7 +27,6 @@ export default class extends Controller {
   updateTotal() {
     const numberOfUnits = parseInt(this.numberOfUnitsTarget.value) || 0;
     const numberOfVacancies = parseInt(this.numberOfVacanciesTarget.value) || 0;
-    
     this.totalBedsFlatsTarget.value = numberOfUnits + numberOfVacancies;
     console.log("Updated Total Beds/Flats:", this.totalBedsFlatsTarget.value);
   }
@@ -37,7 +36,8 @@ export default class extends Controller {
     const hourlyRate = parseFloat(this.hourlyRateTarget.value) || 0;
     const dayHours = parseFloat(this.dayHoursTarget.value) || 0;
     const staffCount = parseInt(this.staffCountTarget.value) || 0;
-    const totalBedsFlats = parseFloat(this.totalBedsFlatsTarget.value) || 1;
+    // Error coming from here?
+    const totalBedsFlats = parseInt(this.totalBedsFlatsTarget.value);
 
     console.log("Hourly Rate:", hourlyRate);
     console.log("Day Hours:", dayHours);

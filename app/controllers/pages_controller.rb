@@ -32,6 +32,16 @@ class PagesController < ApplicationController
 
   def quiz; end
 
+  def pricing
+    @packages = Package.where(validity: 1, subscription_type: 'company')
+  end
+
+  def pricing2
+    @packages = Package.where(validity: 12, subscription_type: 'company')
+  end
+
+
+
   def test2
     @care_homes = CareHome.where.not(latitude: nil, longitude: nil)
   end

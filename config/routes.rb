@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   #post '/checkout', to: 'stripe/checkout#checkout'
   get '/checkout/add_credits', to: 'stripe/checkout#add_credits'
   get '/checkout/pricing', to: 'stripe/checkout#pricing'
+
   get '/checkout/success', to: 'stripe/checkout#success'
   get '/checkout/cancel', to: 'stripe/checkout#cancel'
   get 'activity_feeds', to: 'activity_feeds#index'
@@ -100,7 +101,7 @@ Rails.application.routes.draw do
 
 
   pages = %w[
-    privacy terms about home home2 home3 home4 guides faq pricing search
+    privacy terms about home home2 home3 home4 guides faq pricing search pricing2
   ]
   pages.each do |page|
     get "/#{page}", to: "pages##{page}", as: page.gsub('-', '_').to_s
