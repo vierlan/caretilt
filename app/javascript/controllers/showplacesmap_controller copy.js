@@ -1,8 +1,6 @@
 // app/javascript/controllers/showplacesmap_controller.js
 import { Controller } from "@hotwired/stimulus"
 
-
-
 export default class extends Controller {
   // Define two static values: careHomes for multiple homes (index page) and careHome for a single home (show page)
   static values = { careHomes: Array, careHome: Object, markerUrl: String }
@@ -46,27 +44,8 @@ export default class extends Controller {
     this.addMarker(careHome);
   }
 
-  
-
   // Add multiple markers for the care homes (used in index page)
   addMarkers(careHomes) {
-
-    const svgMarker = {
-      path: "M 0, 0 m -10, 0 a 10,10 0 1,1 20,0 a 10,10 0 1,1 -20,0", // Google Maps marker shape
-      fillColor: "#6a0dad", // Purple background color
-      fillOpacity: 1,
-      strokeWeight: 2,
-      strokeColor: "#0000ff", // Blue border color
-      scale: 1.5, // Adjust scale as needed
-    };
-    
-    const marker = new google.maps.Marker({
-      position: position,
-      map: this.map,
-      title: home.name,
-      icon: svgMarker, // Assign the SVG marker
-      animation: google.maps.Animation.DROP,
-    });
     const markerUrl = this.markerUrlValue;
 
     this.clearMarkers(); // Clear any existing markers
