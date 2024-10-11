@@ -44,7 +44,7 @@ class CareHome < ApplicationRecord
   validates :main_contact, presence: { message: "Main contact cannot be blank" }
   validates :short_description, presence: { message: "Short description cannot be blank" }, length: { in: 1..300, message: "Short description must be between 1 and 300 characters" }
   validates :long_description, length: { in: 1..800, message: "Long description must be between 1 and 800 characters" }, allow_blank: true
-  validates :type_of_home, presence: { message: "Type of service cannot be blank" }, inclusion: { in: TYPESERVICE, message: "%{value} is not a valid home type" }
+  validates :type_of_service, presence: { message: "Type of service cannot be blank" }, inclusion: { in: TYPESERVICE, message: "%{value} is not a valid home type" }
 
   # For local authority name check out 'import_local_authorities.rb' under rake.
   # We're getting a csv to make models for each row in the csv to hold data. Then this data can be used for dropdown inclusion depending on attribute.
@@ -78,7 +78,7 @@ class CareHome < ApplicationRecord
 
   # Method to get the distinct types of homes that are currently in use
   def self.types_in_use
-    where.not(type_of_home: nil).distinct.pluck(:type_of_home).sort
+    where.not(type_of_service: nil).distinct.pluck(:type_of_service).sort
   end
   
   def validate_client_groups

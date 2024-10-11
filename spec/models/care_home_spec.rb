@@ -17,7 +17,7 @@ RSpec.describe CareHome, type: :model do
       main_contact: "John Doe",
       short_description: "A short description",
       long_description: "A longer description",
-      type_of_home: "Adult Homes",
+      type_of_service: "Adult Homes",
       types_of_client_group: "Older People",
       postcode: "SY175DT",
       local_authority_name: "Greater London",
@@ -63,15 +63,15 @@ RSpec.describe CareHome, type: :model do
     end
 
     it 'is invalid without a type of home' do
-      subject.type_of_home = nil
+      subject.type_of_service = nil
       expect(subject).not_to be_valid
-      expect(subject.errors[:type_of_home]).to include("Type of home cannot be blank")
+      expect(subject.errors[:type_of_service]).to include("Type of home cannot be blank")
     end
 
     it 'is invalid with an incorrect type of home' do
-      subject.type_of_home = "Invalid Type"
+      subject.type_of_service = "Invalid Type"
       expect(subject).not_to be_valid
-      expect(subject.errors[:type_of_home]).to include("Invalid Type is not a valid home type")
+      expect(subject.errors[:type_of_service]).to include("Invalid Type is not a valid home type")
     end
 
     it 'is invalid without a types of client group' do

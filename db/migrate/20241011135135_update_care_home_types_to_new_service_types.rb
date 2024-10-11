@@ -1,6 +1,6 @@
 class UpdateCareHomeTypesToNewServiceTypes < ActiveRecord::Migration[7.2]
   def up
-    # Step 1: Rename the column `type_of_home` to `type_of_service`
+    # Step 1: Rename the column `type_of_service` to `type_of_service`
     rename_column :care_homes, :type_of_home, :type_of_service
 
     # Step 2: Define the valid types of services
@@ -23,10 +23,10 @@ class UpdateCareHomeTypesToNewServiceTypes < ActiveRecord::Migration[7.2]
   end
 
   def down
-    # Optional: reverse the changes if needed, renaming column back to `type_of_home`
-    rename_column :care_homes, :type_of_service, :type_of_home
+    # Optional: reverse the changes if needed, renaming column back to `type_of_service`
+    rename_column :care_homes, :type_of_service, :type_of_service
 
     # Reverting invalid types back to nil (or another fallback)
-    CareHome.where(type_of_home: "Assisted Living / Sheltered").update_all(type_of_home: nil)
+    CareHome.where(type_of_service: "Assisted Living / Sheltered").update_all(type_of_service: nil)
   end
 end

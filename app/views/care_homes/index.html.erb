@@ -24,10 +24,10 @@
 
           <!-- Type of Home Dropdown with custom label -->
           <div class="col-span-1">
-            <%= f.input :type_of_home, 
+            <%= f.input :type_of_service, 
               label: "Type of Home",  # Explicitly set the label text here
               collection: ['Any'] + CareHome.types_in_use, 
-              selected: params.dig(:care_home, :type_of_home) || 'Any',
+              selected: params.dig(:care_home, :type_of_service) || 'Any',
               input_html: { class: 'custom-select custom-class' } %>
           </div>
         </div>

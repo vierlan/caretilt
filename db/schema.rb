@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_07_172619) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_11_152302) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -83,7 +83,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_07_172619) do
     t.string "main_contact"
     t.text "short_description"
     t.text "long_description"
-    t.string "type_of_home"
+    t.string "type_of_service"
     t.string "types_of_client_group", default: [], array: true
     t.bigint "company_id", null: false
     t.float "latitude"
@@ -112,8 +112,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_07_172619) do
     t.string "billing_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "registration_pin", default: "2370", null: false
-    t.string "super_pin", default: "5647", null: false
+    t.string "registration_pin", default: "3406", null: false
+    t.string "super_pin", default: "9334", null: false
     t.string "stripe_customer_id"
     t.string "email"
     t.string "contact_name"
@@ -146,6 +146,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_07_172619) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email"
+    t.string "stripe_customer_id"
+    t.string "stripe_subscription_id"
   end
 
   create_table "local_authority_data", force: :cascade do |t|

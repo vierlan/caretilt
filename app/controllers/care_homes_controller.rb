@@ -18,7 +18,7 @@ class CareHomesController < ApplicationController
 
     @all_local_authorities = LocalAuthorityData.where(nice_name: CareHome.select(:local_authority_name).distinct).sort_by { |item| item}
 
-    @type_of_home_options = ['Any'] + CareHome::TYPESERVICE
+    @type_of_service_options = ['Any'] + CareHome::TYPESERVICE
     @types_of_client_group_options = CareHome::TYPECLIENT
 
     # Logic here will return all care homes by default unless front end form specifies filtering params.
@@ -34,8 +34,8 @@ class CareHomesController < ApplicationController
       end
 
       # Type of home filter (if not "Any")
-      if params[:care_home][:type_of_home].present? && params[:care_home][:type_of_home] != "Any"
-        @care_homes = @care_homes.where(type_of_home: params[:care_home][:type_of_home])
+      if params[:care_home][:type_of_service].present? && params[:care_home][:type_of_service] != "Any"
+        @care_homes = @care_homes.where(type_of_service: params[:care_home][:type_of_service])
       end
 
       # Types of client group filter (if not "Any")
@@ -174,7 +174,7 @@ class CareHomesController < ApplicationController
   def care_home_params
     params.require(:care_home).permit(
     :name, :main_contact, :phone_number, :website, :address, :email,
-    :address1, :address2, :city, :postcode, :type_of_home,
+    :address1, :address2, :city, :postcode, :type_of_service,
     :short_description, :latitude, :longitude, :local_authority_name,
     :thumbnail_image, photos: [], videos: [], media: [], types_of_client_group: [] # Allow `types_of_client_group` as an array
     ).tap do |whitelisted| #Makes sure that no empty values allowed in the array.
