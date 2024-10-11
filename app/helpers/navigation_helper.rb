@@ -1,37 +1,37 @@
 # app/helpers/navigation_helper.rb
 module NavigationHelper
-
   def navigation_links(current_user)
     links = []
 
     # Common links for all users
-
     links << {
       name: 'My details',
       path: edit_user_registration_path,
-      icon: 'user' }
+      icon: 'user'
+    }
     links << {
       name: current_user.local_authority.present? ? 'My Service Enquiries' : 'Service Enquiries',
       path: booking_enquiries_path,
       icon: 'enquiry'
     }
 
-
     case current_user.role
-    when 'caretilt_user' || 'caretilt_master_user'
-      links << { name: 'Team Management',
-         path: team_company_path(@company),
-          icon: 'team' }
-
+    when 'caretilt_master_user', 'caretilt_user'
+      links << {
+        name: 'Team Management',
+        path: team_company_path(@company),
+        icon: 'team'
+      }
       links << {
         name: 'Subscription Packages',
-        path:  packages_path,
+        path: packages_path,
         icon: 'folder'
       }
       links << {
         name: 'Manage Care Providers',
         path: companies_path,
-        icon: 'folder' }
+        icon: 'folder'
+      }
       links << {
         name: 'Manage Local Authorities',
         path: local_authorities_path,
@@ -40,14 +40,22 @@ module NavigationHelper
       links << {
         name: 'Create post',
         path: new_blog_post_path,
-        icon: 'blog' }
+        icon: 'blog'
+      }
+      links << {
+        name: 'Company details',
+        path: edit_company_path(current_user.company),
+        icon: 'user'
+      }
     when 'care_provider_super_user'
-      links << { name: 'Team Management',
+      links << {
+        name: 'Team Management',
         path: team_company_path(@company),
-        icon: 'team' }
+        icon: 'team'
+      }
       links << {
         name: 'Subscription Packages',
-        path:  packages_path,
+        path: packages_path,
         icon: 'folder'
       }
       links << {
@@ -58,15 +66,17 @@ module NavigationHelper
       links << {
         name: 'Company details',
         path: edit_company_path(current_user.company),
-        icon: 'user' }
-    when "la_super_user"
+        icon: 'user'
+      }
+    when 'la_super_user'
       links << {
         name: 'Authority details',
         path: edit_local_authority_path(current_user.local_authority),
-        icon: 'user' }
+        icon: 'user'
+      }
       links << {
         name: 'Subscription Packages',
-        path:  packages_path,
+        path: packages_path,
         icon: 'folder'
       }
     when 'care_provider_user'
@@ -78,7 +88,8 @@ module NavigationHelper
       links << {
         name: 'Team Management',
         path: team_local_authority_path(current_user.local_authority),
-        icon: 'team' }
+        icon: 'team'
+      }
     when 'la_user'
       links << {
         name: 'Care Home Search',
