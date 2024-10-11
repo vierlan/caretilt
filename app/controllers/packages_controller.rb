@@ -15,7 +15,7 @@ class PackagesController < ApplicationController
       @company = current_user.company
     when 'care_provider_super_user'
       @company = current_user.company
-      @packages = @packages.where(subscription_type: 'company')
+      @packages = @packages.where(subscription_type: 'company_subscription')
       if current_user&.company&.has_active_subscription?
         @active_subscription = current_user.company.get_active_subscription
         @logs = @active_subscription&.credit_log || []
@@ -29,7 +29,7 @@ class PackagesController < ApplicationController
       if current_user&.local_authority&.subscriptions&.present?
         @active_subscription = current_user.local_authority.get_active_subscription || current_user.local_authority.subscriptions.last
         @active_package = Package.find(@active_subscription.package_id)
-        @packages = @packages.where(subscription_type: 'local_authority')
+        @packages = @packages.where(subscription_type: 'local_authority_subscription')
         @invoice_url = @active_subscription.credit_log.last.last
       end
     end
@@ -115,6 +115,6 @@ class PackagesController < ApplicationController
   end
 
   def package_params
-    params.require(:package).permit(:name, :description, :credits, :price, :validity, :stripe_price_id, :stripe_id, data: {})
+    params.require(:package).permit(:name, :description, :credits, :price, :validity, :stripe_price_id, :stripe_id, features: [], data: {})
   end
 end

@@ -33,11 +33,11 @@ class PagesController < ApplicationController
   def quiz; end
 
   def pricing
-    @packages = Package.where(validity: 1, subscription_type: 'company')
+    @packages = Package.where(validity: 1, subscription_type: 'company_subscription')
   end
 
   def pricing2
-    @packages = Package.where(validity: 12, subscription_type: 'company')
+    @packages = Package.where(validity: 12, subscription_type: 'company_subscription')
   end
 
 

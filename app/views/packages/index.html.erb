@@ -19,6 +19,7 @@
     <%= render 'current_package', locals: { subscription: @active_subscription, package: @active_package} %>
   <% end %>
   <div class="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 md:max-w-2xl md:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-4">
+   
     <% @packages.each do |package|%>
       <%#= render 'template', locals: {package: package} %>
       <div class='package'>
