@@ -18,7 +18,7 @@
     <div class="display-map">
       <div data-controller="showplacesmap" 
         data-showplacesmap-care-homes-value="<%= @care_homes.map { |home_data| home_data[:care_home] }.to_json(only: [:name, :latitude, :longitude, :local_authority_name]) %>"
-        data-showplacesmap-marker-url-value="<%= image_path('logo_trans.png') %>">
+        data-showplacesmap-marker-url-value="<%= image_path('location.png') %>">
       <div class="map-filter p-5">
         <!-- Form for Filtering -->
         <%= simple_form_for :care_home, url: care_homes_path, method: :get, html: { class: "form-inline" } do |f| %>
