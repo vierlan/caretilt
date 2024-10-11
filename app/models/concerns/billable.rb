@@ -4,11 +4,7 @@ module Billable
   included do
     after_create :setup_stripe_customer
 
-    def subscribed?
-      self.has_active_subscription?
-      subscription = self.get_active_subscription
-      subscription.present? && subscription.active?
-    end
+
   end
 
   # done after signup for easy CVR metrics via Stripe UI
@@ -37,6 +33,12 @@ module Billable
 
   def stripe_subscriptions
     stripe_customer.subscriptions
+  end
+  
+  def subscribed?
+    self.has_active_subscription?
+    subscription = self.get_active_subscription
+    subscription.present? && subscription.active?
   end
 
   def stripe_customer
