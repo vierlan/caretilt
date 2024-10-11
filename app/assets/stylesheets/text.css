@@ -1,19 +1,39 @@
 
 .text-page-heading{
+<<<<<<< Updated upstream
     @apply mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl text-primary;
 }
 
 .text-page-subheading{
     @apply mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl text-primary;
+=======
+    @apply mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl;
+    /* @apply text-primary; */
+}
+
+.text-page-subheading{
+    @apply mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl;
+    /* @apply text-primary; */
+>>>>>>> Stashed changes
 }
 
 
 .text-description {
+<<<<<<< Updated upstream
     @apply text-lg text-gray-700;
 }
 
 .text-description-small{
     @apply text-base leading-7 text-gray-700;
+=======
+    @apply text-lg;
+    /* @apply text-gray-700; */
+}
+
+.text-description-small{
+    @apply text-base leading-7;
+    /* @apply text-gray-700; */
+>>>>>>> Stashed changes
 }
 
 .text-card-heading{
@@ -29,7 +49,12 @@
 }
 
 .header-link-active{
+<<<<<<< Updated upstream
     @apply header-link text-primary;
+=======
+    @apply header-link
+    /* @apply text-primary */
+>>>>>>> Stashed changes
 }
 
 /* footer */
