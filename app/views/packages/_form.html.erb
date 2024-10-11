@@ -13,27 +13,38 @@
     <div class="p-4">
       <div class="field">
         <%= form.label :name %>
-        <%= form.text_field :name, class: 'form-control' %>
+        <%= form.text_field :name, class: 'form-control', required: true %>
       </div>
       <div class="field">
         <%= form.label :description %>
-        <%= form.text_area :description, class: 'form-control' %>
+        <%= form.text_area :description, class: 'form-control', required: true %>
       </div>
       <div class="field">
         <%= form.label :price %>
-        <%= form.number_field :price, class: 'form-control' %>
+        <%= form.number_field :price, class: 'form-control', required: true %>
       </div>
       <div class="field">
         <%= form.label :credits %>
-        <%= form.number_field :credits, class: 'form-control' %>
+        <%= form.number_field :credits, class: 'form-control', required: true %>
       </div>
       <div class="field">
-        <%= form.label :validity, "Subscription: Choose 1 for monthly subsciption, 12 for yearly, 0 for credits only" %>
-        <%= form.select :validity, [0, 1, 12], {}, class: 'form-control' %>
+        <%= form.label :validity, "Subscription: Choose 1 for monthly subscription, 12 for yearly, 0 for credits only" %>
+        <%= form.select :validity, [0, 1, 12], {}, class: 'form-control', required: true %>
       </div>
       <div class="field">
         <%= form.label :subscription_type %>
-        <%= form.select :subscription_type, [:company, :local_authority], {}, class: 'form-control' %>
+        <%= form.select :subscription_type, [:company, :local_authority], {}, class: 'form-control', required: true %>
+      </div>
+      <div class="field">
+        <%= form.label :features %>
+        <div class="form-check">
+          <% Package::FEATURES.each do |feature| %>
+            <div>
+              <%= form.check_box :features, { multiple: true, required: true }, feature, nil %>
+              <%= form.label :features, feature, class: 'form-check-label' %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
     <div class="actions">

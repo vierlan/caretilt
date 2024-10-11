@@ -19,11 +19,12 @@
     <%= render 'current_package', locals: { subscription: @active_subscription, package: @active_package} %>
   <% end %>
   <div class="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 md:max-w-2xl md:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-4">
+
     <% @packages.each do |package|%>
       <%#= render 'template', locals: {package: package} %>
       <div class='package'>
         <div class="rounded-3xl p-8 ring-1 ring-gray-200">
-          <h3 id="tier-hobby" class="text-lg font-semibold leading-8 text-gray-900"><%= package.name %></h3>
+          <h3 id="tier-hobby" class="text-lg font-semibold leading-8 text-gray-900"><%= package.name.humanize %></h3>
           <p class="mt-4 text-description-small" style="min-height: 220px">
             <%= package.description %>          </p>
           <p class="mt-6 flex items-baseline gap-x-1">

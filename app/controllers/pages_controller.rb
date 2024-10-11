@@ -1,16 +1,16 @@
 class PagesController < ApplicationController
 
-  skip_before_action :authenticate_user!, except: [:logout]
+  skip_before_action :authenticate_user!  # , except: [:logout]
 
   def home
     # @current_user = current_user
   end
 
-  def logout
-    reset_session
-    sign_out(current_user)
-    redirect_to home_path
-  end
+  #def logout
+  #  reset_session
+  #  sign_out(current_user)
+  #  redirect_to home_path
+  #end
 
   def page
     @page_key = request.path[1..]
@@ -33,11 +33,11 @@ class PagesController < ApplicationController
   def quiz; end
 
   def pricing
-    @packages = Package.where(validity: 1, subscription_type: 'company')
+    @packages = Package.where(validity: 1, subscription_type: 'company_subscription')
   end
 
   def pricing2
-    @packages = Package.where(validity: 12, subscription_type: 'company')
+    @packages = Package.where(validity: 12, subscription_type: 'company_subscription')
   end
 
 

@@ -8,27 +8,31 @@
       <li class="flex justify-between gap-x-6 py-5">
         <div class="flex min-w-0 gap-x-4 flex flex-cols"  >
           <div class="min-w-0 flex-cols" data-controller="open">
-            <a href='#' data-action="open#toggleCompany"><span class="text-xl font-semibold leading-6 text-gray-900"><%= company.name.humanize %> <i class="fa-solid fa-plus"></i></span></a>
-            <div class="company hidden" data-open-target="company">
+            <a href='#' data-action="open#toggleCompany"><span class="text-xl font-semibold leading-6 text-blue-700"><%= company.name.humanize %> <i class="fa-solid fa-plus"></i></span></a>
+            <div class="hidden" id="company_list" data-open-target="company">
               <a href="#" data-action="open#toggleHiddenField">Expand/Retract Company</a>
               <div class="hidden" data-open-target="info">
+                <%= link_to 'Edit Company', edit_company_path(company), class: "button-caretilt block m-2" %>
                 <% company.attributes.each do |key, value| %>
                   <p class="text-base leading-5 text-gray-700"><%= key %>: <%= value %></p>
                 <% end %>
               </div>
               <!--company subscriptions start-->
               <div class="flex flex-cols" data-controller="open">
+              <ul>
+                <li class="text-xl font-semibold text-gray-900">Subscriptions</li>
+                <li>Company has active subscription? <%= company.has_active_subscription? %></li>
                 <% if company.subscriptions.empty? %>
                   <p class="text-xl font-semibold text-gray-700">Company has never had a Subscription</p>
                 <% else %>
                   <% company.subscriptions.each do |subscription| %>
-                    <ul>
+
                       <li>
                         <a href='#' data-action="open#toggleHiddenField">
-                          <span class="text-lg text-gray-500 mr-4">Subscribed until: <%= subscription.expires_on %>  <i class="fa-solid fa-plus"></i></span>
+                          <span class="text-lg text-gray-500 mr-4">Subscription Active Until: <%= subscription.expires_on %>  <i class="fa-solid fa-plus"></i></span>
                         </a>
-                        <%= link_to 'Edit Subscription', edit_subscription_path(subscription) %>
                         <div class="hidden" data-open-target="info">
+                          <%= link_to 'Edit Subscription', edit_subscription_path(subscription), data: {turbo_frame: "main_content"}, class: "button-caretilt block m-2" %>
                           <% subscription.attributes.each do |key, value| %>
                             <p class="text-base leading-5 text-gray-700"><%= key %>: <%= value %></p>
                           <% end %>
@@ -36,33 +40,43 @@
                       </li>
                     <% end %>
                   <% end %>
+                  </ul>
                 </div>
                 <!--company care home start -->
                 <div class=" flex flex-col" data-controller="open">
                   <p class="text-xl font-semibold text-gray-900"> Care Facilities</p>
+                  <ul>
                   <% company.care_homes.each do |care_home| %>
                     <a href='#' data-action="open#toggleHiddenField"><span class="text-lg text-gray-700 mr-4"><%= care_home.name.humanize %>  <i class="fa-solid fa-plus"></i></span></a>
                     <div class="hidden" data-open-target="info">
+                      <%= link_to 'Edit Service Venue', edit_care_home_path(care_home), data: {turbo_frame: "main_content"}, class: "button-caretilt block m-2" %>
                       <% care_home.attributes.each do |key, value| %>
                         <p class="text-xs leading-5 text-gray-500"><%= key %>: <%= value %></p>
                       <% end %>  <!--individual care home attributes end-->
                     </div>
-                  <% end %>  <!--all care homes end -->
+                  <% end %>
+                  </ul>  <!--all care homes end -->
                 </div>
                 <!--company users start -->
                 <div class=" flex flex-col" data-controller="open">
                   <p class="text-xl font-semibold text-gray-900">Users</p>
+                  <ul>
                   <% company.users.each do |user| %>
-                    <a href='#' data-action="open#toggleHiddenField"><span class="text-base text-gray-700"><%= user.first_name.capitalize if user.first_name %> <%= user.last_name.capitalize if user.last_name %> <i class="fa-solid fa-plus"></i></span></a>
+                    <a href='#' data-action="open#toggleHiddenField"><li><span class="text-base text-gray-700"><%= user.email %> <i class="fa-solid fa-plus"></i></span></li></a>
                     <div class="hidden" data-open-target="info">
                       <%= link_to verify_member_path(user), data: { turbo_frame: "main-content" }, class: "button-caretilt block m-2" do %>
                         Edit<span class="sr-only">, <%= user.email %></span>
                       <% end %>
-                      <% user.attributes.each do |key, value| %>
-                        <p class="text-xs leading-5 text-gray-500"><%= key %>: <%= value %></p>
-                      <% end %>  <!-indivdual user attributes end-->
+                      <ul>
+                        <li>First Name: <%= user.first_name %></li>
+                        <li>Last Name: <%= user.last_name %></li>
+                        <li>Role: <%= user.role.humanize %></li>
+                        <li>Phone Number: <%= user.phone_number %></li>
+                        <li>Status: <%= user.status %></li>
+                      </ul>
                     </div>
                   <% end %>
+                  </ul>
                 </div>
                 <!--company users end -->
               </div>

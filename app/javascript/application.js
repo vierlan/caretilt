@@ -50,3 +50,5 @@ addEventListener("trix-initialize", (event) => {
 });
 
 import "@rails/request.js"
+import "@hotwired/turbo-rails"
+import "controllers"
