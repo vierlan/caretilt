@@ -11,24 +11,26 @@ class PackagesController < ApplicationController
     @subscription_packages = Package.where.not(validity: 0)
     @credit_packages = Package.where(validity: 0)
     case current_user.role
+    when 'caretilt_staff', 'caretilt_master_user'
+      @company = current_user.company
     when 'care_provider_super_user'
       @company = current_user.company
-      @packages = @packages.where(subscription_type: 0)
+      @packages = @packages.where(subscription_type: 'company')
       if current_user&.company&.has_active_subscription?
-      @active_subscription = current_user.company.get_active_subscription
-      @logs = @active_subscription&.credit_log || []
-      @active_package = Package.find(@active_subscription.package_id)
-      @packages = @packages.where(validity: 0)
+        @active_subscription = current_user.company.get_active_subscription
+        @logs = @active_subscription&.credit_log || []
+        @active_package = Package.find(@active_subscription.package_id)
+        @packages = @packages.where(validity: 0)
       end
     when 'la_super_user'
       @local_authority = current_user.local_authority
       @packages = @packages.where(subscription_type: 1)
       @subscription = Subscription.new unless @local_authority.subscriptions.present?
       if current_user&.local_authority&.subscriptions&.present?
-      @active_subscription = current_user.local_authority.get_active_subscription || current_user.local_authority.subscriptions.last
-      @active_package = Package.find(@active_subscription.package_id)
-      @packages = @packages.where(subscription_type: 1)
-      @invoice_url = @active_subscription.credit_log.last.last
+        @active_subscription = current_user.local_authority.get_active_subscription || current_user.local_authority.subscriptions.last
+        @active_package = Package.find(@active_subscription.package_id)
+        @packages = @packages.where(subscription_type: 'local_authority')
+        @invoice_url = @active_subscription.credit_log.last.last
       end
     end
   end

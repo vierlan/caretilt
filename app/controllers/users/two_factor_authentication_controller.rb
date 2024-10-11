@@ -29,6 +29,7 @@ class Users::TwoFactorAuthenticationController < ApplicationController
       # Simulate OTP verification in development
       session[:two_factor_authenticated] = true
       current_user.update(verified: true)
+      user_for_paper_trail
       redirect_to after_sign_in_path_for(current_user), notice: 'Successfully verified (development mode).'
     else
       code = params[:otp_code]
