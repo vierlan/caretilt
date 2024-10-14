@@ -11,8 +11,8 @@
 # It's strongly recommended that you check this file into your version control system.
 
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_11_084802) do
 
+ActiveRecord::Schema[7.2].define(version: 2024_10_11_135135) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -114,8 +114,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_11_084802) do
     t.string "billing_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "registration_pin", default: "2992", null: false
-    t.string "super_pin", default: "4193", null: false
+    t.string "registration_pin", default: "7075", null: false
+    t.string "super_pin", default: "8687", null: false
     t.string "stripe_customer_id"
     t.string "email"
     t.string "contact_name"
@@ -184,7 +184,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_11_084802) do
     t.string "stripe_price_id"
     t.text "description"
     t.integer "subscription_type", default: 0, null: false
-    t.string "features", default: ["Added to Caretilt database"], array: true
+    t.string "features", default: [], array: true
   end
 
   create_table "rooms", force: :cascade do |t|

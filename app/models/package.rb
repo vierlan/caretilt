@@ -7,10 +7,10 @@ class Package < ApplicationRecord
 
   FEATURES = [
     "Added to CareTilt Database",
-    "Credits",
     "Unlimited Care Homes",
     "Ability to switch void/vacancy on and off as required",
-    "Added to Local Authority bulletin", "Can receive direct messages from Local Authorities",
+    "Added to Local Authority bulletin",
+    "Can receive direct messages from Local Authorities",
     "Full onboarding service",
     "Receive and respond to Local Authority placement bids"
   ]

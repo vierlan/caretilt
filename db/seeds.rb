@@ -6,10 +6,6 @@
 
 # raise StandardError, "DO NOT RUN THIS IN PRODUCTION" if Rails.env.production?
 
-# require 'seed_support/rewardful'
-
-#SeedSupport::Rewardful.run
-
 def create_packages
   Package.create(name: 'starter', price: 360, validity: 1, credits: 1, description: 'Starter package for one off listings', data: { lookup: 'starter' })
   Package.create(name: 'lite_monthly', price: 150, validity: 1, credits: 1, description: 'Lite package for monthly listings. Perfect for Small providers of 4 or more services who are likely to have less than 1 void / vacancy per month.', data: { lookup: 'lite_monthly' })
@@ -37,7 +33,7 @@ def create_packages
   puts "packages made"
 end
 
-create_packages()
+create_packages
 # Used as reference to delete all seeded things when re-seeding.
 seeded_org_names = ['Care Provider Company London', 'Care Provider Company London North']
 seeded_user_email = ['super@care1.com', 'super@care2.com', 'user@care1.com', 'super@la.com', 'user@la.com', 'super@caretilt.com', 'user@caretilt.com', 'caretilt@gmail.com']
@@ -54,21 +50,24 @@ seeded_care_home_names = [
 ]
 
 puts "Deleting seeded users and care homes... \n"
-User.where(email: seeded_user_email).destroy_all
-CareHome.where(name: seeded_care_home_names).destroy_all
-Company.where(name: seeded_org_names).destroy_all
+Subscription.destroy_all
+Package.destroy_all
+User.destroy_all
+CareHome.destroy_all
+
+Company.destroy_all
 
 # Create or find a company for the care provider user (if needed)
-company1 = Company.find_or_create_by!(name: 'Care Provider Company London')
-company2 = Company.find_or_create_by!(name: 'Care Provider Company North')
-localauthority = LocalAuthority.find_or_create_by!(name: 'Local Authority Organisation')
+company1 = Company.find_or_create_by!(name: 'Care Provider Company London', email: 'care1@care.com', address1: "234 Burnt Oak Broadway", address2: "Edgware", city: "Greater London", postcode: "HA80AP", website: "http://www.oaklodgemedicalcentre.co.uk/", companies_house_id: "12345678")
+company2 = Company.find_or_create_by!(name: 'Care Provider Company North', email: 'care2@care.com', address1: "432 Burnt Oak Broadway", address2: "Edgware", city: "Greater London", postcode: "HA80AP", website: "http://www.oaklodgemedicalcentre.co.uk/", companies_house_id: "12345678")
+localauthority = LocalAuthority.find_or_create_by!(name: 'Local Authority Organisation', email: 'la@care.com')
 # careprovidersuperuser.company = company
 
 # Users
 careprovidersuperuser1 = User.create!(
   email: 'super@care1.com',
-  password: '123456',
-  password_confirmation: '123456',
+  password: '123123',
+  password_confirmation: '123123',
   first_name: 'Care',
   last_name: 'Provider',
   role: 'care_provider_super_user',
@@ -80,8 +79,8 @@ careprovidersuperuser1 = User.create!(
 
 careprovidersuperuser1 = User.create!(
   email: 'user@care1.com',
-  password: '123456',
-  password_confirmation: '123456',
+  password: '123123',
+  password_confirmation: '123123',
   first_name: 'Care',
   last_name: 'Provider',
   role: 'care_provider_user',
@@ -93,8 +92,8 @@ careprovidersuperuser1 = User.create!(
 
 careprovidersuperuser2 = User.create!(
   email: 'super@care2.com',
-  password: '123456',
-  password_confirmation: '123456',
+  password: '123123',
+  password_confirmation: '123123',
   first_name: 'Care',
   last_name: 'Provider',
   role: 'care_provider_super_user',
@@ -106,21 +105,21 @@ careprovidersuperuser2 = User.create!(
 
 lasuperuser = User.create!(
     email: 'super@la.com',
-    password: '123456',
-    password_confirmation: '123456',
+    password: '123123',
+    password_confirmation: '123123',
     first_name: 'Local',
     last_name: 'Super',
     role: 'la_super_user',
     status: 'verified',
     local_authority: localauthority,
-    phone_number: ENV['DEV_PHONE_NUMBER'],
+    phone_number: ENV['LAN_PHONE_NUMBER'],
     verified: true
 )
 
 lauser = User.create!(
     email: 'user@la.com',
-    password: '123456',
-    password_confirmation: '123456',
+    password: '123123',
+    password_confirmation: '123123',
     first_name: 'Local',
     last_name: 'User',
     role: 'la_user',
@@ -132,7 +131,7 @@ lauser = User.create!(
 
 caretilt_superuser = User.create!(
   email: 'super@caretilt.com',
-  password: '123456',
+  password: '123123',
   first_name: 'Carey',
   last_name: 'Tilt',
   role: 'caretilt_master_user',
@@ -144,7 +143,7 @@ caretilt_superuser = User.create!(
 
 caretilt_user = User.create!(
   email: 'user@caretilt.com',
-  password: '123456',
+  password: '123123',
   first_name: 'Carey',
   last_name: 'Tilt',
   role: 'caretilt_user',
@@ -155,7 +154,7 @@ caretilt_user = User.create!(
 
 lan_la_user = User.create!(
   email: 'lananhnguyen@live.co.uk',
-  password: '123456',
+  password: '123123',
   first_name: 'Lan Ahn',
   last_name: 'Tilt',
   role: 'la_super_user',
@@ -168,7 +167,7 @@ lan_la_user = User.create!(
 
 lan_caretilt_user = User.create!(
   email: 'caretilt@gmail.com',
-  password: '123456',
+  password: '123123',
   first_name: 'Lan Ahn',
   last_name: 'Tilt',
   role: 'caretilt_master_user',
@@ -181,7 +180,7 @@ lan_caretilt_user = User.create!(
 
 madi_care_user = User.create!(
   email: 'maditurpin@gmail.com',
-  password: '123456',
+  password: '123123',
   first_name: 'Madi',
   last_name: 'Turpin',
   role: 'caretilt_master_user',
@@ -194,7 +193,7 @@ madi_care_user = User.create!(
 
 irene_user = User.create!(
   email: 'solordeveloper@gmail.com',
-  password: '123456',
+  password: '123123',
   first_name: 'Irene',
   last_name: 'Solar',
   role: 'caretilt_master_user',
@@ -207,7 +206,7 @@ irene_user = User.create!(
 
 irene_la_user = User.create!(
   email: 'irene@solorr.com',
-  password: '123456',
+  password: '123123',
   first_name: 'Irene',
   last_name: 'Tilt',
   role: 'la_super_user',
@@ -219,7 +218,7 @@ irene_la_user = User.create!(
 
 Madi_la_user = User.create!(
   email: 'madi@turpin.com',
-  password: '123456',
+  password: '123123',
   first_name: 'Madi2',
   last_name: 'Turpin2',
   role: 'la_super_user',
@@ -231,7 +230,7 @@ Madi_la_user = User.create!(
 
 Madi_care_user = User.create!(
   email: 'madi@care.com',
-  password: '123456',
+  password: '123123',
   first_name: 'Madi2',
   last_name: 'Turpin2',
   role: 'la_super_user',

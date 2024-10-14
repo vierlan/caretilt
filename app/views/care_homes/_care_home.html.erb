@@ -1,17 +1,17 @@
 <div id="<%= dom_id(home[:care_home]) %>" class="care-home overflow-hidden rounded-lg bg-white shadow-lg grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
-  
+
   <!-- Image Section (Responsive Positioning) -->
   <div class="flex justify-center items-center p-4 md:col-span-1 col-span-full">
-    <%= image_tag home[:care_home].thumbnail_or_default, 
-                  class: "carehome-preview-image w-full md:w-auto", 
-                  width: 200, 
-                  height: 200, 
+    <%= image_tag home[:care_home].thumbnail_or_default,
+                  class: "carehome-preview-image w-full md:w-auto",
+                  width: 200,
+                  height: 200,
                   alt: "thumbnail" %>
   </div>
 
   <!-- Info Section -->
   <div class="p-4 md:col-span-2 col-span-full flex flex-col justify-between">
-    
+
     <!-- Header with Title and Logo -->
     <div class="flex justify-between items-center">
       <div>
@@ -43,7 +43,7 @@
 
       <div>
         <h2 class="font-semibold">Services provided:</h2>
-        <ul class="list-disc list-inside mt-2 text-sm text-gray-600">
+        <ul class="list-disc list-inside mt-2 text-sm xl:text-base text-gray-600">
           <% home[:care_home].types_of_client_group.each do |service| %>
             <li><%= service %></li>
           <% end %>
@@ -52,7 +52,7 @@
 
       <!-- Action Buttons -->
       <div class="flex gap-2 justify-end mt-4">
-        <% if policy(home[:care_home]).edit? %> 
+        <% if policy(home[:care_home]).edit? %>
           <%= link_to 'Edit', edit_care_home_path(home[:care_home]), data: { turbo_frame: "main-content" }, class: "button-base-gradient" %>
         <% end %>
         <%= link_to 'More Details', care_home_path(home[:care_home]), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>

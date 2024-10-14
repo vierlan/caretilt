@@ -9,11 +9,6 @@ module.exports = {
     './app/views/**/*',
     './app/assets/stylesheets/**/*.css'
   ],
-  daisyui: {
-    themes: [
-      'fantasy'],
-  },
-  
   theme: {
     extend: {
 
@@ -27,6 +22,9 @@ module.exports = {
       },
       keyframes: {
         flashfade: { "0%, 100%": { opacity: "0" }, "5%, 80%": { opacity: "1" } },
+      },
+      screens: {
+        '3xl': '1660px',
       },
     },
   },
