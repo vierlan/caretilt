@@ -1,6 +1,10 @@
 <!-- views/care_homes/_form.html.erb -->
 
 <%# Same form used here for new and edit. New required company to attach to, edit just requires edit to append. %>
+      <div>
+        <h2 class="text-card-heading">Care Home Profile</h2>
+        <p class="mt-1 text-description-small">This information will be displayed publicly so be careful what you share.</p>
+      </div>
 <%= simple_form_for(@care_home, url: @care_home.new_record? ? company_care_homes_path(@company) : care_home_path(@care_home)) do |f| %>
 
   <!-- Hidden Fields are used to transmit data across privately -->
@@ -9,20 +13,14 @@
   <%= f.hidden_field :latitude, id: "latitude" %>
   <%= f.hidden_field :longitude, id: "longitude" %>
   <div class="space-y-12">
-<<<<<<< Updated upstream
+
     <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
       <div>
         <h2 class="text-card-heading">Care Home Profile</h2>
         <p class="mt-1 text-description-small">This information will be displayed publicly so be careful what you share.</p>
       </div>
       <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
-=======
 
-
-    <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-1">
-
-      <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-1">
->>>>>>> Stashed changes
         <!-- Website -->
         <div class="sm:col-span-6">
           <%= f.input :website, label: "Website", placeholder: "https://www.example.com", input_html: { id: "website" } %>
@@ -61,7 +59,7 @@
         </div>
         <!-- Type of Home -->
         <div class="sm:col-span-6">
-          <%= f.input :type_of_home, label: "Type of Home", collection: CareHome::TYPEHOME, include_blank: 'Select a type', input_html: { id: "type_of_home" } %>
+          <%= f.input :type_of_service, label: "Type of Service", collection: CareHome::TYPESERVICE, include_blank: 'Select a type', input_html: { id: "type_of_service" } %>
         </div>
         <!-- Types of Client Group -->
         <div class="sm:col-span-6">

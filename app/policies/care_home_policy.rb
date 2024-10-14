@@ -33,4 +33,12 @@ class CareHomePolicy < ApplicationPolicy
   def index?
     
   end
+
+  def new?
+    is_company_basic?
+  end
+
+  def create?
+    new?
+  end
 end

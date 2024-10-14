@@ -13,7 +13,7 @@
       <%= image_tag home[:care_home].thumbnail_or_default, class: "carehome-thumbnail", size:"200x200" %>
       <div class="provider-info">
         <div>
-          <h3 class="font-medium">Location Type: <span class="text-grey font-normal"><%= home[:care_home].type_of_home %></span></h3>
+          <h3 class="font-medium">Location Type: <span class="text-grey font-normal"><%= home[:care_home].type_of_service %></span></h3>
         </div>
         <div class="description mt-2 h-32 overflow-hidden">
           <p><%= home[:care_home].short_description %></p>

@@ -1,6 +1,6 @@
 <!-- views/care_homes/index.html.erb -->
 <turbo-frame id="main-content">
-  <%# Explanation:
+ <%# Explanation:
   Instead of passing @care_homes directly, we're now mapping over @care_homes to extract only the care_home object from each hash (home_data[:care_home]).
   We convert that array of care_home objects into JSON, as before, and limit it to include only the relevant attributes (:name, :latitude, :longitude, :local_authority_name). %>
 <<<<<<< Updated upstream
@@ -21,7 +21,7 @@
     <div class="display-map">
       <div data-controller="showplacesmap"
         data-showplacesmap-care-homes-value="<%= @care_homes.map { |home_data| home_data[:care_home] }.to_json(only: [:name, :latitude, :longitude, :local_authority_name]) %>"
-        data-showplacesmap-marker-url-value="<%= image_path('logo_trans.png') %>">
+        data-showplacesmap-marker-url-value="<%= image_path('location.png') %>">
       <div class="map-filter p-5">
         <!-- Form for Filtering -->
         <%= simple_form_for :care_home, url: care_homes_path, method: :get, html: { class: "form-inline" } do |f| %>
@@ -39,9 +39,9 @@
           <!-- Type of Home Dropdown with custom label -->
           <div class="col-span-1">
 <<<<<<< Updated upstream
-            <%= f.input :type_of_home, 
+            <%= f.input :type_of_home,
               label: "Type of Home",  # Explicitly set the label text here
-              collection: ['Any'] + CareHome.types_in_use, 
+              collection: ['Any'] + CareHome.types_in_use,
               selected: params.dig(:care_home, :type_of_home) || 'Any',
 =======
             <%= f.input :type_of_service,

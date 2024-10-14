@@ -10,11 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< Updated upstream
-ActiveRecord::Schema[7.2].define(version: 2024_10_11_084802) do
-=======
+
+
 ActiveRecord::Schema[7.2].define(version: 2024_10_11_135135) do
->>>>>>> Stashed changes
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -87,7 +85,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_11_135135) do
     t.string "main_contact"
     t.text "short_description"
     t.text "long_description"
-    t.string "type_of_home"
+    t.string "type_of_service"
     t.string "types_of_client_group", default: [], array: true
     t.bigint "company_id", null: false
     t.float "latitude"
@@ -227,7 +225,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_11_135135) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "subscribable_type"
-    t.string "invoices", default: [], array: true
     t.index ["package_id"], name: "index_subscriptions_on_package_id"
     t.index ["subscribable_type", "subscribable_id"], name: "index_subscriptions_on_subscribable_type_and_subscribable_id"
   end
