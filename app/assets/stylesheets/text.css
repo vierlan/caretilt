@@ -9,6 +9,10 @@
     /* @apply text-primary; */
 }
 
+.text-error{
+    @apply text-red-600 text-5xl font-bold p-6 my-6;
+}
+
 
 .text-description {
     @apply text-lg text-gray-700;

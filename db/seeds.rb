@@ -5,6 +5,17 @@
 # rails local_authorities:import
 
 # raise StandardError, "DO NOT RUN THIS IN PRODUCTION" if Rails.env.production?
+def destroy_all
+  puts "Destroying all records..."
+  Subscription.destroy_all
+  User.destroy_all
+  Room.destroy_all
+  CareHome.destroy_all
+  Company.destroy_all
+  Package.destroy_all
+  LocalAuthority.destroy_all
+  puts "All records destroyed."
+end
 
 # require 'seed_support/rewardful'
 
@@ -37,8 +48,8 @@ def create_packages
   puts "packages made"
 end
 
-create_packages()
 # Used as reference to delete all seeded things when re-seeding.
+def seed_entities
 seeded_org_names = ['Care Provider Company London', 'Care Provider Company London North']
 seeded_user_email = ['super@care1.com', 'super@care2.com', 'user@care1.com', 'super@la.com', 'user@la.com', 'super@caretilt.com', 'user@caretilt.com', 'caretilt@gmail.com']
 seeded_care_home_names = [
@@ -54,17 +65,20 @@ seeded_care_home_names = [
 ]
 
 puts "Deleting seeded users and care homes... \n"
-User.where(email: seeded_user_email).destroy_all
-CareHome.where(name: seeded_care_home_names).destroy_all
-Company.where(name: seeded_org_names).destroy_all
+
 
 # Create or find a company for the care provider user (if needed)
-company1 = Company.find_or_create_by!(name: 'Care Provider Company London')
-company2 = Company.find_or_create_by!(name: 'Care Provider Company North')
-localauthority = LocalAuthority.find_or_create_by!(name: 'Local Authority Organisation')
-# careprovidersuperuser.company = company
-
+company1 = Company.find_or_create_by!(name: 'Care Provider Company London', email: 'care1@care.com', address1: "234 Burnt Oak Broadway", address2: "Edgware", city: "Greater London", postcode: "HA80AP", website: "http://www.oaklodgemedicalcentre.co.uk/", companies_house_id: "12345678")
+company2 = Company.find_or_create_by!(name: 'Care Provider Company North', email: 'care2@care.com', address1: "432 Burnt Oak Broadway", address2: "Edgware", city: "Greater London", postcode: "HA80AP", website: "http://www.oaklodgemedicalcentre.co.uk/", companies_house_id: "12345678")
+localauthority = LocalAuthority.find_or_create_by!(name: 'Local Authority Organisation', email: 'la@care.com')
+end
 # Users
+
+def seed_users
+puts 'Seeding users...'
+company1 = Company.first
+company2 = Company.last
+localauthority = LocalAuthority.first
 careprovidersuperuser1 = User.create!(
   email: 'super@care1.com',
   password: '123456',
@@ -131,13 +145,40 @@ lauser = User.create!(
 )
 
 caretilt_superuser = User.create!(
-  email: 'super@caretilt.com',
-  password: '123456',
+  email: 'super@care.com',
+  password: '123123',
   first_name: 'Carey',
-  last_name: 'Tilt',
+  last_name: 'Supa',
   role: 'caretilt_master_user',
   status: 'verified',
+  phone_number: ENV['LAN_PHONE_NUMBER'],
+  company_id: company2,
+  verified: true,
+  admin: true
+)
+
+caretilt_superuser = User.create!(
+  email: 'user@care.com',
+  password: '123123',
+  first_name: 'Carey',
+  last_name: 'Usan',
+  role: 'care_provider_user',
+  status: 'verified',
+  phone_number: ENV['LAN_PHONE_NUMBER'],
+  company_id: company2,
+  verified: true,
+  admin: true
+)
+
+caretilt_superuser = User.create!(
+  email: 'super@caretilt.com',
+  password: '123123',
+  first_name: 'Carey',
+  last_name: 'Tilt',
+  role: 'care_provider_super_user',
+  status: 'verified',
   phone_number: ENV['DEV_PHONE_NUMBER'],
+  company: company1,
   verified: true,
   admin: true
 )
@@ -150,6 +191,7 @@ caretilt_user = User.create!(
   role: 'caretilt_user',
   status: 'verified',
   phone_number: ENV['DEV_PHONE_NUMBER'],
+  company: company1,
   verified: true
 )
 
@@ -175,7 +217,7 @@ lan_caretilt_user = User.create!(
   status: 'verified',
   phone_number: ENV['LAN_PHONE_NUMBER'],
   verified: true,
-  company: company2,
+  company: company1,
   admin: true
 )
 
@@ -199,7 +241,7 @@ irene_user = User.create!(
   last_name: 'Solar',
   role: 'caretilt_master_user',
   status: 'verified',
-  phone_number: ENV['+639925980374'],
+  phone_number: ENV['IRENE_NUMBER'],
   verified: true,
   company: company1,
   admin: true
@@ -217,7 +259,7 @@ irene_la_user = User.create!(
   local_authority: localauthority
 )
 
-Madi_la_user = User.create!(
+madi_la_user = User.create!(
   email: 'madi@turpin.com',
   password: '123456',
   first_name: 'Madi2',
@@ -229,7 +271,7 @@ Madi_la_user = User.create!(
   local_authority: localauthority
 )
 
-Madi_care_user = User.create!(
+madi_care_user = User.create!(
   email: 'madi@care.com',
   password: '123456',
   first_name: 'Madi2',
@@ -240,10 +282,10 @@ Madi_care_user = User.create!(
   verified: true,
   local_authority: localauthority
 )
-
+end
 
 # Attach all homes to the created user (since the user must be associated with a company)
-
+def seed_homes
 care_homes = [
   { name: "Oak Lodge Medical Centre", main_contact: "Mr Oak", short_description: "Burnt Oak Care Home", email: "oaklodge@care.com", phone_number:"02084332000",
     long_description: "Welcome to Oak Lodge Medical Practice. Our website has been designed to make it easy for you to gain instant access to the information you need.",
@@ -253,7 +295,7 @@ care_homes = [
   { name: "Bridgeside Lodge", main_contact: "Mr Lodge", short_description: "Bridgeside Lodge", long_description: "Welcome to Bridgeside Lodge Care Home in Islington, London. Situated by the beautiful Regent’s Canal.",
     type_of_service: "Nursing Home", types_of_client_group: ["Older People"], local_authority_name: "Greater London", latitude: 51.5327147, longitude: -0.0970986, address1: "61 Wharf Road", address2: "London", city: "Greater London", postcode: "N17RY", website: "https://www.foresthc.com/our-care-centres/bridgeside-lodge" },
   { name: "MHA Hampton Lodge", main_contact: "Mr Hampton", short_description: "MHA Lodge", long_description: "Hampton Lodge in Southampton provides high-quality nursing and residential dementia care for up to 44 people.",
-    type_of_service: "Dementia Care Home", types_of_client_group: ["Physical and/or Sensory Disabilities",c "Older People"], local_authority_name: "Southampton", latitude: 50.9122971, longitude: -1.4148484, address1: "33 Hill Lane", city: "Southampton", postcode: "SO155WF", website: "https://www.mha.org.uk/care-support/care-homes/hampton-lodge/", address2: "" },
+    type_of_service: "Dementia Care Home", types_of_client_group: ["Physical and/or Sensory Disabilities","Older People"], local_authority_name: "Southampton", latitude: 50.9122971, longitude: -1.4148484, address1: "33 Hill Lane", city: "Southampton", postcode: "SO155WF", website: "https://www.mha.org.uk/care-support/care-homes/hampton-lodge/", address2: "" },
   { name: "Brookvale House Care Home", main_contact: "Mrs Brookvale", short_description: "Brookvale", long_description: "Brookvale House is located in Portswood, Southampton, and offers an unrivalled programme of care and support.",
     type_of_service: "Semi Independent Living", types_of_client_group: ["Learning Disabilities and/or Autism", "Physical and/or Sensory Disabilities", "Older People"], local_authority_name: "Southampton", latitude: 50.9251556, longitude: -1.394676, address1: "4 Brookvale Road", city: "Southampton", postcode: "SO171QL", website: "http://www.brookvalehealthcare.co.uk/brookvale-care-home/", address2: "" },
   { name: "Mary & Joseph House", main_contact: "Mary", short_description: "Providing a safe, caring environment.", long_description: "Mary and Joseph House is proud to announce it is in the running for a prestigious national award.",
@@ -281,6 +323,7 @@ rooms = [
 
 
 care_homes[0..2].each do |care_home_attrs|
+  company1 = Company.first
   care_home = company1.care_homes.create!(care_home_attrs)
 
   # Randomly choose the number of rooms to create for each care home (between 0 and 5)
@@ -293,6 +336,7 @@ care_homes[0..2].each do |care_home_attrs|
 end
 
 care_homes[3..8].each do |care_home_attrs|
+  company2 = Company.last
   care_home = company2.care_homes.create!(care_home_attrs)
 
   # Randomly choose the number of rooms to create for each care home (between 0 and 5)
@@ -303,6 +347,15 @@ care_homes[3..8].each do |care_home_attrs|
     care_home.rooms.create!(room_attrs)
   end
 end
+end
 
-puts 'Seeded care homes and associated them with the care provider super user.'
-puts 'Randomly assigned rooms to each care home.'
+def run_all
+  destroy_all
+  create_packages
+  seed_entities
+  seed_users
+  puts 'Seeded care homes and associated them with the care provider super user.'
+  seed_homes
+  puts 'Randomly assigned rooms to each care home.'
+end
+run_all

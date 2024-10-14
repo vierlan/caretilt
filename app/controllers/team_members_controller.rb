@@ -55,7 +55,7 @@ class TeamMembersController < ApplicationController
       @member.role = 'la_user'
       @member.local_authority = @local_authority
     when 'caretilt_master_user' || 'caretilt_user'
-      @company = Company.find(1)
+      @company = current_user.company || Company.find(1)
       @member.role = 'caretilt_user'
       @member.company = @company
     else
@@ -91,7 +91,8 @@ class TeamMembersController < ApplicationController
   end
 
   def verify_member_update
-    @user = User.find(params[:id])
+    @user = current_user
+    @member = User.find(params[:id])
     @company = @user.company if @user.company
     @local_authority = @user.local_authority if @user.local_authority
 

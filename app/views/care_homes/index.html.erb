@@ -3,9 +3,9 @@
  <%# Explanation:
   Instead of passing @care_homes directly, we're now mapping over @care_homes to extract only the care_home object from each hash (home_data[:care_home]).
   We convert that array of care_home objects into JSON, as before, and limit it to include only the relevant attributes (:name, :latitude, :longitude, :local_authority_name). %>
-  
-  <% if policy(CareHome).new? %> 
-    <div class="flex justify-end">
+
+  <% if policy(CareHome).new? %>
+    <div class="flex justify-end z-12">
       <%= link_to "Add a New Service",
                   new_company_care_home_path(current_user.company),
                   data: { turbo_frame: "main-content" },
@@ -16,7 +16,7 @@
 
   <% if current_user %>
     <div class="display-map">
-      <div data-controller="showplacesmap" 
+      <div data-controller="showplacesmap"
         data-showplacesmap-care-homes-value="<%= @care_homes.map { |home_data| home_data[:care_home] }.to_json(only: [:name, :latitude, :longitude, :local_authority_name]) %>"
         data-showplacesmap-marker-url-value="<%= image_path('location.png') %>">
       <div class="map-filter p-5">
@@ -26,18 +26,18 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Local Authority Dropdown with custom label -->
           <div class="col-span-1">
-            <%= f.input :local_authority_name, 
+            <%= f.input :local_authority_name,
               label: "Local Authority",  # Explicitly set the label text here
-              collection: ['Any'] + @all_local_authorities.pluck(:nice_name), 
+              collection: ['Any'] + @all_local_authorities.pluck(:nice_name),
               selected: params.dig(:care_home, :local_authority_name) || 'Any',
               input_html: { class: 'custom-select custom-class' } %>
           </div>
 
           <!-- Type of Home Dropdown with custom label -->
           <div class="col-span-1">
-            <%= f.input :type_of_service, 
+            <%= f.input :type_of_service,
               label: "Type of Home",  # Explicitly set the label text here
-              collection: ['Any'] + CareHome.types_in_use, 
+              collection: ['Any'] + CareHome.types_in_use,
               selected: params.dig(:care_home, :type_of_service) || 'Any',
               input_html: { class: 'custom-select custom-class' } %>
           </div>
@@ -46,7 +46,7 @@
         <!-- Types of Client Group Multi-Checkbox -->
         <h2 class="text-description-small mt-8">Services Provided:</h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-1 py-5 col-span-6"> 
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-1 py-5 col-span-6">
           <%= f.collection_check_boxes :types_of_client_group, @types_of_client_group_options, :to_s, :to_s do |b| %>
             <div class="flex items-center space-x-2 mx-auto p-1">
               <%= b.check_box(class: 'mr-2') %>
