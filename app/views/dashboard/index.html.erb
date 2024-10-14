@@ -21,12 +21,10 @@
       </div>
     </div>
   </div>
-
   <!-- Desktop Sidebar -->
   <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
     <%= render "desktop_nav" %>
   </div>
-
   <!-- Mobile Top Bar with Toggle Button -->
   <div class="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-6 lg:hidden">
     <button type="button" class="-m-2.5 p-2.5 text-gray-900" data-action="click->togglevisibility#toggle">
@@ -43,38 +41,30 @@
       <img class="h-8 w-8 rounded-full bg-gray-50" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
     </a>
   </div>
-
   <main class="lg:pl-72">
-    <div class="xl:pr-72">
+    <div class="xl:max-2xl:pr-72 2xl:pr-96">
 
       <div class="text-center mb-4">
         <h1 class="mt-1 font-extrabold text-page-heading pt-10 md:pt-0">Caretilt Dashboard</h1>
       </div>
       <div class="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
         <turbo-frame id="main-content"
-          <% if current_user.company %>
-         src="<%= care_homes_path %>" >
-         <% else current_user.local_authority %>
-         src='<%= care_homes_path %>'
-         <% end %>
+          src="<%= current_user.company ? care_homes_path : current_user.local_authority ? care_homes_path : root_path %>">
         </turbo-frame>
       </div>
     </div>
   </main>
-
   <!-- Right Activity Feed Sidebar -->
-  <aside class="fixed inset-y-0 right-0 hidden w-1/4 overflow-y-auto border-l border-gray-200 px-4 py-6 sm:px-6 lg:px-8 xl:block">
-    <div>
-      <header class="flex items-center justify-between border-b border-white/5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
-        <h2 class="text-lg font-semibold leading-7 text-slate-800">Activity feed</h2>
-      </header>
-      <% @activity_feeds.each do |feed| %>
-        <turbo-frame id="activity-feed">
-          <ul role="list" class="divide-y divide-slate-300/50">
-            <%= render partial: "activity_feed", locals: {feed: feed} %>
-          </ul>
-        </turbo-frame>
-      <% end %>
-    </div>
-  </aside>
+  <div class="z-0 fixed inset-y-0 right-0 hidden overflow-y-auto border-l border-gray-200 px-4 py-6 sm:px-6 lg:px-8 xl:block w-1/4">
+    <header class="flex items-center justify-between border-b border-white/5 px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+      <h2 class="text-lg font-semibold leading-7 text-slate-800">Activity feed</h2>
+    </header>
+    <% @activity_feeds.each do |feed| %>
+      <turbo-frame id="activity-feed">
+        <ul role="list" class="divide-y divide-slate-300/50">
+          <%= render partial: "activity_feed", locals: {feed: feed} %>
+        </ul>
+      </turbo-frame>
+    <% end %>
+  </div>
 </div>

@@ -53,18 +53,18 @@
       </div>
       <!-- Mobile Links in Vertical List -->
       <div class="mt-6 space-y-2">
-        <%= link_to "Home", root_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
-        <%= link_to "About", about_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
-        <%= link_to "Free Calculator", pricing_calculator_path(:service_details), class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
-        <%= link_to "Pricing", pricing_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
-        <%= link_to "Guides", guides_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
+        <%= link_to "Home", root_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base 2xl:text-lg font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
+        <%= link_to "About", about_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base 2xl:text-lg font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
+        <%= link_to "Free Calculator", pricing_calculator_path(:service_details), class: "-mx-3 block rounded-lg px-3 py-2 text-base 2xl:text-lg font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
+        <%= link_to "Pricing", pricing_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base 2xl:text-lg font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
+        <%= link_to "Guides", guides_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base 2xl:text-lg font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
         <% if !current_user %>
-          <%= link_to "Contact", contact_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
-          <a href="/login" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log in <span aria-hidden="true">&rarr;</span></a>
-          <a href="/signup" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Register <span aria-hidden="true">&rarr;</span></a>
+          <%= link_to "Contact", contact_path, class: "-mx-3 block rounded-lg px-3 py-2 text-base 2xl:text-lg font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
+          <a href="/login" class="-mx-3 block rounded-lg px-3 py-2.5 text-base 2xl:text-lg font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log in <span aria-hidden="true">&rarr;</span></a>
+          <a href="/signup" class="-mx-3 block rounded-lg px-3 py-2.5 text-base 2xl:text-lg font-semibold leading-7 text-gray-900 hover:bg-gray-50">Register <span aria-hidden="true">&rarr;</span></a>
         <% else %>
-          <%= link_to "Dashboard", dashboard_index_path(current_user), class: "-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
-          <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
+          <%= link_to "Dashboard", dashboard_index_path(current_user), class: "-mx-3 block rounded-lg px-3 py-2.5 text-base 2xl:text-lg font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
+          <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "-mx-3 block rounded-lg px-3 py-2.5 text-base 2xl:text-lg font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
         <% end %>
       </div>
     </div>

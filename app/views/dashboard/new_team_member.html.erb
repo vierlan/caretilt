@@ -1,7 +1,7 @@
 <turbo-frame id="new_team_member">
   <div>
     <%= form_with url: add_team_member_company_path(@company), method: :post, local: true do |form| %>
-      <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
+      <label for="email" class="block text-sm xl:text-base font-medium leading-6 text-gray-900">Email</label>
       <div class="relative mt-2 rounded-md shadow-sm">
         <%= form.email_field :email, id: "email", class: "block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6", placeholder: "you@example.com", aria: { invalid: "true", describedby: "email-error" } %>
         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -10,7 +10,7 @@
           </svg>
         </div>
       </div>
-      <p class="mt-2 text-sm text-red-600" id="email-error">Not a valid email address.</p>
+      <p class="mt-2 text-sm xl:text-base text-red-600" id="email-error">Not a valid email address.</p>
       <%= form.submit "Add Team Member", class: "mt-4 btn bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg" %>
     <% end %>
   </div>

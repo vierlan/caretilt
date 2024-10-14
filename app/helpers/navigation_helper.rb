@@ -47,6 +47,11 @@ module NavigationHelper
         path: edit_company_path(current_user.company),
         icon: 'user'
       }
+      links << {
+        name: 'Care Home Search',
+        path: care_homes_path,
+        icon: 'home'
+      }
     when 'care_provider_super_user'
       links << {
         name: 'Team Management',
@@ -79,17 +84,23 @@ module NavigationHelper
         path: packages_path,
         icon: 'folder'
       }
+      links << {
+        name: 'Team Management',
+        path: team_local_authority_path(current_user.local_authority),
+        icon: 'team'
+      }
+      links << {
+        name: 'Care Home Search',
+        path: care_homes_path,
+        icon: 'home'
+      }
     when 'care_provider_user'
       links << {
         name: 'Care Service Management',
         path: care_homes_path,
         icon: 'home'
       }
-      links << {
-        name: 'Team Management',
-        path: team_local_authority_path(current_user.local_authority),
-        icon: 'team'
-      }
+
     when 'la_user'
       links << {
         name: 'Care Home Search',

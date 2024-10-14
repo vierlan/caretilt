@@ -81,8 +81,8 @@ company2 = Company.last
 localauthority = LocalAuthority.first
 careprovidersuperuser1 = User.create!(
   email: 'super@care1.com',
-  password: '123456',
-  password_confirmation: '123456',
+  password: '123123',
+  password_confirmation: '123123',
   first_name: 'Care',
   last_name: 'Provider',
   role: 'care_provider_super_user',
@@ -94,8 +94,8 @@ careprovidersuperuser1 = User.create!(
 
 careprovidersuperuser1 = User.create!(
   email: 'user@care1.com',
-  password: '123456',
-  password_confirmation: '123456',
+  password: '123123',
+  password_confirmation: '123123',
   first_name: 'Care',
   last_name: 'Provider',
   role: 'care_provider_user',
@@ -107,8 +107,8 @@ careprovidersuperuser1 = User.create!(
 
 careprovidersuperuser2 = User.create!(
   email: 'super@care2.com',
-  password: '123456',
-  password_confirmation: '123456',
+  password: '123123',
+  password_confirmation: '123123',
   first_name: 'Care',
   last_name: 'Provider',
   role: 'care_provider_super_user',
@@ -120,21 +120,21 @@ careprovidersuperuser2 = User.create!(
 
 lasuperuser = User.create!(
     email: 'super@la.com',
-    password: '123456',
-    password_confirmation: '123456',
+    password: '123123',
+    password_confirmation: '123123',
     first_name: 'Local',
     last_name: 'Super',
     role: 'la_super_user',
     status: 'verified',
     local_authority: localauthority,
-    phone_number: ENV['DEV_PHONE_NUMBER'],
+    phone_number: ENV['LAN_PHONE_NUMBER'],
     verified: true
 )
 
 lauser = User.create!(
     email: 'user@la.com',
-    password: '123456',
-    password_confirmation: '123456',
+    password: '123123',
+    password_confirmation: '123123',
     first_name: 'Local',
     last_name: 'User',
     role: 'la_user',
@@ -185,7 +185,7 @@ caretilt_superuser = User.create!(
 
 caretilt_user = User.create!(
   email: 'user@caretilt.com',
-  password: '123456',
+  password: '123123',
   first_name: 'Carey',
   last_name: 'Tilt',
   role: 'caretilt_user',
@@ -197,7 +197,7 @@ caretilt_user = User.create!(
 
 lan_la_user = User.create!(
   email: 'lananhnguyen@live.co.uk',
-  password: '123456',
+  password: '123123',
   first_name: 'Lan Ahn',
   last_name: 'Tilt',
   role: 'la_super_user',
@@ -210,7 +210,7 @@ lan_la_user = User.create!(
 
 lan_caretilt_user = User.create!(
   email: 'caretilt@gmail.com',
-  password: '123456',
+  password: '123123',
   first_name: 'Lan Ahn',
   last_name: 'Tilt',
   role: 'caretilt_master_user',
@@ -223,7 +223,7 @@ lan_caretilt_user = User.create!(
 
 madi_care_user = User.create!(
   email: 'maditurpin@gmail.com',
-  password: '123456',
+  password: '123123',
   first_name: 'Madi',
   last_name: 'Turpin',
   role: 'caretilt_master_user',
@@ -236,7 +236,7 @@ madi_care_user = User.create!(
 
 irene_user = User.create!(
   email: 'solordeveloper@gmail.com',
-  password: '123456',
+  password: '123123',
   first_name: 'Irene',
   last_name: 'Solar',
   role: 'caretilt_master_user',
@@ -249,7 +249,7 @@ irene_user = User.create!(
 
 irene_la_user = User.create!(
   email: 'irene@solorr.com',
-  password: '123456',
+  password: '123123',
   first_name: 'Irene',
   last_name: 'Tilt',
   role: 'la_super_user',
@@ -261,7 +261,7 @@ irene_la_user = User.create!(
 
 madi_la_user = User.create!(
   email: 'madi@turpin.com',
-  password: '123456',
+  password: '123123',
   first_name: 'Madi2',
   last_name: 'Turpin2',
   role: 'la_super_user',
@@ -273,7 +273,7 @@ madi_la_user = User.create!(
 
 madi_care_user = User.create!(
   email: 'madi@care.com',
-  password: '123456',
+  password: '123123',
   first_name: 'Madi2',
   last_name: 'Turpin2',
   role: 'la_super_user',
