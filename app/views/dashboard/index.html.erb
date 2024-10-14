@@ -45,18 +45,13 @@
   </div>
 
   <main class="lg:pl-72">
-    <div class="xl:pr-72">
-
+    <div class="xl:max-2xl:pr-72 2xl:pr-96">
       <div class="text-center mb-4">
         <h1 class="mt-1 font-extrabold text-page-heading pt-10 md:pt-0">Caretilt Dashboard</h1>
       </div>
       <div class="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
         <turbo-frame id="main-content"
-          <% if current_user.company %>
-         src="<%= care_homes_path %>" >
-         <% else current_user.local_authority %>
-         src='<%= care_homes_path %>'
-         <% end %>
+          src="<%= current_user.company ? care_homes_path : current_user.local_authority ? care_homes_path : root_path %>">
         </turbo-frame>
       </div>
     </div>

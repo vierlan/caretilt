@@ -6,6 +6,11 @@
   <p>Weekly Management Cost per User: £<%= @weekly_management_cost_per_user %></p>
   <p>Total Service User Cost per Week: £<%= @total_cost_per_user_per_week %></p>
 
+  <h3 class="text-lg font-semibold mt-6 mb-2">Additional Calculated Totals</h3>
+  <p>Total Overheads: £<%= @total_overheads %></p>
+  <p>Total Package Cost: £<%= @total_package_cost %></p>
+  <p>Total Hourly Rate: £<%= @total_hourly_rate %></p>
+
   <%= simple_form_for :calculator, url: wizard_path, method: :patch do |f| %>
     <div class="mb-4">
       <%= f.input :email, label: "Enter your email to receive this calculation", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
