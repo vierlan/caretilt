@@ -7,7 +7,21 @@
   <!-- Form to submit the OTP -->
   <div class="mt-8">
     <%= form_with url: verify_otp_path, method: :post, class: "space-y-6" do |form| %>
+<<<<<<< Updated upstream
       <div class="flex items-center space-x-4">
+=======
+
+      <!-- OTP Input Field -->
+      <div>
+        <%= form.label :otp_code, "Enter the verification code sent to your phone", class: "block text-sm xl:text-base font-medium text-gray-700" %>
+        <%= form.text_field :otp_code, class: "block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+      </div>
+
+      <!-- Verify Button -->
+      <div>
+        <%= form.submit "Verify", class: "w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+      </div>
+>>>>>>> Stashed changes
 
         <!-- OTP Input Field -->
         <div class="flex-1">

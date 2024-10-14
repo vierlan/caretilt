@@ -9,12 +9,20 @@
   <%= f.hidden_field :latitude, id: "latitude" %>
   <%= f.hidden_field :longitude, id: "longitude" %>
   <div class="space-y-12">
+<<<<<<< Updated upstream
     <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
       <div>
         <h2 class="text-card-heading">Care Home Profile</h2>
         <p class="mt-1 text-description-small">This information will be displayed publicly so be careful what you share.</p>
       </div>
       <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+=======
+
+
+    <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-1">
+
+      <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-1">
+>>>>>>> Stashed changes
         <!-- Website -->
         <div class="sm:col-span-6">
           <%= f.input :website, label: "Website", placeholder: "https://www.example.com", input_html: { id: "website" } %>
@@ -66,20 +74,20 @@
         </div>
         <!-- Local Authority -->
         <div class="col-span-6">
-          <%= f.input :local_authority_name, label: "Local Authority", 
-            collection: CareHome.cached_local_authority_names, 
-            prompt: 'Select a local authority', 
+          <%= f.input :local_authority_name, label: "Local Authority",
+            collection: CareHome.cached_local_authority_names,
+            prompt: 'Select a local authority',
             input_html: { class: 'custom-class' } %>
         </div>
         <!-- Short Description -->
         <div class="col-span-6">
           <%= f.input :short_description, label: "Short Description", as: :text, input_html: { id: "short_description", rows: 3 } %>
-          <p class="mt-3 text-sm leading-6 text-gray-600">A short description shown on search previews.</p>
+          <p class="mt-3 text-sm xl:text-base leading-6 text-gray-600">A short description shown on search previews.</p>
         </div>
          <!-- Short Description -->
         <div class="col-span-6">
           <%= f.input :long_description, label: "Long Description", as: :text, input_html: { id: "long_description", rows: 3 } %>
-          <p class="mt-3 text-sm leading-6 text-gray-600">A description to advertise your service on it's landing page.</p>
+          <p class="mt-3 text-sm xl:text-base leading-6 text-gray-600">A description to advertise your service on it's landing page.</p>
         </div>
          <!-- media Upload -->
         <div class="sm:col-span-6">
@@ -95,7 +103,7 @@
                 <% elsif media_file.video? %>
                   <%= video_tag media_file, controls: true, class: "uploaded-media form-image" %>
                 <% end %>
-                
+
                 <!-- Hidden field to store the media's position -->
                 <%= hidden_field_tag "media_order[#{media_file.id}]", index + 1, class: "media-position" %>
               </div>

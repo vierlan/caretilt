@@ -1,85 +1,81 @@
 <turbo-frame id="main-content">
   <div class="my-2">
-  <%= link_to sanitize("&larr; Back to homes"), care_home_rooms_path(@care_home), class: "btn mb-4 font-bold text-lg text-white bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg" %>
-
+    <%= link_to sanitize("&larr; Back to homes"), care_home_rooms_path(@care_home), class: "btn mb-4 font-bold text-lg text-white bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg" %>
   </div>
-
-<div class="relative border-b border-gray-200 pb-5 sm:pb-0">
-  <div class="md:flex md:items-center md:justify-between">
-    <div class="mt-4">
+  <div class="relative border-b border-gray-200 pb-5 sm:pb-0">
+    <div class="md:flex md:items-center md:justify-between">
+      <div class="mt-4">
         <h3 class="text-5xl text-blue-600 font-semibold leading-6"><%= @room.name %></h3>
-        <p class="mt-4 text-base text-gray-500">@care_home.name</p>
-    </div>
-    <div class="px-4 py-5 sm:px-6 col-span-2 flex justify-between">
+        <p class="mt-4 text-base 2xl:text-lg text-gray-500">@care_home.name</p>
+      </div>
+      <div class="px-4 py-5 sm:px-6 col-span-2 flex justify-between">
         <%= image_tag "advina.svg", size: "150x150" %>
+      </div>
+    </div>
+    <div class="mt-3 flex justify-end gap-4">
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"> View Website </button>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"> Send Email </button>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"> View Phone Number </button>
+    </div>
+    <div class="mt-4">
+      <!-- Dropdown menu on small screens -->
+      <div class="sm:hidden">
+        <label for="current-tab" class="sr-only">Select a tab</label>
+        <select id="current-tab" name="current-tab" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
+          <option>Applied</option>
+          <option>Phone Screening</option>
+          <option selected>Interview</option>
+          <option>Offer</option>
+          <option>Hired</option>
+        </select>
+      </div>
+      <!-- Tabs at small breakpoint and up -->
+      <div class="hidden sm:block">
+        <nav class="-mb-px flex space-x-8">
+          <!-- Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
+          <a href="#" class="whitespace-nowrap border-b-2 border-transparent px-1 pb-4 text-sm xl:text-base font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Summary</a>
+          <a href="#" class="whitespace-nowrap border-b-2 border-transparent px-1 pb-4 text-sm xl:text-base font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Photos</a>
+          <a href="#" class="whitespace-nowrap border-b-2 border-indigo-500 px-1 pb-4 text-sm xl:text-base font-medium text-indigo-600" aria-current="page">Available Rooms</a>
+          <a href="#" class="whitespace-nowrap border-b-2 border-transparent px-1 pb-4 text-sm xl:text-base font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Team</a>
+          <a href="#" class="whitespace-nowrap border-b-2 border-transparent px-1 pb-4 text-sm xl:text-base font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Location</a>
+        </nav>
+      </div>
     </div>
   </div>
-  <div class="mt-3 flex justify-end gap-4">
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"> View Website </button>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"> Send Email </button>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"> View Phone Number </button>
-  </div>
-  <div class="mt-4">
-    <!-- Dropdown menu on small screens -->
-    <div class="sm:hidden">
-      <label for="current-tab" class="sr-only">Select a tab</label>
-      <select id="current-tab" name="current-tab" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600">
-        <option>Applied</option>
-        <option>Phone Screening</option>
-        <option selected>Interview</option>
-        <option>Offer</option>
-        <option>Hired</option>
-      </select>
-    </div>
-    <!-- Tabs at small breakpoint and up -->
-    <div class="hidden sm:block">
-      <nav class="-mb-px flex space-x-8">
-        <!-- Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
-        <a href="#" class="whitespace-nowrap border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Summary</a>
-        <a href="#" class="whitespace-nowrap border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Photos</a>
-        <a href="#" class="whitespace-nowrap border-b-2 border-indigo-500 px-1 pb-4 text-sm font-medium text-indigo-600" aria-current="page">Available Rooms</a>
-        <a href="#" class="whitespace-nowrap border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Team</a>
-        <a href="#" class="whitespace-nowrap border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700">Location</a>
-      </nav>
-    </div>
-
-  </div>
-</div>
-
-<%= render partial: 'shared/carousel', locals: { media: @care_home.photos + @care_home.videos } %>
-
-<div class="bg-white py-24 sm:py-32">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
-      <dl class="col-span-2 grid grid-cols-1 gap-x-8 gap-y-10 text-base leading-7 text-gray-600 sm:grid-cols-2 lg:gap-y-16">
-        <div class="relative pl-9">
-          <dt class="font-semibold text-gray-900">
-          <svg fill="currentColor" aria-hidden="true" class="absolute left-0 top-1 h-5 w-5 text-indigo-500" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="m12.223 11.641-.223.22-.224-.22a2.224 2.224 0 0 0-3.125 0 2.13 2.13 0 0 0 0 3.07L12 18l3.349-3.289a2.13 2.13 0 0 0 0-3.07 2.225 2.225 0 0 0-3.126 0z"/><path d="m21.707 11.293-9-9a.999.999 0 0 0-1.414 0l-9 9A1 1 0 0 0 3 13h1v7c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-7h1a1 1 0 0 0 .707-1.707zM18.001 20H6v-9.585l6-6 6 6V15l.001 5z"/></svg>
-            Type Of Home
-          </dt>
-          <dd class="mt-2">Adult Home</dd>
-        </div>
-        <div class="relative pl-9">
-          <dt class="font-semibold text-gray-900">
-            <svg class="absolute left-0 top-1 h-5 w-5 text-indigo-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
-            </svg>
-            Services Provided / Type Of Client Group
-          </dt>
-          <dd class="mt-2">
-            <div>
-              <ul class="list-disc list-inside mt-2">
+  <%= render partial: 'shared/carousel', locals: { media: @care_home.photos + @care_home.videos } %>
+  <div class="bg-white py-24 sm:py-32">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
+        <dl class="col-span-2 grid grid-cols-1 gap-x-8 gap-y-10 text-base 2xl:text-lg leading-7 text-gray-600 sm:grid-cols-2 lg:gap-y-16">
+          <div class="relative pl-9">
+            <dt class="font-semibold text-gray-900">
+              <svg fill="currentColor" aria-hidden="true" class="absolute left-0 top-1 h-5 w-5 text-indigo-500" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="m12.223 11.641-.223.22-.224-.22a2.224 2.224 0 0 0-3.125 0 2.13 2.13 0 0 0 0 3.07L12 18l3.349-3.289a2.13 2.13 0 0 0 0-3.07 2.225 2.225 0 0 0-3.126 0z"/><path d="m21.707 11.293-9-9a.999.999 0 0 0-1.414 0l-9 9A1 1 0 0 0 3 13h1v7c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-7h1a1 1 0 0 0 .707-1.707zM18.001 20H6v-9.585l6-6 6 6V15l.001 5z"/></svg>
+              Type Of Home
+            </dt>
+            <dd class="mt-2">Adult Home</dd>
+          </div>
+          <div class="relative pl-9">
+            <dt class="font-semibold text-gray-900">
+              <svg class="absolute left-0 top-1 h-5 w-5 text-indigo-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+              </svg>
+              Services Provided / Type Of Client Group
+            </dt>
+            <dd class="mt-2">
+              <div>
+                <ul class="list-disc list-inside mt-2">
                   <li><span>Core fee level: £</span><%= @room.core_fee_level %></li>
-                  <li><span>Core hours of care: </span><%= @room.core_hours_of_care %></li><span> hours per week</span>
+                  <li><span>Core hours of care: </span><%= @room.core_hours_of_care %></li>
+                  <span> hours per week</span>
                   <li><span>Additional fees associated:</span><%= @room.additional_fees_associated %></li>
                   <li><span>Room type: </span><%= @room.single_double %></li>
                   <li><span>Ensuite? </span><%= @room.ensuite %></li>
-              </ul>
+                </ul>
+              </div>
+            </dd>
           </div>
-          </dd>
-        </div>
-      </dl>
+        </dl>
+      </div>
     </div>
   </div>
-</div>
 </turbo-frame>
