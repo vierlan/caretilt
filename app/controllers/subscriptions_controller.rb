@@ -24,7 +24,7 @@ class SubscriptionsController < ApplicationController
       package_id: @package.id,
       active: false,
       expires_on: Time.now + 1.year,
-      next_payment_date: Time.now + 1.year,
+      next_payment_date: Time.now,
       subscribed_on: Time.now
     )
     if @subscription.save!
@@ -78,7 +78,7 @@ class SubscriptionsController < ApplicationController
 
     if @subscription.save!
       @subscription.check_status
-      redirect_to packages_index_path, notice: 'Subscription was successfully updated.'
+      redirect_to packages_path, notice: 'Subscription was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -93,6 +93,14 @@ class SubscriptionsController < ApplicationController
     # Redirect to the subscriptions page with a success message
     redirect_to companies_path, notice: 'Deactivation task has been triggered for expired subscriptions.'
   end
+
+  def payment_received
+    # Fetch the required params
+    @subscription = Subscription.find(params[:id])
+    @sunscription.update(active: true, next_payment_date: Time.now + 1.year, expires_on: Time.now + 1.year)
+    redirect_to packages_path, notice: 'Payment received. Subscription has been activated.'
+  end
+
 
   private
 
