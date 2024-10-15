@@ -27,7 +27,6 @@ module Caretilt
     # background jobs
     config.active_job.queue_adapter = :delayed
 
-    # mailers via postmark
     config.action_mailer.default_url_options = { host: ENV['BASE_URL'] }
 
     # serve images from asset pipeline in mailers
