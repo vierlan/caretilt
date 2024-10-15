@@ -2,7 +2,8 @@ class DashboardController < ApplicationController
   before_action :authenticate_user!
   before_action :check_two_factor_authentication
   before_action :ensure_onboarding_complete
-  
+  before_action :check_subscription
+
   def index
     @user = current_user
     @activity_feeds = []
@@ -67,6 +68,28 @@ class DashboardController < ApplicationController
   def account; end
 
   private
+
+  def check_subscription
+    case current_user.role
+    when 'caretlit_master_user', 'caretilt_user'
+      return true
+    when 'care_provider_super_user', 'care_provider_user'
+      status = current_user.company.has_active_subscription?
+    when 'la_super_user', 'la_user'
+      status = current_user.local_authority.has_active_subscription?
+    end
+    unless status && current_user.status == 'verified'
+      case current_user.role
+      when 'care_provider_super_user', 'la_super_user'
+        redirect_to packages_path, alert: 'Please subscribe to a package to continue.'
+      when 'care_provider_user'
+        redirect_to error_path, alert: 'Your company has not subscribed to a package yet.'
+      when 'la_user'
+        redirect_to error_path, alert: 'Your local authority has not subscribed to a package yet.'
+      end
+    end
+  end
+
 
   def ensure_onboarding_complete
     unless current_user.onboarding_complete?

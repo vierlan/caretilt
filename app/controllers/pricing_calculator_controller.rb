@@ -38,20 +38,25 @@ class PricingCalculatorController < ApplicationController
     def update
         # Merge submitted data with existing session data
         session[:calculator_data] ||= {}
+        data = session[:calculator_data]
         session[:calculator_data].merge!(calculator_params)
+        # @total_overheads = session[:calculator_data][:total_overheads]
+        # @total_package_cost = session[:calculator_data][:total_package_cost]
+        # @total_hourly_rate = session[:calculator_data][:total_hourly_rate]
 
 
         # If we're on the last step, calculate totals and send the email
         if step == :summary
             calculate_totals
+
             if params[:calculator][:email].present?
             # Send email with results
             CalculatorMailer.send_calculation(
                 params[:calculator][:email],
                 {
-                core_cost_per_user_day: @core_cost_per_user_day,
-                weekly_management_cost_per_user: @weekly_management_cost_per_user,
-                total_cost_per_user_per_week: @total_cost_per_user_per_week
+                    total_overheads: @total_overheads,
+                    total_package_cost: @total_package_cost,
+                    total_hourly_rate: @total_hourly_rate
                 }
             ).deliver_now
             end
@@ -67,22 +72,49 @@ class PricingCalculatorController < ApplicationController
     def calculator_params
         params.require(:calculator).permit(
         :number_of_units, :number_of_vacancies, :total_beds_flats,
-        :core_staff_day_rate, :day_hours, :staff_day,
-        :core_staff_night_rate, :night_hours, :staff_night, :sleep_in_rate, :sleep_in_staff,
-        :manager_count, :manager_salary, :manager_time_percent,
-        :recruitment_training_budget, :staff_apportionment_percent,
-        :additional_hourly_rate, :one_on_one_hours, :two_on_one_hours,
-        :overheads
+        :core_staff_day_rate, :day_hours, :staff_day, :core_cost_per_user, :total_hours_per_user,
+        :core_staff_night_rate, :night_hours, :staff_night, :sleep_in_rate, :sleep_in_staff, :core_cost_night, :total_hours_night,
+        :manager_count, :manager_salary, :manager_time_percent, :weekly_management_cost_per_user,
+        :recruitment_training_budget, :staff_apportionment_percent, :weekly_training_cost_per_user,
+        :additional_hourly_rate, :one_on_one_hours, :two_on_one_hours, :total_additional_cost, :total_service_user_cost, :total_additional_hours_for_servcice_user,
+        :overheads, :central_overhead_rate, :surplus, :surplus_rate, :contingency, :contingency_rate,
+        :total_additional_hours, :total_overheads, :total_package_cost, :total_hourly_rate,
+        :total_additional_hours_for_service_user, :core_cost_per_user_day,
+        :email
+
         )
     end
 
     # Calculation logic for totals displayed on the summary page
     def calculate_totals
         data = session[:calculator_data]
+        # Example calculations - ensure the required fields are in session data
+        contingency_rate = data['contingency_rate'].to_f
+        surplus_rate = data['surplus_rate'].to_f
+        central_overhead_rate = data['central_overhead_rate'].to_f
+        total_service_user_cost = data['total_service_user_cost'].to_f
+        total_additional_hours = data['total_additional_hours'].to_f
+        total_hours_per_user = data['total_hours_per_user'].to_f
 
-        # Example calculations (customize as needed)
-        @core_cost_per_user_day = data[:core_staff_day_rate].to_f * data[:day_hours].to_f * data[:staff_day].to_f / data[:number_of_units].to_f
-        @weekly_management_cost_per_user = (data[:manager_salary].to_f * (data[:manager_time_percent].to_f / 100)) / 52 / data[:number_of_units].to_f
-        @total_cost_per_user_per_week = @core_cost_per_user_day + @weekly_management_cost_per_user + data[:overheads].to_f
-    end
+        # Calculate Total Overheads as the sum of rates
+        @total_overheads = contingency_rate + surplus_rate + central_overhead_rate
+
+        # Calculate Total Package Cost
+        @total_package_cost = @total_overheads + total_service_user_cost
+
+        # Calculate Total Hourly Rate
+        @total_hourly_rate = @total_package_cost / (total_additional_hours + total_hours_per_user)
+
+        Rails.logger.debug "Contingency Rate: #{contingency_rate}"
+        Rails.logger.debug "Surplus Rate: #{surplus_rate}"
+        Rails.logger.debug "Central Overhead Rate: #{central_overhead_rate}"
+        Rails.logger.debug "Total Service User Cost: #{total_service_user_cost}"
+        Rails.logger.debug "Total Additional Hours: #{total_additional_hours}"
+        Rails.logger.debug "Total Hours per User: #{total_hours_per_user}"
+
+        # Store calculated values in session
+        session[:calculator_data][:total_overheads] = @total_overheads
+        session[:calculator_data][:total_package_cost] = @total_package_cost
+        session[:calculator_data][:total_hourly_rate] = @total_hourly_rate
+      end
 end

@@ -75,25 +75,4 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: [:phone_number, :first_name, :last_name])
   end
 
-  def verify_user
-    @user = current_user
-    @company = @user.company
-
-    # Check if the user has entered a valid registration pin and if password is being changed
-    if validate_registration_pin && password_change_requested?
-      if request.patch? && @user.update(user_params.except(:registration_pin))
-        @user.update(status: 'password_changed') # Update status after successful update
-        redirect_to root_path, notice: "Password successfully updated."
-      else
-        flash.now[:alert] = "Error updating password: " + @user.errors.full_messages.to_sentence
-        render :edit # or another view to show the form again
-      end
-    else
-      @user.errors.add(:registration_pin, "is invalid") unless validate_registration_pin
-      flash.now[:alert] = @user.errors.full_messages.to_sentence
-      render :edit
-    end
-  end
-
-
 end

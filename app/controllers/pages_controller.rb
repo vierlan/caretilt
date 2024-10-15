@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
 
-  skip_before_action :authenticate_user!  # , except: [:logout]
+  skip_before_action :authenticate_user!  
 
   def home
     # @current_user = current_user
