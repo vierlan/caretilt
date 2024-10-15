@@ -26,11 +26,27 @@
       <%= f.number_field :total_additional_cost, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "totalAdditionalCost" } %>
     </div>
 
+    
     <!-- Total Service User Cost per Week (£) -->
     <div class="mb-4">
       <%= f.label :total_service_user_cost, "Total Service User Cost per Week (£)" %>
       <%= f.number_field :total_service_user_cost, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "totalServiceUserCost" } %>
     </div>
+
+
+      <!-- Total Additional 1:1 and 2:1 Hours for Service User -->
+    <div class="mb-4">
+      <%= f.label :total_additional_hours_for_service_user, "Total Additional Hours for Service User" %>
+      <%= f.number_field :total_additional_hours_for_service_user, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "totalAdditionalHours" } %>
+    </div>
+
+  
+
+   <!-- Hidden fields for core costs, training, etc. -->
+    <%= f.hidden_field :core_cost_per_user_day, value: session['calculator_data']['core_cost_per_user'], data: { calculator_target: "coreCostPerUserDay" } %>
+    <%= f.hidden_field :core_cost_night, value: session['calculator_data']['core_cost_night'], data: { calculator_target: "coreCostNight" } %>
+    <%= f.hidden_field :weekly_management_cost_per_user, value: session['calculator_data']['weekly_management_cost_per_user'], data: { calculator_target: "weeklyManagementCost" } %>
+    <%= f.hidden_field :weekly_training_cost_per_user, value: session['calculator_data']['weekly_training_cost_per_user'], data: { calculator_target: "weeklyTrainingCost" } %>
 
     <%= f.button :submit, "Next", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
   <% end %>
