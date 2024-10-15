@@ -12,7 +12,12 @@
       <span class="text-sm font-semibold leading-6 text-gray-600"><%= package.validity == 1 ? "/Monthly" : "/Annually" %></span>
     <% end %>
   </p>
-  <a href="/stripe/checkout" aria-describedby="tier-hobby" class="mt-6 block rounded-md px-3 py-2 text-center text-sm xl:text-base font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Buy plan</a>
+  <!-- Buy plan button -->
+  <% if controller.controller_name == 'packages' %>
+    <a href="/stripe/checkout" aria-describedby="tier-hobby" class="mt-6 block rounded-md px-3 py-2 text-center text-sm xl:text-base font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Buy plan</a>
+  <% else %>
+    <%= link_to "Start Registration", new_user_registration_path, class: "button-caretilt" %>
+  <% end %>
   <% starter_plan_features = package.features %>
   <ul role="list" class="mt-8 space-y-3 text-description-small">
     <% starter_plan_features.each do |feature| %>
