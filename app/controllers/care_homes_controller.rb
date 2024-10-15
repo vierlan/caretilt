@@ -25,7 +25,7 @@ class CareHomesController < ApplicationController
     # @care_homes = CareHome.all
 
     # Use Pundit to scope the care homes based on the user's role
-    @care_homes = policy_scope(CareHome)
+    @care_homes = policy_scope(CareHome).order(:name)
 
     if params[:care_home]
       # Local authority filter (if not "Any")

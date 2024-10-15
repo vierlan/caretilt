@@ -5,26 +5,26 @@
             <%= package.description %>          </p>
           <p class="mt-6 flex items-baseline gap-x-1">
             <!-- Price, update based on frequency toggle state -->
-            <span class="text-4xl font-bold tracking-tight text-gray-900"><%= package.price %></span>
+            <span class="text-4xl font-bold tracking-tight text-gray-900">£<%= package.price %></span>
             <!-- Payment frequency, update based on frequency toggle state -->
             <% if package.validity == 12 %>
-              <span class="text-sm font-semibold leading-6 text-gray-600">/annum</span>
+              <span class="text-lg font-semibold leading-6 text-gray-600">/annually</span>
             <% elsif package.validity == 1 %>
-              <span class="text-sm font-semibold leading-6 text-gray-600">/month</span>
+              <span class="text-lg font-semibold leading-6 text-gray-600">/month</span>
             <% else %>
-              <span class="text-sm font-semibold leading-6 text-gray-600"> Credits</span>
-            <% end %>
+              <span class="text-lg font-semibold leading-6 text-gray-600"> for <%= package.credits %> Credits</span>
+              <p style="text-align: center;">(Add-on)</p>      <% end %>
           </p>
           <% if package.validity == 0 %>
-            <%= link_to "Add credits!", checkout_add_credits_path(price_id: package.stripe_price_id), data: {turbo: 'false'}, class: "mt-6 block rounded-md px-3 py-2 text-center text-sm xl:text-base font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
-          <% elsif package.subscription_type == "company" %>
-            <%= link_to "buy Now!", checkout_path(package: package), data: {turbo: 'false'}, class: "mt-6 block rounded-md px-3 py-2 text-center text-sm xl:text-base font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+            <%= link_to "Add credits!", checkout_add_credits_path(price_id: package.stripe_price_id), data: {turbo: 'false'}, class: "button-caretilt" %>
+          <% elsif package.subscription_type == "company_subscription" %>
+            <%= link_to "Buy Now!", checkout_path(package: package), data: {turbo: 'false'}, class: "button-caretilt" %>
           <% elsif current_user.local_authority.present? %>
             <%= form_with model: @subscription, url: package_subscriptions_path(package), method: :post, local: true do |f| %>
               <!-- Add your form fields here -->
               <%= f.hidden_field :local_authority_id, value: @local_authority.id %>
               <div class="actions">
-                <%= f.submit "Create Subscription", class: "btn btn-primary" %>
+                <%= f.submit "Create Subscription", class: "button-caretilt" %>
               </div>
             <% end %>
           <% end %>
