@@ -30,8 +30,8 @@
   <body class="bg-gradient-design overflow-x-hidden">
     <%# Give a console unless in production environment. %>
     <% unless ENV['RAILS_ENV'] == 'production' %>
-    <% end %>
       <%= console %>
+    <% end %>
 
     <% if controller.controller_name == "dashboard" %>
       <main class="container mt-14 ">
