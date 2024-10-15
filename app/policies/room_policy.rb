@@ -33,8 +33,8 @@ class RoomPolicy < ApplicationPolicy
     index?
   end
 
-  def patch?
-    index?
+  def update?
+    edit?
   end
 
   def destroy?

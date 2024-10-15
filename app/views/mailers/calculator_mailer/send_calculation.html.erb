@@ -1,6 +1,7 @@
 <%# email sent to user %>
+<!-- app/views/calculator_mailer/send_calculation.html.erb -->
 
 <h1>Your Pricing Calculation Results</h1>
-<p>Total Overheads: £<%= session['calculator_data']['total_overheads'] %></p>
-<p>Total Package Cost: £<%= session['calculator_data']['total_package_cost'] %></p>
-<p>Total Hourly Rate: £<%= session['calculator_data']['total_hourly_rate'] %></p>
+<p>Total Overheads: £<%= @total_overheads %></p>
+<p>Total Package Cost: £<%= @total_package_cost %></p>
+<p>Total Hourly Rate: £<%= @total_hourly_rate %></p>

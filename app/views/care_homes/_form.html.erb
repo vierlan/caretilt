@@ -1,10 +1,7 @@
 <!-- views/care_homes/_form.html.erb -->
 
 <%# Same form used here for new and edit. New required company to attach to, edit just requires edit to append. %>
-      <div>
-        <h2 class="text-card-heading">Care Home Profile</h2>
-        <p class="mt-1 text-description-small">This information will be displayed publicly so be careful what you share.</p>
-      </div>
+
 <%= simple_form_for(@care_home, url: @care_home.new_record? ? company_care_homes_path(@company) : care_home_path(@care_home)) do |f| %>
 
   <!-- Hidden Fields are used to transmit data across privately -->
@@ -15,7 +12,7 @@
   <div class="space-y-12">
 
     <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
-      <div>
+      <div class="md:col-span-6">
         <h2 class="text-card-heading">Care Home Profile</h2>
         <p class="mt-1 text-description-small">This information will be displayed publicly so be careful what you share.</p>
       </div>
