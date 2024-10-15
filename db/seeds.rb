@@ -76,8 +76,6 @@ end
 
 def seed_users
 puts 'Seeding users...'
-company1 = Company.first
-company2 = Company.last
 localauthority = LocalAuthority.first
 careprovidersuperuser1 = User.create!(
   email: 'super@care1.com',
@@ -152,7 +150,7 @@ caretilt_superuser = User.create!(
   role: 'caretilt_master_user',
   status: 'verified',
   phone_number: ENV['LAN_PHONE_NUMBER'],
-  company_id: company2,
+  company: company2,
   verified: true,
   admin: true
 )
@@ -165,7 +163,7 @@ caretilt_superuser = User.create!(
   role: 'care_provider_user',
   status: 'verified',
   phone_number: ENV['LAN_PHONE_NUMBER'],
-  company_id: company2,
+  company: company2,
   verified: true,
   admin: true
 )

@@ -92,7 +92,11 @@ class DashboardController < ApplicationController
   def ensure_onboarding_complete
     unless current_user.onboarding_complete?
       # Redirect to the appropriate wizard step if onboarding is not complete
-      redirect_to after_signup_path(:add_name)
+      if current_user.role == 'care_provider_super_user' || current_user.role == 'la_super_user'
+        redirect_to after_signup_path(:add_name)
+      else
+        redirect_to error2_path, alert: 'Your account is not yet activated. Please contact your company admin.'
+      end
     end
   end
 end
