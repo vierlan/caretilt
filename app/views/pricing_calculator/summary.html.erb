@@ -2,14 +2,10 @@
 <%= render layout: 'pricing_calculator/calculator_layout' do %>
   <h2 class="text-xl font-bold mb-4">Summary</h2>
 
-  <p>Core Cost per Service User (Day): £<%= @core_cost_per_user_day %></p>
-  <p>Weekly Management Cost per User: £<%= @weekly_management_cost_per_user %></p>
-  <p>Total Service User Cost per Week: £<%= @total_cost_per_user_per_week %></p>
-
   <h3 class="text-lg font-semibold mt-6 mb-2">Additional Calculated Totals</h3>
-  <p>Total Overheads: £<%= @total_overheads %></p>
-  <p>Total Package Cost: £<%= @total_package_cost %></p>
-  <p>Total Hourly Rate: £<%= @total_hourly_rate %></p>
+  <p>Total Overheads: £<%= session['calculator_data']['total_overheads'] %></p>
+  <p>Total Package Cost: £<%= session['calculator_data']['total_package_cost'] %></p>
+  <p>Total Hourly Rate: £<%= session['calculator_data']['total_hourly_rate'] %></p>
 
   <%= simple_form_for :calculator, url: wizard_path, method: :patch do |f| %>
     <div class="mb-4">
