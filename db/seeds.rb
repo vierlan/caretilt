@@ -64,6 +64,10 @@ localauthority = LocalAuthority.find_or_create_by!(name: 'Local Authority Organi
 # careprovidersuperuser.company = company
 
 # Users
+
+def seed_users
+puts 'Seeding users...'
+localauthority = LocalAuthority.first
 careprovidersuperuser1 = User.create!(
   email: 'super@care1.com',
   password: '123123',
@@ -127,6 +131,32 @@ lauser = User.create!(
     local_authority: localauthority,
     phone_number: ENV['DEV_PHONE_NUMBER'],
     verified: true
+)
+
+caretilt_superuser = User.create!(
+  email: 'super@care.com',
+  password: '123123',
+  first_name: 'Carey',
+  last_name: 'Supa',
+  role: 'caretilt_master_user',
+  status: 'verified',
+  phone_number: ENV['LAN_PHONE_NUMBER'],
+  company: company2,
+  verified: true,
+  admin: true
+)
+
+caretilt_superuser = User.create!(
+  email: 'user@care.com',
+  password: '123123',
+  first_name: 'Carey',
+  last_name: 'Usan',
+  role: 'care_provider_user',
+  status: 'verified',
+  phone_number: ENV['LAN_PHONE_NUMBER'],
+  company: company2,
+  verified: true,
+  admin: true
 )
 
 caretilt_superuser = User.create!(
