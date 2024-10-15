@@ -12,78 +12,78 @@
           </div>
           <div class="flex flex-col space-y-4">
             <div>
-              <%= f.label :first_name, "First Name", class: "block text-sm font-medium text-gray-700" %>
+              <%= f.label :first_name, "First Name", class: "block text-sm xl:text-base font-medium text-gray-700" %>
               <%= f.text_field :first_name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm" %>
             </div>
             <div>
-              <%= f.label :last_name, "Last Name", class: "block text-sm font-medium text-gray-700" %>
+              <%= f.label :last_name, "Last Name", class: "block text-sm xl:text-base font-medium text-gray-700" %>
               <%= f.text_field :last_name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm" %>
             </div>
             <div>
-              <%= f.label :email, "Email", class: "block text-sm font-medium text-gray-700" %>
+              <%= f.label :email, "Email", class: "block text-sm xl:text-base font-medium text-gray-700" %>
               <%= f.email_field :email, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm" %>
             </div>
             <div>
-              <%= f.label :phone_number, "Phone Number", class: "block text-sm font-medium text-gray-700" %>
+              <%= f.label :phone_number, "Phone Number", class: "block text-sm xl:text-base font-medium text-gray-700" %>
               <%= f.text_field :phone_number, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm" %>
             </div>
-            <% if @member.company_id == 1 %>
+            <% if @user.role == "caretilt_master_user"  %> <!-- Check if the user is a caretilt user -->
               <div>
-                <%= f.label :role, "Role", class: "block text-sm font-medium text-gray-700" %>
+                <%= f.label :role, "Role", class: "block text-sm xl:text-base font-medium text-gray-700" %>
                 <div class="mt-1">
                   <%= f.radio_button :role, :caretilt_master_user, class: "mr-2" %>
-                  <%= f.label :role_caretilt_master_user, "Super User", class: "inline-block text-sm font-medium text-gray-700" %>
+                  <%= f.label :role_caretilt_master_user, " Care tilt Super User", class: "inline-block text-sm xl:text-base font-medium text-gray-700" %>
                 </div>
                 <div class="mt-1">
                   <%= f.radio_button :role, :caretilt_user, class: "mr-2" %>
-                  <%= f.label :role_caretilt_user, "User", class: "inline-block text-sm font-medium text-gray-700" %>
+                  <%= f.label :role_caretilt_user, "Care Tilt User", class: "inline-block text-sm xl:text-base font-medium text-gray-700" %>
                 </div>
               </div>
-            <% elsif @member.company_id.present? %>
+            <% elsif @user.role == "care_provider_super_user" %>
               <div>
-                <%= f.label :role, "Role", class: "block text-sm font-medium text-gray-700" %>
+                <%= f.label :role, "Role", class: "block text-sm xl:text-base font-medium text-gray-700" %>
                 <div class="mt-1">
                   <%= f.radio_button :role, :care_provider_super_user, class: "mr-2" %>
-                  <%= f.label :role_care_provider_super_user, "Super User", class: "inline-block text-sm font-medium text-gray-700" %>
+                  <%= f.label :role_care_provider_super_user, "Super User", class: "inline-block text-sm xl:text-base font-medium text-gray-700" %>
                 </div>
                 <div class="mt-1">
                   <%= f.radio_button :role, :care_provider_user, class: "mr-2" %>
-                  <%= f.label :role_care_provider_user, "User", class: "inline-block text-sm font-medium text-gray-700" %>
+                  <%= f.label :role_care_provider_user, "User", class: "inline-block text-sm xl:text-base font-medium text-gray-700" %>
                 </div>
               </div>
             <% else %>
               <div>
-                <%= f.label :role, "Role", class: "block text-sm font-medium text-gray-700" %>
+                <%= f.label :role, "Role", class: "block text-sm xl:text-base font-medium text-gray-700" %>
                 <div class="mt-1">
                   <%= f.radio_button :role, :la_super_user, class: "mr-2" %>
-                  <%= f.label :role_la_super_user, "Super User", class: "inline-block text-sm font-medium text-gray-700" %>
+                  <%= f.label :role_la_super_user, "Super User", class: "inline-block text-sm xl:text-base font-medium text-gray-700" %>
                 </div>
                 <div class="mt-1">
                   <%= f.radio_button :role, :la_user, class: "mr-2" %>
-                  <%= f.label :role_la_user, "User", class: "inline-block text-sm font-medium text-gray-700" %>
+                  <%= f.label :role_la_user, "User", class: "inline-block text-sm xl:text-base font-medium text-gray-700" %>
                 </div>
               </div>
             <% end %>
             <% if @member&.company&.care_homes %>
               <div>
-                <%= f.label :care_home, "Care Home", class: "block text-sm font-medium text-gray-700" %>
+                <%= f.label :care_home, "Care Home", class: "block text-sm xl:text-base font-medium text-gray-700" %>
                 <%= f.collection_select :care_home_id, @user.company.care_homes, :id, :name, { prompt: "Select Care Home" }, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm" %>
               </div>
             <% end %>
               <div>
-                <%= f.label :status, "Account Activation Status", class: "block text-sm font-medium text-gray-700" %>
+                <%= f.label :status, "Account Activation Status", class: "block text-sm xl:text-base font-medium text-gray-700" %>
                 <div class="mt-1">
                   <%= f.radio_button :status, :verified, class: "mr-2" %>
-                  <%= f.label :status_verified, "Verifed", class: "inline-block text-sm font-medium text-gray-700" %>
+                  <%= f.label :status_verified, "Verifed", class: "inline-block text-sm xl:text-base font-medium text-gray-700" %>
                 </div>
                 <div class="mt-1">
                   <%= f.radio_button :status, :inactive, class: "mr-2" %>
-                  <%= f.label :status_inactive, "Disable", class: "inline-block text-sm font-medium text-gray-700" %>
+                  <%= f.label :status_inactive, "Disable", class: "inline-block text-sm xl:text-base font-medium text-gray-700" %>
                 </div>
                 <!-- Checkbox to delete user-->
                 <div class="mt-1">
                   <%= f.check_box :mark_for_deletion, class: "mr-2" %>
-                  <%= f.label :mark_for_deletion, "Delete User", class: "inline-block text-sm font-medium text-gray-700" %>
+                  <%= f.label :mark_for_deletion, "Delete User", class: "inline-block text-sm xl:text-base font-medium text-gray-700" %>
                 </div>
               </div>
             <%= f.submit "Save", class: "btn bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg" %>

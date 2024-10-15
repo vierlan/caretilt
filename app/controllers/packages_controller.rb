@@ -115,6 +115,6 @@ class PackagesController < ApplicationController
   end
 
   def package_params
-    params.require(:package).permit(:name, :description, :credits, :price, :validity, :stripe_price_id, :stripe_id, features: [], data: {})
+    params.require(:package).permit(:name, :description, :credits, :price, :validity, :subscription_type, :stripe_price_id, :stripe_id, features: [], data: {})
   end
 end

@@ -33,14 +33,14 @@
       </div>
       <div class="field">
         <%= form.label :subscription_type %>
-        <%= form.select :subscription_type, [:company, :local_authority], {}, class: 'form-control', required: true %>
+        <%= form.select :subscription_type, [:company_subscription, :local_authority_subscription], {}, class: 'form-control', required: true %>
       </div>
       <div class="field">
         <%= form.label :features %>
         <div class="form-check">
           <% Package::FEATURES.each do |feature| %>
             <div>
-              <%= form.check_box :features, { multiple: true, required: true }, feature, nil %>
+              <%= form.check_box :features, { multiple: true }, feature, nil %>
               <%= form.label :features, feature, class: 'form-check-label' %>
             </div>
           <% end %>
