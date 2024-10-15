@@ -1,17 +1,17 @@
 class CareHomesController < ApplicationController
 
-  def all
-    @user = current_user
-    @company = Company.find(params[:company_id])
-    @care_homes = @company.care_homes
-    @care_homes = @care_homes.map do |care_home|
-      {
-        care_home: care_home,
-        vacant_rooms: care_home.rooms.where(vacant: true),
-        lowest_price: care_home.rooms.minimum(:total)
-      }
-    end
-  end
+  # def all
+  #   @user = current_user
+  #   @company = Company.find(params[:company_id])
+  #   @care_homes = @company.care_homes
+  #   @care_homes = @care_homes.map do |care_home|
+  #     {
+  #       care_home: care_home,
+  #       vacant_rooms: care_home.rooms.where(vacant: true),
+  #       lowest_price: care_home.rooms.minimum(:total)
+  #     }
+  #   end
+  # end
 
   def index
     # Get only the local authorities that are associated with existing care homes
@@ -26,6 +26,9 @@ class CareHomesController < ApplicationController
 
     # Use Pundit to scope the care homes based on the user's role
     @care_homes = policy_scope(CareHome).order(:name)
+
+
+    # filter for google maps on searches.
 
     if params[:care_home]
       # Local authority filter (if not "Any")
@@ -54,6 +57,8 @@ class CareHomesController < ApplicationController
         lowest_price: care_home.rooms.minimum(:total)
       }
     end
+
+   
 
     respond_to do |format|
       format.html # Renders the default HTML view
