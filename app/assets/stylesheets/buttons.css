@@ -19,11 +19,11 @@
 } */
 
 .button-blue-pill {
-    @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full;
+  @apply block m-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded-full max-w-px-6 text-center;
 }
 
 .button-caretilt {
-    @apply block m-3 py-2 text-white font-bold py-2 px-6 rounded-xl mt-4 bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg text-center;
+    @apply block my-3 py-2 text-white font-bold py-2 px-6 rounded-xl mt-4 bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg text-center;
   }
 
 .button-round-clear {
