@@ -96,14 +96,9 @@ class PricingCalculatorController < ApplicationController
         total_additional_hours = data['total_additional_hours'].to_f
         total_hours_per_user = data['total_hours_per_user'].to_f
 
-        # Calculate Total Overheads as the sum of rates
-        @total_overheads = contingency_rate + surplus_rate + central_overhead_rate
-
-        # Calculate Total Package Cost
-        @total_package_cost = @total_overheads + total_service_user_cost
-
-        # Calculate Total Hourly Rate
-        @total_hourly_rate = @total_package_cost / (total_additional_hours + total_hours_per_user)
+        @total_overheads = data['total_overheads']
+        @total_package_cost = data['total_package_cost']
+        @total_hourly_rate = data['total_hourly_rate']
 
         Rails.logger.debug "Contingency Rate: #{contingency_rate}"
         Rails.logger.debug "Surplus Rate: #{surplus_rate}"
