@@ -2,9 +2,7 @@
 /* rails assets:clobber
  rails assets:precompile */
 
-/* .form-image-card{
-    width: 200px;
-} */
+
 
 @import 'text.css';
 @import 'buttons.css';
@@ -53,4 +51,8 @@
 
 .custom-wrapper{
     color: red;
+}
+
+.form-image-card{
+    width: 200px;
 }

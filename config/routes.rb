@@ -61,6 +61,7 @@ Rails.application.routes.draw do
     member do
       patch :move_media
       delete :remove_media
+      delete :remove_thumbnail
     end
 
     resources :rooms, only: %i[index new create]
