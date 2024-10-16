@@ -37,6 +37,8 @@ class Subscription < ApplicationRecord
       save!
     else
       Rails.logger.warn "Attempted to deduct credit, but no credits left."
+      room.update(vacant: false)
+      redirect_to care_home_rooms_path(room.care_home), alert: "No credits left. Please purchase more credits."
     end
   end
 end
