@@ -19,7 +19,7 @@
         <p class="text-sm md:text-base text-gray-500"><%= home[:care_home].short_address %></p>
       </div>
       <% if home[:care_home].company.logo.present? %>
-        <%= image_tag home[:care_home].company.logo, class: "w-16 h-16 object-contain ml-auto", alt: "company logo" %>
+        <%= image_tag home[:care_home].company.logo, class: "logo-care-home object-contain ml-auto", alt: "company logo" %>
       <% end %>
     </div>
 

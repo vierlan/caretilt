@@ -84,26 +84,32 @@
           <%= f.input :long_description, label: "Long Description", as: :text, input_html: { id: "long_description", rows: 3 } %>
           <p class="mt-3 text-sm xl:text-base leading-6 text-gray-600">A description to advertise your service on it's landing page.</p>
         </div>
-         <!-- media Upload -->
-        <div class="col-span-6">
-          <%= f.input :media, as: :file, input_html: { multiple: true }, label: "Upload Media (max 20mb size)" %>
-        </div>
-        <!-- Display Existing Media (Images/Videos) -->
-        <% if @care_home.media.attached? %>
-          <div class="images-wrapper" data-controller="sortable">
-            <% @care_home.media.each_with_index do |media_file, index| %>
-              <div class="form-image-card" data-id="<%= media_file.id %>">
-                <% if media_file.image? %>
-                  <%= image_tag media_file, class: "uploaded-media form-image" %>
-                <% elsif media_file.video? %>
-                  <%= video_tag media_file, controls: true, class: "uploaded-media form-image" %>
-                <% end %>
-
-                <!-- Hidden field to store the media's position -->
-                <%= hidden_field_tag "media_order[#{media_file.id}]", index + 1, class: "media-position" %>
-              </div>
-            <% end %>
+        <turbo-frame id="media-container">
+          <!-- Media Upload Section -->
+          <div class="sm:col-span-6 mb-6 space-y-2">
+            <%= f.label :media, "Upload Media (max 20mb size)", class: "text-gray-700 font-medium whitespace-nowrap" %>
+            <%= f.file_field :media, multiple: true, class: "whitespace-nowrap", id: "media" %>
           </div>
+          <!-- Display Existing Media Files (Images/Videos) -->
+          <% if @care_home.media.attached? %>
+            <div class="images-wrapper gap-4 mt-4" data-controller="sortable">
+              <% @care_home.media.each_with_index do |media_file, index| %>
+                <div class="form-image-card border rounded-lg p-4 shadow-sm bg-white flex flex-col items-center" id="media_<%= media_file.id %>" data-id="<%= media_file.id %>">
+                  
+                  <% if media_file.image? %>
+                    <%= image_tag media_file, class: "uploaded-media form-image w-full h-48 object-cover rounded-md mb-2" %>
+                  <% elsif media_file.video? %>
+                    <%= video_tag media_file, controls: true, class: "uploaded-media form-image w-full h-48 rounded-md mb-2" %>
+                  <% end %>
+
+                  <!-- Remove button for media files -->
+                  <%= button_to "Remove", remove_media_care_home_path(@care_home, media_id: media_file.id),
+                      method: :delete,
+                      data: { turbo_confirm: "Are you sure you want to remove this media?" },
+                      class: "remove-media-btn text-sm text-red-600 hover:text-red-800 mt-2"
+                  %>
+                </div>
+              <% end %>
         <% end %>
          <!-- Thumbnail Upload -->
         <div class="col-span-6">
@@ -114,7 +120,29 @@
             <div class="home-thumbnail-image">
                 <%= image_tag @care_home.thumbnail_image, class: "carehome-thumbnail" %>
             </div>
-        <% end %>
+          <% end %>
+
+          <!-- Thumbnail Upload Section -->
+          <div class="sm:col-span-6 mb-6 space-y-2 mt-6">
+            <%= f.label :thumbnail_image, "Upload Your CareHome Preview Thumbnail", class: "text-gray-700 font-medium whitespace-nowrap" %>
+            <%= f.file_field :thumbnail_image, class: "whitespace-nowrap", id: "thumbnail_image" %>
+          </div>
+
+          <!-- Display Existing Thumbnail Image with Remove Button -->
+          <% if @care_home.thumbnail_image.attached? %>
+            <div class="home-thumbnail-image flex flex-col items-center mt-4" id="thumbnail_image_container">
+              <%= image_tag @care_home.thumbnail_image, class: "carehome-thumbnail rounded-md max-h-48 w-full object-cover mb-2 shadow-sm border" %>
+              <%= button_to "Remove", remove_thumbnail_care_home_path(@care_home), 
+                  method: :delete, 
+                  data: { turbo_confirm: "Are you sure you want to remove this thumbnail?" }, 
+                  class: "remove-thumbnail-btn text-sm text-red-600 hover:text-red-800"
+              %>
+            </div>
+          <% end %>
+        </turbo-frame>
+
+
+
         <!-- Submit Button -->
         <div class="mt-6 col-span-6">
           <%= f.button :submit, "Save", class: "btn bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg w-full" %>
