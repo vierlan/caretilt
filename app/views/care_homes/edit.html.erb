@@ -1,20 +1,19 @@
 <!-- views/care_homes/edit.html.erb -->
 <turbo-frame id="main-content">
-  <div class="mt-10 mb-5 flex items-center justify-between">
+  <div class="mt-10 mb-5 flex flex-col items-center justify-between">
     <h1 class="text-page-subheading my-3"">Edit Care Home</h1>
 
     <!-- Link to go back -->
-    <div>
-      <%= link_to "&larr; Back to homes".html_safe, care_homes_path, class: "bg-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" %>
+
+      <%= link_to "&larr; Back to homes".html_safe, care_homes_path, class: "bg-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full block my-3 py-2" %>
       <!-- Add Room Button -->
-      <%= link_to 'Edit Care / Support Services', care_home_rooms_path(@care_home), data: { turbo_frame: "main-content", care_home_id: @care_home.id  }, class: "button-blue-pill" %>
+      <%= link_to 'Edit Care / Support Services', care_home_rooms_path(@care_home), data: { turbo_frame: "main-content", care_home_id: @care_home.id  }, class: "button-blue-pill block my-3 py-2" %>
       <!-- Delete Care Home Button -->
-      <% if policy(@care_home).destroy? %> 
-        <%= button_to "Delete", care_home_path(@care_home), method: :delete, data: { turbo_confirm: "Are you sure? This process is irreversible!" }, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full", form_class: "inline" %>
+      <% if policy(@care_home).destroy? %>
+        <%= button_to "Delete", care_home_path(@care_home), method: :delete, data: { turbo_confirm: "Are you sure? This process is irreversible!" }, class: "block my-3 py-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full", form_class: "inline" %>
       <% end %>
-    </div>
+
     </div>
     <%= render 'form', company: @company, care_home: @care_home %> <!-- Render the form partial -->
   </div>
 </turbo-frame>
-
