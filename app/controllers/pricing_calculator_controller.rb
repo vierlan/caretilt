@@ -96,6 +96,7 @@ class PricingCalculatorController < ApplicationController
         total_additional_hours = data['total_additional_hours'].to_f
         total_hours_per_user = data['total_hours_per_user'].to_f
 
+
         @total_overheads = data['total_overheads']
         @total_package_cost = data['total_package_cost']
         @total_hourly_rate = data['total_hourly_rate']

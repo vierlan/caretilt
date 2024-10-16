@@ -10,22 +10,21 @@ class DashboardController < ApplicationController
     @booking_log = []
 
     @care_homes = policy_scope(CareHome)
-    if @user.company
-      @company = current_user.company
-      # @care_homes = policy_scope(@company.care_homes)
-      @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten.sort_by(&:created_at).reverse
-      @credit_logs = @company.get_active_subscription&.credit_log
-      @activity_feeds.sort_by! { |log| log[2] }.reverse!
+    if current_user.role == 'caretilt_master_user' || current_user.role == 'caretilt_user' # admin
+      @bookings = BookingEnquiry.all.sort_by(&:created_at).reverse
+      # @care_homes = CareHome.all
+      # get all subscriptions within the last 2 weeks and reverse sort them
+      @subscriptions = Subscription.where(created_at: 2.weeks.ago..Time.now).sort_by(&:created_at).reverse
     elsif @user.local_authority
       @local_authority = @user.local_authority
       # @care_homes = CareHome.all  # make some logice here which will select care_homes in region/local authority
       # @care_homes = policy_scope(CareHome)
       @bookings = BookingEnquiry.where(user: @user).sort_by(&:created_at).reverse
-    else # admin
-      @bookings = BookingEnquiry.all.sort_by(&:created_at).reverse
-      # @care_homes = CareHome.all
-      # get all subscriptions within the last 2 weeks and reverse sort them
-      @subscriptions = Subscription.where(created_at: 2.weeks.ago..Time.now).sort_by(&:created_at).reverse
+    else
+        @company = current_user.company
+        # @care_homes = policy_scope(@company.care_homes)
+        @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten.sort_by(&:created_at).reverse
+        @credit_logs = @company.get_active_subscription&.credit_log
     end
     @bookings.each do |booking|
       log = []
@@ -44,6 +43,7 @@ class DashboardController < ApplicationController
     @credit_logs&.each do |log|
       @activity_feeds << log
     end
+    @activity_feeds.sort_by! { |log| parse_datetime(log[2]) }.reverse!
   end
 
   def team
@@ -68,6 +68,10 @@ class DashboardController < ApplicationController
   def account; end
 
   private
+
+  def parse_datetime(value)
+    value.is_a?(String) ? DateTime.parse(value) : value
+  end
 
   def check_subscription
     case current_user.role
