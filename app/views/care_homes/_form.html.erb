@@ -111,10 +111,6 @@
                 </div>
               <% end %>
         <% end %>
-         <!-- Thumbnail Upload -->
-        <div class="col-span-6">
-          <%= f.input :thumbnail_image, as: :file, input_html: { multiple: false }, label: "Upload Your CareHome Preview Thumbnail" %>
-        </div>
         <!-- Display Existing Media (Images/Videos) -->
         <% if @care_home.thumbnail_image.attached? %>
             <div class="home-thumbnail-image">
