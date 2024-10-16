@@ -3,9 +3,6 @@ class Room < ApplicationRecord
   delegate :company, to: :care_home
   has_many :booking_enquiries, dependent: :destroy
 
-  # has_many_attached :photos
-  # has_one_attached :video
-  # has_many_attached :documents
 
    # Validations
    validates :name, presence: { message: "Name cannot be blank" }, length: { maximum: 100, message: "Name cannot be over 100 characters long." }  # Ensure name is not too long
@@ -16,7 +13,7 @@ class Room < ApplicationRecord
    validates :vacant, inclusion: { in: [true, false], message: "Room vacancy can only be either true or false" }
    validates :additional_fees_associated, inclusion: { in: [true, false], message: "additional fees associated can only be either true or false" }
    validates :total, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true  # Ensure total is non-negative
-  
+
   # Calculate total after saving or updating
   before_save :update_total
 
