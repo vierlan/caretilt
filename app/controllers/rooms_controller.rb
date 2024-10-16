@@ -36,6 +36,11 @@ class RoomsController < ApplicationController
 
     authorize @room
     if @room.save
+      if @room.vacant?
+        subscription = current_user.company.get_active_subscription
+        subscription.deduct_credit(@room)
+      end
+      flash[:notice] = "Room created successfully."
       redirect_to care_home_rooms_path(@care_home)
     else
       render :new
@@ -69,11 +74,6 @@ class RoomsController < ApplicationController
 
     @room.assign_attributes(room_params)
     authorize @room
-    # Validate the super PIN if the room is being marked as vacant
-    #if @room.vacant? && params[:super_pin] != @room.care_home.company.super_pin
-    #  flash[:alert] = "Invalid PIN. The room cannot be marked as vacant."
-    #  render :edit and return
-    #end
 
     # If room is updated to vacant, call the deduct_credit method
     if @room.save
