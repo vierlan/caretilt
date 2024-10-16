@@ -174,6 +174,16 @@ class CareHomesController < ApplicationController
     end
   end
 
+  def remove_thumbnail
+    @care_home = CareHome.find(params[:id])
+    @care_home.thumbnail_image.purge
+  
+    respond_to do |format|
+      format.html { redirect_to edit_care_home_path(@care_home), notice: 'Thumbnail removed successfully.' }
+      format.turbo_stream # Render Turbo Stream response
+    end
+  end
+
   private
 
   def care_home_params
