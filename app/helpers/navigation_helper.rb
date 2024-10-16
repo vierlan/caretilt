@@ -17,6 +17,7 @@ module NavigationHelper
 
     case current_user.role
     when 'caretilt_master_user', 'caretilt_user'
+      @company = current_user.company
       links << {
         name: 'Team Management',
         path: team_company_path(@company),
@@ -53,6 +54,7 @@ module NavigationHelper
         icon: 'home'
       }
     when 'care_provider_super_user'
+      @company = current_user.company
       links << {
         name: 'Team Management',
         path: team_company_path(@company),
