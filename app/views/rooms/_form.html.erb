@@ -2,7 +2,7 @@
   <%= simple_form_for [@care_home, @room], url: @room.new_record? ? care_home_rooms_path(@care_home) : room_path(@room), local: true do |f| %>
     <div class="space-y-12">
       <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
-       
+
         <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
           <div class="md:col-span-6">
             <h2 class="text-base font-semibold leading-7 text-gray-900">Care Home Room Profile</h2>
@@ -24,7 +24,7 @@
           </div>
 
           <!-- Additional Fees Associated (Checkbox) -->
-          <div class="flex items-center space-x-2">
+          <div class="sm:col-span-6">
             <%= f.check_box :additional_fees_associated, class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500", id: "additional_fees_associated" %>
             <%= f.label :additional_fees_associated, "Additional Fees Associated", class: "text-gray-700 font-medium whitespace-nowrap" %>
           </div>
