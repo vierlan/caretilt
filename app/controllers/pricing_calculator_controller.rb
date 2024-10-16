@@ -97,7 +97,7 @@ class PricingCalculatorController < ApplicationController
         total_hours_per_user = data['total_hours_per_user'].to_f
 
         # Calculate Total Overheads as the sum of rates
-        @total_overheads = contingency_rate + surplus_rate + central_overhead_rate
+        @total_overheads = data['total_overheads']#= contingency_rate + surplus_rate + central_overhead_rate
 
         # Calculate Total Package Cost
         @total_package_cost = @total_overheads + total_service_user_cost
