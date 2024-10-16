@@ -126,7 +126,7 @@
           <!-- Display Existing Thumbnail Image with Remove Button -->
           <% if @care_home.thumbnail_image.attached? %>
             <div class="home-thumbnail-image flex flex-col items-center mt-4" id="thumbnail_image_container">
-              <%= image_tag @care_home.thumbnail_image, class: "carehome-thumbnail rounded-md max-h-48 w-full object-cover mb-2 shadow-sm border" %>
+              <%= image_tag @care_home.thumbnail_image, class: "carehome-thumbnail rounded-md max-h-48 w-full object-cover mb-2 shadow-sm border " %>
               <%= button_to "Remove", remove_thumbnail_care_home_path(@care_home), 
                   method: :delete, 
                   data: { turbo_confirm: "Are you sure you want to remove this thumbnail?" }, 
