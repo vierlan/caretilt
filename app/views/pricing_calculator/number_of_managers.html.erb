@@ -19,14 +19,16 @@
 
     <!-- Manager Salary -->
     <div class="mb-4">
-      <%= f.label :manager_salary, "Annual salary of manager including oncosts (£)" %>
+      <%= f.label :manager_salary, "Manager Salary (£)" %>
       <%= f.number_field :manager_salary, min: 1, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateManagerCosts", calculator_target: "managerSalary" } %>
+      <p class="calculator-help">Annual salary of manager including oncosts </p>
     </div>
 
     <!-- Manager's Time on Service (%) -->
     <div class="mb-4">
       <%= f.label :manager_time_percent, "% of time manager spends on this service" %>
       <%= f.number_field :manager_time_percent, min: 0, max: 100, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateManagerCosts", calculator_target: "managerTimePercent" } %>
+      <p class="calculator-help">Manager may have responsibility for more than one service  </p>
     </div>
 
     <!-- Total Beds Flats Target (hidden field) -->
