@@ -120,7 +120,7 @@
 
             <!-- Display Existing Thumbnail Image with Remove Button -->
             <% if @care_home.thumbnail_image.attached? %>
-            <div class="home-thumbnail-image flex flex-col items-center mt-4" id="thumbnail_image_container">
+            <div class="form-image-card border rounded-lg p-4 shadow-sm bg-white flex flex-col items-center" id="thumbnail_image_preview">
               <%= image_tag @care_home.thumbnail_image, class: "carehome-thumbnail rounded-md max-h-48 w-full object-cover mb-2 shadow-sm border" %>
               <%= button_to "Remove", remove_thumbnail_care_home_path(@care_home),
                 method: :delete,
@@ -134,7 +134,7 @@
 
         <!-- Submit Button -->
         <div class="mt-6 col-span-6">
-          <%= f.button :submit, "Save", class: "btn bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg w-full" %>
+          <%= f.button :submit, "Save", class: "button-caretilt" %>
         </div>
       </div>
     </div>
