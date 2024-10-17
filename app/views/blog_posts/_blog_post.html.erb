@@ -7,7 +7,6 @@
   <article class="flex flex-col items-start justify-between hover:opacity-80 transition-opacity duration-300 ease-in-out">
     <%= link_to blog_post_path(blog_post) do %>
       <div class="relative w-full">
-      <%= blog_post.cover_image.attached?.to_s %> 
         <%= image_tag(
             blog_post.cover_image.attached? ? blog_post.cover_image : asset_path('logo_symbol.png'),
             class: "aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover",

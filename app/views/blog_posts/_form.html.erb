@@ -44,11 +44,23 @@
                 </div>
               </div>
             </div>
+            <!-- Cover image section starts here-->
             <div class="col-span-full">
               <label for="cover_image" class="block text-sm xl:text-base font-medium leading-6 text-gray-900">Cover photo</label>
               <div id="drop_zone" class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                <div class="text-center">
-                  <%= image_tag @blog_post.cover_image, id: 'cover_image_preview', data: { url: url_for(@blog_post.cover_image) } if @blog_post.cover_image.attached? %>
+                <div class="text-center" >
+                  <% if @blog_post.cover_image.attached? %>
+                    <%= image_tag @blog_post.cover_image, id: 'cover_image_preview', data: { url: url_for(@blog_post.cover_image) }%>
+                    <div class="mt-4 flex text-sm xl:text-base leading-6 text-gray-600 justify-center">
+                      <%= link_to "Remove", remove_blog_image_blog_post_path(@blog_post),
+                      method: :delete,
+                      remote: true,
+                      data: { turbo_confirm: "Are you sure you want to remove this cover image?" },
+                      class: "text-lg font-bold text-red-600 hover:text-red-800",
+                      form: { data: { turbo_frame: "_top" } }
+                    %>
+                    </div>
+                  <% end %>
                   <img id="cover_image_preview" src="#" alt="Cover Image Preview" class="hidden"/>
                   <div class="mt-4 flex text-sm xl:text-base leading-6 text-gray-600 justify-center">
                     <label for="cover_image" class="relative cursor-pointer rounded-md bg-white font-semibold text-gray-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-gray-600 focus-within:ring-offset-2 hover:text-gray-500">
@@ -57,10 +69,11 @@
                     </label>
                     <p class="pl-1">or drag and drop</p>
                   </div>
-                  <p class="text-xs leading-5 text-gray-600">PNG, JPG, WEBP up to 1MB (1200 × 630 px recommended)</p>
+                    <p class="text-xs leading-5 text-gray-600">PNG, JPG, WEBP up to 1MB (1200 × 630 px recommended)</p>
                 </div>
               </div>
             </div>
+            <!-- Cover image section ends here-->
             <div class="col-span-full">
               <label for="video" class="block text-sm xl:text-base font-medium leading-6 text-gray-900">Video</label>
               <div id="video_drop_zone" class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">

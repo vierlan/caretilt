@@ -1,18 +1,5 @@
 class CareHomesController < ApplicationController
 
-  # def all
-  #   @user = current_user
-  #   @company = Company.find(params[:company_id])
-  #   @care_homes = @company.care_homes
-  #   @care_homes = @care_homes.map do |care_home|
-  #     {
-  #       care_home: care_home,
-  #       vacant_rooms: care_home.rooms.where(vacant: true),
-  #       lowest_price: care_home.rooms.minimum(:total)
-  #     }
-  #   end
-  # end
-
   def index
     # Get only the local authorities that are associated with existing care homes
 
@@ -178,7 +165,7 @@ class CareHomesController < ApplicationController
     @care_home = CareHome.find(params[:id])
     @care_home.thumbnail_image.purge
     respond_to do |format|
-      
+
       format.html { redirect_to edit_care_home_path(@care_home), data: { turbo_frame: "main-content"}, notice: 'Thumbnail removed successfully.' }
       format.turbo_stream # Render Turbo Stream response
     end
