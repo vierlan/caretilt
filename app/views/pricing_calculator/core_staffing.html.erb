@@ -13,7 +13,7 @@
     <div class="mb-4">
       <%= f.label :day_hours, "Day Hours" %>
       <%= f.number_field :day_hours, min: 0, max: 24, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateCosts", calculator_target: "dayHours" } %>
-      <p class="calculator-help">number of day hours in a day covered by staff </p>
+      <p class="calculator-help">Number of day hours in a day covered by staff </p>
     </div>
 
     <!-- Number of Day Staff -->

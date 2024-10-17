@@ -4,14 +4,13 @@
 
     <!-- Number of Units -->
     <div class="mb-4">
-      <%= f.label :number_of_units, "Number of Units" %>
+      <%= f.label :number_of_units, "Number of occupied units - beds / flats" %>
       <%= f.number_field :number_of_units, min: 0, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateTotal", calculator_target: "numberOfUnits" } %>
-      <p class="calculator-help">This is the total number of units in the property or service which share staffing and management </p>
     </div>
 
     <!-- Number of Vacancies -->
     <div class="mb-4">
-      <%= f.label :number_of_vacancies, "Number of Vacancies" %>
+      <%= f.label :number_of_vacancies, "Number of vacancies / voids " %>
       <%= f.number_field :number_of_vacancies, min: 0, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateTotal", calculator_target: "numberOfVacancies" } %>
     </div>
 
@@ -19,6 +18,7 @@
     <div class="mb-4">
       <%= f.label :total_beds_flats, "Total Beds/Flats (shared staffing and management)" %>
       <%= f.number_field :total_beds_flats, value: 5, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "totalBedsFlats" } %>
+      <p class="calculator-help">This is the total number of units in the property or service which share staffing and management </p>
     </div>
 
     <!-- Submit Button -->

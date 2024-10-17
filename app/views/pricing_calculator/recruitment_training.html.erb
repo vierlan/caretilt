@@ -6,7 +6,7 @@
     <div class="mb-4">
       <%= f.label :recruitment_training_budget, "Recruitment and Training Annual budget (£)" %>
       <%= f.number_field :recruitment_training_budget, min: 0, step: 0.01, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateTrainingCosts", calculator_target: "trainingBudget" } %>
-      <p class="calculator-help">Manager may have responsibility for more than one service  </p>
+      <%# <p class="calculator-help">Cost per service user per week . Overall cost/52.14/Total number of beds  </p> %>
     </div>
 
     <!-- Staff Apportionment Percentage -->
