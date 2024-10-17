@@ -23,27 +23,13 @@
       </fieldset>
     </div>
     <div class="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 md:max-w-2xl md:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-4">
-      <!--templat starts-->
-      <% @packages.first(4).each do | package | %>
-        <div class="rounded-3xl p-8 ring-1 ring-gray-200">
-          <h3 id="tier-hobby" class="text-lg font-semibold leading-8 text-gray-900"><%= package.name.humanize %></h3>
-          <p class="mt-4 text-description-small overflow-auto" style="min-height: 200px">
-            <%= package.description %>
-          </p>
-          <p class="mt-6 flex items-baseline gap-x-1">
-            <!-- Price, update based on frequency toggle state -->
-            <span class="text-4xl font-bold tracking-tight text-gray-900"><%= package.price %></span>
-            <!-- Payment frequency, update based on frequency toggle state -->
-            <span class="text-sm font-semibold leading-6 text-gray-600">/Annually</span>
-          </p>
-          <a href="/stripe/checkout" aria-describedby="tier-hobby" class="mt-6 block rounded-md px-3 py-2 text-center text-sm xl:text-base font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Buy plan</a>
-          <% starter_plan_features = ["1 Credit", "1 User", "Added to Caretilt database"] %>
-          <ul role="list" class="mt-8 space-y-3 text-description-small">
-            <% starter_plan_features.each do |feature| %>
-              <%= render partial: "shared/pricing_list_item", locals: { content: feature } %>
-            <% end %>
-          </ul>
-        </div>
+      <!--template starts-->
+      <% if @packages.present?  %>
+        <% @packages.first(4).each do | package | %>
+          <%= render partial: "shared/package", locals: { package: package } %>
+        <% end %>
+      <% else %>
+        <p class="text-center text-gray-600">No packages available at the moment.</p>
       <% end %>
       <!--templat ends-->
     </div>

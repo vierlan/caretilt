@@ -85,7 +85,12 @@ Rails.application.routes.draw do
   resources :dashboard, only: %i[index team new_team_member]
   resources :account, only: %i[index]
   resources :billing_portal_sessions, only: [:new, :create]
-  resources :blog_posts, controller: :blog_posts, path: "blog", param: :slug
+  resources :blog_posts, controller: :blog_posts, path: "blog", param: :slug do
+    member do
+      get :remove_blog_image
+      get :remove_video
+    end
+  end
 
  resources :packages do
     resources :subscriptions, only: %i[new create]

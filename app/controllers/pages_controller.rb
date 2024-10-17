@@ -1,16 +1,10 @@
 class PagesController < ApplicationController
 
-  skip_before_action :authenticate_user!  
+  skip_before_action :authenticate_user!
 
   def home
-    # @current_user = current_user
   end
 
-  #def logout
-  #  reset_session
-  #  sign_out(current_user)
-  #  redirect_to home_path
-  #end
 
   def page
     @page_key = request.path[1..]
