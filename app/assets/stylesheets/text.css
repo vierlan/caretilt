@@ -26,6 +26,9 @@
     @apply text-xl font-semibold leading-6 text-gray-900 group-hover:text-primary;
 }
 
+.calculator-help{
+    @apply text-sm py-2
+}
 
 
 /* header */
@@ -44,6 +47,3 @@
     @apply text-lg leading-6 text-gray-600 hover:text-secondary;
 }
 
-.dev-class-tailwind2{
-    @apply text-orange-600;
-}
