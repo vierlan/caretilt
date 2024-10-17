@@ -74,6 +74,7 @@
               </div>
             </div>
             <!-- Cover image section ends here-->
+            <!-- Video upload section starts here-->
             <div class="col-span-full">
               <label for="video" class="block text-sm xl:text-base font-medium leading-6 text-gray-900">Video</label>
               <div id="video_drop_zone" class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
@@ -83,6 +84,15 @@
                       <source src="<%= url_for(@blog_post.video) %>" type="<%= @blog_post.video.content_type %>">
                       Your browser does not support the video tag.
                     </video>
+                    <div class="mt-4 flex text-sm xl:text-base leading-6 text-gray-600 justify-center">
+                      <%= link_to "Remove", remove_video_blog_post_path(@blog_post),
+                      method: :delete,
+                      remote: true,
+                      data: { turbo_confirm: "Are you sure you want to remove this cover image?" },
+                      class: "text-lg font-bold text-red-600 hover:text-red-800",
+                      form: { data: { turbo_frame: "_top" } }
+                    %>
+                    </div>
                   <% else %>
                     <video id="video_preview" src="#" class="hidden" controls></video>
                   <% end %>
@@ -160,4 +170,56 @@
     fileInput.dispatchEvent(event);
   }
   });
+  document.getElementById('video').addEventListener('change', function (e) {
+  var file = e.target.files[0];
+  var reader = new FileReader();
+
+  reader.onloadend = function () {
+    var videoPreview = document.getElementById('video_preview');
+    videoPreview.src = reader.result;
+    videoPreview.style.display = 'block';
+  };
+
+  if (file) {
+    reader.readAsDataURL(file);
+  } else {
+    document.getElementById('video_preview').src = "";
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  var videoPreview = document.getElementById('video_preview');
+  if (videoPreview && videoPreview.dataset.url) {
+    videoPreview.src = videoPreview.dataset.url;
+    videoPreview.style.display = 'block';
+  }
+});
+
+// Drag-and-Drop Logic for Video Uploads
+var videoDropZone = document.getElementById('video_drop_zone');
+var videoInput = document.getElementById('video');
+
+if (videoDropZone && videoInput) {
+  videoDropZone.addEventListener('dragover', function (e) {
+    e.preventDefault();
+    videoDropZone.classList.add('bg-gray-100');
+  });
+
+  videoDropZone.addEventListener('dragleave', function (e) {
+    e.preventDefault();
+    videoDropZone.classList.remove('bg-gray-100');
+  });
+
+  videoDropZone.addEventListener('drop', function (e) {
+    e.preventDefault();
+    videoDropZone.classList.remove('bg-gray-100');
+
+    var files = e.dataTransfer.files;
+    if (files.length > 0) {
+      videoInput.files = files;
+      var event = new Event('change');
+      videoInput.dispatchEvent(event);
+    }
+  });
+}
 </script>

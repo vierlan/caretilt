@@ -64,6 +64,15 @@ class BlogPostsController < ApplicationController
     end
   end
 
+  def remove_video
+    @blog_post.video.purge
+    respond_to do |format|
+      format.html { redirect_to edit_blog_post_path(@blog_post.slug), data: { turbo_frame: "main-content"}, notice: 'Video removed successfully.' }
+      format.turbo_stream # Render Turbo Stream response
+    end
+  end
+  
+
 
   private
 

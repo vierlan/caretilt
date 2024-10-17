@@ -88,6 +88,7 @@ Rails.application.routes.draw do
   resources :blog_posts, controller: :blog_posts, path: "blog", param: :slug do
     member do
       get :remove_blog_image
+      get :remove_video
     end
   end
 
