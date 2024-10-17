@@ -58,7 +58,7 @@ class CareHomesController < ApplicationController
       }
     end
 
-   
+
 
     respond_to do |format|
       format.html # Renders the default HTML view
@@ -133,7 +133,7 @@ class CareHomesController < ApplicationController
 
     # Now update the rest of the attributes (excluding media)
     if @care_home.update(care_home_params.except(:media)) # Exclude media from update, handled separately
-      redirect_to dashboard_index_path(current_user), notice: 'Successfully updated'
+      redirect_to care_home_path(@care_home), data: { turbo_frame: "main-content"}, notice: 'Successfully updated'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -169,7 +169,7 @@ class CareHomesController < ApplicationController
     media.purge
 
     respond_to do |format|
-      format.html { redirect_to edit_care_home_path(@care_home), notice: 'Media removed successfully.' }
+      format.html { redirect_to edit_care_home_path(@care_home), data: { turbo_frame: "main-content"}, notice: 'Media removed successfully.' }
       format.turbo_stream { render turbo_stream: turbo_stream.remove("media_#{media_id}") }
     end
   end
@@ -177,9 +177,9 @@ class CareHomesController < ApplicationController
   def remove_thumbnail
     @care_home = CareHome.find(params[:id])
     @care_home.thumbnail_image.purge
-  
     respond_to do |format|
-      format.html { redirect_to edit_care_home_path(@care_home), notice: 'Thumbnail removed successfully.' }
+      
+      format.html { redirect_to edit_care_home_path(@care_home), data: { turbo_frame: "main-content"}, notice: 'Thumbnail removed successfully.' }
       format.turbo_stream # Render Turbo Stream response
     end
   end
@@ -189,7 +189,7 @@ class CareHomesController < ApplicationController
   def care_home_params
     params.require(:care_home).permit(
     :name, :main_contact, :phone_number, :website, :address, :email,
-    :address1, :address2, :city, :postcode, :type_of_service,
+    :address1, :address2, :city, :postcode, :type_of_service, :id, :long_description,
     :short_description, :latitude, :longitude, :local_authority_name,
     :thumbnail_image, photos: [], videos: [], media: [], types_of_client_group: [] # Allow `types_of_client_group` as an array
     ).tap do |whitelisted| #Makes sure that no empty values allowed in the array.

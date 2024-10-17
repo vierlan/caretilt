@@ -19,7 +19,7 @@
 } */
 
 .button-blue-pill {
-  @apply block m-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded-full text-center;
+  @apply block my-2 py-2 text-white font-bold px-6 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-full text-center;
 }
 
 .button-caretilt {
@@ -27,5 +27,5 @@
   }
 
 .button-round-clear {
-  @apply text-black font-bold py-2 px-6 rounded-full bg-transparent border-2 border-black hover:bg-white hover:text-primary ;
+  @apply text-black font-bold py-2 px-6 rounded-full bg-transparent border-2 border-black hover:bg-white hover:text-primary;
 }

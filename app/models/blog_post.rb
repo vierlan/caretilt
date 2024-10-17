@@ -14,6 +14,8 @@ class BlogPost < ApplicationRecord
     slug
   end
 
+
+
   private
 
   def generate_unique_slug

@@ -95,7 +95,7 @@
             <div class="images-wrapper gap-4 mt-4" data-controller="sortable">
               <% @care_home.media.each_with_index do |media_file, index| %>
                 <div class="form-image-card border rounded-lg p-4 shadow-sm bg-white flex flex-col items-center" id="media_<%= media_file.id %>" data-id="<%= media_file.id %>">
-                  
+
                   <% if media_file.image? %>
                     <%= image_tag media_file, class: "uploaded-media form-image w-full h-48 object-cover rounded-md mb-2" %>
                   <% elsif media_file.video? %>
@@ -111,32 +111,25 @@
                 </div>
               <% end %>
         <% end %>
-        <!-- Display Existing Media (Images/Videos) -->
-        <% if @care_home.thumbnail_image.attached? %>
-            <div class="home-thumbnail-image">
-                <%= image_tag @care_home.thumbnail_image, class: "carehome-thumbnail" %>
-            </div>
-          <% end %>
 
           <!-- Thumbnail Upload Section -->
-          <div class="sm:col-span-6 mb-6 space-y-2 mt-6">
+            <div class="sm:col-span-6 mb-6 space-y-2 mt-6">
             <%= f.label :thumbnail_image, "Upload Your CareHome Preview Thumbnail", class: "text-gray-700 font-medium whitespace-nowrap" %>
             <%= f.file_field :thumbnail_image, class: "whitespace-nowrap", id: "thumbnail_image" %>
-          </div>
+            </div>
 
-          <!-- Display Existing Thumbnail Image with Remove Button -->
-          <% if @care_home.thumbnail_image.attached? %>
+            <!-- Display Existing Thumbnail Image with Remove Button -->
+            <% if @care_home.thumbnail_image.attached? %>
             <div class="home-thumbnail-image flex flex-col items-center mt-4" id="thumbnail_image_container">
               <%= image_tag @care_home.thumbnail_image, class: "carehome-thumbnail rounded-md max-h-48 w-full object-cover mb-2 shadow-sm border" %>
-              <%= button_to "Remove", remove_thumbnail_care_home_path(@care_home), 
-                  method: :delete, 
-                  data: { turbo_confirm: "Are you sure you want to remove this thumbnail?" }, 
-                  class: "remove-thumbnail-btn text-sm text-red-600 hover:text-red-800"
+              <%= button_to "Remove", remove_thumbnail_care_home_path(@care_home),
+                method: :delete,
+                data: { turbo_confirm: "Are you sure you want to remove this thumbnail?" },
+                class: "remove-thumbnail-btn text-sm text-red-600 hover:text-red-800"
               %>
             </div>
-          <% end %>
-        </turbo-frame>
-
+            <% end %>
+          </turbo-frame>
 
 
         <!-- Submit Button -->
