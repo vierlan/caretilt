@@ -1,23 +1,26 @@
 <turbo-frame id="main-content">
   <%= simple_form_for @company, url: company_path(@company), method: :patch, html: { local: true } do |form| %>
-    <%= @company.name %>
     <div class="space-y-12">
       <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
-        <div>
-          <h2 class="text-base font-semibold leading-7 text-gray-900">Company Profile make responsive</h2>
-          <p class="mt-1 text-sm xl:text-base leading-6 text-gray-600">This information will be displayed publicly so be careful what you share.</p>
-        </div>
+       
         <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
-          <div class="col-span-4">
-            <%= form.input :website, label: "Website", placeholder: "www.example.com", required: true, input_html: { class: "block w-full border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" } %>
+          <div class="md:col-span-6">
+            <h2 class="text-base font-semibold leading-7 text-gray-900">Company Profile</h2>
+            <p class="mt-1 text-sm xl:text-base leading-6 text-gray-600">This information will be displayed publicly so be careful what you share.</p>
           </div>
-          <!-- logo upload -->
-          <div class="col-span-6">
+
+          <!-- Website -->
+          <div class="sm:col-span-6">
+            <%= form.input :website, label: "Website", placeholder: "www.example.com", required: true, input_html: { class: "block w-full py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-indigo-600" } %>
+          </div>
+
+          <!-- Logo Upload -->
+          <div class="sm:col-span-6">
             <%= form.input :logo, as: :file, label: "Logo", input_html: { class: "hidden" } %>
             <button type="button" class="rounded-md bg-white px-2.5 py-1.5 text-sm xl:text-base font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" onclick="document.getElementById('company_logo').click()">Change</button>
           </div>
-          <!-- logo Container -->
-          <div class="mt-4 col-span-6">
+          <!-- Logo Preview -->
+          <div class="mt-4 sm:col-span-6">
             <ul role="list" class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3" id="logo-container">
               <% if @company.logo.attached? %>
                 <li>
@@ -26,61 +29,33 @@
               <% end %>
             </ul>
           </div>
-          <div class="col-span-4">
-            <%= form.input :address1, label: "Address", required: true, input_html: { class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" } %>
+
+          <!-- Address Fields -->
+          <div class="sm:col-span-6">
+            <%= form.input :address1, label: "Address", required: true, input_html: { class: "block w-full py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-indigo-600" } %>
           </div>
-          <div class="col-span-4">
-            <%= form.input :address2, label: "Address Line 2", required: true, input_html: { class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" } %>
+          <div class="sm:col-span-6">
+            <%= form.input :address2, label: "Address Line 2", required: true, input_html: { class: "block w-full py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-indigo-600" } %>
           </div>
-          <div class="col-span-4">
-            <%= form.input :city, label: "City", required: true, input_html: { class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" } %>
+          <div class="sm:col-span-6">
+            <%= form.input :city, label: "City", required: true, input_html: { class: "block w-full py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-indigo-600" } %>
           </div>
-          <div class="col-span-4">
-            <%= form.input :postcode, label: "Postcode", required: true, input_html: { class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" } %>
+          <div class="sm:col-span-6">
+            <%= form.input :postcode, label: "Postcode", required: true, input_html: { class: "block w-full py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-indigo-600" } %>
           </div>
-          <div class="col-span-4">
-            <%= form.input :phone_number, label: "Phone Number", required: true, input_html: { class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" } %>
+          <div class="sm:col-span-6">
+            <%= form.input :phone_number, label: "Phone Number", required: true, input_html: { class: "block w-full py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-indigo-600" } %>
           </div>
-          <div class="col-span-4">
-            <%= form.input :companies_house_id, label: "Companies House ID", required: true, input_html: { class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" } %>
+          <div class="sm:col-span-6">
+            <%= form.input :companies_house_id, label: "Companies House ID", required: true, input_html: { class: "block w-full py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-indigo-600" } %>
+          </div>
+
+          <!-- Save Changes Button -->
+          <div class="mt-6 sm:col-span-6">
+            <%= form.button :submit, "Save Changes", class: "btn bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg w-full" %>
           </div>
         </div>
-      </div>
-      <div class="mt-6">
-        <%= form.button :submit, "Save Changes", class: "group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm xl:text-base leading-5 font-medium rounded-md text-white bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg focus:outline-none" %>
       </div>
     </div>
   <% end %>
 </turbo-frame>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('photo');
-
-    dropZone.addEventListener('click', () => fileInput.click());
-
-    dropZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropZone.classList.add('border-primary-500');
-    });
-
-    dropZone.addEventListener('dragleave', () => {
-      dropZone.classList.remove('border-primary-500');
-    });
-
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('border-primary-500');
-      const files = e.dataTransfer.files;
-      if (files.length) {
-        fileInput.files = files;
-      }
-    });
-
-    fileInput.addEventListener('change', () => {
-      if (fileInput.files.length) {
-        dropZone.innerHTML = `<img src="${URL.createObjectURL(fileInput.files[0])}" class="h-12 w-12 object-cover">`;
-      }
-    });
-  });
-</script>
