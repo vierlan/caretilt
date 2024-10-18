@@ -48,42 +48,25 @@ export default class extends Controller {
 
   
 
-  // Add multiple markers for the care homes (used in index page)
+ // Add multiple markers for the care homes (used in index page)
   addMarkers(careHomes) {
-
-    const svgMarker = {
-      path: "M 0, 0 m -10, 0 a 10,10 0 1,1 20,0 a 10,10 0 1,1 -20,0", // Google Maps marker shape
-      fillColor: "#6a0dad", // Purple background color
-      fillOpacity: 1,
-      strokeWeight: 2,
-      strokeColor: "#0000ff", // Blue border color
-      scale: 1.5, // Adjust scale as needed
-    };
-    
-    const marker = new google.maps.Marker({
-      position: position,
-      map: this.map,
-      title: home.name,
-      icon: svgMarker, // Assign the SVG marker
-      animation: google.maps.Animation.DROP,
-    });
-    const markerUrl = this.markerUrlValue;
+    const markerUrl = this.markerUrlValue; // Use the marker URL being passed in
 
     this.clearMarkers(); // Clear any existing markers
     careHomes.forEach((home) => {
-      const position = { lat: parseFloat(home.latitude), lng: parseFloat(home.longitude) };
+      const position = { lat: parseFloat(home.latitude), lng: parseFloat(home.longitude) }; // Define position within the loop
       if (!isNaN(position.lat) && !isNaN(position.lng)) {
         this.bounds.extend(position); // Extend the bounds to include this marker
-        
+
         const marker = new google.maps.Marker({
           position: position,
           map: this.map,
           title: home.name,
           icon: {
             url: markerUrl,
-            scaledSize: new google.maps.Size(50, 50), // Custom icon size
+            scaledSize: new google.maps.Size(50, 50), // Set the custom icon size
           },
-          animation: google.maps.Animation.DROP
+          animation: google.maps.Animation.DROP,
         });
 
         const infoWindow = new google.maps.InfoWindow({
@@ -100,12 +83,10 @@ export default class extends Controller {
 
     // Adjust the map based on the number of markers
     if (careHomes.length === 1) {
-      // For one marker, center the map on it with a closer zoom
       this.map.setCenter(this.bounds.getCenter());
-      this.map.setZoom(17);
+      this.map.setZoom(17); // Closer zoom for a single marker
     } else if (careHomes.length > 1) {
-      // For multiple markers, fit all markers in the visible map area
-      this.map.fitBounds(this.bounds, { padding: 150 });
+      this.map.fitBounds(this.bounds, { padding: 150 }); // Fit all markers in view
     }
   }
 

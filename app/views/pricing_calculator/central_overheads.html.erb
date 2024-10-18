@@ -6,6 +6,8 @@
     <div class="mb-4">
       <%= f.label :overheads, "Central Overheads Percentage (%)" %>
       <%= f.number_field :overheads, min: 0, max: 100, step: 0.01, class: "border-gray-300 rounded-lg p-2 w-full", data: { action: "input->calculator#updateOverheads", calculator_target: "centralCharges" } %>
+      <p class="calculator-help">IT, HR, Finance, Central Management </p>
+
       <!-- Display calculated Central Overheads Rate -->
       <%= f.label :central_overhead_rate, "Central Overheads Rate (£)" %>
       <%= f.number_field :central_overhead_rate, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "totalOverheads" } %>
@@ -39,21 +41,22 @@
 
 
    <!-- Fields for calculated values to be used on the summary page -->
-<div class="mb-4">
-  <%= f.label :total_overheads, "Total Overheads (£)" %>
-  <%= f.number_field :total_overheads, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "hiddenTotalOverheads" } %>
-</div>
+  <div class="hidden">
+    <div class="mb-4">
+      <%= f.label :total_overheads, "Total Overheads (£)" %>
+      <%= f.number_field :total_overheads, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "hiddenTotalOverheads" } %>
+    </div>
 
-<div class="mb-4">
-  <%= f.label :total_package_cost, "Total Package Cost (£)" %>
-  <%= f.number_field :total_package_cost, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "hiddenTotalPackageCost" } %>
-</div>
+    <div class="mb-4">
+      <%= f.label :total_package_cost, "Total Package Cost (£)" %>
+      <%= f.number_field :total_package_cost, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "hiddenTotalPackageCost" } %>
+    </div>
 
-<div class="mb-4">
-  <%= f.label :total_hourly_rate, "Total Hourly Rate (£)" %>
-  <%= f.number_field :total_hourly_rate, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "hiddenTotalHourlyRate" } %>
-</div>
-
+    <div class="mb-4">
+      <%= f.label :total_hourly_rate, "Total Hourly Rate (£)" %>
+      <%= f.number_field :total_hourly_rate, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "hiddenTotalHourlyRate" } %>
+    </div>
+  </div>
 
     <%= f.button :submit, "Next", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
   <% end %>
