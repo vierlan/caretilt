@@ -26,6 +26,9 @@
     @apply text-xl font-semibold leading-6 text-gray-900 group-hover:text-primary;
 }
 
+.subheading{
+    @apply text-lg font-bold tracking-tight text-gray-700 sm:text-base my-2;
+}
 
 
 /* header */

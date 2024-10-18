@@ -21,8 +21,16 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center">
           <input aria-label="Remember me" type="checkbox" name="user[terms_of_service]" id="user_terms_of_service" class="h-8 w-8 my-2 text-primary-600 focus:ring-primary-500 border-gray-300 rounded" required />
-          <label for="user_terms_of_service" class="ml-2 block text-sm xl:text-base font-semibold text-gray-900">
-            I agree to the <%= link_to 'Terms of Service', '#' %>
+          <label for="user_terms_of_service" class="ml-2 block text-sm xl:text-base font-semibold text-gray-700">
+            I agree to the <%= link_to 'Terms of Service', terms_and_cons_path , class: "text-gray-900 font-bold", target: "_blank" %>
+          </label>
+        </div>
+      </div>
+            <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <input aria-label="Remember me" type="checkbox" name="user[privacy_policy]" id="user_privacy_policy" class="h-8 w-8 my-2 text-primary-600 focus:ring-primary-500 border-gray-300 rounded" required />
+          <label for="user_privacy_policy" class="ml-2 block text-sm xl:text-base font-semibold text-gray-700">
+            I agree to the <%= link_to 'Privacy Policy',privacy_path, class: "text-gray-900 font-bold", target: "_blank" %>
           </label>
         </div>
       </div>
