@@ -42,10 +42,12 @@ class User < ApplicationRecord
   # Validation to ensure terms are accepted and role is selected
   validates :terms_of_service, acceptance: { accept: 'on', message: 'must be accepted' }
   validates :privacy_policy, acceptance: { accept: 'on', message: 'must be accepted' }
-  validates :email,
-            format: { with: Devise.email_regexp },
-            presence: true,
-            uniqueness: { case_insensitive: true }
+  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
+
+ #validates :email,
+ #          format: { with: Devise.email_regexp },
+ #          presence: true,
+ #          uniqueness: { case_insensitive: true }
 
   # validates :verified, inclusion: { in: [true, false] }
   # validates :first_name, presence: true

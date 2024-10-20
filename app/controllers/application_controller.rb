@@ -72,7 +72,7 @@ class ApplicationController < ActionController::Base
   # whitelist extra User model params by uncommenting below and adding User attrs as keys
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:terms_of_service, :role, :phone_number, :privacy_policy])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:phone_number, :first_name, :last_name])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:phone_number, :first_name, :last_name, :cancel_confirmation, :delete_password])
   end
 
 end

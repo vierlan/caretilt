@@ -3,27 +3,48 @@ class RegistrationsController < Devise::RegistrationsController
 
   def create
     super do |resource|
-    # LOGIC NOT NEEDED:  CONFIRM LAN AHN
+      # Assign the role based on checkbox selection
+      if params[:user][:is_service_provider] == "1"
+        resource.role = "care_provider_super_user"
+        resource.status = "verified"
+        company = Company.create!(name: "New Company")
+        resource.company_id = company.id
+      elsif params[:user][:la_super_user] == "1"
+        resource.role = "la_super_user"
+        resource.status = "verified"
+        local_authority = LocalAuthority.create!(name: "New Local Authority")
+        resource.local_authority_id = local_authority.id
+      end
 
-    #if resource.persisted?
-    #  send_verification_code(resource.phone_number)
-    #end
-    # Assign the role based on checkbox selection
-    if params[:user] && params[:user][:is_service_provider] == "1"
-      resource.role = "care_provider_super_user"
-      resource.status = "verified"
-      company = Company.create!(name: "New Company")  # Example creation
-      resource.company_id = company.id  # Placeholder, assign actual company_id after creation
-    elsif params[:user] && params[:user][:la_super_user] == "1"
-      resource.role = "la_super_user"
-      resource.status = "verified"
-      local_authority = LocalAuthority.create!(name: "New Local Authority")  # Example creation
-      resource.local_authority_id = local_authority.id
-    end
-
-    resource.save!  # Ensure user is saved with the updated fields
+      # Ensure user is saved with updated fields
+      unless resource.save
+        # Stop Devise from rendering/redirecting again
+        clean_up_passwords(resource)
+        set_minimum_password_length
+        render :new, status: :unprocessable_entity
+        return
+      end
     end
   end
+
+  def update
+    resource = current_user
+
+    if params[:user][:cancel_confirmation] == 'cancel'
+      if resource.valid_password?(params[:user][:password])
+        resource.destroy
+        set_flash_message! :notice, :destroyed
+        redirect_to root_path and return
+      else
+        flash[:alert] = 'Password is incorrect'
+        render :edit, status: :unprocessable_entity and return
+      end
+    end
+
+    # Proceed with the regular update if the user isn't deleting the account
+    super
+  end
+
 
   def after_sign_up_path_for(resource)
     after_signup_path(:add_name)
