@@ -40,7 +40,7 @@ class TeamMembersController < ApplicationController
 
   def create
     email = params[:email]
-    password = Devise.friendly_token.first(8)
+    password = Devise.friendly_token.first(8) # "123123"
     phone_number = params[:phone_number]
     @member = User.new(email: email, password: password, phone_number: phone_number, status: "inactive")
 
@@ -64,7 +64,7 @@ class TeamMembersController < ApplicationController
 
     respond_to do |format|
     if @member.save!
-      NotifierMailer.new_account(member: @member).deliver_now
+      # NotifierMailer.new_account(member: @member).deliver_now
       format.turbo_stream { render :create, locals: { member: @member, notice: 'Team member added successfully. An email has been sent to the new user.' } }
       format.html {
         redirect_to current_user.la_super_user? ?

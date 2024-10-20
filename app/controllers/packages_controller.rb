@@ -16,11 +16,12 @@ class PackagesController < ApplicationController
     when 'care_provider_super_user'
       @company = current_user.company
       @packages = @packages.where(subscription_type: 'company_subscription')
+      @packages = @packages.where.not(validity: 0)
       if current_user&.company&.has_active_subscription?
         @active_subscription = current_user.company.get_active_subscription
         @logs = @active_subscription&.credit_log || []
         @active_package = Package.find(@active_subscription.package_id)
-        @packages = @packages.where(validity: 0)
+        @packages = Package.where(validity: 0)
         @invoice_url = @active_subscription.credit_log.last.last
 
       end

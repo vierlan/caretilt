@@ -15,7 +15,7 @@ class Stripe::CheckoutController < ApplicationController
     @package = Package.find(params[:package])
     Rails.logger.info("Creating Stripe customer for #{current_user.company.name} + #{@price} ")
     @checkout_session = Stripe::Checkout::Session.create(
-      mode: 'subscription',
+      mode: @package.description.include?('non-renewable') ? 'payment' : 'subscription',
       line_items: [{
         quantity: 1,
         price: @package.stripe_price_id
@@ -43,9 +43,6 @@ class Stripe::CheckoutController < ApplicationController
       # Fetch the latest events
       @events = Stripe::Event.list({limit: 20})
       # You can render this or return as needed
-
-
-
   end
 
 

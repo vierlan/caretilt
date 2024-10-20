@@ -21,10 +21,10 @@ class DashboardController < ApplicationController
       # @care_homes = policy_scope(CareHome)
       @bookings = BookingEnquiry.where(user: @user).sort_by(&:created_at).reverse
     else
-        @company = current_user.company
-        # @care_homes = policy_scope(@company.care_homes)
-        @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten.sort_by(&:created_at).reverse
-        @credit_logs = @company.get_active_subscription&.credit_log
+      @company = current_user.company
+      # @care_homes = policy_scope(@company.care_homes)
+      @bookings = @company.care_homes.map(&:rooms).flatten.map(&:booking_enquiries).flatten.sort_by(&:created_at).reverse
+      @credit_logs = @company.get_active_subscription&.credit_log
     end
     @bookings.each do |booking|
       log = []
@@ -78,14 +78,42 @@ class DashboardController < ApplicationController
     when 'caretlit_master_user', 'caretilt_user'
       return true
     when 'care_provider_super_user', 'care_provider_user'
-      status = current_user.company.get_active_subscription.check_status
+      status = current_user&.company&.get_active_subscription
+      Rails.logger.info "Subscription status: #{status}"
     when 'la_super_user', 'la_user'
-      status = current_user.local_authority.has_active_subscription?
+      status = current_user&.local_authority&.has_active_subscription?
     end
     unless status && current_user.status == 'verified'
+      subscribable = current_user.company || current_user.local_authority
       case current_user.role
-      when 'care_provider_super_user', 'la_super_user'
-        redirect_to packages_path, alert: 'Please subscribe to a package to continue.'
+      when 'care_provider_super_user', 'la_super_user' # and subsciption_id present
+        # get the subscription id check subscription is valid subscription
+        if subscribable.has_active_subscription?
+        active_subscription = subscribable.get_active_subscription
+        subscription = active_subscription.get_stripe_subscription(subscribable.get_active_subscription.receipt_number)
+        Rails.logger.info "Subscription status: #{subscription}"
+        period_end = Time.at(subscription[:current_period_end])
+          if period_end > active_subscription.expires_on
+            active_subscription.update_expiry_date(period_end)
+            active_subscription.update(next_payment_date: period_end)
+            active_subscription.number_of_payments ? active_subscription.update(number_of_payments: active_subscription.number_of_payments + 1) : active_subscription.update(number_of_payments: 1)
+            active_subscription.activate!
+            active_subscription.save!
+            return
+          elsif period_end > Time.now
+            active_subscription.activate!
+            active_subscription.save!
+            return
+          else
+            latest_invoice = active_subscription.get_lastest_stripe_invoice(subscription[:latest_invoice])
+            Rails.logger.info "Latest invoice: #{latest_invoice}"
+            invoice = active_subscription.fetch_invoice_details(latest_invoice) if latest_invoice.present?
+            Rails.logger.info "Invoice: #{invoice}"
+            redirect_to invoice.hosted_invoice_url, status: 303, allow_other_host: true, notice: "Please pay your invoice to continue using the service."
+          end
+        else
+          redirect_to packages_path, alert: 'Please subscribe to a package to continue.'
+        end
       when 'care_provider_user'
         redirect_to error_path, alert: 'Your company has not subscribed to a package yet.'
       when 'la_user'
@@ -93,7 +121,6 @@ class DashboardController < ApplicationController
       end
     end
   end
-
 
   def ensure_onboarding_complete
     unless current_user.onboarding_complete?
