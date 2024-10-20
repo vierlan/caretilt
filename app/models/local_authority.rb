@@ -10,7 +10,7 @@ class LocalAuthority < ApplicationRecord
   end
 
   def get_active_subscription
-    subscriptions.where(active: true).last
+    subscriptions.where(active: true).last || subscriptions.order(:subscribed_on).last
   end
 
 

@@ -25,7 +25,8 @@ class SubscriptionsController < ApplicationController
       active: false,
       expires_on: Time.now + 1.year,
       next_payment_date: Time.now,
-      subscribed_on: Time.now
+      subscribed_on: Time.now,
+      number_of_payments: 1
     )
     if @subscription.save!
       invoice_data = create_stripe_subscription(@local_authority, @package)

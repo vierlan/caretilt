@@ -1,12 +1,12 @@
 
 <div class="rounded-3xl p-8 ring-1 ring-gray-200">
-  <h3 id="tier-hobby" class="text-lg font-semibold leading-8 text-gray-900"><%= package.name.humanize %></h3>
+  <h3 id="tier-hobby" class="text-2xl font-bold leading-8 text-gray-900"><%= package.name.humanize %></h3>
   <p class="mt-4 text-description-small" style="min-height: 220px">
     <%= package.description %>
   </p>
   <p class="mt-6 flex items-baseline gap-x-1">
     <!-- Price, update based on frequency toggle state -->
-    <span class="text-4xl font-bold tracking-tight text-gray-900"><%= package.price %></span>
+    <span class="text-3xl font-bold tracking-tight text-gray-900">£<%= package.price %></span>
     <!-- Payment frequency, update based on frequency toggle state -->
     <% if package.validity != 0 %>
       <span class="text-sm font-semibold leading-6 text-gray-600"><%= package.validity == 1 ? "/Monthly" : "/Annually" %></span>

@@ -12,13 +12,13 @@ class User < ApplicationRecord
   scope :subscribed, -> { where.not(stripe_subscription_id: [nil, '']) }
 
   enum :role, {
-  undefined: 0,
-  caretilt_master_user: 1,
-  caretilt_user: 2,
-  care_provider_super_user: 3,
-  care_provider_user: 4,
-  la_super_user: 5,
-  la_user: 6
+    undefined: 0,
+    caretilt_master_user: 1,
+    caretilt_user: 2,
+    care_provider_super_user: 3,
+    care_provider_user: 4,
+    la_super_user: 5,
+    la_user: 6
   }
 
   # changed to positional enmum
@@ -34,16 +34,20 @@ class User < ApplicationRecord
 
   # When adding team member, need field for their phone number. MANDATORY ON SIGN UP. MOBILE UK.
 
-
   # Test 2 superuser verified, but didn't make a company.
   # Test 2 then added another user themself, but without a  company attatched. we get dashboard errors.
 
   # When user is already added (even not in same company) we will get errors when adding.
 
-
- # Validation to ensure terms are accepted and role is selected
+  # Validation to ensure terms are accepted and role is selected
   validates :terms_of_service, acceptance: { accept: 'on', message: 'must be accepted' }
   validates :privacy_policy, acceptance: { accept: 'on', message: 'must be accepted' }
+  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
+
+ #validates :email,
+ #          format: { with: Devise.email_regexp },
+ #          presence: true,
+ #          uniqueness: { case_insensitive: true }
 
   # validates :verified, inclusion: { in: [true, false] }
   # validates :first_name, presence: true
@@ -57,7 +61,7 @@ class User < ApplicationRecord
 
   def full_name
     if self.first_name && self.last_name
-    "#{first_name.capitalize} #{last_name.capitalize}"
+      "#{first_name.capitalize} #{last_name.capitalize}"
     else
       self.email
     end
