@@ -15,7 +15,7 @@ class Stripe::CheckoutController < ApplicationController
     @package = Package.find(params[:package])
     Rails.logger.info("Creating Stripe customer for #{current_user.company.name} + #{@price} ")
     @checkout_session = Stripe::Checkout::Session.create(
-      mode: 'subscription',
+      mode: @package.description.include?('non-renewable') ? 'payment' : 'subscription',
       line_items: [{
         quantity: 1,
         price: @package.stripe_price_id
@@ -36,7 +36,6 @@ class Stripe::CheckoutController < ApplicationController
 # Log the Stripe session URL
       redirect_to @checkout_session.url, status: 303, allow_other_host: true
       Rails.logger.info "Redirecting to Stripe checkout session URL: #{@checkout_session.url}"
-
   end
 
   def get_stripe_events
@@ -44,9 +43,6 @@ class Stripe::CheckoutController < ApplicationController
       # Fetch the latest events
       @events = Stripe::Event.list({limit: 20})
       # You can render this or return as needed
-
-
-
   end
 
 
@@ -99,15 +95,16 @@ class Stripe::CheckoutController < ApplicationController
             subscribable: subscribable_entity,
             package: @package,
             receipt_number: @stripe_session.subscription,
-            expires_on: Time.now + @package.validity.months, # Assuming validity is in months
+            expires_on: Time.now + @package.validity.months,
             credits_left: @package.credits,
+            next_payment_date: Time.now + @package.validity.months,
             active: true,
             subscribed_on: Time.now
           )
         end
 
         # Log the credits purchase
-        @subscription.credit_log << ["Purchase:", "#{@package.name}", "#{Time.now}", "added #{@package.credits} credits", "#{@subscription.credits_left}"]
+        @subscription.credit_log << ["Purchase:", "#{@package.name}", "#{Time.now}", "added #{@package.credits} credits", "#{@subscription.credits_left}", ""]
 
         # Save the subscription
         @subscription.save!

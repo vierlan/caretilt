@@ -19,7 +19,8 @@ class Company < ApplicationRecord
   end
 
   def get_active_subscription
-    subscriptions.where(active: true).last
+    valid_subscriptions = subscriptions.joins(:package).where.not(packages: { validity: 0 })
+    valid_subscriptions.where(active: true).last || valid_subscriptions.order(:subscribed_on).last
   end
   private
 

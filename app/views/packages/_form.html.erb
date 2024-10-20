@@ -15,6 +15,8 @@
         <%= form.label :name %>
         <%= form.text_field :name, class: 'form-control', required: true %>
       </div>
+      <p>For "starter packages" that will give a one off credit and term, included the term "non-renewable" in the decscription.
+      Packages with this term includued will not auto-charge the card and will have a validity of chosen validity period. </p>
       <div class="field">
         <%= form.label :description %>
         <%= form.text_area :description, class: 'form-control', required: true %>
@@ -29,7 +31,7 @@
       </div>
       <div class="field">
         <%= form.label :validity, "Subscription: Choose 1 for monthly subscription, 12 for yearly, 0 for credits only" %>
-        <%= form.select :validity, [0, 1, 12], {}, class: 'form-control', required: true %>
+        <%= form.select :validity, [0, 1, 2, 3, 12], {}, class: 'form-control', required: true %>
       </div>
       <div class="field">
         <%= form.label :subscription_type %>
