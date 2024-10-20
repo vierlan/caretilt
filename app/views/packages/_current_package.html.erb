@@ -26,6 +26,8 @@
       <ul role="list" class="mt-8 space-y-3 text-description-small">
         <li>Subscription status: <%= current_user.company.has_active_subscription? ? "Active" : "No Active Subscription Found" %></li>
         <li>Credits remaining: <%= @active_subscription.credits_left  %></li>
+        <%= link_to 'View Invoice', @invoice_url, data: {turbo: false}, target: '_blank', class: 'button-blue-pill block m-2 w-60 text-center' %>
+
       <% else %>
         <%= link_to 'View Invoice', @invoice_url, data: {turbo: false}, target: '_blank', class: 'button-blue-pill block m-2 w-60 text-center' %>
         <ul role="list" class="mt-8 space-y-3 text-description-small">

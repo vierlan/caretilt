@@ -99,12 +99,12 @@ class TeamMembersController < ApplicationController
     # Handle the mark_for_deletion checkbox value as a string
     if params[:user][:mark_for_deletion] == '1'
       flash[:notice] = 'User marked for deletion.'
-      @user.destroy
+      @member.destroy
       redirect_to current_user.la_super_user? ?
         team_local_authority_path(@local_authority) :
         team_company_path(@company),
         data: {turbo_frame: "main-content"}, notice: 'User has been deleted.'
-    elsif @user.update(user_params.except(:mark_for_deletion))
+    elsif @member.update!(user_params.except(:mark_for_deletion))
       redirect_to current_user.la_super_user? ?
         team_local_authority_path(@local_authority) :
         team_company_path(@company),
