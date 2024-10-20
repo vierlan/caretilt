@@ -2,6 +2,7 @@ class DashboardController < ApplicationController
   before_action :authenticate_user!
   before_action :check_two_factor_authentication
   before_action :ensure_onboarding_complete
+  before_action :check_verification
   before_action :check_subscription
 
   def index
@@ -120,6 +121,11 @@ class DashboardController < ApplicationController
         redirect_to error_path, alert: 'Your local authority has not subscribed to a package yet.'
       end
     end
+  end
+
+  def check_verification
+    if current_user.status == 'inactive'
+      redirect_to error2_path, alert: 'Your account is not yet activated. Please contact your company admin.'
   end
 
   def ensure_onboarding_complete
