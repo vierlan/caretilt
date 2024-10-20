@@ -21,6 +21,8 @@ class PackagesController < ApplicationController
         @logs = @active_subscription&.credit_log || []
         @active_package = Package.find(@active_subscription.package_id)
         @packages = @packages.where(validity: 0)
+        @invoice_url = @active_subscription.credit_log.last.last
+
       end
     when 'la_super_user'
       @local_authority = current_user.local_authority

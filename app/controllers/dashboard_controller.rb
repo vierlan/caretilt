@@ -40,7 +40,7 @@ class DashboardController < ApplicationController
       @activity_feeds << log
     end
     # send credit logs to activity feeds
-    @credit_logs&.each do |log|
+    @credit_logs&.take(5)&.each do |log|
       @activity_feeds << log
     end
     @activity_feeds.sort_by! { |log| parse_datetime(log[2]) }.reverse!
@@ -78,7 +78,7 @@ class DashboardController < ApplicationController
     when 'caretlit_master_user', 'caretilt_user'
       return true
     when 'care_provider_super_user', 'care_provider_user'
-      status = current_user.company.has_active_subscription?
+      status = current_user.company.get_active_subscription.check_status
     when 'la_super_user', 'la_user'
       status = current_user.local_authority.has_active_subscription?
     end
