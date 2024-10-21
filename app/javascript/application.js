@@ -4,7 +4,10 @@ import "controllers";
 import "channels";
 import "chartkick";
 import "Chart.bundle";
-import "flowbite"
+import "flowbite";
+import "@rails/request.js";
+import "@hotwired/turbo-rails";
+import "controllers";
 
 import * as ActiveStorage from "@rails/activestorage";
 ActiveStorage.start();
@@ -49,6 +52,9 @@ addEventListener("trix-initialize", (event) => {
   );
 });
 
-import "@rails/request.js"
-import "@hotwired/turbo-rails"
-import "controllers"
+document.addEventListener('touchstart', function(event) {
+  var target = event.target;
+  if (target.tagName === 'A' && target.href) {
+    window.location = target.href;
+  }
+});
