@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  attr_accessor :terms_of_service, :is_service_provider, :is_local_authority
+  attr_accessor :terms_of_service, :is_service_provider, :is_local_authority, :privacy_policy, :cancel_confirmation, :delete_password
 
   belongs_to :company, optional: true
   belongs_to :local_authority, optional: true
