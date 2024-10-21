@@ -49,7 +49,7 @@ class DashboardController < ApplicationController
 
   def team
     @company = Company.find(params[:id])
-    @team_users = @comapny.users
+    @team_users = @company.users
     @verified_members = @team_users.where.not(status: 0)
     @company = current_user.company
     @team_super_user = @verified_members.find_by(role: 'care_provider_super_user')
@@ -126,6 +126,7 @@ class DashboardController < ApplicationController
   def check_verification
     if current_user.status == 'inactive'
       redirect_to error2_path, alert: 'Your account is not yet activated. Please contact your company admin.'
+    end
   end
 
   def ensure_onboarding_complete
@@ -138,4 +139,5 @@ class DashboardController < ApplicationController
       end
     end
   end
+
 end
