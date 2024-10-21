@@ -12,6 +12,8 @@ class BillingPortalSessionsController < ApplicationController
   def invoice
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     @subscription = Subscription.find(params[:id])
-    @invoice_url = @subscription.credit_log.last.last
+    last_credit_log = @subscription.credit_log.last
+    @invoice_url = last_credit_log.present? ? last_credit_log.last : nil
   end
 end
+

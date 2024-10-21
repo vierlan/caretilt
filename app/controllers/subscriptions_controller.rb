@@ -66,7 +66,7 @@ class SubscriptionsController < ApplicationController
            package&.name || '',                # Package Name or empty string
            time,                               # Time of action
            credits_added > 0 ? "added #{credits_added} credits" : '', # Description of credits added or empty string
-           (@subscription.credits_left += credits_added).to_s     # Remaining credits as string (if credits_left is not updated, it will keep the current value)
+           credits_added > 0 ? (@subscription.credits_left += credits_added).to_s : ''    # Remaining credits as string (if credits_left is not updated, it will keep the current value)
          ]
 
          # Push the log entry to credit_log
