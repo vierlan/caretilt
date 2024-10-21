@@ -2,7 +2,7 @@
 
 <% meta title: "Blog posts", description: "All blog posts from #{Rails.application.credentials.company_name}." %>
 <%= render partial: "shared/heading", locals: { title: 'Blog Posts', description: '' } %>
-<% if current_user&.admin? %>
+<% if policy(@blog_posts).edit? %>
   <%# New blog post button, only accessibly by admins %>
   <div class="mt-8 mx-auto max-w-fit">
     <div class="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm xl:text-base leading-5 font-medium rounded-md text-white bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg focus:outline-none">

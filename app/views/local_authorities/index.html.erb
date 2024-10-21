@@ -28,9 +28,7 @@
                         <span class="text-lg text-gray-700 mr-4">Subscribed until: <%= subscription.expires_on %>  <i class="fa-solid fa-plus"></i></span>
                       </a>
                       <%= link_to 'Edit Subscription', edit_subscription_path(subscription), data: {turbo_frame: "main_content"}, class: "button-caretilt block m-2" %>
-                      <% subscription.attributes.each do |key, value| %>
-                        <p class="text-base leading-5 text-gray-700"><%= key %>: <%= value %></p>
-                      <% end %>
+                      
                     </li>
                   <% end %>
                 </ul>

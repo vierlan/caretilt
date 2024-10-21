@@ -2,7 +2,7 @@
   <% meta title: @blog_post.title, description: @blog_post.description %>
   <div class="font-inter antialiased text-gray-800 tracking-tight my-16 max-w-3xl mx-auto">
     <div class="lg:px-8">
-      <%= link_to "← Back to all posts", blog_posts_path, class:"hover:opacity-75 mr-1 w-fit font-semibold" %>
+      <%= link_to "← Back to all posts", policy(@blog_post).edit? ? blog_posts_path : guides_path, class:"hover:opacity-75 mr-1 w-fit font-semibold" %>
       <article class="flex flex-col items-start justify-between mt-4">
         <div class="relative w-full">
           <%= image_tag @blog_post.cover_image, class:"aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover" if @blog_post.cover_image.attached? %>
