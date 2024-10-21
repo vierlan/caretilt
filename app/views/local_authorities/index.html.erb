@@ -13,9 +13,11 @@
               <a href="#" data-action="open#toggleHiddenField">Expand/Retract Local authority</a>
               <div class="hidden" data-open-target="info">
                 <%= link_to 'Edit Company', edit_local_authority_path(local_authority), class: "button-caretilt block m-2" %>
-                <% local_authority.attributes.each do |key, value| %>
-                  <p class="text-base leading-5 text-gray-700"><%= key %>: <%= value %></p>
-                <% end %>
+                <ul>
+                  <li class="text-base leading-5 text-gray-700"><b>Name</b>: <%= local_authority.name %></li>
+                  <li class="text-base leading-5 text-gray-700"><b>Id</b>: <%= local_authority.id %></li>
+                  <li class="text-base leading-5 text-gray-700"><b>Email</b>: <%= local_authority.email %></li>
+                </ul>
               </div>
               <!--local_authority subscriptions start-->
               <div class="flex flex-cols" data-controller="open">
