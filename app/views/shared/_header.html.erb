@@ -1,5 +1,5 @@
 <header class="bg-white drop-shadow-md">
-  <nav class="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8" aria-label="Global" data-controller="navigation togglevisibility" data-navigation-class-value="underline">
+  <nav class="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8 z-30" aria-label="Global" data-controller="navigation togglevisibility" data-navigation-class-value="underline">
     <!-- Logo Section (Visible on both desktop and mobile until menu is open) -->
     <div class="flex lg:flex-1" data-togglevisibility-target="logo">
       <%= link_to root_path, class: "-m-1.5 p-1.5" do %>
@@ -12,7 +12,7 @@
       <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
         data-action="click->togglevisibility#toggle" aria-controls="mobile-menu" aria-expanded="false">
         <span class="sr-only">Open main menu</span>
-        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+        <svg class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>
       </button>
@@ -38,7 +38,7 @@
       <% end %>
     </div>
     <!-- Mobile Menu (Visible when hamburger icon is clicked) -->
-    <div id="mobile-menu" class="hidden lg:hidden inset-0 z-50 w-full bg-white sm:max-w-sm" data-togglevisibility-target="content">
+    <nav id="mobile-menu" class="hidden inset-0 z-50 w-full bg-white sm:max-w-sm" data-togglevisibility-target="content">
       <!-- Close Menu Button (Cross Icon) -->
       <div class="flex items-center justify-between mb-4 w-full">
         <%= link_to root_path, class: "-m-1.5 p-1.5" do %>
@@ -61,13 +61,13 @@
           <a href="/login" class="-mx-3 block rounded-lg px-3 py-2.5 text-base 2xl:text-lg font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log in <span aria-hidden="true">&rarr;</span></a>
           <a href="/signup" class="-mx-3 block rounded-lg px-3 py-2.5 text-base 2xl:text-lg font-semibold leading-7 text-gray-900 hover:bg-gray-50">Register <span aria-hidden="true">&rarr;</span></a>
         <% else %>
-        
+
           <%= link_to "Dashboard", dashboard_index_path(current_user), class: "-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" %>
           <%= link_to destroy_user_session_path, data: { turbo_method: :delete, navigation_target: "link", action: "click->navigation#highlightButton" }, class: "header-link" do %>
             Sign Out
           <% end %>
         <% end %>
       </div>
-    </div>
+    </nav>
   </nav>
 </header>
