@@ -7,15 +7,20 @@
         <%= image_tag 'logo_symbol_trans.png', class: 'w-auto', alt: 'caretilt_logo', style: 'width: 60px' %>
       <% end %>
     </div>
+    <% if user_signed_in? %>
+    <div>
+      <%= link_to "Dashboard", dashboard_index_path(current_user), class: "font-bold text-lg" %>
+    </div>
+    <% end %>
     <!-- Mobile Hamburger Menu Button (Visible only when menu is closed) -->
     <div class="flex lg:hidden" data-togglevisibility-target="iconOpen">
-      <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+      <a href="#" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
         data-action="click->togglevisibility#toggle" aria-controls="mobile-menu" aria-expanded="false">
         <span class="sr-only">Open main menu</span>
         <svg class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>
-      </button>
+      </a>
     </div>
     <!-- Desktop Links -->
     <div class="hidden lg:flex flex-start lg:gap-x-12">

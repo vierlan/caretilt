@@ -13,36 +13,6 @@ class Subscription < ApplicationRecord
     puts self.active?
   end
 
-  # testing sub_1QAERHJJeNFUvqXejEzZ0Tzj
-
-  #def check_status
-  #  Rails.logger.info "Checking subscription status for #{self.subscribable}"
-  #  Stripe.api_key = Rails.application.credentials&.stripe&.api_key
-  #  @entity = self.subscribable
-  #  if self.expires_on < Time.now || self.next_payment_date < Time.now
-  #   Rails.logger.info "Subscription has expired. Fetching stripe subscription for #{@entity.name}"
-  #   subscription = subscribable.get_active_subscription
-  #   stripe_subscription = subscription.get_stripe_subscription(subscription.receipt_number) if subscription.present?
-  #   Rails.logger.info "Stripe subscription found for subscription #{stripe_subscription[:latest_invoice]}"
-  #   latest_invoice = subscription.get_lastest_stripe_invoice(subscription.receipt_number) if stripe_subscription.present?
-  #   invoice = subscription.fetch_invoice_details(latest_invoice) if latest_invoice.present?
-  #   exp_date = Time.at(invoice[:lines][:data][0][:period][:end]) if invoice.present?
-  #   self.credit_log[-1][-1] = invoice.hosted_invoice_url if invoice.present?
-  #   Rails.logger.info "Lastest invoice found for subscription #{invoice}"
-  #    if invoice.present? && invoice[:paid] == true && exp_date > Time.now
-  #      Rails.logger.info "Invoice paid. Updating expiry date for subscription #{self.subscribable.name}"
-  #      update_expiry_date(exp_date)
-  #    elsif
-  #      invoice.present? && invoice[:paid] == false
-  #      return false
-  #      redirect_to invoice.hosted_invoice_url, status: 303, allow_other_host: true, notice: "Please pay your invoice to continue using the service."
-  #    else
-  #      return false
-  #      AdminMailer.error("Subscription renewal error", "Subscription error for #{self.subscribable.name} #{self.subscribable.stripe_id}").deliver_now
-  #    end
-  #  end
-  #end
-
   def get_lastest_stripe_invoice(stripe_id)
     Stripe::Subscription.retrieve(stripe_id).latest_invoice
   end
