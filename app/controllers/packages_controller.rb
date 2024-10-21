@@ -22,7 +22,7 @@ class PackagesController < ApplicationController
         @logs = @active_subscription&.credit_log || []
         @active_package = Package.find(@active_subscription.package_id)
         @packages = Package.where(validity: 0)
-        last_credit_log = @subscription.credit_log.last if @subscription.credit_log.present?
+        last_credit_log = @subscription&.credit_log&.last if @subscription.credit_log.present?
         @invoice_url = last_credit_log.present? ? last_credit_log.last : nil
 
       end
@@ -34,7 +34,7 @@ class PackagesController < ApplicationController
         @active_subscription = current_user.local_authority.get_active_subscription || current_user.local_authority.subscriptions.last
         @active_package = Package.find(@active_subscription.package_id)
         @packages = @packages.where(subscription_type: 'local_authority_subscription')
-        last_credit_log = @subscription.credit_log.last if @subscription.credit_log.present?
+        last_credit_log = @subscription&.credit_log&.last
         @invoice_url = last_credit_log.present? ? last_credit_log.last : nil
       end
     end
