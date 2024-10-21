@@ -36,6 +36,7 @@ class SubscriptionsController < ApplicationController
        # Log the credits purchase
       @subscription.credit_log << ["#{@local_authority.name.to_s}", "#{@package.name.to_s}", "#{Time.now.to_s}", "#{invoice_id}", "#{invoice_url.to_s}"]
       @subscription.save!
+      @customer.update(stripe_subscription_id: invoice_url.to_s)
       redirect_to packages_path, notice: 'Subscription was successfully updated.'
       # redirect_to subscription_invoice_path(@subscription), notice: "Subscription created successfully. Please check your invoice for payment instructions."
     else

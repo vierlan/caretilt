@@ -31,8 +31,9 @@ class LocalAuthoritiesController < ApplicationController
   end
 
   def update
-    authorize @local_authority
-    if @local_authority.update
+    @local_authority = LocalAuthority.find(params[:id])
+    authorize :local_authority, :edit?
+    if @local_authority.update(local_authority_params)
       redirect_to local_authorities_path
     else
       render :edit, status: :unprocessable_entity
@@ -50,6 +51,6 @@ class LocalAuthoritiesController < ApplicationController
   end
 
   def local_authority_params
-    params.require(:local_authority).permit(:name)
+    params.require(:local_authority).permit(:name, :email)
   end
 end

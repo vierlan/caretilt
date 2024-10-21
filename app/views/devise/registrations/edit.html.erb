@@ -18,6 +18,7 @@
       <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
     <% end %>
     <div class="field">
+      <h3 class="font-bold">New Password</h3>
       <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
       <%= f.password_field :password, autocomplete: "new-password" %>
       <% if @minimum_password_length %>
@@ -37,7 +38,7 @@
       <%= f.label :phone_number %><br />
       <%= f.text_field :phone_number %>
     </div>
-    
+
     <div class="field">
       <label for="cancel_confirmation">Type 'cancel' to delete your account</label><br />
       <input type="text" name="user[cancel_confirmation]" id="cancel_confirmation" placeholder="Type 'cancel'" />

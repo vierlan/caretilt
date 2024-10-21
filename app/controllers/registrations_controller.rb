@@ -6,12 +6,12 @@ class RegistrationsController < Devise::RegistrationsController
       # Assign the role based on checkbox selection
       if params[:user][:is_service_provider] == "1"
         resource.role = "care_provider_super_user"
-        resource.status = "verified"
+        resource.status = 2
         company = Company.create!(name: "New Company")
         resource.company_id = company.id
       elsif params[:user][:la_super_user] == "1"
         resource.role = "la_super_user"
-        resource.status = "verified"
+        resource.status = 2
         local_authority = LocalAuthority.create!(name: "New Local Authority")
         resource.local_authority_id = local_authority.id
       end
