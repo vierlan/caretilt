@@ -12,8 +12,7 @@ class BillingPortalSessionsController < ApplicationController
   def invoice
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     @subscription = Subscription.find(params[:id])
-    last_credit_log = @subscription.credit_log.last
-    @invoice_url = last_credit_log.present? ? last_credit_log.last : nil
+    invoice_url = @subscription.receipt_number || @subscription&.credit_log&.last&.try(:last)
+    # redirect_to invoice_url, status: 303, allow_other_host: true
   end
 end
-
