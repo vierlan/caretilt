@@ -83,11 +83,12 @@ class DashboardController < ApplicationController
       Rails.logger.info "Subscription status: #{status}"
     when 'la_super_user', 'la_user'
       status = current_user&.local_authority&.has_active_subscription?
+      Rails.logger.info "Subscription status: #{status}"
     end
     unless status && current_user.status == 'verified'
       subscribable = current_user.company || current_user.local_authority
       case current_user.role
-      when 'care_provider_super_user', 'la_super_user' # and subsciption_id present
+      when 'care_provider_super_user' # and subsciption_id present
         # get the subscription id check subscription is valid subscription
         if subscribable.has_active_subscription?
         active_subscription = subscribable.get_active_subscription
@@ -115,6 +116,8 @@ class DashboardController < ApplicationController
         else
           redirect_to packages_path, alert: 'Please subscribe to a package to continue.'
         end
+      when 'la_super_user'
+        redirect_to packages_path, alert: 'Please subscribe to a package to continue.'
       when 'care_provider_user'
         redirect_to error_path, alert: 'Your company has not subscribed to a package yet.'
       when 'la_user'
