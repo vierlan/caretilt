@@ -107,7 +107,7 @@ Rails.application.routes.draw do
 
 
   pages = %w[
-    privacy about home guides faq pricing search pricing2 error error2 terms_and_cons refund
+    privacy about home guides faq pricing search pricing2 error error2 terms_and_cons refund error_not_verified error_team_member 
   ]
   pages.each do |page|
     get "/#{page}", to: "pages##{page}", as: page.gsub('-', '_').to_s

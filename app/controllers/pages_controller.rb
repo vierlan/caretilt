@@ -34,7 +34,11 @@ class PagesController < ApplicationController
     @packages = Package.where(validity: 12, subscription_type: 'company_subscription')
   end
 
+  def error_not_verified
+  end
 
+  def error_team_member
+  end
 
   def test2
     @care_homes = CareHome.where.not(latitude: nil, longitude: nil)

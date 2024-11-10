@@ -1,40 +1,39 @@
 class TeamMembersController < ApplicationController
 
-
   def index
-    #Pundit Logic for future reference.
+    # Pundit Logic for future reference.
 
-    #Index in pundit needs a collection of objects for its policy SCOPE. We have no team member model.
+    # Index in pundit needs a collection of objects for its policy SCOPE. We have no team member model.
     # Opt 1. Either rename index -> all (and feed it no object)
     # Opt 2. We feed in a policy scope (doesn't have to be used, just done to get rid of the policy scope required error)
-    @all_members = policy_scope(User, policy_scope_class: TeamMemberPolicy::Scope)
+    # @all_members = policy_scope(User, policy_scope_class: TeamMemberPolicy::Scope)
     authorize :team_member, :index?
 
-    @user = User.new
-
+    @member = User.new
+    @user = current_user
     # Authorize the index action itself
     # authorize :team_member, :index?
     if current_user.company
       @company = Company.find(params[:id])
-      @all_members = @company.users
-      @verified_members = @all_members.verified
-      @care_homes = @company.care_homes
-      @unverified_users = @all_members.inactive
-      @unassigned_users = @verified_members.where(care_home_id: nil)
+      @all_members = @company.users || []
+      @verified_members = @all_members.verified || []
+      @care_homes = @company.care_homes || []
+      @unverified_users = @all_members.inactive || []
+      @unassigned_users = @verified_members.where(care_home_id: nil) || []
       @name = @company.name
     elsif current_user.local_authority
       @local_authority = LocalAuthority.find(params[:id])
-      @all_members = @local_authority.users
-      @verified_members = @all_members.verified
-      @care_homes = CareHome.all
-      @unverified_users = @all_members.inactive
-      @unassigned_users = @verified_members.where(care_home_id: nil)
+      @all_members = @local_authority.users || []
+      @verified_members = @all_members.verified || []
+      @care_homes = CareHome.all || []
+      @unverified_users = @all_members.inactive || []
+      @unassigned_users = @verified_members.where(care_home_id: nil) || []
       @name = @local_authority.name
     end
   end
 
   def new
-    @user = User.new
+    @member = User.new
   end
 
   def create
@@ -42,7 +41,13 @@ class TeamMembersController < ApplicationController
     password = Devise.friendly_token.first(8) # "123123"
     phone_number = params[:phone_number]
     @member = User.new(email: email, password: password, phone_number: phone_number, status: "inactive")
-
+    url = current_user.la_super_user? ? team_local_authority_path(current_user.local_authority) : team_company_path(current_user.company)
+    # check if email is already in use
+    if User.find_by(email: email)
+      raise
+      flash[:alert] = 'Email already in use.'
+      render url data: { turbo_frame: "main-content" }, status: :unprocessable_entity
+    end
 
     case current_user.role
     when 'care_provider_super_user'
@@ -61,25 +66,34 @@ class TeamMembersController < ApplicationController
       render status: :forbidden
     end
 
-    respond_to do |format|
-    if @member.save!
-      # NotifierMailer.new_account(member: @member).deliver_now
-      format.turbo_stream { render :create, locals: { member: @member, notice: 'Team member added successfully. An email has been sent to the new user.' } }
-      format.html {
-        redirect_to current_user.la_super_user? ?
-        team_local_authority_path(@local_authority) :
-        team_company_path(@company),
-        data: {turbo_frame: "main-content"},
-        notice: 'Team member added successfully. An email has been sent to the new user.'
-      }
+    if @member.save
+        # NotifierMailer.new_account(member: @member).deliver_now
+        respond_to do |format|
+          format.turbo_stream do
+            render turbo_stream: [
+              turbo_stream.replace("new_member", partial: "form"),
+              turbo_stream.append("member-list", partial: "member", locals: { member: @member }),
+              turbo_stream.append("flash-notice", partial: "add_success", locals: { message: "Team member added successfully. An email has been sent to the new user." })
 
-      #redirect_to current_user.la_super_user? ? team_local_authority_path(@local_authority) : team_company_path(@company), data: {turbo_frame: "main-content"}, notice: 'Team member added successfully. An email has been sent to the new user.'
+              #:create, locals: { member: @member }
+              # format.html { redirect_to url, notice: 'Team member added successfully. An email has been sent to the new user.' }
+              # format.turbo_stream { render :create, locals: { member: @member } }
+            ]
+          end
+        end
+
+      # redirect_to current_user.la_super_user? ? team_local_authority_path(@local_authority) : team_company_path(@company), data: { turbo_frame: "main-content" }, notice: 'Team member added successfully. An email has been sent to the new user.'
     else
-
-      format.html { render partial: 'form', status: :unprocessable_entity }
-      format.json { render json: @member.errors, status: :unprocessable_entity }
-      end
+      render partial: "form", data: { turbo_frame: "main-content" }, status: :unprocessable_entity
     end
+   #if @member.save
+   #  respond_to do |format|
+   #    format.html { redirect_to url, notice: 'Team member added successfully. An email has been sent to the new user.' }
+   #    format.turbo_stream { render turbo_stream: turbo_stream.replace("team_member_form", partial: "team_members/form", locals: { team_member: User.new }) }
+   #  end
+   #else
+   #  render turbo_stream: turbo_stream.replace("team_member_form", partial: "team_members/form", locals: { team_member: @member }), status: :unprocessable_entity
+   #end
   end
 
   def verify_member
@@ -99,15 +113,11 @@ class TeamMembersController < ApplicationController
     if params[:user][:mark_for_deletion] == '1'
       flash[:notice] = 'User marked for deletion.'
       @member.destroy
-      redirect_to current_user.la_super_user? ?
-        team_local_authority_path(@local_authority) :
-        team_company_path(@company),
-        data: {turbo_frame: "main-content"}, notice: 'User has been deleted.'
+      redirect_to current_user.la_super_user? ? team_local_authority_path(@local_authority) : team_company_path(@company),
+                  data: { turbo_frame: "main-content" }, notice: 'User has been deleted.'
     elsif @member.update!(user_params.except(:mark_for_deletion))
-      redirect_to current_user.la_super_user? ?
-        team_local_authority_path(@local_authority) :
-        team_company_path(@company),
-        data: {turbo_frame: "main-content"}, notice: 'User Saved'
+      redirect_to current_user.la_super_user? ? team_local_authority_path(@local_authority) : team_company_path(@company),
+                  data: { turbo_frame: "main-content" }, notice: 'User Saved'
     else
       render :verify_member, status: :unprocessable_entity
     end
@@ -122,9 +132,9 @@ class TeamMembersController < ApplicationController
   end
 
   def make_user_inactive
-    @user = User.find(params[:id])
+    @member = User.find(params[:id])
     @company = Company.find(params[:id])
-    if @users.update(status: 3)
+    if @member.update(status: 3)
       redirect_to team_members_index_path(current_user), notice: 'User has been made inactive.'
     else
       redirect_to team_members_index_path(current_user), alert: 'Error making user inactive.'

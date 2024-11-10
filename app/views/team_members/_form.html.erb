@@ -1,11 +1,11 @@
-<%= turbo_frame_tag "new_user" do %>
+<turbo-frame id="new_user">
   <% url = current_user&.company.present? ? add_team_member_company_path(@company) : add_team_member_local_authority_path(@local_authority) %>
   <%= form_with url: url, method: :post, local: true do |form| %>
-    <% if @user.errors.any? %>
+    <% if @member.errors.any? %>
       <div id="error_explanation" class="text-red-400 fond-bold">
-        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+        <h2><%= pluralize(@member.errors.count, "error") %> prohibited this user from being saved:</h2>
         <ul>
-          <% @user.errors.full_messages.each do |message| %>
+          <% @member.errors.full_messages.each do |message| %>
             <li><%= message %></li>
           <% end %>
         </ul>
@@ -23,4 +23,6 @@
       </div>
     </div>
   <% end %>
-<% end %>
+  <%#= turbo_stream.prepend(:flash, partial: "shared/flash", locals: { notice: "User #{@member.email} added!" }) %>
+
+</turbo-frame>
