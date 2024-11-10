@@ -18,7 +18,11 @@ class PagesController < ApplicationController
   end
 
   def guides
-    @blog_posts = BlogPost.published.order(created_at: :asc)
+    @blog = BlogPost.published.order(created_at: :desc)
+  end
+
+  def show
+    @blog_post = BlogPost.find_by(slug: params[:id])
   end
 
   def search

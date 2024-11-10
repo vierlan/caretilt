@@ -36,7 +36,7 @@ class TeamMembersController < ApplicationController
   def create
     email = params[:email]
     password = Devise.friendly_token.first(8) # "123123"
-    phone_number = params[:phone_number]
+    phone_number = clean_phone_number(params[:phone_number])
     @member = User.new(email: email, password: password, phone_number: phone_number, status: "inactive")
 
     case current_user.role
@@ -105,6 +105,11 @@ class TeamMembersController < ApplicationController
     params.require(:user).permit(
       :email, :first_name, :last_name, :care_home_id, :status, :role, :phone_number, :mark_for_deletion
     )
+  end
+
+  def clean_phone_number(phone_number)
+    # Remove all non-digit characters except '+' at the start
+    phone_number.gsub(/[^0-9+]/, '')
   end
 
   def make_user_inactive
