@@ -5,7 +5,7 @@ module NavigationHelper
 
     # Common links for all users
     links << {
-      name: 'My details',
+      name: 'My Details',
       path: edit_user_registration_path,
       icon: 'user'
     }

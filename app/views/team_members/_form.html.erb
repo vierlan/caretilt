@@ -1,11 +1,11 @@
-<%= turbo_frame_tag "new_user" do %>
+<turbo-frame id="new_member">
   <% url = current_user&.company.present? ? add_team_member_company_path(@company) : add_team_member_local_authority_path(@local_authority) %>
   <%= form_with url: url, method: :post, local: true do |form| %>
-    <% if @user.errors.any? %>
+    <% if @member.errors.any? %>
       <div id="error_explanation" class="text-red-400 fond-bold">
-        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+        <h2><%= pluralize(@member.errors.count, "error") %> prohibited this user from being saved:</h2>
         <ul>
-          <% @user.errors.full_messages.each do |message| %>
+          <% @member.errors.full_messages.each do |message| %>
             <li><%= message %></li>
           <% end %>
         </ul>
@@ -16,11 +16,12 @@
       <div class="mt-2">
         <%= form.email_field :email, id: "email", class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "you@example.com", required: true, pattern: "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" %>
         <label for='phone_number' class='block text-sm xl:text-base font-medium leading-6 text-gray-900'>Mobile Number with Country code</label>
-        <%= form.telephone_field :phone_number, id: "phone_number", class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "+447765379222", required: true, pattern: "\+\d{1,3}\d{4,14}(?:x.+)?", title: "Phone number must start with + followed by country code and number", value: "+" %>
+        <%= form.telephone_field :phone_number, id: "phone_number", class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6", placeholder: "+447765379222", required: true, pattern: "\+\d{1,3}\d{4,14}(?:x.+)?", title: "Phone number must start with + followed by country code and number" %>
         <div class="mt-4">
           <%= form.submit "Add Team Member", class: "inline-flex justify-center rounded-md border border-transparent bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg py-2 px-4 text-sm xl:text-base font-medium text-white shadow-sm  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
         </div>
       </div>
     </div>
   <% end %>
-<% end %>
+
+</turbo-frame>

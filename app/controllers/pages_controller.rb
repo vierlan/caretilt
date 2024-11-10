@@ -18,7 +18,11 @@ class PagesController < ApplicationController
   end
 
   def guides
-    @blog_posts = BlogPost.published.order(created_at: :asc)
+    @blog = BlogPost.published.order(created_at: :desc)
+  end
+
+  def show
+    @blog_post = BlogPost.find_by(slug: params[:id])
   end
 
   def search
@@ -34,7 +38,11 @@ class PagesController < ApplicationController
     @packages = Package.where(validity: 12, subscription_type: 'company_subscription')
   end
 
+  def error_not_verified
+  end
 
+  def error_team_member
+  end
 
   def test2
     @care_homes = CareHome.where.not(latitude: nil, longitude: nil)

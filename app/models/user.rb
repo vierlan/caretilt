@@ -43,6 +43,7 @@ class User < ApplicationRecord
   validates :terms_of_service, acceptance: { accept: 'on', message: 'must be accepted' }
   validates :privacy_policy, acceptance: { accept: 'on', message: 'must be accepted' }
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
+  # validates :phone_number,  format: { with: /^\+?(\d{1,3})?[-.\s]?(\(?\d{3}\)?[-.\s]?)?(\d[-.\s]?){6,9}\d$/, on: :create }
 
  #validates :email,
  #          format: { with: Devise.email_regexp },

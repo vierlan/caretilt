@@ -7,11 +7,6 @@
         <%= image_tag 'logo_symbol_trans.png', class: 'w-auto', alt: 'caretilt_logo', style: 'width: 60px' %>
       <% end %>
     </div>
-    <% if user_signed_in? %>
-    <div>
-      <%= link_to "Dashboard", dashboard_index_path(current_user), class: "font-bold text-lg" %>
-    </div>
-    <% end %>
     <!-- Mobile Hamburger Menu Button (Visible only when menu is closed) -->
     <div class="flex lg:hidden" data-togglevisibility-target="iconOpen">
       <a href="#" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"

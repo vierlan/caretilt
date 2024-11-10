@@ -8,7 +8,7 @@ module Signupable
     # devise :database_authenticatable, :registerable, :recoverable, :rememberable
     validates :email, uniqueness: { case_sensitive: false }, presence: true
 
-    devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :confirmable
+    devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable#, :confirmable
     validates :email, uniqueness: { case_sensitive: false }, presence: true
   end
 end
