@@ -1,4 +1,4 @@
-<turbo-frame id="new_user">
+<turbo-frame id="new_member">
   <% url = current_user&.company.present? ? add_team_member_company_path(@company) : add_team_member_local_authority_path(@local_authority) %>
   <%= form_with url: url, method: :post, local: true do |form| %>
     <% if @member.errors.any? %>
@@ -23,6 +23,5 @@
       </div>
     </div>
   <% end %>
-  <%#= turbo_stream.prepend(:flash, partial: "shared/flash", locals: { notice: "User #{@member.email} added!" }) %>
 
 </turbo-frame>

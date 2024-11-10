@@ -32,22 +32,12 @@ class TeamMembersController < ApplicationController
     end
   end
 
-  def new
-    @member = User.new
-  end
 
   def create
     email = params[:email]
     password = Devise.friendly_token.first(8) # "123123"
     phone_number = params[:phone_number]
     @member = User.new(email: email, password: password, phone_number: phone_number, status: "inactive")
-    url = current_user.la_super_user? ? team_local_authority_path(current_user.local_authority) : team_company_path(current_user.company)
-    # check if email is already in use
-    if User.find_by(email: email)
-      raise
-      flash[:alert] = 'Email already in use.'
-      render url data: { turbo_frame: "main-content" }, status: :unprocessable_entity
-    end
 
     case current_user.role
     when 'care_provider_super_user'
@@ -72,28 +62,14 @@ class TeamMembersController < ApplicationController
           format.turbo_stream do
             render turbo_stream: [
               turbo_stream.replace("new_member", partial: "form"),
-              turbo_stream.append("member-list", partial: "member", locals: { member: @member }),
-              turbo_stream.append("flash-notice", partial: "add_success", locals: { message: "Team member added successfully. An email has been sent to the new user." })
-
-              #:create, locals: { member: @member }
-              # format.html { redirect_to url, notice: 'Team member added successfully. An email has been sent to the new user.' }
-              # format.turbo_stream { render :create, locals: { member: @member } }
+              turbo_stream.append("member-list", partial: "member", locals: { user: @member }),
+              turbo_stream.replace("flash-notice", partial: "add_success", locals: { message: "Team member added successfully. An email has been sent to the new user." })
             ]
           end
         end
-
-      # redirect_to current_user.la_super_user? ? team_local_authority_path(@local_authority) : team_company_path(@company), data: { turbo_frame: "main-content" }, notice: 'Team member added successfully. An email has been sent to the new user.'
     else
       render partial: "form", data: { turbo_frame: "main-content" }, status: :unprocessable_entity
     end
-   #if @member.save
-   #  respond_to do |format|
-   #    format.html { redirect_to url, notice: 'Team member added successfully. An email has been sent to the new user.' }
-   #    format.turbo_stream { render turbo_stream: turbo_stream.replace("team_member_form", partial: "team_members/form", locals: { team_member: User.new }) }
-   #  end
-   #else
-   #  render turbo_stream: turbo_stream.replace("team_member_form", partial: "team_members/form", locals: { team_member: @member }), status: :unprocessable_entity
-   #end
   end
 
   def verify_member
