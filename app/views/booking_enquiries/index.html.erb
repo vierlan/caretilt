@@ -1,5 +1,8 @@
 <turbo-frame id="main-content">
-<% @bookings.each do |booking| %>
-<%= render partial: "booking", locals: {booking: booking} %>
+<% if @bookings.empty? %>
+  <p class="text-center font-bold text-slate-800 text-2xl">No Enquiries to show</p>
+<% else %>
+  <% @bookings.each do |booking| %>
+  <%= render partial: "booking", locals: {booking: booking} %>
 <% end %>
 </turbo-frame>

@@ -1,6 +1,6 @@
 class PackagesController < ApplicationController
 
-  #Company and local authority is the one with stripe attatched not individual user.
+  # Company and local authority is the one with stripe attatched not individual user.
   # Only super users and caretilt staff can use package, and  checkout package.
   # Only caretilt staff can edit and add package types.
   # Only superusers can view subscriptions.
@@ -48,7 +48,7 @@ class PackagesController < ApplicationController
     authorize @package
   end
 
-    # creating a package also creates a new instance in StripePackage model which will update Stripe with the new package
+  # creating a package also creates a new instance in StripePackage model which will update Stripe with the new package
   def create
     @package = Package.new(package_params)
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
@@ -74,20 +74,20 @@ class PackagesController < ApplicationController
     Rails.logger.info "Creating Stripe checkout session with price ID: #{@stripe_price_id}, package ID: #{@package_id}"
     begin
       @checkout_session = Stripe::Checkout::Session.create({
-                              payment_method_types: ['card'],
-                              mode: 'subscription',
-                              line_items: [{
-                                price: @stripe_price_id,
-                                quantity: 1
-                              }],
-                              metadata: {
+        payment_method_types: ['card'],
+        mode: 'subscription',
+        line_items: [{
+          price: @stripe_price_id,
+          quantity: 1
+        }],
+        metadata: {
 
-                                package_id: @package.id,
+          package_id: @package.id
 
-                              },
-                              success_url: checkout_success_url,
-                              cancel_url: checkout_cancel_url
-                            })
+        },
+        success_url: checkout_success_url,
+        cancel_url: checkout_cancel_url
+      })
     rescue Stripe::InvalidRequestError => e
       Rails.logger.error "Stripe error: #{e.message}"
       flash[:error] = "There was a problem creating the Stripe checkout session: #{e.message}"

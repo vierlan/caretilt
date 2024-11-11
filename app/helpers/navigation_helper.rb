@@ -9,15 +9,20 @@ module NavigationHelper
       path: edit_user_registration_path,
       icon: 'user'
     }
-    links << {
-      name: current_user.local_authority.present? ? 'My Service Enquiries' : 'Service Enquiries',
-      path: booking_enquiries_path,
-      icon: 'enquiry'
-    }
+    # inks << {
+    # name: current_user.local_authority.present? ? 'My Service Enquiries' : 'Service Enquiries',
+    # path: booking_enquiries_path,
+    # icon: 'enquiry'
+    #
 
     case current_user.role
-    when 'caretilt_master_user', 'caretilt_user'
+    when 'super_admin', 'administrator'
       @company = current_user.company
+      links << {
+        name: 'Service Enquiries',
+        path: booking_enquiries_path,
+        icon: 'enquiry'
+      }
       links << {
         name: 'Team Management',
         path: team_company_path(@company),
@@ -77,6 +82,11 @@ module NavigationHelper
       }
     when 'la_super_user'
       links << {
+        name: 'My Service Enquiries',
+        path: booking_enquiries_path,
+        icon: 'enquiry'
+      }
+      links << {
         name: 'Authority details',
         path: edit_local_authority_path(current_user.local_authority),
         icon: 'user'
@@ -104,6 +114,11 @@ module NavigationHelper
       }
 
     when 'la_user'
+      links << {
+        name: 'My Service Enquiries',
+        path: booking_enquiries_path,
+        icon: 'enquiry'
+      }
       links << {
         name: 'Care Home Search',
         path: care_homes_path,

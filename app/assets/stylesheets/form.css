@@ -7,10 +7,14 @@
     background-size: 1em; /* Adjust the size of the icon */
     padding-right: 2em; /* Add padding to accommodate the icon */
 }
-  
+
 /* Optional: Style your select dropdown */
 .custom-select {
   border: 1px solid #ccc;
   padding: 0.5em;
   border-radius: 4px;
+}
+
+.selector {
+  display: contents;
 }

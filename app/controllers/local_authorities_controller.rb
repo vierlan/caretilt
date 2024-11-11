@@ -1,7 +1,6 @@
 class LocalAuthoritiesController < ApplicationController
   def index
     @local_authorities = policy_scope(LocalAuthority).all
-
   end
 
   def new
@@ -21,7 +20,7 @@ class LocalAuthoritiesController < ApplicationController
   def edit
     authorize :local_authority, :edit?
     case current_user.role
-    when 'caretilt_master_user', 'caretilt_user'
+    when 'super_admin', 'administrator'
       @local_authority = LocalAuthority.find(params[:id])
     when 'la_super_user'
       @local_authority = current_user.local_authority
