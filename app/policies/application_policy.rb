@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Main policies are controlled here.
 class ApplicationPolicy
   attr_reader :user, :record
@@ -52,7 +53,7 @@ class ApplicationPolicy
   end
 
   def caretilt_admin?
-    user.caretilt_master_user? || user.caretilt_user?
+    user.super_admin? || user.administrator?
   end
 
   def local_authority_basic_edit?
@@ -62,37 +63,37 @@ class ApplicationPolicy
   end
 
   def careprovider_basic_edit?
-    record.company.users.include?(user) || user.caretilt_master_user? || user.caretilt_user?
+    record.company.users.include?(user) || user.super_admin? || user.administrator?
   end
 
   def careprovider_super_edit?
-    record.company.users.include?(user) && user.care_provider_super_user? || user.caretilt_master_user? || user.caretilt_user?
+    record.company.users.include?(user) && user.care_provider_super_user? || user.super_admin? || user.administrator?
   end
 
   def company_basic_edit?
-    record.users.include?(user) || user.caretilt_master_user? || user.caretilt_user?
+    record.users.include?(user) || user.super_admin? || user.administrator?
   end
-  
+
   def company_super_edit?
-    record.users.include?(user) && user.care_provider_super_user? || user.caretilt_master_user? || user.caretilt_user?
+    record.users.include?(user) && user.care_provider_super_user? || user.super_admin? || user.administrator?
   end
 
   # Careprovider admin permission
 
   def is_company_admin?
-    user.care_provider_super_user? || user.care_provider_super_user? || user.caretilt_master_user?
+    user.care_provider_super_user? || user.care_provider_super_user? || user.super_admin?
   end
 
   def is_company_basic?
-    user.care_provider_user? || user.care_provider_super_user? || user.care_provider_super_user? || user.caretilt_master_user?
+    user.care_provider_user? || user.care_provider_super_user? || user.care_provider_super_user? || user.super_admin?
   end
 
   def is_local_authority_basic?
-     user.la_user? || user.la_super_user?|| user.care_provider_super_user? || user.caretilt_master_user? || user.isadmin?
+    user.la_user? || user.la_super_user? || user.care_provider_super_user? || user.super_admin? || user.isadmin?
   end
 
   def is_local_authority_admin?
-    user.la_super_user?|| user.care_provider_super_user? || user.caretilt_master_user?
+    user.la_super_user? || user.care_provider_super_user? || user.super_admin?
   end
 
 end

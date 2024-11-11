@@ -11,7 +11,7 @@ class DashboardController < ApplicationController
     @booking_log = []
 
     @care_homes = policy_scope(CareHome)
-    if current_user.role == 'caretilt_master_user' || current_user.role == 'caretilt_user' # admin
+    if current_user.role == 'super_admin' || current_user.role == 'administrator' # admin
       @bookings = BookingEnquiry.all.sort_by(&:created_at).reverse
       # @care_homes = CareHome.all
       # get all subscriptions within the last 2 weeks and reverse sort them
@@ -76,7 +76,7 @@ class DashboardController < ApplicationController
 
   def check_subscription
     case current_user.role
-    when 'caretlit_master_user', 'caretilt_user'
+    when 'caretlit_master_user', 'administrator'
       return true
     when 'care_provider_super_user', 'care_provider_user'
       status = current_user&.company&.get_active_subscription
@@ -91,21 +91,21 @@ class DashboardController < ApplicationController
       when 'care_provider_super_user' # and subsciption_id present
         # get the subscription id check subscription is valid subscription
         if subscribable.has_active_subscription?
-        active_subscription = subscribable.get_active_subscription
-        subscription = active_subscription.get_stripe_subscription(subscribable.get_active_subscription.receipt_number)
-        Rails.logger.info "Subscription status: #{subscription}"
-        period_end = Time.at(subscription[:current_period_end])
+          active_subscription = subscribable.get_active_subscription
+          subscription = active_subscription.get_stripe_subscription(subscribable.get_active_subscription.receipt_number)
+          Rails.logger.info "Subscription status: #{subscription}"
+          period_end = Time.at(subscription[:current_period_end])
           if period_end > active_subscription.expires_on
             active_subscription.update_expiry_date(period_end)
             active_subscription.update(next_payment_date: period_end)
             active_subscription.number_of_payments ? active_subscription.update(number_of_payments: active_subscription.number_of_payments + 1) : active_subscription.update(number_of_payments: 1)
             active_subscription.activate!
             active_subscription.save!
-            return
+            nil
           elsif period_end > Time.now
             active_subscription.activate!
             active_subscription.save!
-            return
+            nil
           else
             latest_invoice = active_subscription.get_lastest_stripe_invoice(subscription[:latest_invoice])
             Rails.logger.info "Latest invoice: #{latest_invoice}"

@@ -13,8 +13,8 @@ class User < ApplicationRecord
 
   enum :role, {
     undefined: 0,
-    caretilt_master_user: 1,
-    caretilt_user: 2,
+    super_admin: 1,
+    administrator: 2,
     care_provider_super_user: 3,
     care_provider_user: 4,
     la_super_user: 5,
@@ -45,10 +45,10 @@ class User < ApplicationRecord
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
   # validates :phone_number,  format: { with: /^\+?(\d{1,3})?[-.\s]?(\(?\d{3}\)?[-.\s]?)?(\d[-.\s]?){6,9}\d$/, on: :create }
 
- #validates :email,
- #          format: { with: Devise.email_regexp },
- #          presence: true,
- #          uniqueness: { case_insensitive: true }
+  # validates :email,
+  #          format: { with: Devise.email_regexp },
+  #          presence: true,
+  #          uniqueness: { case_insensitive: true }
 
   # validates :verified, inclusion: { in: [true, false] }
   # validates :first_name, presence: true

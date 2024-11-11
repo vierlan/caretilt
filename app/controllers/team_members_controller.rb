@@ -32,7 +32,6 @@ class TeamMembersController < ApplicationController
     end
   end
 
-
   def create
     email = params[:email]
     password = Devise.friendly_token.first(8) # "123123"
@@ -48,25 +47,25 @@ class TeamMembersController < ApplicationController
       @local_authority = current_user.local_authority
       @member.role = 'la_user'
       @member.local_authority = @local_authority
-    when 'caretilt_master_user' || 'caretilt_user'
+    when 'super_admin' || 'administrator'
       @company = current_user.company || Company.find(1)
-      @member.role = 'caretilt_user'
+      @member.role = 'administrator'
       @member.company = @company
     else
       render status: :forbidden
     end
 
     if @member.save
-        # NotifierMailer.new_account(member: @member).deliver_now
-        respond_to do |format|
-          format.turbo_stream do
-            render turbo_stream: [
-              turbo_stream.replace("new_member", partial: "form"),
-              turbo_stream.append("member-list", partial: "member", locals: { user: @member }),
-              turbo_stream.replace("flash-notice", partial: "add_success", locals: { message: "Team member added successfully. An email has been sent to the new user." })
-            ]
-          end
+      # NotifierMailer.new_account(member: @member).deliver_now
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace("new_member", partial: "form"),
+            turbo_stream.append("member-list", partial: "member", locals: { user: @member }),
+            turbo_stream.replace("flash-notice", partial: "add_success", locals: { message: "Team member added successfully. An email has been sent to the new user." })
+          ]
         end
+      end
     else
       render partial: "form", data: { turbo_frame: "main-content" }, status: :unprocessable_entity
     end

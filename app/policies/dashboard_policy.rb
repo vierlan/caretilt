@@ -9,7 +9,7 @@ class DashboardPolicy < ApplicationPolicy
   #   # This is used for INDEX ONLY, cause index takes MULTIPLE items.
   #   # NOTE: Be explicit about which records you allow access to!
   #   def resolve
-  #     if user.caretilt_master_user? || user.caretilt_user? || user.la_super_user? || user.la_user?
+  #     if user.super_admin? || user.administrator? || user.la_super_user? || user.la_user?
   #       # These roles can see all records
   #       scope.all
   #     elsif user.care_provider_super_user? || user.care_provider_user?

@@ -9,14 +9,14 @@ module NavigationHelper
       path: edit_user_registration_path,
       icon: 'user'
     }
-    #inks << {
+    # inks << {
     # name: current_user.local_authority.present? ? 'My Service Enquiries' : 'Service Enquiries',
     # path: booking_enquiries_path,
     # icon: 'enquiry'
     #
 
     case current_user.role
-    when 'caretilt_master_user', 'caretilt_user'
+    when 'super_admin', 'administrator'
       @company = current_user.company
       links << {
         name: 'Service Enquiries',

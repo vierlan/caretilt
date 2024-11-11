@@ -1,5 +1,5 @@
 <div id="<%= dom_id blog_post %>">
-  <% if current_user&.role == "caretilt staff"  || current_user&.role == "caretilt_master_user" %>
+  <% if current_user&.role == "caretilt staff"  || current_user&.role == "super_admin" %>
     <div>
       <%= link_to 'Edit Post', edit_blog_post_path(blog_post) %>
     </div>

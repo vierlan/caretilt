@@ -35,7 +35,7 @@ class CompaniesController < ApplicationController
     # authorize @company
     authorize :local_authority, :edit?
     @company = case current_user.role
-               when 'caretilt_master_user', 'caretilt_user'
+               when 'super_admin', 'administrator'
                  Company.find(params[:id])
                when 'care_provider_super_user'
                  current_user.company
@@ -67,6 +67,7 @@ class CompaniesController < ApplicationController
   end
 
   private
+
   def set_company
     @company = Company.find(params[:id]) || current_user.company
   end
