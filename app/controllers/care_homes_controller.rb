@@ -72,12 +72,6 @@ class CareHomesController < ApplicationController
     @care_home = CareHome.new
 
     authorize @care_home
-
-    if @care_home.save
-      redirect_to dashboard_index_path(current_user), notice: 'Successfully created'
-    else
-      render :new, status: :unprocessable_entity
-    end
   end
 
   def create
@@ -86,7 +80,7 @@ class CareHomesController < ApplicationController
     @care_home.company = @company
 
     if @care_home.save
-      redirect_to dashboard_index_path(current_user), notice: 'Successfully created', status: :see_other, turbo_frame: 'new_home_top'
+      redirect_to care_home_path(@care_home), data: { turbo_frame: "main-content"}
     else
       render :new, status: :unprocessable_entity
     end
