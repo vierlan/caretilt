@@ -47,7 +47,7 @@
         <h2 class="text-description-small mt-8">Services Provided:</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-1 py-5 col-span-6">
-          <%= f.collection_check_boxes :types_of_client_group, @types_of_client_group_options, :to_s, :to_s do |b| %>
+          <%= f.collection_check_boxes :types_of_client_group, @types_of_client_group_options, :to_s, :to_s, checked: params.dig(:care_home, :types_of_client_group) do |b| %>
             <div class="flex items-center space-x-2 mx-auto p-1">
               <%= b.check_box(class: 'mr-2') %>
               <%= b.label(class: 'custom-class') %>
