@@ -76,7 +76,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
 
   # Default from email address
-  config.action_mailer.default_options = { from: 'caretilt@gmail.com' }
+  config.action_mailer.default_options = { from: 'placement@caretilt.co.uk' }
 
   # SMTP settings for Gmail (or another provider)
   config.action_mailer.delivery_method = :smtp
@@ -85,7 +85,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'app.caretilt.co.uk', protocol: 'https' }
 
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
+    address: "smtp.hostinger.com",
     port: 587,
     user_name: Rails.application.credentials.gmail[:address],
     password: Rails.application.credentials.gmail[:password],
