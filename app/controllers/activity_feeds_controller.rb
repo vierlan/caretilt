@@ -8,9 +8,6 @@ class ActivityFeedsController < ApplicationController
         render json: {key => value}
       end
     end
-
-
-
      #get credit logs for the company for the last 2 weeks
     @credit_logs = current_user.company.credit_logs.where('created_at < ?', 2.weeks.ago)
 
@@ -21,10 +18,14 @@ class ActivityFeedsController < ApplicationController
     @invoices = current_user.company.invoices.where('created_at < ?', 2.weeks.ago)
 
     # get all the feeds and sort them
-
-    @feeds = @bookings + @credit_logs + @payments + @invoices
+    case current_user.role
+    when 'super_admin' || 'administrator'
+      @feeds = @bookings + @credit_logs + @payments + @invoices
+    when 'care_provider_super_user' || 'care_provider_user'
+      @feeds = @credit_logs + @payments
+    when 'la_super_user' || 'la_user'
+      @feeds = @bookings + @credit_logs + @payments
+    end
     @feeds.sort_by!(&:created_at).reverse!
-
-
   end
 end
