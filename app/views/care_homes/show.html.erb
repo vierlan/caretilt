@@ -16,15 +16,21 @@
         <% if policy(@care_home).edit? %>
           <%= link_to 'Edit', edit_care_home_path(@care_home), data: { turbo_frame: "main-content" }, class: "button-blue-pill whitespace-nowrap" %>
         <% end %>
-        <a href="<%= @care_home.website %>" target="_blank" class="button-blue-pill whitespace-nowrap">
-          View Website
-        </a>
-        <a href="mailto:<%= @care_home.email %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full whitespace-nowrap">
+        <% if @care_home.website.present? %>
+          <a href="<%= @care_home.website %>" target="_blank" class="button-blue-pill whitespace-nowrap">
+            View Website
+          </a>
+        <% end %>
+        <% if @care_home.email.present? %>
+        <a href="mailto:<%= @care_home.email %>" class="button-blue-pill whitespace-nowrap">
           Send Email
         </a>
-        <a href="tel:<%= @care_home.phone_number %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full whitespace-nowrap">
+        <% end %>
+        <% if @care_home.phone_number.present? %>
+        <a href="tel:<%= @care_home.phone_number %>" class="button-blue-pill whitespace-nowrap">
           View Phone Number
         </a>
+        <% end %>
       </div>
     </div>
   </div>
@@ -71,7 +77,7 @@
         data-showplacesmap-marker-url-value="<%= image_path('location.png') %>">
       <div id="map" style="height: 500px; width: 100%;"></div>
     </div>
-  </div>  
+  </div>
   <div class="bg-white py-12 sm:py-24">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
       <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
