@@ -56,7 +56,7 @@ class TeamMembersController < ApplicationController
     end
 
     if @member.save
-      # NotifierMailer.new_account(member: @member).deliver_now
+      NotifierMailer.new_account(member: @member).deliver_now
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: [
