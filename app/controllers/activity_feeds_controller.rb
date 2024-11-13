@@ -9,7 +9,6 @@ class ActivityFeedsController < ApplicationController
       end
     end
      #get credit logs for the company for the last 2 weeks
-    @credit_logs = current_user.company.credit_logs.where('created_at < ?', 4.weeks.ago)
 
     # get payments for the company for the last 2 weeks
     @payments = current_user.company.payments.where('created_at < ?', 4.weeks.ago)
@@ -20,8 +19,14 @@ class ActivityFeedsController < ApplicationController
     # get all the feeds and sort them
     case current_user.role
     when 'super_admin' || 'administrator'
+      credit_logs = []
+      Company.all.each do |company|
+        @credit_logs = company.credit_logs.where('created_at < ?', 2.weeks.ago)
+        credit_logs << @credit_logs
+      end
       @feeds = @bookings + @credit_logs + @payments + @invoices
     when 'care_provider_super_user' || 'care_provider_user'
+      @credit_logs = current_user.company.credit_logs.where('created_at < ?', 4.weeks.ago)
       @feeds = @credit_logs + @payments
     when 'la_super_user' || 'la_user'
       @feeds = @bookings + @credit_logs + @payments

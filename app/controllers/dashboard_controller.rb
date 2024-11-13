@@ -9,13 +9,23 @@ class DashboardController < ApplicationController
     @user = current_user
     @activity_feeds = []
     @booking_log = []
-
+    @credit_logs = []
     @care_homes = policy_scope(CareHome)
     if current_user.role == 'super_admin' || current_user.role == 'administrator' # admin
       @bookings = BookingEnquiry.all.sort_by(&:created_at).reverse
       # @care_homes = CareHome.all
       # get all subscriptions within the last 2 weeks and reverse sort them
       @subscriptions = Subscription.where(created_at: 2.weeks.ago..Time.now).sort_by(&:created_at).reverse
+      Company.all.each do |company|
+        @com_credit_logs = company&.get_active_subscription&.credit_log
+        @com_credit_logs&.each do |log|
+          if log[2] > 2.weeks.ago
+            log[5] = company.name
+            log[4] = log[4].to_s + " credits left "
+            @credit_logs << log
+          end
+      end
+    end
     elsif @user.local_authority
       @local_authority = @user.local_authority
       # @care_homes = CareHome.all  # make some logice here which will select care_homes in region/local authority

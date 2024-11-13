@@ -104,7 +104,7 @@ class Stripe::CheckoutController < ApplicationController
         end
 
         # Log the credits purchase
-        @subscription.credit_log << ["Purchase:", "#{@package.name}", "#{Time.now}", "added #{@package.credits} credits", "#{@subscription.credits_left}", ""]
+        @subscription.credit_log << ["Purchase:", "#{@package.name}", "#{Time.now}", "added #{@package.credits} credits", "#{@subscription.credits_left}"]
         subscribable_entity.update(stripe_subscription_id: @stripe_session.subscription, paying_customer: true)
         # Save the subscription
         @subscription.save!

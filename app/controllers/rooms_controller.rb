@@ -78,7 +78,7 @@ class RoomsController < ApplicationController
     # If room is updated to vacant, call the deduct_credit method
     if @room.save
       if @room.vacant_previously_changed? && @room.vacant?
-        subscription = current_user.company.get_active_subscription
+        subscription = @room.company.get_active_subscription
         subscription.deduct_credit(@room)
       end
       flash[:notice] = "Room updated successfully."
