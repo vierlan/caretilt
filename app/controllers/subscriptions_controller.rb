@@ -52,19 +52,21 @@ class SubscriptionsController < ApplicationController
 
   def update
     # Fetch the required params
+    @subscription = Subscription.find(params[:id])
     @subscription.expires_on = params[:subscription][:expires_on]
     @subscription.next_payment_date = params[:subscription][:next_payment_date]
     @subscription.subscribable_id = params[:subscription][:subscribable_id]
     @action_type = params[:subscription][:action_type]
-    @package = Package.find_by(id: params[:subscription][:package_id]) || ''# Find the package, or nil if not selected
+    @package = @subscription.package || ''# Find the package, or nil if not selected
     @credits_added = params[:subscription][:credits_added].to_i || 0
     @time = Time.now
     @credits_left = @subscription.credits_left += @credits_added if @credits_added
+    # @subscription.package_id = params[:subscription][:package_id]
     # Check if the "Do not add this change to credit log" option was selected
 
     if @subscription.save!
       @subscription.check_status
-      #if @action_type != 'Do not add this change to credit log'
+      if @action_type != 'Do not add this change to credit log'
         # Ensure each part of the log entry is in the correct format
         @log_entry = [
           @action_type.presence || '',         # Action Type (e.g., Purchase, Credits added, etc.) or empty string
@@ -76,9 +78,8 @@ class SubscriptionsController < ApplicationController
         Rails.logger.info "Log entry: #{@log_entry}"
         # Push the log entry to credit_log
         @subscription.credit_log << @log_entry
-        @subscription.package_id = params[:subscription][:package_id]
         @subscription.save!
-      #end
+      end
       redirect_to package_path(@subscription.subscribable), notice: 'Subscription was successfully updated.'
     else
       render :edit, status: :unprocessable_entity

@@ -36,14 +36,14 @@ class RoomsController < ApplicationController
 
     authorize @room
     if @room.save
-      if @room.vacant?
+      if @room.vacant? # If room is created with vacant box checked, call the deduct_credit method
         subscription = current_user.company.get_active_subscription
         subscription.deduct_credit(@room)
       end
       flash[:notice] = "Room created successfully."
       redirect_to care_home_rooms_path(@care_home)
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -65,7 +65,7 @@ class RoomsController < ApplicationController
         subscription.deduct_credit(@room)
       end
       flash[:notice] = "Room updated successfully."
-      redirect_to care_home_path(@room.care_home)
+      redirect_to care_home_path(@room.care_home), data: { turbo_frame: "main-content"}
     else
       render :edit, status: :unprocessable_entity
     end

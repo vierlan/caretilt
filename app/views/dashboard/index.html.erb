@@ -54,6 +54,7 @@
       <div class="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
         <turbo-frame id="main-content"
           src="<%= current_user.company ? packages_path : current_user.local_authority ? care_homes_path : root_path %>">
+          <%= render "shared/flash" %> <!-- Render flash messages -->
         </turbo-frame>
       </div>
     </div>
