@@ -4,7 +4,7 @@ class PackagesController < ApplicationController
   # Only super users and caretilt staff can use package, and  checkout package.
   # Only caretilt staff can edit and add package types.
   # Only superusers can view subscriptions.
-  before_action :set_package, only: %i[show edit update destroy]
+  before_action :set_package, only: %i[edit update destroy]
 
   def index
     @packages = policy_scope(Package).all
@@ -41,6 +41,9 @@ class PackagesController < ApplicationController
   end
 
   def show
+    @company = Company.find(params[:id])
+    @active_subscription = @company.get_active_subscription
+    @active_package = Package.find(@active_subscription.package_id)
   end
 
   def new

@@ -3,7 +3,7 @@ class SubscriptionsController < ApplicationController
   # Only super users and caretilt staff can use package, and  checkout package.
   # Only caretilt staff can edit and add package types.
   # Only superusers can view subscriptions.
-  before_action :set_subscriptions, only: %i[ edit update ]
+  before_action :set_subscriptions, only: %i[edit update]
   before_action :set_entity, only: %i[new create]
   before_action :set_package, only: %i[new create destroy]
 
@@ -34,8 +34,8 @@ class SubscriptionsController < ApplicationController
       invoice_id = invoice_data.id
       invoice_url = invoice_data.hosted_invoice_url
 
-       # Log the credits purchase
-      @subscription.credit_log << ["#{@local_authority.name.to_s}", "#{@package.name.to_s}", "#{Time.now.to_s}", "#{invoice_id}", "#{invoice_url.to_s}"]
+      # Log the credits purchase
+      @subscription.credit_log << ["#{@local_authority.name}", "#{@package.name}", "#{Time.now}", "#{invoice_id}", "#{invoice_url}"]
       @subscription.receipt_number = invoice_url.to_s
       @subscription.save!
       @local_authority.update(stripe_subscription_id: invoice_data.subscription)
@@ -45,45 +45,41 @@ class SubscriptionsController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
-
-
   end
 
   def edit
   end
 
   def update
-       # Fetch the required params
-       @subscription.expires_on = params[:subscription][:expires_on]
-        @subscription.next_payment_date = params[:subscription][:next_payment_date]
-        @subscription.subscribable_id = params[:subscription][:subscribable_id]
-       action_type = params[:subscription][:action_type]
-       package = Package.find_by(id: params[:subscription][:package_id]) # Find the package, or nil if not selected
-       credits_added = params[:subscription][:credits_added].to_i
-       time = Time.now
-
-       # Check if the "Do not add this change to credit log" option was selected
-       if action_type != 'Do not add this change to credit log'
-         # Ensure each part of the log entry is in the correct format
-         log_entry = [
-           action_type.presence || '',         # Action Type (e.g., Purchase, Credits added, etc.) or empty string
-           package&.name || '',                # Package Name or empty string
-           time,                               # Time of action
-           credits_added > 0 ? "added #{credits_added} credits" : '', # Description of credits added or empty string
-           credits_added > 0 ? (@subscription.credits_left += credits_added).to_s : ''    # Remaining credits as string (if credits_left is not updated, it will keep the current value)
-         ]
-
-         # Push the log entry to credit_log
-         @subscription.credit_log << log_entry
-
-         # Update the credits_left field if credits were added
-         @subscription.credits_left += credits_added if credits_added > 0
-         @subscription.package_id = params[:subscription][:package_id]
-       end
+    # Fetch the required params
+    @subscription.expires_on = params[:subscription][:expires_on]
+    @subscription.next_payment_date = params[:subscription][:next_payment_date]
+    @subscription.subscribable_id = params[:subscription][:subscribable_id]
+    @action_type = params[:subscription][:action_type]
+    @package = Package.find_by(id: params[:subscription][:package_id]) || ''# Find the package, or nil if not selected
+    @credits_added = params[:subscription][:credits_added].to_i || 0
+    @time = Time.now
+    @credits_left = @subscription.credits_left += @credits_added if @credits_added
+    # Check if the "Do not add this change to credit log" option was selected
 
     if @subscription.save!
       @subscription.check_status
-      redirect_to packages_path, notice: 'Subscription was successfully updated.'
+      #if @action_type != 'Do not add this change to credit log'
+        # Ensure each part of the log entry is in the correct format
+        @log_entry = [
+          @action_type.presence || '',         # Action Type (e.g., Purchase, Credits added, etc.) or empty string
+          @package&.name || '',                # Package Name or empty string
+          @time,                               # Time of action
+          @credits_added > 0 ? "added #{@credits_added} credits" : "deducted #{@credits_added} credits", # Description of credits added or empty string
+          @credits_left # Remaining credits as string (if credits_left is not updated, it will keep the current value)
+        ]
+        Rails.logger.info "Log entry: #{@log_entry}"
+        # Push the log entry to credit_log
+        @subscription.credit_log << @log_entry
+        @subscription.package_id = params[:subscription][:package_id]
+        @subscription.save!
+      #end
+      redirect_to package_path(@subscription.subscribable), notice: 'Subscription was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -105,7 +101,6 @@ class SubscriptionsController < ApplicationController
     @sunscription.update(active: true, next_payment_date: Time.now + 1.year, expires_on: Time.now + 1.year)
     redirect_to packages_path, notice: 'Payment received. Subscription has been activated.'
   end
-
 
   private
 
@@ -134,39 +129,37 @@ class SubscriptionsController < ApplicationController
   end
 
   def subscription_params
-    params.require(:subscription).permit( :expires_on, :next_payment_date, :subscribable_id, :package_id,
-      :credits_added, :credits_left, :action_type)
+    params.require(:subscription).permit(:expires_on, :next_payment_date, :subscribable_id, :package_id,
+                                         :credits_added, :credits_left, :action_type)
   end
 
   def create_stripe_subscription(local_authority, package)
-
     # Define the subscription items (using the package's Stripe price)
     subscription_items = [{
       price: package.stripe_price_id, # Assume `stripe_price_id` is set on the package model
       quantity: 1
     }]
 
-   stripe_subscription = Stripe::Subscription.create({
-     customer: local_authority.stripe_customer_id,
-     items: subscription_items,
-     payment_behavior: 'default_incomplete',  # This prevents immediate payment
-     expand: ['latest_invoice.payment_intent'],
-     metadata: {
-       subscribable_id: local_authority.id,
-       subscribable_type: "LocalAuthority",
-       package_id: package.id,
-       name: "#{local_authority.name} - #{package.name}"
-     }
-   })
-     invoice = stripe_subscription.latest_invoice
-     url = invoice.hosted_invoice_url
-     pdf = invoice.invoice_pdf
-     invoice_data = invoice
-     Rails.logger.info "Created Stripe subscription with ID: #{stripe_subscription}"
+    stripe_subscription = Stripe::Subscription.create({
+      customer: local_authority.stripe_customer_id,
+      items: subscription_items,
+      payment_behavior: 'default_incomplete', # This prevents immediate payment
+      expand: ['latest_invoice.payment_intent'],
+      metadata: {
+        subscribable_id: local_authority.id,
+        subscribable_type: "LocalAuthority",
+        package_id: package.id,
+        name: "#{local_authority.name} - #{package.name}"
+      }
+    })
+    invoice = stripe_subscription.latest_invoice
+    url = invoice.hosted_invoice_url
+    pdf = invoice.invoice_pdf
+    invoice_data = invoice
+    Rails.logger.info "Created Stripe subscription with ID: #{stripe_subscription}"
 
     # Get the Stripe invoice URL for the subscription
-    return invoice_data
-
+    invoice_data
   end
 
 end

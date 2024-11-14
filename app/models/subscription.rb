@@ -72,7 +72,7 @@ class Subscription < ApplicationRecord
       save!
     else
       room.update(vacant: false)
-      redirect_to care_home_rooms_path(room.care_home), alert: "No credits left. Please purchase more credits."
+      return
     end
   end
 end
