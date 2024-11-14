@@ -28,11 +28,11 @@
     <%= form.select :action_type, options_for_select(['Do not add this change to credit log', 'Purchase', 'Credit change', 'Subscription activated', 'Other']), {}, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
   </div>
 
-  <!-- Package Selection Field -->
+  <!-- Package Selection Field
   <div class="field">
     <%= form.label :package, "Choose a Package", class: "block text-sm xl:text-base font-medium text-gray-700" %>
-    <%= form.collection_select :package_id, Package.all, :id, :name, { include_blank: 'N/A' }, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
-  </div>
+    <%= form.collection_select :package_id, Package.all, :id, :name, { include_blank: true }, class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+  </div> -->
 
   <!-- Hidden Time Field (Sets to Current Time) -->
   <%= form.hidden_field :time, value: Time.now %>
