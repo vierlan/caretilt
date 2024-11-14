@@ -53,23 +53,6 @@ class RoomsController < ApplicationController
     @company = @care_home.company
   end
 
-  # def update
-  #   authorize @room
-  #   @care_home = @room.care_home
-  #   @company = @care_home.company
-  #   if @room.update(room_params)
-  #     if @room.vacant_previously_changed? && @room.vacant?
-  #       # Deduct credit from the user's subscription
-  #       current_user.subscription.deduct_credit(@room)
-  #     end
-
-  #     flash[:notice] = "Room updated successfully."
-  #     redirect_to care_home_path(@care_home)
-  #   else
-  #     render :edit, status: :unprocessable_entity
-  #   end
-  # end
-
   def update
 
     @room.assign_attributes(room_params)

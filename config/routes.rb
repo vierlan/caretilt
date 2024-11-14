@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       post 'add_team_member', to: 'team_members#create'
       get 'account', to: 'dashboard#account'
       get 'activity_feeds', to: 'activity_feeds#index'
+      get 'package/:id', to: 'packages#show'
     end
     resources :care_homes, only: %i[new create] do
       collection do
@@ -46,7 +47,7 @@ Rails.application.routes.draw do
     member do
       get 'add_team_member', to: 'team_members#new', as: 'la_member'
       get 'team', to: 'team_members#index'
-
+      get 'package/:id', to: 'packages#show'
       post 'add_team_member', to: 'team_members#create'
       get 'account', to: 'dashboard#account'
     end
