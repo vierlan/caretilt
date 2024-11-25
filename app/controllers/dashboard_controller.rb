@@ -19,13 +19,13 @@ class DashboardController < ApplicationController
       Company.all.each do |company|
         @com_credit_logs = company&.get_active_subscription&.credit_log
         @com_credit_logs&.each do |log|
-          if log[2] > 2.weeks.ago
-            log[5] = company.name
-            log[4] = log[4].to_s + " credits left "
-            @credit_logs << log
-          end
+          next unless log[2] > 2.weeks.ago
+
+          log[5] = company.name
+          log[4] = log[4].to_s + " credits left "
+          @credit_logs << log
+        end
       end
-    end
     elsif @user.local_authority
       @local_authority = @user.local_authority
       # @care_homes = CareHome.all  # make some logice here which will select care_homes in region/local authority
@@ -86,7 +86,7 @@ class DashboardController < ApplicationController
 
   def check_subscription
     case current_user.role
-    when 'caretlit_master_user', 'administrator'
+    when 'super_admin', 'administrator'
       return true
     when 'care_provider_super_user', 'care_provider_user'
       status = current_user&.company&.get_active_subscription

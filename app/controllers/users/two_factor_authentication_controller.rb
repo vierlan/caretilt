@@ -24,24 +24,13 @@ class Users::TwoFactorAuthenticationController < ApplicationController
 
   # Verifies the OTP entered by the user by sending to Twilio
   def verify_otp
-    # unless Rails.env.development? #Turn on for SMS verification whilst developing (increase cost)
-    if Rails.env.development? || Rails.env.production? # Turn ON for NO SMS verificaiton whilst developing.
-      # Simulate OTP verification in development
-      session[:two_factor_authenticated] = true
-      current_user.update(verified: true)
-      user_for_paper_trail
-      redirect_to after_sign_in_path_for(current_user), notice: 'Successfully verified (development mode).'
-    else
       code = params[:otp_code]
-
       begin
         if TwilioService.new(current_user).verify_otp_twilio(code)
           # Mark the session as 2FA complete
           session[:two_factor_authenticated] = true
-
           # Mark user as verified
           current_user.update(verified: true)
-
           # Redirect to the user's dashboard or intended destination
           redirect_to after_sign_in_path_for(current_user), notice: 'Successfully verified!'
         else
@@ -52,7 +41,7 @@ class Users::TwoFactorAuthenticationController < ApplicationController
         # Handle errors like invalid code formats or other Twilio issues
         flash[:alert] = "Error verifying OTP: #{e.message}"
         redirect_to two_factor_authentication_path
-      end
+      
     end
   end
 end
