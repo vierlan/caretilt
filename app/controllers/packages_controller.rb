@@ -83,6 +83,8 @@ class PackagesController < ApplicationController
           price: @stripe_price_id,
           quantity: 1
         }],
+        allow_promotion_codes: true,
+        customer: current_user.company.stripe_id,
         metadata: {
 
           package_id: @package.id
