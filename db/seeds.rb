@@ -51,7 +51,7 @@ end
 # Used as reference to delete all seeded things when re-seeding.
 def seed_entities
   # Creates or finds the main company, Caretilt
-company1 = Company.find_or_create_by!(name: 'Care Tilt', email: 'placement@caretilt.co.uk', address1: "20-22 Wenlock Road", city: "London", postcode: , website: "http://www.caretilt.co.uk/")
+company1 = Company.find_or_create_by!(name: 'Care Tilt', email: 'placement@caretilt.co.uk', address1: "20-22 Wenlock Road", city: "London", website: "http://www.caretilt.co.uk/")
 end
 # Users
 
@@ -95,7 +95,7 @@ def seed_super_users
     admin: true
   )
 
-
+end
 # Attach all homes to the created user (since the user must be associated with a company)
 def seed_homes
 care_homes = [
@@ -162,7 +162,7 @@ end
 end
 
 def run_all
-  destroy_all
+  # destroy_all
   seed_entities
   seed_super_users
 end
