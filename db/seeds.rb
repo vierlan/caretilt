@@ -52,11 +52,7 @@ end
 def seed_entities
   # Creates or finds the main company, Caretilt
 company1 = Company.find_or_create_by!(name: 'Care Tilt', email: 'placement@caretilt.co.uk', address1: "20-22 Wenlock Road", city: "London", website: "http://www.caretilt.co.uk/")
-end
-# Users
 
-
-def seed_super_users
   puts "Seeding super users..."
   irene_la_user = User.create!(
     email: 'irene@solorr.com',
@@ -164,6 +160,6 @@ end
 def run_all
   # destroy_all
   seed_entities
-  seed_super_users
+  
 end
 run_all
