@@ -67,7 +67,7 @@ def seed_super_users
     status: 'verified',
     phone_number: ENV['IRENE_NUMBER'],
     verified: true,
-    local_authority: localauthority
+    company: company1
   )
   lan_caretilt_user = User.create!(
     email: 'caretilt@gmail.com',
