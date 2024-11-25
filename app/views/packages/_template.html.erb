@@ -29,9 +29,9 @@
             <% end %>
           <% end %>
           <% if package.validity == 0 %>
-            <% starter_plan_features = ["#{package.credits} credits", "Must have active subscription", "Added to Caretilt database"] %>
+            <% starter_plan_features = ["#{package.credits} credits", "Must have active subscription"] %>
           <% else %>
-<% starter_plan_features = ["#{package.credits} credits per month", "#{package.validity} month subscription", "Added to Caretilt database", package.features].flatten %>          <% end %>
+<% starter_plan_features = ["#{package.credits} credits per month", "#{package.validity} month subscription", package.features].flatten %>          <% end %>
           <ul role="list" class="mt-8 space-y-3 text-description-small">
             <% starter_plan_features.each do |feature| %>
               <%= render partial: "shared/pricing_list_item", locals: { content: feature } %>

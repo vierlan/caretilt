@@ -50,237 +50,51 @@ end
 
 # Used as reference to delete all seeded things when re-seeding.
 def seed_entities
-seeded_org_names = ['Care Provider Company London', 'Care Provider Company London North']
-seeded_user_email = ['super@care1.com', 'super@care2.com', 'user@care1.com', 'super@la.com', 'user@la.com', 'super@caretilt.com', 'user@caretilt.com', 'caretilt@gmail.com']
-seeded_care_home_names = [
-  "Oak Lodge Medical Centre",
-  "Ashton Lodge Care Home",
-  "Bridgeside Lodge",
-  "MHA Hampton Lodge",
-  "Brookvale House Care Home",
-  "Mary & Joseph House",
-  "Acacia Lodge Care Home - Avery Healthcare",
-  "Greensleeves Care Home",
-  "Southern Counties Caring Ltd"
-]
-
-puts "Deleting seeded users and care homes... \n"
-
-
-# Create or find a company for the care provider user (if needed)
-company1 = Company.find_or_create_by!(name: 'Care Provider Company London', email: 'care1@care.com', address1: "234 Burnt Oak Broadway", address2: "Edgware", city: "Greater London", postcode: "HA80AP", website: "http://www.oaklodgemedicalcentre.co.uk/", companies_house_id: "12345678")
-company2 = Company.find_or_create_by!(name: 'Care Provider Company North', email: 'care2@care.com', address1: "432 Burnt Oak Broadway", address2: "Edgware", city: "Greater London", postcode: "HA80AP", website: "http://www.oaklodgemedicalcentre.co.uk/", companies_house_id: "12345678")
-localauthority = LocalAuthority.find_or_create_by!(name: 'Local Authority Organisation', email: 'la@care.com')
+  # Creates or finds the main company, Caretilt
+company1 = Company.find_or_create_by!(name: 'Care Tilt', email: 'placement@caretilt.co.uk', address1: "20-22 Wenlock Road", city: "London", postcode: , website: "http://www.caretilt.co.uk/")
 end
 # Users
 
-def seed_users
-puts 'Seeding users...'
-localauthority = LocalAuthority.first
-careprovidersuperuser1 = User.create!(
-  email: 'super@care1.com',
-  password: '123123',
-  password_confirmation: '123123',
-  first_name: 'Care',
-  last_name: 'Provider',
-  role: 'care_provider_super_user',
-  status: 'verified',
-  company: company1,
-  phone_number: ENV['DEV_PHONE_NUMBER'],
-  verified: true
-)
 
-careprovidersuperuser1 = User.create!(
-  email: 'user@care1.com',
-  password: '123123',
-  password_confirmation: '123123',
-  first_name: 'Care',
-  last_name: 'Provider',
-  role: 'care_provider_user',
-  status: 'verified',
-  company: company1,
-  phone_number: ENV['DEV_PHONE_NUMBER'],
-  verified: true
-)
-
-careprovidersuperuser2 = User.create!(
-  email: 'super@care2.com',
-  password: '123123',
-  password_confirmation: '123123',
-  first_name: 'Care',
-  last_name: 'Provider',
-  role: 'care_provider_super_user',
-  status: 'verified',
-  company: company2,
-  phone_number: ENV['LAN_PHONE_NUMBER'],
-  verified: true
-)
-
-lasuperuser = User.create!(
-    email: 'super@la.com',
+def seed_super_users
+  puts "Seeding super users..."
+  irene_la_user = User.create!(
+    email: 'irene@solorr.com',
     password: '123123',
-    password_confirmation: '123123',
-    first_name: 'Local',
-    last_name: 'Super',
-    role: 'la_super_user',
+    first_name: 'Irene',
+    last_name: 'Tilt',
+    role: 'administrator',
     status: 'verified',
-    local_authority: localauthority,
+    phone_number: ENV['IRENE_NUMBER'],
+    verified: true,
+    local_authority: localauthority
+  )
+  lan_caretilt_user = User.create!(
+    email: 'caretilt@gmail.com',
+    password: '123123',
+    first_name: 'Lan Ahn',
+    last_name: 'Tilt',
+    role: 'super_admin',
+    status: 'verified',
     phone_number: ENV['LAN_PHONE_NUMBER'],
-    verified: true
-)
+    verified: true,
+    company: company1,
+    admin: true
+  )
 
-lauser = User.create!(
-    email: 'user@la.com',
+  madi_care_user = User.create!(
+    email: 'maditurpin@gmail.com',
     password: '123123',
-    password_confirmation: '123123',
-    first_name: 'Local',
-    last_name: 'User',
-    role: 'la_user',
+    first_name: 'Madi',
+    last_name: 'Turpin',
+    role: 'super_admin',
     status: 'verified',
-    local_authority: localauthority,
-    phone_number: ENV['DEV_PHONE_NUMBER'],
-    verified: true
-)
+    phone_number: ENV['MADI_NUMBER'],
+    verified: true,
+    company: company1,
+    admin: true
+  )
 
-caretilt_superuser = User.create!(
-  email: 'super@care.com',
-  password: '123123',
-  first_name: 'Carey',
-  last_name: 'Supa',
-  role: 'caretilt_master_user',
-  status: 'verified',
-  phone_number: ENV['LAN_PHONE_NUMBER'],
-  company: company2,
-  verified: true,
-  admin: true
-)
-
-caretilt_superuser = User.create!(
-  email: 'user@care.com',
-  password: '123123',
-  first_name: 'Carey',
-  last_name: 'Usan',
-  role: 'care_provider_user',
-  status: 'verified',
-  phone_number: ENV['LAN_PHONE_NUMBER'],
-  company: company2,
-  verified: true,
-  admin: true
-)
-
-caretilt_superuser = User.create!(
-  email: 'super@caretilt.com',
-  password: '123123',
-  first_name: 'Carey',
-  last_name: 'Tilt',
-  role: 'care_provider_super_user',
-  status: 'verified',
-  phone_number: ENV['DEV_PHONE_NUMBER'],
-  company: company1,
-  verified: true,
-  admin: true
-)
-
-caretilt_user = User.create!(
-  email: 'user@caretilt.com',
-  password: '123123',
-  first_name: 'Carey',
-  last_name: 'Tilt',
-  role: 'caretilt_user',
-  status: 'verified',
-  phone_number: ENV['DEV_PHONE_NUMBER'],
-  company: company1,
-  verified: true
-)
-
-lan_la_user = User.create!(
-  email: 'lananhnguyen@live.co.uk',
-  password: '123123',
-  first_name: 'Lan Ahn',
-  last_name: 'Tilt',
-  role: 'la_super_user',
-  status: 'verified',
-  phone_number: ENV['LAN_PHONE_NUMBER'],
-  verified: true,
-  local_authority: localauthority
-)
-
-
-lan_caretilt_user = User.create!(
-  email: 'caretilt@gmail.com',
-  password: '123123',
-  first_name: 'Lan Ahn',
-  last_name: 'Tilt',
-  role: 'caretilt_master_user',
-  status: 'verified',
-  phone_number: ENV['LAN_PHONE_NUMBER'],
-  verified: true,
-  company: company1,
-  admin: true
-)
-
-madi_care_user = User.create!(
-  email: 'maditurpin@gmail.com',
-  password: '123123',
-  first_name: 'Madi',
-  last_name: 'Turpin',
-  role: 'caretilt_master_user',
-  status: 'verified',
-  phone_number: ENV['MADI_NUMBER'],
-  verified: true,
-  company: company1,
-  admin: true
-)
-
-irene_user = User.create!(
-  email: 'solordeveloper@gmail.com',
-  password: '123123',
-  first_name: 'Irene',
-  last_name: 'Solar',
-  role: 'caretilt_master_user',
-  status: 'verified',
-  phone_number: ENV['IRENE_NUMBER'],
-  verified: true,
-  company: company1,
-  admin: true
-)
-
-irene_la_user = User.create!(
-  email: 'irene@solorr.com',
-  password: '123123',
-  first_name: 'Irene',
-  last_name: 'Tilt',
-  role: 'la_super_user',
-  status: 'verified',
-  phone_number: ENV['IRENE_NUMBER'],
-  verified: true,
-  local_authority: localauthority
-)
-
-madi_la_user = User.create!(
-  email: 'madi@turpin.com',
-  password: '123123',
-  first_name: 'Madi2',
-  last_name: 'Turpin2',
-  role: 'la_super_user',
-  status: 'verified',
-  phone_number: ENV['MADI_NUMBER'],
-  verified: true,
-  local_authority: localauthority
-)
-
-madi_care_user = User.create!(
-  email: 'madi@care.com',
-  password: '123123',
-  first_name: 'Madi2',
-  last_name: 'Turpin2',
-  role: 'la_super_user',
-  status: 'verified',
-  phone_number: ENV['MADI_NUMBER'],
-  verified: true,
-  local_authority: localauthority
-)
-end
 
 # Attach all homes to the created user (since the user must be associated with a company)
 def seed_homes
@@ -349,11 +163,7 @@ end
 
 def run_all
   destroy_all
-  create_packages
   seed_entities
-  seed_users
-  puts 'Seeded care homes and associated them with the care provider super user.'
-  seed_homes
-  puts 'Randomly assigned rooms to each care home.'
+  seed_super_users
 end
 run_all

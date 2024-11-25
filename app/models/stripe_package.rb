@@ -13,6 +13,8 @@ class StripePackage
     return if @package.stripe_id.present?
 
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
+    lookup_key = @package.name + "_" + @package.id.to_s + " " + Time.now.strftime('%Y-%m-%d')
+    rails_logger.info("lookup_key: #{lookup_key}")
     stripe_product = Stripe::Product.create(
       name: @package.name,
       description: @package.description,
@@ -25,7 +27,9 @@ class StripePackage
     stripe_price = Stripe::Price.create(
       currency: 'gbp',
       unit_amount: (@package.price * 100).to_i, # Ensure unit amount is an integer
-      product: stripe_product.id
+      product: stripe_product.id,
+      lookup_key: lookup_key
+
     )
     @package.update(
       stripe_id: stripe_product.id,
@@ -38,6 +42,8 @@ class StripePackage
     return if @package.stripe_id.present?
 
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
+    lookup_key = @package.name + "_" + @package.id.to_s + " " + Time.now.strftime('%Y-%m-%d')
+
     stripe_product = Stripe::Product.create(
       name: @package.name,
       description: @package.description,
@@ -56,13 +62,16 @@ class StripePackage
                      Stripe::Price.create(
                        currency: 'gbp',
                        unit_amount: (@package.price * 100).to_i, # Ensure unit amount is an integer
-                       product: stripe_product
+                       product: stripe_product,
+                       lookup_key: lookup_key
+
                      )
                    else
                      # Create Stripe recurring price (replaces Plan)
                      Stripe::Price.create(
                        currency: 'gbp',
                        unit_amount: (@package.price * 100).to_i, # Ensure unit amount is an integer
+                       lookup_key: lookup_key,
                        recurring: {
                          interval: 'month', # Adjust as needed (e.g., 'year' for yearly subscriptions)
                          interval_count: @package.validity # How often the subscription should recur (e.g., every month)
