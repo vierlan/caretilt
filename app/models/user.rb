@@ -29,20 +29,22 @@ class User < ApplicationRecord
     inactive: 3
   }
 
-  # Lan Ahn:
+
   # User needs to enter personal mobile on registration (different from company purpose - used for 2FA, has to be model)
 
-  # When adding team member, need field for their phone number. MANDATORY ON SIGN UP. MOBILE UK.
-
-  # Test 2 superuser verified, but didn't make a company.
-  # Test 2 then added another user themself, but without a  company attatched. we get dashboard errors.
-
-  # When user is already added (even not in same company) we will get errors when adding.
+  PASSWORD_REQUIREMENTS = /\A
+  (?=.{8,}) # at least 8 characters
+  (?=.*[A-Z]) # uppercase
+  (?=.*[a-z]) # lowercase
+  (?=.*[0-9]) # digits
+  (?=.*[[:^alnum:]]) # special characters
+/x
 
   # Validation to ensure terms are accepted and role is selected
   validates :terms_of_service, acceptance: { accept: 'on', message: 'must be accepted' }
   validates :privacy_policy, acceptance: { accept: 'on', message: 'must be accepted' }
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
+  validate :password_complexity
   # validates :phone_number,  format: { with: /^\+?(\d{1,3})?[-.\s]?(\(?\d{3}\)?[-.\s]?)?(\d[-.\s]?){6,9}\d$/, on: :create }
 
   # validates :email,
@@ -83,4 +85,10 @@ class User < ApplicationRecord
     first_name.present? && last_name.present? && (company_id.present? || local_authority_id.present?)
   end
 
+  def password_complexity
+    # Regexp extracted from https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+    return if password.blank? || password =~ /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,70}$/
+
+    errors.add :password, 'Complexity requirement not met. Length should be 8-70 characters and include: 1 uppercase, 1 lowercase, 1 digit and 1 special character'
+  end
 end
