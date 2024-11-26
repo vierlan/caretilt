@@ -88,7 +88,7 @@ company1 = Company.find_or_create_by!(name: 'Care Tilt', email: 'placement@caret
 end
 
 def run_all
-  # destroy_all
+  destroy_all
   seed_entities
 end
 run_all
