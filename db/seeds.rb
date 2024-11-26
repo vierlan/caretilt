@@ -94,6 +94,7 @@ def change_password
     user.password = '$Caretilt123'
     user.save
   end
+end
 
 
 def run_all
