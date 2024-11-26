@@ -87,8 +87,16 @@ company1 = Company.find_or_create_by!(name: 'Care Tilt', email: 'placement@caret
 
 end
 
+def change_password
+  puts "Changing passwords..."
+  users = User.all
+  users.each do |user|
+    user.password = '$Caretilt123'
+    user.save
+  end
+
+
 def run_all
-  destroy_all
-  seed_entities
+  change_password
 end
 run_all
