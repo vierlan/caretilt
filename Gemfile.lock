@@ -261,14 +261,7 @@ GEM
     parser (3.3.5.0)
       ast (~> 2.4.1)
       racc
-    pay (7.3.0)
-      rails (>= 6.0.0)
     pg (1.5.6)
-    postmark (1.24.1)
-      json
-    postmark-rails (0.22.1)
-      actionmailer (>= 3.0.0)
-      postmark (>= 1.21.3, < 2.0)
     pretender (0.5.0)
       actionpack (>= 6.1)
     psych (5.1.2)
@@ -512,9 +505,7 @@ DEPENDENCIES
   mainstreet
   metamagic
   methodz
-  pay
   pg
-  postmark-rails
   pretender
   puma (= 6.4.2)
   pundit

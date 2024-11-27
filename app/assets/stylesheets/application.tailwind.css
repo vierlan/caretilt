@@ -1,10 +1,8 @@
 /* If nothing is updating on Tailwind classes run commands below to recompile tailwind. */
 /* rails assets:clobber
-rails assets:precompile */
+ rails assets:precompile */
 
-/* .form-image-card{
-    width: 200px;
-} */
+
 
 @import 'text.css';
 @import 'buttons.css';
@@ -45,7 +43,7 @@ rails assets:precompile */
     background-position: right 0.75rem center;
     background-size: 1rem;
   }
-  
+
   .custom-select:focus {
     border-color: #4a90e2; /* Focus border color */
     outline: none;
@@ -53,4 +51,13 @@ rails assets:precompile */
 
 .custom-wrapper{
     color: red;
+}
+
+.form-image-card{
+    width: 200px;
+}
+
+.logo-care-home{
+    width: 150px;
+    height: 150px;
 }

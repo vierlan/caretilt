@@ -31,8 +31,18 @@ class CompaniesController < ApplicationController
   end
 
   def edit
-    @company = current_user.company
-    authorize @company
+    # @company = current_user.company
+    # authorize @company
+    authorize :local_authority, :edit?
+    @company = case current_user.role
+               when 'super_admin', 'administrator'
+                 Company.find(params[:id])
+               when 'care_provider_super_user'
+                 current_user.company
+               else
+                 redirect_to dashboard_index_path(current_user),
+                             notice: 'You do not have permission to edit this company.' and return
+               end
   end
 
   def update
@@ -57,6 +67,7 @@ class CompaniesController < ApplicationController
   end
 
   private
+
   def set_company
     @company = Company.find(params[:id]) || current_user.company
   end

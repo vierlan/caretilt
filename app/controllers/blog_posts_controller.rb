@@ -56,6 +56,24 @@ class BlogPostsController < ApplicationController
     redirect_to blog_posts_url, notice: "Blog post was successfully destroyed."
   end
 
+  def remove_blog_image
+    @blog_post.cover_image.purge
+    respond_to do |format|
+      format.html { redirect_to edit_blog_post_path(@blog_post.slug), data: { turbo_frame: "main-content"}, notice: 'Cover Image removed successfully.' }
+      format.turbo_stream # Render Turbo Stream response
+    end
+  end
+
+  def remove_video
+    @blog_post.video.purge
+    respond_to do |format|
+      format.html { redirect_to edit_blog_post_path(@blog_post.slug), data: { turbo_frame: "main-content"}, notice: 'Video removed successfully.' }
+      format.turbo_stream # Render Turbo Stream response
+    end
+  end
+  
+
+
   private
 
   def set_blog_post

@@ -1,35 +1,38 @@
-<div id="<%= dom_id(home[:care_home]) %>" class="care-home">
-  <div class="overflow-hidden rounded-lg bg-white shadow-lg grid grid-cols-2 grid-flow-col gap-4 mt-5">
-    <div class="px-4 py-5 sm:px-6 col-span-2 flex justify-between">
-      <div class="ml-4 mt-4">
-        <h3 class="text-2xl text-blue-600 font-semibold leading-6 text-gray-900"><%= home[:care_home].name %></h3>
-        <p class="mt-1 text-base text-gray-500"><%= home[:care_home].short_address %></p>
+<div id="<%= dom_id(home[:care_home]) %>" class="care-home overflow-hidden rounded-lg bg-white shadow-lg grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
+
+  <!-- Image Section (Responsive Positioning) -->
+  <div class="flex justify-center items-center p-4 md:col-span-1 col-span-full">
+    <%= image_tag home[:care_home].thumbnail_or_default,
+                  class: "carehome-preview-image w-full md:w-auto",
+                  width: 200,
+                  height: 200,
+                  alt: "thumbnail" %>
+  </div>
+
+  <!-- Info Section -->
+  <div class="p-4 md:col-span-2 col-span-full flex flex-col justify-between">
+
+    <!-- Header with Title and Logo -->
+    <div class="flex justify-between items-center">
+      <div>
+        <h3 class="text-xl md:text-2xl text-blue-600 font-semibold"><%= home[:care_home].name %></h3>
+        <p class="text-sm md:text-base text-gray-500"><%= home[:care_home].short_address %></p>
       </div>
       <% if home[:care_home].company.logo.present? %>
-       <%= image_tag home[:care_home].company.logo, class: "company-logo", alt: "company logo" %>
+        <%= image_tag home[:care_home].company.logo, class: "logo-care-home object-contain ml-auto", alt: "company logo" %>
       <% end %>
     </div>
 
-    <div class="bg-gray-50 px-4 py-5 sm:p-6 row-span-2 col-span-2 flex justify-between gap-4 grow">
-      <%= image_tag home[:care_home].thumbnail_or_default, class: "carehome-thumbnail", size:"200x200" %>
-
-      <div class="provider-info">
-        <div>
-          <h3 class="font-medium">Location Type: <span class="text-grey font-normal"><%= home[:care_home].type_of_home %></span></h3>
-        </div>
-        <div class="description mt-2 h-32 overflow-hidden">
-          <p><%= home[:care_home].short_description %></p>
-        </div>
+    <!-- Location Type and Description Section -->
+    <div class="mt-4">
+      <h3 class="font-medium">Location Type: <span class="text-gray-700 font-normal"><%= home[:care_home].type_of_service %></span></h3>
+      <div class="description mt-2 h-32 overflow-hidden">
+        <p><%= home[:care_home].short_description %></p>
       </div>
     </div>
 
-    <div class="px-4 py-5 sm:px-6 row-span-3 flex flex-col justify-between">
-      <%# <div class="flex">
-        <span class="inline-flex items-center rounded-md bg-green-100 px-2 py-1 text-base font-medium text-green-700">Rating: Good</span>
-        <h1 class="text-blue-600 font-semibold p-1 ms-2">73 Reviews</h1>
-      </div> %>
-
-      <!-- Vacant rooms logic -->
+    <!-- Footer Section with Vacant Rooms, Services, and Actions -->
+    <div class="mt-4 space-y-2">
       <% if home[:vacant_rooms].length > 0 %>
         <h3 class="font-semibold">
           <%= home[:vacant_rooms].length %> <%= home[:vacant_rooms].length > 1 ? "rooms" : "room" %> available starting at <%= number_to_currency(home[:lowest_price], unit: "£") %>
@@ -39,16 +42,17 @@
       <% end %>
 
       <div>
-        <h2>Services provided:</h2>
-        <ul class="list-disc list-inside mt-2">
+        <h2 class="font-semibold">Services provided:</h2>
+        <ul class="list-disc list-inside mt-2 text-sm xl:text-base text-gray-600">
           <% home[:care_home].types_of_client_group.each do |service| %>
             <li><%= service %></li>
           <% end %>
         </ul>
       </div>
 
-      <div class="flex gap-2 justify-end">
-        <% if policy(home[:care_home]).edit? %> 
+      <!-- Action Buttons -->
+      <div class="flex gap-2 justify-end mt-4">
+        <% if policy(home[:care_home]).edit? %>
           <%= link_to 'Edit', edit_care_home_path(home[:care_home]), data: { turbo_frame: "main-content" }, class: "button-base-gradient" %>
         <% end %>
         <%= link_to 'More Details', care_home_path(home[:care_home]), data: { turbo_frame: "main-content" }, class: "btn rounded-xl bg-gradient-to-b from-secondary to-primary text-white" %>
@@ -56,7 +60,3 @@
     </div>
   </div>
 </div>
-
-          <%# <button class="text-white font-bold py-2 px-4 rounded-full bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg">
-            More Details
-          </button> %>

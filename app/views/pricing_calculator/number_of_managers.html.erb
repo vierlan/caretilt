@@ -1,0 +1,45 @@
+<!-- app/views/pricing_calculator/number_of_managers.html.erb -->
+<%= render layout: 'pricing_calculator/calculator_layout' do %>
+  <%= simple_form_for :calculator, url: wizard_path, method: :patch, html: { data: { controller: "calculator" } } do |f| %>
+
+    <%# Hidden data passed to stimulus DO NOT REMOVE OR IT WILL BREAK!!!%> 
+    <div class="hidden" <%@flats=session['calculator_data']['total_beds_flats'] %>>
+      <!-- Total Beds/Flats (Total Beds Flats Target) -->
+      <div class="mb-4">
+        <%= f.label :total_beds_flats, "Total Beds/Flats" %>
+        <%= f.number_field :total_beds_flats, value: @flats, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateCosts", calculator_target: "totalBedsFlats" } %>
+      </div> 
+    </div>
+
+    <!-- Number of Managers -->
+    <div class="mb-4">
+      <%= f.label :manager_count, "Number of Managers" %>
+      <%= f.number_field :manager_count, min: 0, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateManagerCosts", calculator_target: "managerCount" } %>
+    </div>
+
+    <!-- Manager Salary -->
+    <div class="mb-4">
+      <%= f.label :manager_salary, "Manager Salary (£)" %>
+      <%= f.number_field :manager_salary, min: 1, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateManagerCosts", calculator_target: "managerSalary" } %>
+      <p class="calculator-help">Annual salary of manager including oncosts </p>
+    </div>
+
+    <!-- Manager's Time on Service (%) -->
+    <div class="mb-4">
+      <%= f.label :manager_time_percent, "% of time manager spends on this service" %>
+      <%= f.number_field :manager_time_percent, min: 0, max: 100, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateManagerCosts", calculator_target: "managerTimePercent" } %>
+      <p class="calculator-help">Manager may have responsibility for more than one service  </p>
+    </div>
+
+    <!-- Total Beds Flats Target (hidden field) -->
+    <%= hidden_field_tag :total_beds_flats, 10, data: { calculator_target: "totalBedsFlats" } %>
+
+    <!-- Weekly Management Cost per Service User (£) -->
+    <div class="mb-4">
+      <%= f.label :weekly_management_cost_per_user, "Weekly Management per Service User (£)" %>
+      <%= f.number_field :weekly_management_cost_per_user, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "weeklyManagementCost" } %>
+    </div>
+
+    <%= f.button :submit, "Next", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
+  <% end %>
+<% end %>

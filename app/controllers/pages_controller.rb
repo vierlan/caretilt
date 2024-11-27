@@ -1,16 +1,10 @@
 class PagesController < ApplicationController
 
-  skip_before_action :authenticate_user!, except: [:logout]
-  
+  skip_before_action :authenticate_user!
+
   def home
-    # @current_user = current_user
   end
 
-  def logout
-    reset_session
-    sign_out(current_user)
-    redirect_to home_path
-  end
 
   def page
     @page_key = request.path[1..]
@@ -24,7 +18,11 @@ class PagesController < ApplicationController
   end
 
   def guides
-    @blog_posts = BlogPost.published.order(created_at: :asc)
+    @blog = BlogPost.published.order(created_at: :desc)
+  end
+
+  def show
+    @blog_post = BlogPost.find_by(slug: params[:id])
   end
 
   def search
@@ -32,8 +30,22 @@ class PagesController < ApplicationController
 
   def quiz; end
 
+  def pricing
+    @packages = Package.where(validity: 1, subscription_type: 'company_subscription')
+  end
+
+  def pricing2
+    @packages = Package.where(validity: 12, subscription_type: 'company_subscription')
+  end
+
+  def error_not_verified
+  end
+
+  def error_team_member
+  end
+
   def test2
     @care_homes = CareHome.where.not(latitude: nil, longitude: nil)
   end
-  
+
 end

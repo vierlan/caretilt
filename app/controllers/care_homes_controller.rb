@@ -1,31 +1,21 @@
 class CareHomesController < ApplicationController
 
-  def all
-    @user = current_user
-    @company = Company.find(params[:company_id])
-    @care_homes = @company.care_homes
-    @care_homes = @care_homes.map do |care_home|
-      {
-        care_home: care_home,
-        vacant_rooms: care_home.rooms.where(vacant: true),
-        lowest_price: care_home.rooms.minimum(:total)
-      }
-    end
-  end
-
   def index
     # Get only the local authorities that are associated with existing care homes
 
     @all_local_authorities = LocalAuthorityData.where(nice_name: CareHome.select(:local_authority_name).distinct).sort_by { |item| item}
 
-    @type_of_home_options = ['Any'] + CareHome::TYPEHOME
+    @type_of_service_options = ['Any'] + CareHome::TYPESERVICE
     @types_of_client_group_options = CareHome::TYPECLIENT
 
     # Logic here will return all care homes by default unless front end form specifies filtering params.
     # @care_homes = CareHome.all
 
     # Use Pundit to scope the care homes based on the user's role
-    @care_homes = policy_scope(CareHome)
+    @care_homes = policy_scope(CareHome).order(:name)
+
+
+    # filter for google maps on searches.
 
     if params[:care_home]
       # Local authority filter (if not "Any")
@@ -34,8 +24,8 @@ class CareHomesController < ApplicationController
       end
 
       # Type of home filter (if not "Any")
-      if params[:care_home][:type_of_home].present? && params[:care_home][:type_of_home] != "Any"
-        @care_homes = @care_homes.where(type_of_home: params[:care_home][:type_of_home])
+      if params[:care_home][:type_of_service].present? && params[:care_home][:type_of_service] != "Any"
+        @care_homes = @care_homes.where(type_of_service: params[:care_home][:type_of_service])
       end
 
       # Types of client group filter (if not "Any")
@@ -54,6 +44,8 @@ class CareHomesController < ApplicationController
         lowest_price: care_home.rooms.minimum(:total)
       }
     end
+
+
 
     respond_to do |format|
       format.html # Renders the default HTML view
@@ -80,12 +72,6 @@ class CareHomesController < ApplicationController
     @care_home = CareHome.new
 
     authorize @care_home
-
-    if @care_home.save
-      redirect_to dashboard_index_path(current_user), notice: 'Successfully created'
-    else
-      render :new, status: :unprocessable_entity
-    end
   end
 
   def create
@@ -94,7 +80,7 @@ class CareHomesController < ApplicationController
     @care_home.company = @company
 
     if @care_home.save
-      redirect_to dashboard_index_path(current_user), notice: 'Successfully created', status: :see_other, turbo_frame: 'new_home_top'
+      redirect_to care_home_path(@care_home), data: { turbo_frame: "main-content"}
     else
       render :new, status: :unprocessable_entity
     end
@@ -128,7 +114,7 @@ class CareHomesController < ApplicationController
 
     # Now update the rest of the attributes (excluding media)
     if @care_home.update(care_home_params.except(:media)) # Exclude media from update, handled separately
-      redirect_to dashboard_index_path(current_user), notice: 'Successfully updated'
+      redirect_to care_home_path(@care_home), data: { turbo_frame: "main-content"}, notice: 'Successfully updated'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -164,8 +150,18 @@ class CareHomesController < ApplicationController
     media.purge
 
     respond_to do |format|
-      format.html { redirect_to edit_care_home_path(@care_home), notice: 'Media removed successfully.' }
+      format.html { redirect_to edit_care_home_path(@care_home), data: { turbo_frame: "main-content"}, notice: 'Media removed successfully.' }
       format.turbo_stream { render turbo_stream: turbo_stream.remove("media_#{media_id}") }
+    end
+  end
+
+  def remove_thumbnail
+    @care_home = CareHome.find(params[:id])
+    @care_home.thumbnail_image.purge
+    respond_to do |format|
+
+      format.html { redirect_to edit_care_home_path(@care_home), data: { turbo_frame: "main-content"}, notice: 'Thumbnail removed successfully.' }
+      format.turbo_stream # Render Turbo Stream response
     end
   end
 
@@ -174,7 +170,7 @@ class CareHomesController < ApplicationController
   def care_home_params
     params.require(:care_home).permit(
     :name, :main_contact, :phone_number, :website, :address, :email,
-    :address1, :address2, :city, :postcode, :type_of_home,
+    :address1, :address2, :city, :postcode, :type_of_service, :id, :long_description,
     :short_description, :latitude, :longitude, :local_authority_name,
     :thumbnail_image, photos: [], videos: [], media: [], types_of_client_group: [] # Allow `types_of_client_group` as an array
     ).tap do |whitelisted| #Makes sure that no empty values allowed in the array.

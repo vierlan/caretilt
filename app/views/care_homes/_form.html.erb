@@ -1,62 +1,62 @@
 <!-- views/care_homes/_form.html.erb -->
-
 <%# Same form used here for new and edit. New required company to attach to, edit just requires edit to append. %>
 <%= simple_form_for(@care_home, url: @care_home.new_record? ? company_care_homes_path(@company) : care_home_path(@care_home)) do |f| %>
-
   <!-- Hidden Fields are used to transmit data across privately -->
   <%= f.hidden_field :id, value: @care_home.id %>
   <!-- Hidden Fields for Latitude and Longitude -->
   <%= f.hidden_field :latitude, id: "latitude" %>
   <%= f.hidden_field :longitude, id: "longitude" %>
   <div class="space-y-12">
-    <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 md:grid-cols-3">
-      <div>
+    <div class="grid grid-cols-1 gap-x-8 gap-y-10 border-gray-900/10 pb-12 md:grid-cols-6">
+      <div class="md:col-span-6">
         <h2 class="text-card-heading">Care Home Profile</h2>
         <p class="mt-1 text-description-small">This information will be displayed publicly so be careful what you share.</p>
       </div>
-      <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-2">
+      <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 md:col-span-6">
         <!-- Website -->
-        <div class="sm:col-span-6">
+        <div class="col-span-6">
           <%= f.input :website, label: "Website", placeholder: "https://www.example.com", input_html: { id: "website" } %>
         </div>
         <!-- Main Contact -->
-        <div class="sm:col-span-6">
+        <div class="col-span-6">
           <%= f.input :main_contact, label: "Name Of Main Contact", input_html: { id: "main_contact" } %>
         </div>
         <!-- Name -->
-        <div class="sm:col-span-6">
+        <div class="col-span-6">
           <%= f.input :name, label: "Name Of Care Home", input_html: { id: "name" } %>
         </div>
         <!-- Address Line 1 -->
-        <div class="sm:col-span-6">
+        <div class="col-span-6">
           <%= f.input :address1, label: "Address Line 1", input_html: { id: "address1" } %>
         </div>
         <!-- Address Line 2 -->
-        <div class="sm:col-span-6">
+        <div class="col-span-6">
           <%= f.input :address2, label: "Address Line 2", input_html: { id: "address2" } %>
         </div>
         <!-- City -->
-        <div class="sm:col-span-6">
+        <div class="col-span-6">
           <%= f.input :city, label: "City", input_html: { id: "city" } %>
         </div>
         <!-- Postcode -->
-        <div class="sm:col-span-6">
+        <div class="col-span-6">
           <%= f.input :postcode, label: "Postcode", input_html: { id: "postcode" } %>
         </div>
         <!-- Phone Number -->
-        <div class="sm:col-span-6">
+        <div class="col-span-6">
           <%= f.input :phone_number, label: "Phone Number", input_html: { id: "phone_number" } %>
         </div>
         <!-- Email Address -->
-        <div class="sm:col-span-6">
+        <div class="col-span-6">
           <%= f.input :email, label: "Email Address", input_html: { id: "email" } %>
         </div>
         <!-- Type of Home -->
-        <div class="sm:col-span-6">
-          <%= f.input :type_of_home, label: "Type of Home", collection: CareHome::TYPEHOME, include_blank: 'Select a type', input_html: { id: "type_of_home" } %>
+        <div class="col-span-6 "> <span class="font-semibold mr-2">Type of Service</span>
+          <%= f.input :type_of_service,
+              label: "",
+              collection: CareHome::TYPESERVICE, prompt: 'Select a type of service' %>
         </div>
         <!-- Types of Client Group -->
-        <div class="sm:col-span-6">
+        <div class="col-span-6"> <p class="font-semibold mr-2">Types of Client Group</p>
           <%= f.collection_check_boxes :types_of_client_group, CareHome::TYPECLIENT, :itself, :to_s do |b| %>
             <div>
               <%= b.check_box %>
@@ -65,60 +65,73 @@
           <% end %>
         </div>
         <!-- Local Authority -->
-        <div class="col-span-6">
-          <%= f.input :local_authority_name, label: "Local Authority", 
-            collection: CareHome.cached_local_authority_names, 
-            prompt: 'Select a local authority', 
+        <div class="col-span-6"> <span class="font-semibold mr-2">Local Authority</span>
+          <%= f.input :local_authority_name, label: "",
+            collection: CareHome.cached_local_authority_names,
+            prompt: 'Select a local authority',
             input_html: { class: 'custom-class' } %>
         </div>
         <!-- Short Description -->
         <div class="col-span-6">
           <%= f.input :short_description, label: "Short Description", as: :text, input_html: { id: "short_description", rows: 3 } %>
-          <p class="mt-3 text-sm leading-6 text-gray-600">A short description shown on search previews.</p>
+          <p class="mt-3 text-sm xl:text-base leading-6 text-gray-600">A short description shown on search previews.</p>
         </div>
-         <!-- Short Description -->
+        <!-- Long Description -->
         <div class="col-span-6">
           <%= f.input :long_description, label: "Long Description", as: :text, input_html: { id: "long_description", rows: 3 } %>
-          <p class="mt-3 text-sm leading-6 text-gray-600">A description to advertise your service on it's landing page.</p>
+          <p class="mt-3 text-sm xl:text-base leading-6 text-gray-600">A description to advertise your service on it's landing page.</p>
         </div>
-         <!-- media Upload -->
-        <div class="sm:col-span-6">
-          <%= f.input :media, as: :file, input_html: { multiple: true }, label: "Upload Media (max 20mb size)" %>
-        </div>
-        <!-- Display Existing Media (Images/Videos) -->
-        <% if @care_home.media.attached? %>
-          <div class="images-wrapper" data-controller="sortable">
-            <% @care_home.media.each_with_index do |media_file, index| %>
-              <div class="form-image-card" data-id="<%= media_file.id %>">
-                <% if media_file.image? %>
-                  <%= image_tag media_file, class: "uploaded-media form-image" %>
-                <% elsif media_file.video? %>
-                  <%= video_tag media_file, controls: true, class: "uploaded-media form-image" %>
-                <% end %>
-                
-                <!-- Hidden field to store the media's position -->
-                <%= hidden_field_tag "media_order[#{media_file.id}]", index + 1, class: "media-position" %>
-              </div>
-            <% end %>
+        <turbo-frame id="media-container">
+          <!-- Media Upload Section -->
+          <div class="sm:col-span-6 mb-6 space-y-2">
+            <%= f.label :media, "Upload Media (max 20mb size)", class: "text-gray-700 font-medium whitespace-nowrap" %>
+            <%= f.file_field :media, multiple: true, class: "whitespace-nowrap", id: "media" %>
           </div>
-        <% end %>
-         <!-- Thumbnail Upload -->
-        <div class="sm:col-span-6">
-          <%= f.input :thumbnail_image, as: :file, input_html: { multiple: false }, label: "Upload Your CareHome Preview Thumbnail" %>
-        </div>
-        <!-- Display Existing Media (Images/Videos) -->
-        <% if @care_home.thumbnail_image.attached? %>
-            <div class="home-thumbnail-image">
-                <%= image_tag @care_home.thumbnail_image, class: "carehome-thumbnail" %>
+          <!-- Display Existing Media Files (Images/Videos) -->
+          <% if @care_home&.persisted? && @care_home.media.attached? %>
+            <% if @care_home.media.present? %>
+            <div class="images-wrapper gap-4 mt-4" data-controller="sortable">
+              <% @care_home.media.each_with_index do |media_file, index| %>
+                <div class="form-image-card border rounded-lg p-4 shadow-sm bg-white flex flex-col items-center" id="media_<%= media_file.id %>" data-id="<%= media_file.id %>">
+                  <% if media_file.image? %>
+                    <%= image_tag media_file, class: "uploaded-media form-image w-full h-48 object-cover rounded-md mb-2" %>
+                  <% elsif media_file.video? %>
+                    <%= video_tag media_file, controls: true, class: "uploaded-media form-image w-full h-48 rounded-md mb-2" %>
+                  <% end %>
+                  <!-- Remove button for media files -->
+                  <%= button_to "Remove", remove_media_care_home_path(@care_home, media_id: media_file.id),
+                      method: :delete,
+                      data: { turbo_confirm: "Are you sure you want to remove this media?" },
+                      class: "remove-media-btn text-sm text-red-600 hover:text-red-800 mt-2"
+                  %>
+                </div>
+              <% end %>
+            <% end %>
+          <% end %>
+            <!-- Thumbnail Upload Section -->
+            <div class="sm:col-span-6 mb-6 space-y-2 mt-6">
+              <%= f.label :thumbnail_image, "Upload Your CareHome Preview Thumbnail", class: "text-gray-700 font-medium whitespace-nowrap" %>
+              <%= f.file_field :thumbnail_image, class: "whitespace-nowrap", id: "thumbnail_image" %>
             </div>
-        <% end %>
-        <!-- Submit Button -->
-        <div class="mt-6 sm:col-span-6">
-          <%= f.button :submit, "Save", class: "btn bg-gradient-to-b from-secondary to-primary hover:shadow-slate-500 hover:shadow-lg w-full" %>
+            <!-- Display Existing Thumbnail Image with Remove Button -->
+            <% if @care_home&.persisted? && @care_home.media.attached? %>
+              <% if @care_home.thumbnail_image.present? %>
+                <div class="form-image-card border rounded-lg p-4 shadow-sm bg-white flex flex-col items-center" id="thumbnail_image_preview">
+                  <%= image_tag @care_home.thumbnail_image, class: "carehome-thumbnail rounded-md max-h-48 w-full object-cover mb-2 shadow-sm border" %>
+                  <%= button_to "Remove", remove_thumbnail_care_home_path(@care_home),
+            method: :delete,
+            data: { turbo_confirm: "Are you sure you want to remove this thumbnail?" },
+            class: "remove-thumbnail-btn text-sm text-red-600 hover:text-red-800" %>
+                </div>
+              <% end %>
+            <% end %>
+          </turbo-frame>
+          <!-- Submit Button -->
+          <div class="mt-6 col-span-6">
+            <%= f.button :submit, "Save", class: "button-caretilt" %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-<% end %>
-
-<%= turbo_stream_from "media" %>
+  <% end %>
+  <%= turbo_stream_from "media" %>

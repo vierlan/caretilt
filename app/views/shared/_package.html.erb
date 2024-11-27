@@ -1,0 +1,27 @@
+
+<div class="rounded-3xl p-8 ring-1 ring-gray-200">
+  <h3 id="tier-hobby" class="text-2xl font-bold leading-8 text-gray-900"><%= package.name.humanize %></h3>
+  <p class="mt-4 text-description-small" style="min-height: 220px">
+    <%= package.description %>
+  </p>
+  <p class="mt-6 flex items-baseline gap-x-1">
+    <!-- Price, update based on frequency toggle state -->
+    <span class="text-3xl font-bold tracking-tight text-gray-900">£<%= package.price %></span>
+    <!-- Payment frequency, update based on frequency toggle state -->
+    <% if package.validity != 0 %>
+      <span class="text-sm font-semibold leading-6 text-gray-600"><%= package.validity == 1 ? "/Monthly" : "/Annually" %></span>
+    <% end %>
+  </p>
+  <!-- Buy plan button -->
+  <% if controller.controller_name == 'packages' %>
+    <a href="/stripe/checkout" aria-describedby="tier-hobby" class="mt-6 block rounded-md px-3 py-2 text-center text-sm xl:text-base font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Buy plan</a>
+  <% else %>
+    <%= link_to "Start Registration", new_user_registration_path, class: "button-caretilt" %>
+  <% end %>
+  <% starter_plan_features = package.features %>
+  <ul role="list" class="mt-8 space-y-3 text-description-small">
+    <% starter_plan_features.each do |feature| %>
+      <%= render partial: "shared/pricing_list_item", locals: { content: feature } %>
+    <% end %>
+  </ul>
+</div>

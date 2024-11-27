@@ -8,4 +8,11 @@ class BillingPortalSessionsController < ApplicationController
     })
     redirect_to portal_session.url, status: 303, allow_other_host: true
   end
+
+  def invoice
+    Stripe.api_key = Rails.application.credentials&.stripe&.api_key
+    @subscription = Subscription.find(params[:id])
+    invoice_url = @subscription.receipt_number || @subscription&.credit_log&.last&.try(:last)
+    # redirect_to invoice_url, status: 303, allow_other_host: true
+  end
 end

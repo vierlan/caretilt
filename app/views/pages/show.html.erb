@@ -1,0 +1,31 @@
+<div id="main-content">
+  <%# meta title: blog_post.title, description: @blog_post.description %>
+  <div class="font-inter antialiased text-gray-800 tracking-tight my-16 max-w-3xl mx-auto">
+    <div class="lg:px-8">
+      <%= link_to "← Back to all posts", guides_path, class:"text-lg hover:opacity-75 mr-1 w-fit font-semibold" %>
+      <article class="flex flex-col items-start justify-between mt-4">
+        <div class="relative w-full">
+          <%= image_tag @blog_post.cover_image, class:"aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover" if @blog_post.cover_image.attached? %>
+          <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
+        </div>
+        <div class="py-8">
+          <%= video_tag(@blog_post.video, class: "video aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover", autoplay: true, controls: true) if @blog_post.video.attached? %>
+        </div>
+        <div class="w-full prose prose-lg">
+          <div class="group relative">
+            <h1 class=" text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-6 text-gray-900 text-center mb-6 mt-12">
+              <%= @blog_post.title %>
+            </h1>
+            <div class="text-xs mx-auto text-center w-full mb-8">
+              <time class="relative z-10 rounded-full bg-white px-3 py-1.5 font-medium text-gray-600 border" datetime="<%= @blog_post.updated_at.strftime('%m-%d-%Y') %>" class="text-gray-500"><%= @blog_post.created_at.strftime('%B %d, %Y') %></time>
+            </div>
+            <p class="text-base md:text-lg"><%= @blog_post.body %></p>
+          </div>
+        </div>
+      </article>
+      <div class="mx-auto mt-20 grid-cols-2 gap-x-8 gap-y-16 text-center">
+        <%= image_tag "founder-avatar.png", class:"mx-auto h-12 w-12 rounded-full" %>
+      </div>
+    </div>
+  </div>
+</div>

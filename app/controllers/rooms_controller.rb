@@ -36,9 +36,14 @@ class RoomsController < ApplicationController
 
     authorize @room
     if @room.save
+      if @room.vacant? # If room is created with vacant box checked, call the deduct_credit method
+        subscription = current_user.company.get_active_subscription
+        subscription.deduct_credit(@room)
+      end
+      flash[:notice] = "Room created successfully."
       redirect_to care_home_rooms_path(@care_home)
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -48,41 +53,19 @@ class RoomsController < ApplicationController
     @company = @care_home.company
   end
 
-  # def update
-  #   authorize @room
-  #   @care_home = @room.care_home
-  #   @company = @care_home.company
-  #   if @room.update(room_params)
-  #     if @room.vacant_previously_changed? && @room.vacant?
-  #       # Deduct credit from the user's subscription
-  #       current_user.subscription.deduct_credit(@room)
-  #     end
-
-  #     flash[:notice] = "Room updated successfully."
-  #     redirect_to care_home_path(@care_home)
-  #   else
-  #     render :edit, status: :unprocessable_entity
-  #   end
-  # end
-
   def update
-    
+
     @room.assign_attributes(room_params)
     authorize @room
-    # Validate the super PIN if the room is being marked as vacant
-    #if @room.vacant? && params[:super_pin] != @room.care_home.company.super_pin
-    #  flash[:alert] = "Invalid PIN. The room cannot be marked as vacant."
-    #  render :edit and return
-    #end
 
     # If room is updated to vacant, call the deduct_credit method
     if @room.save
       if @room.vacant_previously_changed? && @room.vacant?
-        subscription = current_user.company.get_active_subscription
+        subscription = @room.company.get_active_subscription
         subscription.deduct_credit(@room)
       end
       flash[:notice] = "Room updated successfully."
-      redirect_to care_home_path(@room.care_home)
+      redirect_to care_home_path(@room.care_home), data: { turbo_frame: "main-content"}
     else
       render :edit, status: :unprocessable_entity
     end

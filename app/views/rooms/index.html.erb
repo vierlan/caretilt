@@ -1,9 +1,9 @@
  <turbo-frame id="main-content">
   <div>
-    <h1 class="font-bold text-4xl">Manage Rooms</h1>
+    <h1 class="font-bold text-4xl mb-2">Manage Rooms</h1>
     <%= link_to sanitize("&larr; Back to Care Home"), care_home_path(@care_home), class: "btn mb-4 font-bold text-lg text-white bg-gradient-to-b from-secondary to-primary  hover:shadow-slate-500 hover:shadow-lg" %>
     <%= link_to "Add a room", new_care_home_room_path(@care_home), data: { turbo_frame: "main-content" }, class: "bg-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" %>
-   
+
     <% if @all_rooms.length > 0 %>
     <div class="px-4 sm:px-6 lg:px-8">
       <div class="mt-8 flow-root">
@@ -20,6 +20,7 @@
                     <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Single / Double</th>
                     <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Ensuite</th>
                     <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Total Weekly</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Vacant?</th>
                     <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900"></th>
                   </tr>
                 </thead>
@@ -33,13 +34,15 @@
                       <td class="whitespace-nowrap px-3 py-4 text-description"><%= room.single_double %></td>
                       <td class="whitespace-nowrap px-3 py-4 text-description"><%= room.ensuite ? render('shared/icons/tick') : render('shared/icons/cross') %> </td>
                       <td class="whitespace-nowrap px-3 py-4 text-description"><%= number_to_currency(room.total, unit: "£") %></td>
+                      <td class="whitespace-nowrap px-3 py-4 text-description"><%= room.vacant ? render('shared/icons/tick') : render('shared/icons/cross') %></td>
+
                       <td class="whitespace-nowrap px-3 py-4 text-description">
                           <div>
                             <%# <%= link_to 'Show', room_path(room), data: { turbo_frame: "main-content" }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
-                            <% if policy(room).edit? %> 
+                            <% if policy(room).edit? %>
                               <%= link_to 'Edit', edit_room_path(room), data: { turbo_frame: "main-content" }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
                             <% end %>
-                            <% if policy(room).destroy? %> 
+                            <% if policy(room).destroy? %>
                              <%= button_to 'Delete', room_path(room), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
                             <% end %>
                           </div>
@@ -53,6 +56,8 @@
         </div>
       </div>
     </div>
+    <% else %>
+      <p class="text-center mt-4 text-2xl font-bold">No Rooms Listed</p>
   <% end %>
   </div>
 </turbo-frame>

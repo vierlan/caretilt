@@ -1,58 +1,60 @@
 <turbo-frame id="main-content">
-  
-    
-
-  <div class="relative border-b border-gray-200 pb-5 sm:pb-2 mt-10">
+  <div class="relative border-b border-gray-200 pb-5 sm:pb-2 mt-6">
     <div class="md:flex md:items-center md:justify-between">
       <div class="mt-4">
-          <h3 class="text-5xl text-blue-600 font-semibold leading-6"> <%= @care_home.name %></h3>
-          <p class="mt-4 text-base text-gray-500"> <%= @care_home.formatted_address %></p>
+        <h3 class="text-5xl text-blue-600 font-semibold "> <%= @care_home.name %></h3>
+        <p class="mt-4 text-base 2xl:text-lg text-gray-500"> <%= @care_home.formatted_address %></p>
       </div>
       <div class="px-4 py-5 sm:px-6 col-span-2 flex justify-between">
-          <% if @care_home.company.logo.present? %>
-            <%= image_tag @care_home.company.logo, class: "company-logo", alt: "company logo" %>
-          <% end %>
+        <% if @care_home.company.logo.present? %>
+          <%= image_tag @care_home.company.logo, class: "company-logo", alt: "company logo" %>
+        <% end %>
       </div>
     </div>
     <div class="flex justify-end">
-      <div class="mt-3 flex justify-end gap-4">
-        <a href="<%= @care_home.website %>" target="_blank" class="button-blue-pill">
-          View Website
-        </a>
-        <a href="mailto:<%= @care_home.email %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+      <div class="mt-3 flex justify-end gap-4 flex-wrap"> <!-- Added flex-wrap to allow button wrapping -->
+        <% if policy(@care_home).edit? %>
+          <%= link_to 'Edit', edit_care_home_path(@care_home), data: { turbo_frame: "main-content" }, class: "button-blue-pill whitespace-nowrap" %>
+        <% end %>
+        <% if @care_home.website.present? %>
+          <a href="<%= @care_home.website %>" target="_blank" class="button-blue-pill whitespace-nowrap">
+            View Website
+          </a>
+        <% end %>
+        <% if @care_home.email.present? %>
+        <a href="mailto:<%= @care_home.email %>" class="button-blue-pill whitespace-nowrap">
           Send Email
         </a>
-        <a href="tel:<%= @care_home.phone_number %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+        <% end %>
+        <% if @care_home.phone_number.present? %>
+        <a href="tel:<%= @care_home.phone_number %>" class="button-blue-pill whitespace-nowrap">
           View Phone Number
         </a>
+        <% end %>
       </div>
     </div>
   </div>
-
- 
   <!-- Carousel -->
   <% if @care_home.media.attached? %>
     <div class="carousel-container relative w-full mx-auto mt-8">
       <!-- Carousel Wrapper -->
-       <div class="carousel-inner flex overflow-x-auto snap-x snap-mandatory scrollbar-hide">
-          <% @care_home.media.each_with_index do |media_file, i| %>
-            <div class="carousel-item flex-none w-1/3 snap-start p-2">
-              <% if media_file.image? %>
-                <%= image_tag media_file, class: "uploaded-media w-full h-auto rounded-lg", alt: "Slide #{i + 1}" %>
-              <% elsif media_file.video? %>
-                <%= video_tag media_file, controls: true, class: "uploaded-media w-full h-auto rounded-lg", alt: "Video Slide #{i + 1}" %>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-
+      <div class="carousel-inner flex overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+        <% @care_home.media.each_with_index do |media_file, i| %>
+          <div class="carousel-item flex-none w-1/3 snap-start p-2">
+            <% if media_file.image? %>
+              <%= image_tag media_file, class: "uploaded-media w-full h-auto rounded-lg", alt: "Slide #{i + 1}" %>
+            <% elsif media_file.video? %>
+              <%= video_tag media_file, controls: true, class: "uploaded-media w-full h-auto rounded-lg", alt: "Video Slide #{i + 1}" %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
       <!-- Previous Button -->
       <button id="prevBtn" class="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-700 text-white p-2 rounded-full hover:bg-gray-900 focus:outline-none">
         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
         </svg>
       </button>
-
       <!-- Next Button -->
       <button id="nextBtn" class="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-700 text-white p-2 rounded-full hover:bg-gray-900 focus:outline-none">
         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -69,14 +71,13 @@
         <%= @care_home.long_description.blank? ? @care_home.short_description : @care_home.long_description %>
       </p>
     </div>
-
     <!-- Map Section -->
-    <div class="map-section" data-controller="showplacesmap" 
+    <div class="map-section" data-controller="showplacesmap"
         data-showplacesmap-care-home-value="<%= @care_home.to_json(only: [:name, :latitude, :longitude]) %>"
-        data-showplacesmap-marker-url-value="<%= image_path('logo_trans.png') %>">
+        data-showplacesmap-marker-url-value="<%= image_path('location.png') %>">
       <div id="map" style="height: 500px; width: 100%;"></div>
     </div>
-
+  </div>
   <div class="bg-white py-12 sm:py-24">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
       <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
@@ -86,7 +87,7 @@
             <svg fill="currentColor" aria-hidden="true" class="absolute left-0 top-1 h-5 w-5 text-indigo-500" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="m12.223 11.641-.223.22-.224-.22a2.224 2.224 0 0 0-3.125 0 2.13 2.13 0 0 0 0 3.07L12 18l3.349-3.289a2.13 2.13 0 0 0 0-3.07 2.225 2.225 0 0 0-3.126 0z"/><path d="m21.707 11.293-9-9a.999.999 0 0 0-1.414 0l-9 9A1 1 0 0 0 3 13h1v7c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-7h1a1 1 0 0 0 .707-1.707zM18.001 20H6v-9.585l6-6 6 6V15l.001 5z"/></svg>
               Type Of Home
             </dt>
-            <dd class="mt-2"><%= @care_home.type_of_home %></dd>
+            <dd class="mt-2"><%= @care_home.type_of_service %></dd>
           </div>
           <div class="relative pl-9">
             <dt class="font-semibold text-gray-900">
@@ -101,57 +102,57 @@
                     <% @care_home.types_of_client_group.each do |service| %>
                       <li><%= service %></li>
                     <% end %>
-                </ul>
+                  </ul>
+                </div>
+              </dd>
             </div>
-            </dd>
-          </div>
-        </dl>
+          </dl>
+        </div>
       </div>
     </div>
-  </div>
-  
-  <%# # DEV REFACTOR THIS LOGIC NEXT WEEK  %>
-  <% if @rooms.length > 0 %>
-    <div class="px-4 sm:px-6 lg:px-8">
-      <div class="mt-8 flow-root">
-        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-              <table class="min-w-full divide-y divide-gray-300">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-lg font-semibold text-gray-900 sm:pl-6">Room Name</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Core Fee Level</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Core Hours of Care</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Additional Fees associated</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Single / Double</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Ensuite</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Total Weekly</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900"></th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200 bg-white">
-                  <% @rooms.each do |room| %>
+    <%# # DEV REFACTOR THIS LOGIC NEXT WEEK  %>
+    <div>
+    <% if @rooms.length > 0 %>
+      <div class="px-4 sm:px-6 lg:px-8">
+        <div class="mt-8 flow-root">
+          <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+              <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+                <table class="min-w-full divide-y divide-gray-300">
+                  <thead class="bg-gray-50">
                     <tr>
-                      <td class="whitespace-nowrap py-4 pl-4 pr-3 text-description font-medium sm:pl-6"><%= room.name %></td>
-                      <td class="whitespace-nowrap px-3 py-4 text-description"><%= number_to_currency(room.core_fee_level, unit: "£") %></td>
-                      <td class="whitespace-nowrap px-3 py-4 text-description"><%= room.core_hours_of_care %></td>
-                      <td class="whitespace-nowrap px-3 py-4 text-description"><%= room.additional_fees_associated ? render('shared/icons/tick') : render('shared/icons/cross') %></td>
-                      <td class="whitespace-nowrap px-3 py-4 text-description"><%= room.single_double %></td>
-                      <td class="whitespace-nowrap px-3 py-4 text-description"><%= room.ensuite ? render('shared/icons/tick') : render('shared/icons/cross') %> </td>
-                      <td class="whitespace-nowrap px-3 py-4 text-description"><%= number_to_currency(room.total, unit: "£") %></td>
-                      <td class="whitespace-nowrap px-3 py-4 text-description">
-                        <%= link_to 'Room enquiry', new_room_booking_enquiry_path(room), data: { turbo_frame: "main-content" }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
-                      </td>
+                      <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-lg font-semibold text-gray-900 sm:pl-6">Room Name</th>
+                      <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Core Fee Level</th>
+                      <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Core Hours of Care</th>
+                      <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Additional Fees associated</th>
+                      <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Single / Double</th>
+                      <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Ensuite</th>
+                      <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900">Total Weekly</th>
+                      <th scope="col" class="px-3 py-3.5 text-left text-lg font-semibold text-gray-900"></th>
                     </tr>
-                  <% end %>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody class="divide-y divide-gray-200 bg-white">
+                    <% @rooms.each do |room| %>
+                      <tr>
+                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-description font-medium sm:pl-6"><%= room.name %></td>
+                        <td class="whitespace-nowrap px-3 py-4 text-description"><%= number_to_currency(room.core_fee_level, unit: "£") %></td>
+                        <td class="whitespace-nowrap px-3 py-4 text-description"><%= room.core_hours_of_care %></td>
+                        <td class="whitespace-nowrap px-3 py-4 text-description"><%= room.additional_fees_associated ? render('shared/icons/tick') : render('shared/icons/cross') %></td>
+                        <td class="whitespace-nowrap px-3 py-4 text-description"><%= room.single_double %></td>
+                        <td class="whitespace-nowrap px-3 py-4 text-description"><%= room.ensuite ? render('shared/icons/tick') : render('shared/icons/cross') %> </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-description"><%= number_to_currency(room.total, unit: "£") %></td>
+                        <td class="whitespace-nowrap px-3 py-4 text-description">
+                          <%= link_to 'Care enquiry', new_room_booking_enquiry_path(room), data: { turbo_frame: "main-content" }, class: "btn bg-gradient-to-b from-secondary to-primary text-white" %>
+                        </td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
+    <% end %>
     </div>
-  <% end %>
-
 </turbo-frame>

@@ -1,0 +1,53 @@
+<!-- app/views/pricing_calculator/service_user.html.erb -->
+<%= render layout: 'pricing_calculator/calculator_layout' do %>
+  <%= simple_form_for :calculator, url: wizard_path, method: :patch, html: { data: { controller: "calculator" } } do |f| %>
+
+    <!-- Additional Hourly Rate -->
+    <div class="mb-4">
+      <%= f.label :additional_hourly_rate, "Additional Hourly Rate (£)" %>
+      <%= f.number_field :additional_hourly_rate, min: 0, step: 0.01, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateAdditionalCost", calculator_target: "additionalHourlyRate" } %>
+    </div>
+
+    <!-- Additional 1:1 Hours per Week -->
+    <div class="mb-4">
+      <%= f.label :one_on_one_hours, "1:1 Additional Hours per Week" %>
+      <%= f.number_field :one_on_one_hours, min: 0, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateAdditionalCost", calculator_target: "oneOnOneHours" } %>
+    </div>
+
+    <!-- Additional 2:1 Hours per Week -->
+    <div class="mb-4">
+      <%= f.label :two_on_one_hours, "2:1 Additional Hours per Week" %>
+      <%= f.number_field :two_on_one_hours, min: 0, step: 1, class: "border-gray-300 rounded-lg p-2 w-full", required: true, data: { action: "input->calculator#updateAdditionalCost", calculator_target: "twoOnOneHours" } %>
+    </div>
+
+    <!-- Total Additional Hourly Cost (£) -->
+    <div class="mb-4">
+      <%= f.label :total_additional_cost, "Total Additional Hourly Cost (£)" %>
+      <%= f.number_field :total_additional_cost, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "totalAdditionalCost" } %>
+    </div>
+
+    
+    <!-- Total Service User Cost per Week (£) -->
+    <div class="mb-4">
+      <%= f.label :total_service_user_cost, "Total Service User Cost per Week (£)" %>
+      <%= f.number_field :total_service_user_cost, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "totalServiceUserCost" } %>
+    </div>
+
+
+      <!-- Total Additional 1:1 and 2:1 Hours for Service User -->
+    <div class="mb-4">
+      <%= f.label :total_additional_hours_for_service_user, "Total Additional Hours for Service User" %>
+      <%= f.number_field :total_additional_hours_for_service_user, readonly: true, class: "border-gray-300 rounded-lg p-2 w-full", data: { calculator_target: "totalAdditionalHours" } %>
+    </div>
+
+  
+
+   <!-- Hidden fields for core costs, training, etc. -->
+    <%= f.hidden_field :core_cost_per_user_day, value: session['calculator_data']['core_cost_per_user'], data: { calculator_target: "coreCostPerUserDay" } %>
+    <%= f.hidden_field :core_cost_night, value: session['calculator_data']['core_cost_night'], data: { calculator_target: "coreCostNight" } %>
+    <%= f.hidden_field :weekly_management_cost_per_user, value: session['calculator_data']['weekly_management_cost_per_user'], data: { calculator_target: "weeklyManagementCost" } %>
+    <%= f.hidden_field :weekly_training_cost_per_user, value: session['calculator_data']['weekly_training_cost_per_user'], data: { calculator_target: "weeklyTrainingCost" } %>
+
+    <%= f.button :submit, "Next", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
+  <% end %>
+<% end %>

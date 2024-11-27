@@ -3,3 +3,17 @@
     max-height: 100px;
     object-fit: contain;
 }
+
+.carehome-preview-image {
+    border-radius: 12px;               /* Smooth rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    transition: transform 0.2s ease-in-out;    /* Smooth scale effect */
+    object-fit: cover;               /* Ensures the image covers the container */
+  }
+  
+  .carehome-preview-image:hover {
+    transform: scale(1.05);          /* Slightly enlarges on hover */
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15); /* Deepens shadow on hover */
+    background: rgba(255, 255, 255, 0.2); /* Optional: subtle background glass effect */
+    backdrop-filter: blur(4px); /* Optional: adds a glass-blur effect if supported */
+  }

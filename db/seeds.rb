@@ -5,6 +5,11 @@
 # rails local_authorities:import
 
 # raise StandardError, "DO NOT RUN THIS IN PRODUCTION" if Rails.env.production?
+def destroy_all
+  puts "Destroying all records..."
+  User.destroy_all
+  puts "All records destroyed."
+end
 
 # require 'seed_support/rewardful'
 
@@ -37,272 +42,62 @@ def create_packages
   puts "packages made"
 end
 
-create_packages()
 # Used as reference to delete all seeded things when re-seeding.
-seeded_org_names = ['Care Provider Company London', 'Care Provider Company London North']
-seeded_user_email = ['super@care1.com', 'super@care2.com', 'user@care1.com', 'super@la.com', 'user@la.com', 'super@caretilt.com', 'user@caretilt.com', 'caretilt@gmail.com']
-seeded_care_home_names = [
-  "Oak Lodge Medical Centre",
-  "Ashton Lodge Care Home",
-  "Bridgeside Lodge",
-  "MHA Hampton Lodge",
-  "Brookvale House Care Home",
-  "Mary & Joseph House",
-  "Acacia Lodge Care Home - Avery Healthcare",
-  "Greensleeves Care Home",
-  "Southern Counties Caring Ltd"
-]
+def seed_entities
+  # Creates or finds the main company, Caretilt
+company1 = Company.find_or_create_by!(name: 'Care Tilt', email: 'placement@caretilt.co.uk', address1: "20-22 Wenlock Road", city: "London", website: "http://www.caretilt.co.uk/")
 
-puts "Deleting seeded users and care homes... \n"
-User.where(email: seeded_user_email).destroy_all
-CareHome.where(name: seeded_care_home_names).destroy_all
-Company.where(name: seeded_org_names).destroy_all
-
-# Create or find a company for the care provider user (if needed)
-company1 = Company.find_or_create_by!(name: 'Care Provider Company London')
-company2 = Company.find_or_create_by!(name: 'Care Provider Company North')
-localauthority = LocalAuthority.find_or_create_by!(name: 'Local Authority Organisation')
-# careprovidersuperuser.company = company
-
-# Users
-careprovidersuperuser1 = User.create!(
-  email: 'super@care1.com',
-  password: '123456',
-  password_confirmation: '123456',
-  first_name: 'Care',
-  last_name: 'Provider',
-  role: 'care_provider_super_user',
-  status: 'verified',
-  company: company1,
-  phone_number: ENV['DEV_PHONE_NUMBER'],
-  verified: true
-)
-
-careprovidersuperuser1 = User.create!(
-  email: 'user@care1.com',
-  password: '123456',
-  password_confirmation: '123456',
-  first_name: 'Care',
-  last_name: 'Provider',
-  role: 'care_provider_user',
-  status: 'verified',
-  company: company1,
-  phone_number: ENV['DEV_PHONE_NUMBER'],
-  verified: true
-)
-
-careprovidersuperuser2 = User.create!(
-  email: 'super@care2.com',
-  password: '123456',
-  password_confirmation: '123456',
-  first_name: 'Care',
-  last_name: 'Provider',
-  role: 'care_provider_super_user',
-  status: 'verified',
-  company: company2,
-  phone_number: ENV['LAN_PHONE_NUMBER'],
-  verified: true
-)
-
-lasuperuser = User.create!(
-    email: 'super@la.com',
-    password: '123456',
-    password_confirmation: '123456',
-    first_name: 'Local',
-    last_name: 'Super',
-    role: 'la_super_user',
+  puts "Seeding super users..."
+  irene_la_user = User.create!(
+    email: 'irene@solorr.com',
+    password: '$Caretilt123',
+    first_name: 'Irene',
+    last_name: 'Tilt',
+    role: 'administrator',
     status: 'verified',
-    local_authority: localauthority,
-    phone_number: ENV['DEV_PHONE_NUMBER'],
-    verified: true
-)
-
-lauser = User.create!(
-    email: 'user@la.com',
-    password: '123456',
-    password_confirmation: '123456',
-    first_name: 'Local',
-    last_name: 'User',
-    role: 'la_user',
+    phone_number: ENV['IRENE_NUMBER'],
+    verified: true,
+    company: company1
+  )
+  lan_caretilt_user = User.create!(
+    email: 'caretilt@gmail.com',
+    password: '$Caretilt123',
+    first_name: 'Lan Ahn',
+    last_name: 'Tilt',
+    role: 'super_admin',
     status: 'verified',
-    local_authority: localauthority,
-    phone_number: ENV['DEV_PHONE_NUMBER'],
-    verified: true
-)
+    phone_number: ENV['LAN_PHONE_NUMBER'],
+    verified: true,
+    company: company1,
+    admin: true
+  )
 
-caretilt_superuser = User.create!(
-  email: 'super@caretilt.com',
-  password: '123456',
-  first_name: 'Carey',
-  last_name: 'Tilt',
-  role: 'caretilt_master_user',
-  status: 'verified',
-  phone_number: ENV['DEV_PHONE_NUMBER'],
-  verified: true,
-  admin: true
-)
+  madi_care_user = User.create!(
+    email: 'maditurpin@gmail.com',
+    password: '$Caretilt123',
+    first_name: 'Madi',
+    last_name: 'Turpin',
+    role: 'super_admin',
+    status: 'verified',
+    phone_number: ENV['MADI_NUMBER'],
+    verified: true,
+    company: company1,
+    admin: true
+  )
 
-caretilt_user = User.create!(
-  email: 'user@caretilt.com',
-  password: '123456',
-  first_name: 'Carey',
-  last_name: 'Tilt',
-  role: 'caretilt_user',
-  status: 'verified',
-  phone_number: ENV['DEV_PHONE_NUMBER'],
-  verified: true
-)
+end
 
-lan_la_user = User.create!(
-  email: 'lananhnguyen@live.co.uk',
-  password: '123456',
-  first_name: 'Lan Ahn',
-  last_name: 'Tilt',
-  role: 'la_super_user',
-  status: 'verified',
-  phone_number: ENV['LAN_PHONE_NUMBER'],
-  verified: true,
-  local_authority: localauthority
-)
-
-
-lan_caretilt_user = User.create!(
-  email: 'caretilt@gmail.com',
-  password: '123456',
-  first_name: 'Lan Ahn',
-  last_name: 'Tilt',
-  role: 'caretilt_master_user',
-  status: 'verified',
-  phone_number: ENV['LAN_PHONE_NUMBER'],
-  verified: true,
-  company: company2,
-  admin: true
-)
-
-madi_care_user = User.create!(
-  email: 'maditurpin@gmail.com',
-  password: '123456',
-  first_name: 'Madi',
-  last_name: 'Turpin',
-  role: 'caretilt_master_user',
-  status: 'verified',
-  phone_number: ENV['MADI_NUMBER'],
-  verified: true,
-  company: company1,
-  admin: true
-)
-
-irene_user = User.create!(
-  email: 'solordeveloper@gmail.com',
-  password: '123456',
-  first_name: 'Irene',
-  last_name: 'Solar',
-  role: 'caretilt_master_user',
-  status: 'verified',
-  phone_number: ENV['+639925980374'],
-  verified: true,
-  company: company1,
-  admin: true
-)
-
-irene_la_user = User.create!(
-  email: 'irene@solorr.com',
-  password: '123456',
-  first_name: 'Irene',
-  last_name: 'Tilt',
-  role: 'la_super_user',
-  status: 'verified',
-  phone_number: ENV['IRENE_NUMBER'],
-  verified: true,
-  company: localauthority
-)
-
-Madi_la_user = User.create!(
-  email: 'madi@turpin.com',
-  password: '123456',
-  first_name: 'Madi2',
-  last_name: 'Turpin2',
-  role: 'la_super_user',
-  status: 'verified',
-  phone_number: ENV['MADI_NUMBER'],
-  verified: true,
-  local_authority: localauthority
-)
-
-Madi_care_user = User.create!(
-  email: 'madi@care.com',
-  password: '123456',
-  first_name: 'Madi2',
-  last_name: 'Turpin2',
-  role: 'la_super_user',
-  status: 'verified',
-  phone_number: ENV['MADI_NUMBER'],
-  verified: true,
-  local_authority: localauthority
-)
-
-
-# Attach all homes to the created user (since the user must be associated with a company)
-
-care_homes = [
-  { name: "Oak Lodge Medical Centre", main_contact: "Mr Oak", short_description: "Burnt Oak Care Home", email: "oaklodge@care.com", phone_number:"02084332000",
-    long_description: "Welcome to Oak Lodge Medical Practice With patients' needs at the heart of everything we do, our website has been designed to make it easy for you to gain instant access to the information you need. As well as specific practice details such as opening hours and how to register, you’ll find a wealth of useful pages covering a wide range of health issues along with links to other relevant medical organisations.",
-    type_of_home: "Adult Homes", types_of_client_group: ["Learning Disabilities and/or Autism", "Mental Health and/or Autism"], local_authority_name: "London - City of London", latitude: 51.6043591, longitude: -0.2716591, address1: "234 Burnt Oak Broadway", address2: "Edgware", city: "Greater London", postcode: "HA80AP", website: "http://www.oaklodgemedicalcentre.co.uk/" },
-  { name: "Ashton Lodge Care Home", main_contact: "Mr Ashton", short_description: "Ashton", long_description: "Ashton Lodge is a quality, purpose built care home that offers specialist facilities and care from highly trained staff. The home aims to maintain good links within the community to provide meaningful visits, trips and activities for the residents who can enjoy taking part in regular group events.
-The home has an open door policy, encouraging family and friends to come to the home and spend time with their loved ones. Whether it is spending time in the resident’s private bedroom, in the garden or in communal lounges, residents are helped to see their loved ones regularly.", type_of_home: "Nursing Home", types_of_client_group: ["Older People"], local_authority_name: "London - City of London", latitude: 51.58442179999999, longitude: -0.2486285, address1: "unknown", city: "Greater London", postcode: "NW96LE", address2:"" },
-  { name: "Bridgeside Lodge", main_contact: "Mr Lodge", short_description: "Bridgeside Lodge", long_description: "Welcome to Bridgeside Lodge Care Home in Islington, London. Situated by the beautiful Regent’s Canal, our luxurious modern gated care home offers 24-hour care for those between the ages of 18 to 65 and above. We provide specialist care for younger people with neurological and spinal conditions, and elderly people with or without Dementia. Our purpose-built nursing home comprises 64 single bedrooms, all with en-suite facilities.",
-  type_of_home: "Nursing Home", types_of_client_group: ["Older People"], local_authority_name: "Greater London", latitude: 51.5327147, longitude: -0.09709860000000001, address1: "61 Wharf Road", address2: "London", city: "Greater London", postcode: "N17RY", website: "https://www.foresthc.com/our-care-centres/bridgeside-lodge"},
-  { name: "MHA Hampton Lodge", main_contact: "Mr Hampton", short_description: "MHA Lodge", long_description: "Hampton Lodge in Southampton provides high quality nursing and residential dementia care for up to 44 people. We are passionate about our home and residents. We provide a warm and homely environment and treat all our residents as individuals who have the right to be given choice. Residents enjoy our calm, relaxed atmosphere and benefit from our person-centred care. At Hampton Lodge, we take time to get to know each individual’s history, personality and preferences, and find ways to make every day fulfilling. Our Activity Coordinator ensures residents are kept active and entertained with a variety of optional events and activities",
-  type_of_home: "Nursing Home", types_of_client_group: ["Physical and/or Sensory Disabilities", "Older People"], local_authority_name: "Southampton", latitude: 50.91229709999999, longitude: -1.4148484, address1: "33 Hill Lane", city: "Southampton", postcode: "SO155WF", website: "https://www.mha.org.uk/care-support/care-homes/hampton-lodge/", address2:"" },
-  { name: "Brookvale House Care Home", main_contact: "Mrs Brookvale", short_description: "Brookvale", long_description: "Brookvale House has been the mainstay of the Brookvale Healthcare group, having been the first home that operated under the Brookvale Healthcare banner all the way back in 1986.
-
-Perfectly located in the centre of Portswood, Southampton, residents have access to a large variety of shops and amenities. Brookvale House is a relative oasis of calm. This environment allows us to offer an unrivalled programme of care, companionship and support with living, 24/7. This is aided by our homely, bespoke facilities which span two floors, as well as our recently upgraded sensory garden.", type_of_home: "Adult Homes", types_of_client_group: ["Learning Disabilities and/or Autism", "Physical and/or Sensory Disabilities", "Older People"], local_authority_name: "Southampton", latitude: 50.9251556, longitude: -1.394676, address1: "4 Brookvale Road", city: "Southampton", postcode: "SO171QL", website: "http://www.brookvalehealthcare.co.uk/brookvale-care-home/", address2:"" },
-  { name: "Mary & Joseph House", main_contact: "Mary", short_description: "Our aim is to provide a safe, caring and stable environment to gentlemen looking to get back on their feet after alcohol dependency and mental health difficulties.", long_description: "Mary and Joseph House is proud to announce that it is in the running for a prestigious national award, The homes Activity Team has been shortlisted in the the Caring UK Awards, which recognise excellence and achievement within the care sector across the UK. An awards spokesperson said: “Never has there been a more appropriate time to recognise the amazing and selfless contribution that our carers make and how they have given so much to protect and care for their residents in the face of unprecedented challenges.", type_of_home: "Assisted Living", types_of_client_group: ["Learning Disabilities and/or Autism", "Physical and/or Sensory Disabilities"], local_authority_name: "Manchester", latitude: 53.4812883, longitude: -2.2098852, address1: "217 Palmerston Street", city: "Greater Manchester", postcode: "M126PT", website: "http://maryandjosephhouse.co.uk/", address2:"" },
-  { name: "Acacia Lodge Care Home - Avery Healthcare", main_contact: "Ms Acacia", short_description: "Assisted Living Residence", long_description: "Located in the suburbs of New Moston, we welcome you to meet Acacia Lodge’s friendly Home Manager and team for complimentary refreshments  in one of our  visiting rooms or luscious garden area. Alternatively, call us to learn about the facilities at our care home in Manchester and discuss your care needs. Whether you’re looking for person-centric dementia care in Manchester or short term respite care, we’re happy to discuss our care plans with you today.", type_of_home: "Assisted Living", types_of_client_group: ["Learning Disabilities and/or Autism", "Mental Health and/or Autism", "Older People"], local_authority_name: "Manchester", latitude: 53.517238, longitude: -2.169579300000001, address1: "90A Broadway", city: "Greater Manchester", postcode: "M403WQ", website: "https://www.averyhealthcare.co.uk/care-homes/manchester/acacia-lodge/", address2:"" },
-  { name: "Greensleeves Care Home", main_contact: "Mr Sleeve", short_description: "Greensleeves", long_description: "Welcome to Greensleeves Care
-We have been supporting older people for more than 25 years.
-
-We are a family of 28 not-for-profit care homes across England. We support our residents and their loved ones with award-winning residential, dementia and nursing care.", type_of_home: "Adult Homes", types_of_client_group: ["Older People"], local_authority_name: "Crawley", latitude: 51.11052850000001, longitude: -0.1934223, address1: "19 Perryfield Road", city: "West Sussex", postcode: "RH118AA", website: "http://www.greensleevescarehome.co.uk/", address2:"" },
-  { name: "Southern Counties Caring Ltd", main_contact: "Susan", short_description: "Hospice", long_description: "Southern Counties Caring is a growing care provider offering a full range of specialised home care services designed to meet your unique care requirements. We pride ourselves on our dignified approach, treating every client with compassion and kindness to deliver the best possible care service, all in the comfort of your own home.",
-  type_of_home: "Hospice Homes", types_of_client_group: ["Learning Disabilities and/or Autism", "Children and Young People", "Children with SEN", "Young People / Unaccompanied Minors"], local_authority_name: "Crawley", latitude: 51.1135474, longitude: -0.1786974, address1: "Spindle Way", city: "West Sussex", postcode: "RH101TT", website: "http://www.southerncountiescaring.co.uk/", address2:"" }
-]
-
-
-
-puts "care home length array: #{care_homes.length}"
-
-rooms = [
-  {name: "Yellow", core_fee_level: 10, core_hours_of_care: 20, additional_fees_associated: false, ensuite: true, single_double: "Single Room", vacant: true},
-  {name: "Blue", core_fee_level: 13, core_hours_of_care: 40, additional_fees_associated: true, ensuite: false, single_double: "Double Room", vacant: true},
-  {name: "Pink", core_fee_level: 13, core_hours_of_care: 20, additional_fees_associated: true, ensuite: true, single_double: "Single Room", vacant: false},
-  {name: "Magenta", core_fee_level: 16, core_hours_of_care: 40, additional_fees_associated: false, ensuite: true, single_double: "Double Room", vacant: false},
-  {name: "Turquoise", core_fee_level: 100, core_hours_of_care: 40, additional_fees_associated: false, ensuite: false, single_double: "Single Room", vacant: true},
-]
-
-
-care_homes[0..2].each do |care_home_attrs|
-  care_home = company1.care_homes.create!(care_home_attrs)
-
-  # Randomly choose the number of rooms to create for each care home (between 0 and 5)
-  number_of_rooms = rand(0..5)
-
-  # Randomly select rooms from the rooms array
-  rooms.sample(number_of_rooms).each do |room_attrs|
-    care_home.rooms.create!(room_attrs)
+def change_password
+  puts "Changing passwords..."
+  users = User.all
+  users.each do |user|
+    user.password = '$Caretilt123'
+    user.save
   end
 end
 
-care_homes[3..8].each do |care_home_attrs|
-  care_home = company2.care_homes.create!(care_home_attrs)
 
-  # Randomly choose the number of rooms to create for each care home (between 0 and 5)
-  number_of_rooms = rand(0..5)
-
-  # Randomly select rooms from the rooms array
-  rooms.sample(number_of_rooms).each do |room_attrs|
-    care_home.rooms.create!(room_attrs)
-  end
+def run_all
+  change_password
 end
-
-puts 'Seeded care homes and associated them with the care provider super user.'
-puts 'Randomly assigned rooms to each care home.'
+run_all

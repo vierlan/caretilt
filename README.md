@@ -17,7 +17,6 @@ a Rails 7 template.
 * debugging with [Better Errors](https://github.com/charliesome/better_errors)
 * production-ready DB with Postgres
 * easy API requests with [HTTParty](https://github.com/jnunemaker/httparty)
-* Postmark for transactional emails, [letter_opener](https://github.com/ryanb/letter_opener) for local preview
 * script tag GUI (for Google Analytics, etc)
 * testing suite via [RSpec](https://github.com/rspec/rspec-rails/)
 * cron job task scheduler (`lib/tasks/scheduler.rake`)
@@ -55,4 +54,3 @@ rubocop -a # automatically fixes "safe" issues, less aggressive than -A (upperca
 ```
 
 **Rubocop is an optional feature**, however it runs automatically during GitHub CI checks. if you don't want to enforce the Rubocop style guide, simply disable the `Rubocop Check` step inside `ci.yml`.
-

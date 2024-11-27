@@ -14,10 +14,6 @@ class ApplicationController < ActionController::Base
     Rails.logger.info "User has passed 2FA. #{session["warden.user.user.key"]}"
   end
 
-
-
-
-
   def skip_pundit?
     Rails.logger.info "Checking if Devise Controller: #{devise_controller?}"
     devise_controller? || params[:controller] =~ /(^(rails_)?admin)|(^pages$)|(^users\/two_factor_authentication$)/ || params[:controller] =~ /(^contact_mailer$)/
@@ -40,22 +36,22 @@ class ApplicationController < ActionController::Base
 
 
   def after_sign_in_path_for(resource)
+    # Finish resgistration if user hasn't completed it
     if !session[:two_factor_authenticated]
       # If user hasn't passed 2FA, redirect to OTP verification page
       return two_factor_authentication_path
     else
-      Rails.logger.info "User has passed 2FA. #{session["warden.user.user.key"]}"
-    end
-
+      Rails.logger.info "User has passed 2FA. #{session['warden.user.user.key']}"
     # Proceed with Devise's default behavior once 2FA is verified
+    end
     super
+
   end
 
   # New method to check 2FA verification
   def check_two_factor_authentication
     # Skip if user is already on the 2FA page to avoid infinite loop
     return if request.path == two_factor_authentication_path
-    Rails.logger.info "Running 2FA check: #{current_user&.verified?}, session[:two_factor_authenticated]: #{session[:two_factor_authenticated]}"
 
     # Skip if the user has passed 2FA or is not logged in
     return unless current_user && !session[:two_factor_authenticated]
@@ -75,29 +71,8 @@ class ApplicationController < ActionController::Base
 
   # whitelist extra User model params by uncommenting below and adding User attrs as keys
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:terms_of_service, :role, :phone_number])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:phone_number])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:terms_of_service, :role, :phone_number, :privacy_policy])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:phone_number, :first_name, :last_name, :cancel_confirmation, :delete_password])
   end
-
-  def verify_user
-    @user = current_user
-    @company = @user.company
-
-    # Check if the user has entered a valid registration pin and if password is being changed
-    if validate_registration_pin && password_change_requested?
-      if request.patch? && @user.update(user_params.except(:registration_pin))
-        @user.update(status: 'password_changed') # Update status after successful update
-        redirect_to root_path, notice: "Password successfully updated."
-      else
-        flash.now[:alert] = "Error updating password: " + @user.errors.full_messages.to_sentence
-        render :edit # or another view to show the form again
-      end
-    else
-      @user.errors.add(:registration_pin, "is invalid") unless validate_registration_pin
-      flash.now[:alert] = @user.errors.full_messages.to_sentence
-      render :edit
-    end
-  end
-
 
 end

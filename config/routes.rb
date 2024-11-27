@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   root 'pages#home'
 
+  devise_for :users, path: '', path_names: { sign_in: 'login', sign_up: 'signup', sign_out: 'logout'  }, controllers: { registrations: 'registrations' }
+  # get 'logout', to: 'pages#logout', as: 'logout'
+  resources :after_signup, only: %i[show update]
+
   #debug session route
   #get '/session', to: 'activity_feeds#index'
   get 'verify/:id', to: 'users#verify', as: 'verify'
@@ -12,6 +16,7 @@ Rails.application.routes.draw do
   #post '/checkout', to: 'stripe/checkout#checkout'
   get '/checkout/add_credits', to: 'stripe/checkout#add_credits'
   get '/checkout/pricing', to: 'stripe/checkout#pricing'
+
   get '/checkout/success', to: 'stripe/checkout#success'
   get '/checkout/cancel', to: 'stripe/checkout#cancel'
   get 'activity_feeds', to: 'activity_feeds#index'
@@ -29,6 +34,7 @@ Rails.application.routes.draw do
       post 'add_team_member', to: 'team_members#create'
       get 'account', to: 'dashboard#account'
       get 'activity_feeds', to: 'activity_feeds#index'
+      get 'package/:id', to: 'packages#show'
     end
     resources :care_homes, only: %i[new create] do
       collection do
@@ -41,7 +47,7 @@ Rails.application.routes.draw do
     member do
       get 'add_team_member', to: 'team_members#new', as: 'la_member'
       get 'team', to: 'team_members#index'
-
+      get 'package/:id', to: 'packages#show'
       post 'add_team_member', to: 'team_members#create'
       get 'account', to: 'dashboard#account'
     end
@@ -56,6 +62,7 @@ Rails.application.routes.draw do
     member do
       patch :move_media
       delete :remove_media
+      delete :remove_thumbnail
     end
 
     resources :rooms, only: %i[index new create]
@@ -75,16 +82,16 @@ Rails.application.routes.draw do
   post 'two_factor_authentication/send_verification', to: 'users/two_factor_authentication#send_verification', as: :send_otp
   post 'two_factor_authentication/verify_otp', to: 'users/two_factor_authentication#verify_otp', as: :verify_otp
 
-
-  devise_for :users, path: '', path_names: { sign_in: 'login', sign_up: 'signup' }, controllers: { registrations: 'registrations' }
-  get 'logout', to: 'pages#logout', as: 'logout'
-  resources :after_signup, only: %i[show update]
-
   resources :subscribe, only: [:index]
   resources :dashboard, only: %i[index team new_team_member]
-  resources :account, only: %i[index] 
+  resources :account, only: %i[index]
   resources :billing_portal_sessions, only: [:new, :create]
-  resources :blog_posts, controller: :blog_posts, path: "blog", param: :slug
+  resources :blog_posts, controller: :blog_posts, path: "blog", param: :slug do
+    member do
+      get :remove_blog_image
+      get :remove_video
+    end
+  end
 
  resources :packages do
     resources :subscriptions, only: %i[new create]
@@ -96,9 +103,12 @@ Rails.application.routes.draw do
   get "contact_mailer/contact_email"
   get "contact", to: "contact_mailer#new", as: :contact
   post "contact", to: "contact_mailer#create", as: :contact_email
+  get "show/:id", to: "pages#show", as: :show
+  resources :pricing_calculator, only: [:show, :update]
+
 
   pages = %w[
-    privacy terms about home home2 home3 home4 guides calculator faq pricing search quiz test test2
+    privacy about home guides faq pricing search pricing2 error error2 terms_and_cons refund error_not_verified error_team_member
   ]
   pages.each do |page|
     get "/#{page}", to: "pages##{page}", as: page.gsub('-', '_').to_s

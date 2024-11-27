@@ -36,6 +36,8 @@ dump.rdb
 .ENV/*
 .env
 .ENV
+/config/credentials/development.yml.enc
+/config/credentials/*.key
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
@@ -52,3 +54,7 @@ coverage
 
 #ignore my seed file changes
 /db/seeds.rb
+
+/config/credentials/production.key
+
+/config/credentials/development.key

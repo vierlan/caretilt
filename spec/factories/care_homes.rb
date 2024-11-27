@@ -6,7 +6,7 @@ FactoryBot.define do
     main_contact { "MyString" }
     short_description { "MyText" }
     long_description { "MyText" }
-    type_of_home { "MyString" }
+    type_of_service { "MyString" }
     types_of_client_group { "MyString" }
     company { nil }
     latitude { 1.5 }

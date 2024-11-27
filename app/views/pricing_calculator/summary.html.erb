@@ -1,0 +1,16 @@
+<!-- app/views/pricing_calculator/summary.html.erb -->
+<%= render layout: 'pricing_calculator/calculator_layout' do %>
+  <h2 class="text-xl font-bold mb-4">Summary</h2>
+
+  <h3 class="text-lg font-semibold mt-6 mb-2">Additional Calculated Totals</h3>
+  <p>Total Overheads: £<%= session['calculator_data']['total_overheads'] %></p>
+  <p>Total Package Cost: £<%= session['calculator_data']['total_package_cost'] %></p>
+  <p>Total Hourly Rate: £<%= session['calculator_data']['total_hourly_rate'] %></p>
+
+  <%= simple_form_for :calculator, url: wizard_path, method: :patch do |f| %>
+    <div class="mb-4">
+      <%= f.input :email, label: "Enter your email to receive this calculation", input_html: { class: 'border-gray-300 rounded-lg p-2 w-full' } %>
+    </div>
+    <%= f.button :submit, "Send Results", class: "bg-blue-500 text-white px-4 py-2 rounded" %>
+  <% end %>
+<% end %>

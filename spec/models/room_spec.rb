@@ -11,7 +11,7 @@ RSpec.describe Room, type: :model do
       main_contact: "John Doe",
       short_description: "A short description",
       long_description: "A longer description",
-      type_of_home: "Adult Homes",
+      type_of_service: "Adult Homes",
       types_of_client_group: "Older People",
       address1: "Test",
       address2: "Test",
