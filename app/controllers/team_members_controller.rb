@@ -32,11 +32,32 @@ class TeamMembersController < ApplicationController
     end
   end
 
+  def new
+    @member = User.new
+    @user = current_user
+    case current_user.role
+    when 'care_provider_super_user'
+      @company = current_user.company
+      @member.role = 'care_provider_user'
+      @member.company = @company
+    when 'la_super_user'
+      @local_authority = current_user.local_authority
+      @member.role = 'la_user'
+      @member.local_authority = @local_authority
+    when 'super_admin', 'administrator'
+      @company = current_user.company || Company.first
+      @member.role = 'administrator'
+      @member.company = @company
+    end
+  end
+
   def create
     email = params[:email]
     password = Devise.friendly_token.first(8) + "&6tS" # "123123"
     phone_number = clean_phone_number(params[:phone_number])
     @member = User.new(email: email, password: password, phone_number: phone_number, status: "inactive")
+    @company = current_user.company if current_user.company
+    @local_authority = current_user.local_authority if current_user.local_authority
 
     case current_user.role
     when 'care_provider_super_user'
@@ -47,12 +68,11 @@ class TeamMembersController < ApplicationController
       @local_authority = current_user.local_authority
       @member.role = 'la_user'
       @member.local_authority = @local_authority
-    when 'super_admin' || 'administrator'
-      @company = current_user.company || Company.find(1)
+    when 'super_admin', 'administrator'
+      @company = current_user.company || Company.first
       @member.role = 'administrator'
       @member.company = @company
-    else
-      render status: :forbidden
+      @member.admin = true
     end
 
     if @member.save
@@ -62,12 +82,20 @@ class TeamMembersController < ApplicationController
           render turbo_stream: [
             turbo_stream.replace("new_member", partial: "form"),
             turbo_stream.append("member-list", partial: "member", locals: { user: @member }),
-            turbo_stream.replace("flash-notice", partial: "add_success", locals: { message: "Team member added successfully. An email has been sent to the new user." })
+            turbo_stream.append("flash-notice", partial: "add_success")
           ]
         end
       end
     else
-      render partial: "form", data: { turbo_frame: "main-content" }, status: :unprocessable_entity
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace("new_member", partial: "form", locals: { member: @member }),
+            turbo_stream.remove("flash-notice"),
+            turbo_stream.replace("flash-notice", partial: "error")
+          ]
+        end
+      end
     end
   end
 

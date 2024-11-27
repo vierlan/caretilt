@@ -11,7 +11,7 @@ class PackagesController < ApplicationController
     @subscription_packages = Package.where.not(validity: 0)
     @credit_packages = Package.where(validity: 0)
     case current_user.role
-    when 'caretilt_staff', 'caretilt_master_user'
+    when 'administrator', 'super_admin'
       @company = current_user.company
     when 'care_provider_super_user'
       @company = current_user.company
