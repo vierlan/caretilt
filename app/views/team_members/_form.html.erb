@@ -1,5 +1,5 @@
 <turbo-frame id="new_member">
-  <% url = current_user&.company.present? ? add_team_member_company_path(@company) : add_team_member_local_authority_path(@local_authority) %>
+  <% url = current_user&.company.present? ? add_team_member_company_path(current_user.company) : add_team_member_local_authority_path(@local_authority) %>
   <%= form_with url: url, method: :post, local: true do |form| %>
     <% if @member.errors.any? %>
       <div id="error_explanation" class="text-red-400 fond-bold">

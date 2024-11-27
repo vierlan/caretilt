@@ -16,7 +16,6 @@ Rails.application.routes.draw do
   #post '/checkout', to: 'stripe/checkout#checkout'
   get '/checkout/add_credits', to: 'stripe/checkout#add_credits'
   get '/checkout/pricing', to: 'stripe/checkout#pricing'
-
   get '/checkout/success', to: 'stripe/checkout#success'
   get '/checkout/cancel', to: 'stripe/checkout#cancel'
   get 'activity_feeds', to: 'activity_feeds#index'
@@ -76,7 +75,6 @@ Rails.application.routes.draw do
 
   get '/dashboard/:id/team', to: 'dashboard#team', as: 'dashboard_team'
   get '/dashboard/:id/new_team_member', to: 'dashboard#new_team_member', as: 'dashboard_new_team_member'
-  post 'add_team_member', to: 'team_members#create'
 
   get  'two_factor_authentication', to: 'users/two_factor_authentication#show', as: :two_factor_authentication
   post 'two_factor_authentication/send_verification', to: 'users/two_factor_authentication#send_verification', as: :send_otp

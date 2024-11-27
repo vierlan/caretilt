@@ -67,7 +67,7 @@
             </tr>
             <tbody id="member-list">
               <!-- chatgpt check code between here -->
-              <% @unverified_users.each do |user| %>
+              <% @unverified_users&.each do |user| %>
                 <%= render partial: "member", locals: { user: user } %>
               <% end %>
             </tbody>
@@ -76,11 +76,11 @@
               <th colspan="5" class="bg-gray-100 py-2 pl-4 pr-3 text-left text-base 2xl:text-lg font-bold text-black sm:pl-3"><%= @name %></th>
             </tr>
             <!-- Existing members -->
-            <% @unassigned_users.each do |user| %>
+            <% @unassigned_users&.each do |user| %>
               <%= render partial: "member", locals: { user: user } %>
             <% end %>
             <% if current_user&.company&.care_homes %>
-              <% @care_homes.each do |care_home| %>
+              <% @care_homes&.each do |care_home| %>
                 <tr class="border-t border-gray-200">
                   <th colspan="5" class="bg-gray-100 py-2 pl-4 pr-3 text-left text-base 2xl:text-lg font-bold text-black sm:pl-3"><%= care_home.name %></th>
                 </tr>

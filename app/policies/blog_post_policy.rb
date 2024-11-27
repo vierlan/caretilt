@@ -8,7 +8,7 @@ class BlogPostPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve
-      if user.admin?
+      if user.super_admin? || user.administrator?
         scope.all
       else
         scope.where(published: true)

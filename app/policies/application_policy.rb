@@ -81,19 +81,19 @@ class ApplicationPolicy
   # Careprovider admin permission
 
   def is_company_admin?
-    user.care_provider_super_user? || user.care_provider_super_user? || user.super_admin?
+    user.care_provider_super_user? || user.super_admin? || user.administrator?
   end
 
   def is_company_basic?
-    user.care_provider_user? || user.care_provider_super_user? || user.care_provider_super_user? || user.super_admin?
+    user.care_provider_user? || user.care_provider_super_user? || user.administrator? || user.super_admin?
   end
 
   def is_local_authority_basic?
-    user.la_user? || user.la_super_user? || user.care_provider_super_user? || user.super_admin? || user.isadmin?
+    user.la_user? || user.la_super_user? || user.super_admin? || user.administrator?
   end
 
   def is_local_authority_admin?
-    user.la_super_user? || user.care_provider_super_user? || user.super_admin?
+    user.la_super_user? || user.administrator? || user.super_admin?
   end
 
 end

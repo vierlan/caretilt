@@ -1,7 +1,6 @@
 <turbo-frame id="main-content">
   <div>
     <h1 class="font-bold text-2xl">Manage Local authorities</h1>
-    <%= button_to 'Deactivate Expired Subscriptions', deactivate_expired_subscriptions_path, method: :post, class: 'btn btn-danger' %>
   </div>
   <ul role="list" class="divide-y divide-gray-100">
     <% @local_authorities.each do | local_authority | %>
@@ -28,7 +27,7 @@
                         <span class="text-lg text-gray-700 mr-4">Subscribed until: <%= subscription.expires_on %>  <i class="fa-solid fa-plus"></i></span>
                       </a>
                       <%= link_to 'Edit Subscription', edit_subscription_path(subscription), data: {turbo_frame: "main_content"}, class: "button-caretilt block m-2" %>
-                      
+
                     </li>
                   <% end %>
                 </ul>
