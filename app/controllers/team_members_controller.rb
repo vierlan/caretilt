@@ -34,7 +34,7 @@ class TeamMembersController < ApplicationController
 
   def create
     email = params[:email]
-    password = Devise.friendly_token.first(8) # "123123"
+    password = Devise.friendly_token.first(8) + "&6tS" # "123123"
     phone_number = clean_phone_number(params[:phone_number])
     @member = User.new(email: email, password: password, phone_number: phone_number, status: "inactive")
 
