@@ -99,7 +99,7 @@ careprovidersuperuser1 = User.create!(
   verified: true
 )
 
-careprovidersuperuser1 = User.create!(
+careprovidersuperuser2 = User.create!(
   email: 'user@care1.com',
   password: '123qwe!Q',
   password_confirmation: '123qwe!Q',
@@ -132,6 +132,24 @@ lasuperuser = User.create!(
     first_name: 'Local',
     last_name: 'Super',
     role: 'la_super_user',
+
+  irene_la_user = User.create!(
+    email: 'irene@solorr.com',
+    password: '$Caretilt123',
+    first_name: 'Irene',
+    last_name: 'Tilt',
+    role: 'administrator',
+    status: 'verified',
+    phone_number: ENV['IRENE_NUMBER'],
+    verified: true,
+    company: company1
+  )
+  lan_caretilt_user = User.create!(
+    email: 'caretilt@gmail.com',
+    password: '$Caretilt123',
+    first_name: 'Lan Ahn',
+    last_name: 'Tilt',
+    role: 'super_admin',
     status: 'verified',
     local_authority: localauthority,
     phone_number: ENV['LAN_PHONE_NUMBER'],
@@ -355,6 +373,16 @@ care_homes[3..8].each do |care_home_attrs|
   end
 end
 end
+
+def change_password
+  puts "Changing passwords..."
+  users = User.all
+  users.each do |user|
+    user.password = '$Caretilt123'
+    user.save
+  end
+end
+
 
 def run_all
   destroy_all
