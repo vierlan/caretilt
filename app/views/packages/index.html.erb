@@ -12,9 +12,16 @@
   <% end %>
   <% if current_user&.care_provider_super_user? && current_user.company&.subscriptions.present? %>
     <%= render 'current_package', locals: { subscription: @active_subscription, package: @active_package} %>
+     <div class="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 md:max-w-2xl md:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-3">
+    <% @packages.each do |package| %>
+      <% if package.present? %>
+        <%= render partial: 'template', locals: { package: package } %>
+      <% end %>
+    <% end %>
+  </div>
   <% elsif current_user&.local_authority&.subscriptions.present? %>
     <%= render 'current_package', locals: { subscription: @active_subscription, package: @active_package} %>
-  <% end %>
+  <% else %>
   <div class="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 md:max-w-2xl md:grid-cols-2 lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-3">
     <% @packages.each do |package| %>
       <% if package.present? %>
@@ -22,4 +29,5 @@
       <% end %>
     <% end %>
   </div>
+  <% end %>
 </turbo-frame>

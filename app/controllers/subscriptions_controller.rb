@@ -18,7 +18,7 @@ class SubscriptionsController < ApplicationController
     # Find the stripe customer on payment processor
 
     @customer = @local_authority.stripe_customer_id || Stripe::Customer.create(name: @local_authority.name, email: @local_authority.email)
-    #
+
     @subscription = Subscription.new(
       subscribable: @local_authority,
       subscribable_id: @local_authority.id,
@@ -60,7 +60,10 @@ class SubscriptionsController < ApplicationController
     @package = @subscription.package || ''# Find the package, or nil if not selected
     @credits_added = params[:subscription][:credits_added].to_i || 0
     @time = Time.now
-    @credits_left = @subscription.credits_left += @credits_added if @credits_added
+    if @subscription.subscribable_type == 'Company'
+    @credits_left = @subscription.credits_left + @credits_added
+    @subscription.credits_left = @credits_left
+    end
     # @subscription.package_id = params[:subscription][:package_id]
     # Check if the "Do not add this change to credit log" option was selected
 
@@ -154,8 +157,8 @@ class SubscriptionsController < ApplicationController
       }
     })
     invoice = stripe_subscription.latest_invoice
-    url = invoice.hosted_invoice_url
-    pdf = invoice.invoice_pdf
+    # url = invoice.hosted_invoice_url
+    # pdf = invoice.invoice_pdf
     invoice_data = invoice
     Rails.logger.info "Created Stripe subscription with ID: #{stripe_subscription}"
 

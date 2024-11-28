@@ -29,7 +29,6 @@ class User < ApplicationRecord
     inactive: 3
   }
 
-
   # User needs to enter personal mobile on registration (different from company purpose - used for 2FA, has to be model)
 
   PASSWORD_REQUIREMENTS = /\A
@@ -45,17 +44,6 @@ class User < ApplicationRecord
   validates :privacy_policy, acceptance: { accept: 'on', message: 'must be accepted' }
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
   validate :password_complexity
-  # validates :phone_number,  format: { with: /^\+?(\d{1,3})?[-.\s]?(\(?\d{3}\)?[-.\s]?)?(\d[-.\s]?){6,9}\d$/, on: :create }
-
-  # validates :email,
-  #          format: { with: Devise.email_regexp },
-  #          presence: true,
-  #          uniqueness: { case_insensitive: true }
-
-  # validates :verified, inclusion: { in: [true, false] }
-  # validates :first_name, presence: true
-  # validates :last_name, presence: true
-
   before_create :set_verified_default
 
   def set_verified_default

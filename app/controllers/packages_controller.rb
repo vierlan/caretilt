@@ -41,8 +41,8 @@ class PackagesController < ApplicationController
   end
 
   def show
-    @company = Company.find(params[:id])
-    @active_subscription = @company.get_active_subscription
+    @subscribable = Subscription.find(params[:id]).subscribable
+    @active_subscription = @subscribable.get_active_subscription
     @active_package = Package.find(@active_subscription.package_id)
   end
 
@@ -57,7 +57,7 @@ class PackagesController < ApplicationController
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     if @package.save
       service = StripePackage.new(@package)
-      if @package.validity == 0
+      if @package.validity.zero?
         service.create_add_credits_package
       else
         service.create_package

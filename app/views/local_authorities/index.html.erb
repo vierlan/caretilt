@@ -21,7 +21,7 @@
               <!--local_authority subscriptions start-->
               <div class="flex flex-cols" data-controller="open">
                 <ul>
-                  <% local_authority.subscriptions.each do |subscription| %>
+                  <% subscription = local_authority.get_active_subscription  %>
                     <li>
                       <a href='#' data-action="open#toggleHiddenField">
                         <span class="text-lg text-gray-700 mr-4">Subscribed until: <%= subscription.expires_on %>  <i class="fa-solid fa-plus"></i></span>
@@ -29,7 +29,7 @@
                       <%= link_to 'Edit Subscription', edit_subscription_path(subscription), data: {turbo_frame: "main_content"}, class: "button-caretilt block m-2" %>
 
                     </li>
-                  <% end %>
+                 
                 </ul>
               </div>
               <!--local_authority users start -->
