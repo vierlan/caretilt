@@ -14,7 +14,6 @@ class StripePackage
 
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     lookup_key = @package.name + "_" + @package.id.to_s + " " + Time.now.strftime('%Y-%m-%d')
-    rails_logger.info("lookup_key: #{lookup_key}")
     stripe_product = Stripe::Product.create(
       name: @package.name,
       description: @package.description,
