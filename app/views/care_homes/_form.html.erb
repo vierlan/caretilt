@@ -67,7 +67,7 @@
         <!-- Local Authority -->
         <div class="col-span-6"> <span class="font-semibold mr-2">Local Authority</span>
           <%= f.input :local_authority_name, label: "",
-            collection: CareHome.cached_local_authority_names,
+            collection: LocalAuthorityData.order(:nice_name).pluck(:nice_name), # CareHome.cached_local_authority_names,
             prompt: 'Select a local authority',
             input_html: { class: 'custom-class' } %>
         </div>
