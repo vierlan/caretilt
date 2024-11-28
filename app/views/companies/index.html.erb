@@ -1,7 +1,7 @@
 <turbo-frame id="main-content">
   <div>
     <h1 class="font-bold text-2xl">Manage Companies</h1>
-    <%= button_to 'Deactivate Expired Subscriptions', deactivate_expired_subscriptions_path, method: :post, class: 'btn btn-danger' %>
+    <%#= button_to 'Deactivate Expired Subscriptions', deactivate_expired_subscriptions_path, method: :post, class: 'btn btn-danger' %>
   </div>
   <ul role="list" class="divide-y divide-gray-100">
     <% @companies.each do | company | %>
