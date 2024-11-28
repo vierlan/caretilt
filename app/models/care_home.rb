@@ -10,7 +10,7 @@ class CareHome < ApplicationRecord
   has_one_attached :thumbnail_image
 
   before_save :set_formatted_address
-  
+
   TYPESERVICE = [
     "Assisted Living / Sheltered",
     "Extra Care",
@@ -35,8 +35,6 @@ class CareHome < ApplicationRecord
     "Children with SEN",
     "Young People / Unaccompanied Minors"
   ].sort_by { |item| item}
-
- 
 
   include SharedValidAttributes
 
@@ -68,10 +66,10 @@ class CareHome < ApplicationRecord
       'logo_symbol.png'
     end
   end
-                                        
+
   private
 
-  # Performance could be an issue plucking the value time, so we're 
+  # Performance could be an issue plucking the value time, so we're
   def self.cached_local_authority_names
     @cached_local_authority_names ||= LocalAuthorityData.order(:nice_name).pluck(:nice_name)
   end
@@ -80,7 +78,7 @@ class CareHome < ApplicationRecord
   def self.types_in_use
     where.not(type_of_service: nil).distinct.pluck(:type_of_service).sort
   end
-  
+
   def validate_client_groups
     if types_of_client_group.blank?
       errors.add(:types_of_client_group, "cannot be blank")
@@ -91,7 +89,7 @@ class CareHome < ApplicationRecord
       end
     end
   end
-  
+
   def set_formatted_address
     self.formatted_address = [name, address1, address2, city, postcode, country].reject(&:blank?).join(', ')
   end
