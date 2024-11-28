@@ -19,7 +19,7 @@ def destroy_all
   Room.destroy_all
   # CareHome.destroy_all
   # Company.destroy_all
-  # Package.destroy_all
+  Package.destroy_all
   # LocalAuthority.destroy_all
   puts "All records destroyed."
 end
@@ -123,37 +123,6 @@ careprovidersuperuser2 = User.create!(
   company: company2,
   phone_number: ENV['LAN_PHONE_NUMBER'],
   verified: true
-)
-
-lasuperuser = User.create!(
-    email: 'super@la.com',
-    password: '123qwe!Q',
-    password_confirmation: '123qwe!Q',
-    first_name: 'Local',
-    last_name: 'Super',
-    role: 'la_super_user',
-
-  irene_la_user = User.create!(
-    email: 'irene@solorr.com',
-    password: '$Caretilt123',
-    first_name: 'Irene',
-    last_name: 'Tilt',
-    role: 'administrator',
-    status: 'verified',
-    phone_number: ENV['IRENE_NUMBER'],
-    verified: true,
-    company: company1
-  )
-  lan_caretilt_user = User.create!(
-    email: 'caretilt@gmail.com',
-    password: '$Caretilt123',
-    first_name: 'Lan Ahn',
-    last_name: 'Tilt',
-    role: 'super_admin',
-    status: 'verified',
-    local_authority: localauthority,
-    phone_number: ENV['LAN_PHONE_NUMBER'],
-    verified: true
 )
 
 lauser = User.create!(
