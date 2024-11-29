@@ -83,7 +83,7 @@ class SubscriptionsController < ApplicationController
         @subscription.credit_log << @log_entry
         @subscription.save!
       end
-      redirect_to package_path(@subscription.subscribable), notice: 'Subscription was successfully updated.'
+      redirect_to package_path(@subscription), notice: 'Subscription was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
