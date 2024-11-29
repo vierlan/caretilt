@@ -44,12 +44,12 @@
 
           <!-- Vacant (Checkbox) -->
           <div class="sm:col-span-6 mb-4">
-            <% @credits = @care_home.company.get_active_subscription.credits_left %>
+            <% @credits = @care_home&.company&.get_active_subscription&.credits_left || 0 %>
             <%= @credits %> <span>credits</span>
             <span class="text-red-400 font-bol text-lg"><%= 'No credits left.  Please purchase credits' if @credits < 1  %></span>
           </div>
             <div class="flex items-center mb-4 space-x-2">
-            <%= f.check_box :vacant, class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500", id: "vacant", disabled: @credits < 1 %>
+            <%= f.check_box :vacant, class: "h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500", id: "vacant", disabled: @credits < 1 && @room.vacant == false %>
             <%= f.label :vacant, "List this room as Vacant", class: "text-gray-700 font-medium whitespace-nowrap" %>
             </div>
           <!-- Submit Button -->
