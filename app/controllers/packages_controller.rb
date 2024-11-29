@@ -41,8 +41,9 @@ class PackagesController < ApplicationController
   end
 
   def show
-    @subscribable = Subscription.find(params[:id]).subscribable
-    @active_subscription = @subscribable.get_active_subscription
+    # find the subscribable by subscribable_id and subscribable_type
+    @active_subscription = Subscription.find_by(subscribable_id: params[:subscribable_id], subscribable_type: params[:subscribable_type])
+    @subscribable = @active_subscription.subscribable
     @active_package = Package.find(@active_subscription.package_id)
   end
 
