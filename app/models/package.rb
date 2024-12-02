@@ -2,6 +2,7 @@ class Package < ApplicationRecord
   has_many :subscriptions
   has_many :companies, through: :subscriptions, source: :subscribable, source_type: 'Company'
   has_many :local_authorities, through: :subscriptions, source: :subscribable, source_type: 'LocalAuthority'
+  before_save :normalize_data
 
   enum :subscription_type, {:company_subscription=>0, :local_authority_subscription=>1}
 
@@ -20,5 +21,11 @@ class Package < ApplicationRecord
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     # archive the product in stripe
     Stripe::Product.update(package.stripe_id, {active: false})
+  end
+
+  private
+
+  def normalize_data
+    self.data = data.is_a?(String) ? data : data.to_json
   end
 end

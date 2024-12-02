@@ -13,12 +13,13 @@
               <div class="hidden" data-open-target="info">
                 <%= link_to 'Edit Company', edit_local_authority_path(local_authority), class: "button-caretilt block m-2" %>
                 <ul>
-                  <li class="text-base leading-5 text-gray-700"><b>Name</b>: <%= local_authority.name %></li>
-                  <li class="text-base leading-5 text-gray-700"><b>Id</b>: <%= local_authority.id %></li>
-                  <li class="text-base leading-5 text-gray-700"><b>Email</b>: <%= local_authority.email %></li>
+                  <li class="text-base leading-5 text-gray-700"><b>Name</b>: <%= local_authority.name || "" %></li>
+                  <li class="text-base leading-5 text-gray-700"><b>Id</b>: <%= local_authority.id || "no id error" %></li>
+                  <li class="text-base leading-5 text-gray-700"><b>Email</b>: <%= local_authority.email || "no company email"%></li>
                 </ul>
               </div>
               <!--local_authority subscriptions start-->
+              <% if local_authority.has_active_subscription? %>
               <div class="flex flex-cols" data-controller="open">
                 <ul>
                   <% subscription = local_authority.get_active_subscription  %>
@@ -29,9 +30,10 @@
                       <%= link_to 'Edit Subscription', edit_subscription_path(subscription), data: {turbo_frame: "main_content"}, class: "button-caretilt block m-2" %>
 
                     </li>
-                 
+
                 </ul>
               </div>
+              <% end %>
               <!--local_authority users start -->
               <div class=" flex flex-col" data-controller="open">
                 <p class="text-xl font-semibold text-gray-900">Users</p>
