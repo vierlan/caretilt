@@ -17,7 +17,7 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def edit?
-    record.users.include?(user) && user.care_provider_super_user? || user.super_admin? || user.administrator?
+    is_company_admin?
   end
 
   def update?
