@@ -7,9 +7,18 @@ class PackagesController < ApplicationController
   before_action :set_package, only: %i[edit update destroy]
 
   def index
-    @packages = policy_scope(Package).all
-    @subscription_packages = Package.where.not(validity: 0)
-    @credit_packages = Package.where(validity: 0)
+    @packages_scope = policy_scope(Package).all
+    @packages = []
+
+    @packages_scope.each do |package|
+      # Handle `data` as either a JSON string or a Ruby Hash
+      data = package.data.is_a?(String) ? JSON.parse(package.data) : package.data
+
+      # Ensure `data` is not nil and add the package if `active` is not false
+      @packages << package if data.present? && data['active'] != false
+    end
+    @subscription_packages = @packages.select { |package| package.validity != 0 }
+    @credit_packages = @packages.select { |package| package.validity == 0 }
     case current_user.role
     when 'administrator', 'super_admin'
       @company = current_user.company
@@ -113,6 +122,16 @@ class PackagesController < ApplicationController
   end
 
   def destroy
+    @package = Package.find(params[:id])
+    # data to coverted to json on stripe product create to allow for interaction with Stripe APIO
+    data = @package.data.is_a?(String) ? JSON.parse(@package.data) : (@package.data || {})
+
+  # Update the 'active' key
+    data['active'] = false
+
+    # Save the updated hash back as a JSON string
+    @package.update(data: data.to_json)
+    redirect_to packages_path, data: { turbo_frame: 'main-content' }
   end
 
   private
