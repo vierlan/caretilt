@@ -14,4 +14,11 @@ class Package < ApplicationRecord
     "Full onboarding service",
     "Receive and respond to Local Authority placement bids"
   ]
+
+  def delete_stripe_package(package)
+    return if package.stripe_id.blank?
+    Stripe.api_key = Rails.application.credentials&.stripe&.api_key
+    # archive the product in stripe
+    Stripe::Product.update(package.stripe_id, {active: false})
+  end
 end
