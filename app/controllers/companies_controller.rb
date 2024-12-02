@@ -33,7 +33,7 @@ class CompaniesController < ApplicationController
   def edit
     # @company = current_user.company
     # authorize @company
-    authorize :local_authority, :edit?
+    authorize :company, :edit?
     @company = case current_user.role
                when 'super_admin', 'administrator'
                  Company.find(params[:id])

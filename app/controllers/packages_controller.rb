@@ -24,25 +24,24 @@ class PackagesController < ApplicationController
       @company = current_user.company
     when 'care_provider_super_user'
       @company = current_user.company
-      @packages = @packages.where(subscription_type: 'company_subscription')
-      @packages = @packages.where.not(validity: 0)
+      @packages = @packages.select { |package| package.subscription_type == 'company_subscription' && package.validity != 0 }
       if current_user&.company&.has_active_subscription?
         @active_subscription = current_user.company.get_active_subscription
         @logs = @active_subscription&.credit_log || []
         @active_package = Package.find(@active_subscription.package_id)
-        @packages = Package.where(validity: 0)
+        @packages = @credit_packages
         last_credit_log = @subscription&.credit_log&.last if @active_subscription.credit_log.present?
         @invoice_url = @active_subscription&.receipt_number || (last_credit_log.present? ? last_credit_log.last : nil)
 
       end
     when 'la_super_user'
       @local_authority = current_user.local_authority
-      @packages = @packages.where(subscription_type: 1)
+      @packages = @packages.select {|package| package.subscription_type == 'local_authority_subscription' }
       @subscription = Subscription.new unless @local_authority.subscriptions.present?
       if current_user&.local_authority&.subscriptions&.present?
         @active_subscription = current_user.local_authority.get_active_subscription || current_user.local_authority.subscriptions.last
         @active_package = Package.find(@active_subscription.package_id)
-        @packages = @packages.where(subscription_type: 'local_authority_subscription')
+        @packages = @packages.select { |package| package.subscription_type == 'company_subscription'}
         last_credit_log = @subscription&.credit_log&.last if @active_subscription.credit_log.present?
         @invoice_url = @active_subscription&.receipt_number || (last_credit_log.present? ? last_credit_log.last : nil)
       end
