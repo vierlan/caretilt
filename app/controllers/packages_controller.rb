@@ -29,6 +29,7 @@ class PackagesController < ApplicationController
         @active_subscription = current_user.company.get_active_subscription
         @logs = @active_subscription&.credit_log || []
         @active_package = Package.find(@active_subscription.package_id)
+        @stripe_subscription = Stripe::Subscription.retrieve(@active_subscription.receipt_number) if @active_subscription.receipt_number.present?
         @packages = @credit_packages
         last_credit_log = @subscription&.credit_log&.last if @active_subscription.credit_log.present?
         @invoice_url = @active_subscription&.receipt_number || (last_credit_log.present? ? last_credit_log.last : nil)

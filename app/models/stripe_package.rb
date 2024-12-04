@@ -63,7 +63,6 @@ class StripePackage
                        unit_amount: (@package.price * 100).to_i, # Ensure unit amount is an integer
                        product: stripe_product,
                        lookup_key: lookup_key
-
                      )
                    else
                      # Create Stripe recurring price (replaces Plan)

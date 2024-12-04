@@ -20,6 +20,7 @@ class Stripe::CheckoutController < ApplicationController
         quantity: 1,
         price: @package.stripe_price_id
       }],
+      customer: current_user.company.stripe_customer_id,
       metadata: {
         user: current_user.full_name,
         company_id: current_user.company.id,
@@ -55,6 +56,7 @@ class Stripe::CheckoutController < ApplicationController
     @checkout_session = Stripe::Checkout::Session.create(
         payment_method_types: ['card'],
         mode: 'payment',
+        customer: current_user.company.stripe_customer_id,
         line_items: [{
           quantity: 1,
           price: params[:price_id]}],
