@@ -32,11 +32,6 @@ class Subscription < ApplicationRecord
      Stripe::Subscription.retrieve(stripe_id)
   end
 
-  def get_stripe_customer
-    Stripe::Customer.retrieve(stripe_customer_id)
-  end
-
-
   # check whether the subscription has a exipres_at date in the future
   def active?
     self.active == true

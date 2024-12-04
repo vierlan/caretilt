@@ -3,8 +3,6 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   # uncomment to allow extra User model params during registration (beyond email/password)
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :user_for_paper_trail
-  after_action :user_for_paper_trail
   # Pundit: allow-list approach
   # after_action :verify_authorized, except: :index, unless: :skip_pundit?
   # after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
@@ -61,13 +59,10 @@ class ApplicationController < ActionController::Base
     redirect_to two_factor_authentication_path, status: :see_other
 
   end
-
-
+  
   def maybe_skip_onboarding
     redirect_to dashboard_index_path, notice: "You're already subscribed" if current_user.finished_onboarding?
   end
-
-
 
   # whitelist extra User model params by uncommenting below and adding User attrs as keys
   def configure_permitted_parameters

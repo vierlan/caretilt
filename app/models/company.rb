@@ -22,7 +22,17 @@ class Company < ApplicationRecord
     valid_subscriptions = subscriptions.joins(:package).where.not(packages: { validity: 0 })
     valid_subscriptions.where(active: true).last || valid_subscriptions.order(:subscribed_on).last
   end
-  private
 
+  def add_subscription_credits(subscription)
+    credits = subscription.package.credits
+    name = subscription.package.name
+    credits_left = subscription.credits_left + credits
+
+    # add credits to the company
+    subscription.update(credits_left: credits_left)
+    # add a log entry
+    subscription.credit_log << ["Credits added", "#{name}", "#{Time.now}", "added #{credits} credits", "#{credits_left}"]
+    subscription.save
+  end
 
 end

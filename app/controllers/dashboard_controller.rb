@@ -1,9 +1,11 @@
 class DashboardController < ApplicationController
   before_action :authenticate_user!
   before_action :check_two_factor_authentication
-  before_action :ensure_onboarding_complete
+  # ensure registration is completed for super users
+  before_action :ensure_onboarding_complete, if: -> { super_user_roles.include?(current_user&.role) }
   before_action :check_verification
-  before_action :check_subscription
+  # check subscription status if not admin
+  before_action :check_subscription, unless: -> { current_user.role == 'super_admin' || current_user.role == 'administrator' }
 
   def index
     @user = current_user
@@ -85,54 +87,90 @@ class DashboardController < ApplicationController
   end
 
   def check_subscription
-    case current_user.role
-    when 'super_admin', 'administrator'
-      return true
-    when 'care_provider_super_user', 'care_provider_user'
-      status = current_user&.company&.get_active_subscription
-      Rails.logger.info "Subscription status: #{status}"
-    when 'la_super_user', 'la_user'
-      status = current_user&.local_authority&.has_active_subscription?
-      Rails.logger.info "Subscription status: #{status}"
+    subscribable = current_user.company || current_user.local_authority
+    Rails.logger.info("Subscribable: #{subscribable.inspect}")
+    Rails.logger.info("Has active subscription: #{subscribable.has_active_subscription?}")
+
+    unless subscribable.has_active_subscription?
+      Rails.logger.warn("No active subscription found. Redirecting...")
+      redirect_failed_subscription
+      return
     end
-    unless status && current_user.status == 'verified'
-      subscribable = current_user.company || current_user.local_authority
-      case current_user.role
-      when 'care_provider_super_user' # and subsciption_id present
-        # get the subscription id check subscription is valid subscription
-        if subscribable.has_active_subscription?
-          active_subscription = subscribable.get_active_subscription
-          subscription = active_subscription.get_stripe_subscription(subscribable.get_active_subscription.receipt_number)
-          Rails.logger.info "Subscription status: #{subscription}"
-          period_end = Time.at(subscription[:current_period_end])
-          if period_end > active_subscription.expires_on
-            active_subscription.update_expiry_date(period_end)
-            active_subscription.update(next_payment_date: period_end)
-            active_subscription.number_of_payments ? active_subscription.update(number_of_payments: active_subscription.number_of_payments + 1) : active_subscription.update(number_of_payments: 1)
-            active_subscription.activate!
-            active_subscription.save!
-            nil
-          elsif period_end > Time.now
-            active_subscription.activate!
-            active_subscription.save!
-            nil
-          else
-            latest_invoice = active_subscription.get_lastest_stripe_invoice(subscription[:latest_invoice])
-            Rails.logger.info "Latest invoice: #{latest_invoice}"
-            invoice = active_subscription.fetch_invoice_details(latest_invoice) if latest_invoice.present?
-            Rails.logger.info "Invoice: #{invoice}"
-            redirect_to invoice.hosted_invoice_url, status: 303, allow_other_host: true, notice: "Please pay your invoice to continue using the service."
-          end
-        else
-          redirect_to packages_path, alert: 'Please subscribe to a package to continue.'
-        end
-      when 'la_super_user'
-        redirect_to packages_path, alert: 'Please subscribe to a package to continue.'
-      when 'care_provider_user'
-        redirect_to error_path, alert: 'Your company has not subscribed to a package yet.'
-      when 'la_user'
-        redirect_to error_path, alert: 'Your local authority has not subscribed to a package yet.'
-      end
+
+    active_subscription = subscribable.get_active_subscription
+    Rails.logger.info("Active subscription: #{active_subscription.inspect}")
+
+    stripe_subscription = fetch_stripe_subscription(active_subscription) if active_subscription
+    Rails.logger.info("Stripe subscription: #{stripe_subscription.inspect}")
+
+    handle_expiry_comparison(active_subscription, stripe_subscription, subscribable)
+  end
+
+  def fetch_stripe_subscription(active_subscription)
+    Stripe::Subscription.retrieve(active_subscription.receipt_number)
+  rescue Stripe::InvalidRequestError => e
+    Rails.logger.error("Stripe error: #{e.message}")
+    nil # Return nil if Stripe data is unavailable
+  end
+
+  def handle_expiry_comparison(active_subscription, stripe_subscription, subscribable)
+    stripe_expiry_date = stripe_subscription.present? ? Time.at(stripe_subscription.current_period_end).strftime('%Y-%m-%d') : nil
+    local_expiry_date = active_subscription.expires_on.strftime('%Y-%m-%d')
+    Rails.logger.info("Local expiry date: #{local_expiry_date}")
+    Rails.logger.info("Stripe expiry date: #{stripe_expiry_date}")
+
+    # Allow access if local expiry date is valid and Stripe data is unavailable
+    if stripe_expiry_date.nil? && active_subscription.expires_on > Time.now
+      Rails.logger.warn("Stripe data unavailable; allowing access based on local expiry date.")
+      active_subscription.check_status
+      return
+    # Update local expiry date if Stripe has newer data
+    elsif stripe_expiry_date > local_expiry_date
+      Rails.logger.info("Updating local expiry date with Stripe expiry date.")
+      update_subscription_expiry(active_subscription, stripe_expiry_date, subscribable)
+    # Ensure subscription is active if Stripe expiry is still valid
+    elsif stripe_expiry_date > Time.now.strftime('%Y-%m-%d')
+      Rails.logger.info("Stripe expiry date is still valid; checking subscription status.")
+      active_subscription.check_status
+    # Handle unpaid invoices for super users
+    elsif super_user_roles.include?(current_user.role)
+      handle_super_user_unpaid_invoice(active_subscription, stripe_subscription)
+    else
+      redirect_failed_subscription
+    end
+  end
+
+  def update_subscription_expiry(active_subscription, stripe_expiry_date, subscribable)
+    active_subscription.update_expiry_date(stripe_expiry_date)
+    active_subscription.check_status
+    redirect_failed_subscription unless subscribable.has_active_subscription?
+    subscribable.add_subscription_credits(active_subscription) if subscribable.is_a?(Company)
+  end
+
+  def handle_super_user_unpaid_invoice(active_subscription, stripe_subscription)
+    latest_invoice = active_subscription.get_lastest_stripe_invoice(stripe_subscription&.latest_invoice)
+    if latest_invoice.present?
+      invoice = active_subscription.fetch_invoice_details(latest_invoice)
+      redirect_to invoice.hosted_invoice_url, status: 303, allow_other_host: true, notice: "Please pay your invoice to continue using the service."
+    else
+      redirect_failed_subscription
+    end
+  end
+
+  def super_user_roles
+    %w[care_provider_super_user la_super_user]
+  end
+
+  def redirect_failed_subscription
+    case current_user.role
+    when 'care_provider_super_user'
+      redirect_to packages_path, alert: 'Please subscribe to a package to continue.'
+    when 'la_super_user'
+      redirect_to packages_path, alert: 'Please subscribe to a package to continue.'
+    when 'care_provider_user'
+      redirect_to error_path, alert: 'Your company has not subscribed to a package yet.'
+    when 'la_user'
+      redirect_to error_path, alert: 'Your local authority has not subscribed to a package yet.'
     end
   end
 
