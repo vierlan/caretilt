@@ -17,12 +17,14 @@ class Stripe::CheckoutController < ApplicationController
     Rails.logger.info("Valid customer: #{@valid_customer}")
     if !@valid_customer
       Rails.logger.info("Creating Stripe customer for #{current_user.company.name} if !@vaild_customer")
-      @company.create_stripe_customer
-    elsif @valid_customer.deleted
+      @customer = @company.create_stripe_customer
+    elsif @valid_customer.respond_to?(:deleted) && @valid_customer.deleted
       Rails.logger.info("Creating Stripe customer for #{current_user.company.name} if @valid_customer.deleted")
-      @company.create_stripe_customer
+      @customer = @company.create_stripe_customer
+    else
+      Rails.logger.info("Retrieving Stripe customer for #{current_user.company.name}")
+      @customer = @valid_customer
     end
-    @customer = Stripe::Customer.retrieve(@company.stripe_customer_id) # Retrieve newly created customer
     @checkout_session = Stripe::Checkout::Session.create(
       mode: @package.description.include?('non-renewable') ? 'payment' : 'subscription',
       line_items: [{

@@ -14,11 +14,21 @@ class SubscriptionsController < ApplicationController
   #  path for initial subscription creation for local authorities only
   def create
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
+    local_authority = current_user.local_authority
     @package = Package.find(params[:package_id])
     # Find the stripe customer on payment processor
-
-    @customer = @local_authority.stripe_customer_id || Stripe::Customer.create(name: @local_authority.name, email: @local_authority.email)
-
+    @valid_customer = local_authority.stripe_customer_id.present? && local_authority.stripe_customer_valid?
+    Rails.logger.info("Valid customer: #{@valid_customer}")
+    if !@valid_customer
+      Rails.logger.info("Creating Stripe customer for #{current_user.local_authority.name} if !@vaild_customer")
+      @customer = local_authority.create_stripe_customer
+    elsif @valid_customer.respond_to?(:deleted) && @valid_customer.deleted
+      Rails.logger.info("Creating Stripe customer for #{current_user.local_authority.name} if @valid_customer.deleted")
+      @customer = local_authority.create_stripe_customer
+    else
+      Rails.logger.info("Retrieving Stripe customer for #{current_user.local_authority.name}")
+      @customer = @valid_customer
+    end
     @subscription = Subscription.new(
       subscribable: @local_authority,
       subscribable_id: @local_authority.id,
@@ -143,9 +153,20 @@ class SubscriptionsController < ApplicationController
       price: package.stripe_price_id, # Assume `stripe_price_id` is set on the package model
       quantity: 1
     }]
-
+    @valid_customer = local_authority.stripe_customer_id.present? && local_authority.stripe_customer_valid?
+    Rails.logger.info("Valid customer: #{@valid_customer}")
+    if !@valid_customer
+      Rails.logger.info("Creating Stripe customer for #{current_user.local_authority.name} if !@vaild_customer")
+      @customer = local_authority.create_stripe_customer
+    elsif @valid_customer.respond_to?(:deleted) && @valid_customer.deleted
+      Rails.logger.info("Creating Stripe customer for #{current_user.local_authority.name} if @valid_customer.deleted")
+      @customer = local_authority.create_stripe_customer
+    else
+      Rails.logger.info("Retrieving Stripe customer for #{current_user.local_authority.name}")
+      @customer = @valid_customer
+    end
     stripe_subscription = Stripe::Subscription.create({
-      customer: local_authority.stripe_customer_id,
+      customer: @customer.id,
       items: subscription_items,
       payment_behavior: 'default_incomplete', # This prevents immediate payment
       expand: ['latest_invoice.payment_intent'],
