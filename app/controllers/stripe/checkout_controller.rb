@@ -13,14 +13,23 @@ class Stripe::CheckoutController < ApplicationController
     @user = current_user
     @company = current_user.company
     @package = Package.find(params[:package])
-    Rails.logger.info("Creating Stripe customer for #{current_user.company.name} + #{@price} ")
+    @valid_customer = @company.stripe_customer_id.present? && @company.stripe_customer_valid?
+    Rails.logger.info("Valid customer: #{@valid_customer}")
+    if !@valid_customer
+      Rails.logger.info("Creating Stripe customer for #{current_user.company.name} if !@vaild_customer")
+      @company.create_stripe_customer
+    elsif @valid_customer.deleted
+      Rails.logger.info("Creating Stripe customer for #{current_user.company.name} if @valid_customer.deleted")
+      @company.create_stripe_customer
+    end
+    @customer = Stripe::Customer.retrieve(@company.stripe_customer_id) # Retrieve newly created customer
     @checkout_session = Stripe::Checkout::Session.create(
       mode: @package.description.include?('non-renewable') ? 'payment' : 'subscription',
       line_items: [{
         quantity: 1,
         price: @package.stripe_price_id
       }],
-      customer: current_user.company.stripe_customer_id,
+      customer: @customer.id,
       metadata: {
         user: current_user.full_name,
         company_id: current_user.company.id,
@@ -28,15 +37,16 @@ class Stripe::CheckoutController < ApplicationController
         package_name: @package.name
       },
       payment_method_types: ['card'], # Add bank payment methods
-
       success_url: "#{checkout_success_url}?session_id={CHECKOUT_SESSION_ID} ",
       cancel_url: checkout_cancel_url
-      )
-      @session_id = @checkout_session.id
-      Rails.logger.info("Stripe checkout session created: #{@session_id} #{@checkout_session}")
-# Log the Stripe session URL
-      redirect_to @checkout_session.url, status: 303, allow_other_host: true
-      Rails.logger.info "Redirecting to Stripe checkout session URL: #{@checkout_session.url}"
+    )
+
+    @session_id = @checkout_session.id
+    Rails.logger.info("Stripe checkout session created: #{@session_id} #{@checkout_session}")
+
+    # Log the Stripe session URL
+    redirect_to @checkout_session.url, status: 303, allow_other_host: true
+    Rails.logger.info "Redirecting to Stripe checkout session URL: #{@checkout_session.url}"
   end
 
   def get_stripe_events
@@ -51,8 +61,6 @@ class Stripe::CheckoutController < ApplicationController
     Stripe.api_key = Rails.application.credentials&.stripe&.api_key
     @user = current_user
     @company = current_user.company
-
-    Rails.logger.info("Creating Stripe customer for #{current_user.company.name} + #{@price} ")
     @checkout_session = Stripe::Checkout::Session.create(
         payment_method_types: ['card'],
         mode: 'payment',
