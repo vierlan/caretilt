@@ -29,7 +29,6 @@ module Billable
 
   def stripe_customer_valid?
     Stripe::Customer.retrieve(self.stripe_customer_id)
-
   rescue Stripe::InvalidRequestError => e
     Rails.logger.error("Stripe error: #{e.message}")
     false
@@ -46,6 +45,7 @@ module Billable
     })
     Rails.logger.info("Stripe customer created: #{customer.id}")
     self.update(stripe_customer_id: customer.id)
+    customer
   end
 
   # done after user adds payment method, for easy CVR metrics inside database

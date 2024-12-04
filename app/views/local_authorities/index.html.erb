@@ -19,7 +19,7 @@
                 </ul>
               </div>
               <!--local_authority subscriptions start-->
-              <% if local_authority.has_active_subscription? %>
+              <% if local_authority&.get_active_subscription %>
               <div class="flex flex-cols" data-controller="open">
                 <ul>
                   <% subscription = local_authority.get_active_subscription  %>
