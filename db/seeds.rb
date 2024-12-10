@@ -95,7 +95,7 @@ end
 
 def seed_users
 puts 'Seeding users...'
-company1 = Company.find_or_create_by!(name: 'CareTilt', email: 'placement@caretilt.com', address1: "20-22 Wenlock Road", address2: "London", city: "London", postcode: "N1 7GU", website: "http://app,caretilt.co.uk/", companies_house_id: "")
+company1 = Company.find_or_create_by!(name: 'CareTilt', email: 'placement@caretilt.co.uk', address1: "20-22 Wenlock Road", address2: "London", city: "London", postcode: "N1 7GU", website: "http://app,caretilt.co.uk/", companies_house_id: "")
 puts 'Caretilt company created'
 
 lan_administrator = User.create!(
