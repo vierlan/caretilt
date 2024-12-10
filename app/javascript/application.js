@@ -6,8 +6,6 @@ import "chartkick";
 import "Chart.bundle";
 import "flowbite";
 import "@rails/request.js";
-import "@hotwired/turbo-rails";
-import "controllers";
 
 import * as ActiveStorage from "@rails/activestorage";
 ActiveStorage.start();
