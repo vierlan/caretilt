@@ -125,10 +125,8 @@ class PackagesController < ApplicationController
     @package = Package.find(params[:id])
     # data to coverted to json on stripe product create to allow for interaction with Stripe APIO
     data = @package.data.is_a?(String) ? JSON.parse(@package.data) : (@package.data || {})
-
   # Update the 'active' key
     data['active'] = false
-
     # Save the updated hash back as a JSON string
     @package.update(data: data.to_json)
     redirect_to packages_path, data: { turbo_frame: 'main-content' }

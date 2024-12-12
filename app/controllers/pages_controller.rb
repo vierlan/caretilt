@@ -31,11 +31,31 @@ class PagesController < ApplicationController
   def quiz; end
 
   def pricing
-    @packages = Package.where(validity: 1, subscription_type: 'company_subscription')
+    @month_packages = Package.where(validity: 1, subscription_type: 'company_subscription')
+    @packages = []
+
+    @month_packages.each do |package|
+      # Handle `data` as either a JSON string or a Ruby Hash
+      data = package.data.is_a?(String) ? JSON.parse(package.data) : package.data
+
+      # Ensure `data` is not nil and add the package if `active` is not false
+      @packages << package if data.present? && data['active'] != false
+    end
+
   end
 
   def pricing2
-    @packages = Package.where(validity: 12, subscription_type: 'company_subscription')
+    @annual_packages = Package.where(validity: 12, subscription_type: 'company_subscription')
+    @packages = []
+
+    @annual_packages.each do |package|
+      # Handle `data` as either a JSON string or a Ruby Hash
+      data = package.data.is_a?(String) ? JSON.parse(package.data) : package.data
+
+      # Ensure `data` is not nil and add the package if `active` is not false
+      @packages << package if data.present? && data['active'] != false
+    end
+
   end
 
   def error_not_verified
