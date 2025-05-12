@@ -1,5 +1,5 @@
 # Caretilt
-a Rails 7 template.
+A Rails 7 fullstack Webapp .
 
 
 **CareTilt features**
